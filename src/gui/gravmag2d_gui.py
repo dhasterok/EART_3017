@@ -40,7 +40,7 @@ from PyQt6.QtWidgets import (
     QCheckBox,
 )
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QColor, QAction, QKeySequence
+from PyQt6.QtGui import QColor, QAction, QKeySequence, QActionGroup, QIcon
 
 import matplotlib
 matplotlib.use("QtAgg")
@@ -52,7 +52,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.colors as mcolors
 
 from src.gravity.talwani_model import compute_gz
-from src.gravity.mag2d_model   import compute_bt
+from src.gravity.mag2d_model   import compute_bt, compute_bx_bz
 from src.gravity.data_loader   import load_csv_data, ObservedData
 
 
@@ -81,6 +81,18 @@ _MAG_COLOR  = "#8B0000"   # dark red
 #  Interaction mode
 # ─────────────────────────────────────────────────────────────────────────────
 
+class DisplayMode(Enum):
+    BOTH      = "both"
+    GRAVITY   = "gravity"
+    MAGNETICS = "magnetics"
+
+
+class MagComponent(Enum):
+    TMI = "Total field (ΔT)"
+    BX  = "Horizontal (Bx)"
+    BZ  = "Vertical (Bz)"
+
+
 class Mode(Enum):
     DRAW       = auto()
     SELECT     = auto()
@@ -99,28 +111,33 @@ class PolygonBody:
     _counter = 0
 
     def __init__(self, vertices=None, density=300.0,
-                 susceptibility=0.001,                        # ★ SI
+                 susceptibility=0.001,
+                 remanence_Am=0.0, remanence_inc_deg=0.0,
                  color=None, name=None, visible=True):
         PolygonBody._counter += 1
-        self.name          = name or f"Body {PolygonBody._counter}"
-        self.vertices      = vertices or []
-        self.density       = float(density)
-        self.susceptibility = float(susceptibility)           # ★
-        self.color         = color or DEFAULT_COLORS[
+        self.name               = name or f"Body {PolygonBody._counter}"
+        self.vertices           = vertices or []
+        self.density            = float(density)
+        self.susceptibility     = float(susceptibility)
+        self.remanence_Am       = float(remanence_Am)       # A/m
+        self.remanence_inc_deg  = float(remanence_inc_deg)  # degrees
+        self.color              = color or DEFAULT_COLORS[
             (PolygonBody._counter - 1) % len(DEFAULT_COLORS)]
-        self.visible       = visible
+        self.visible            = visible
 
     def is_complete(self):
         return len(self.vertices) >= 3
 
     def clone(self):
         b = PolygonBody.__new__(PolygonBody)
-        b.name           = self.name
-        b.vertices       = [v[:] for v in self.vertices]
-        b.density        = self.density
-        b.susceptibility = self.susceptibility                # ★
-        b.color          = self.color
-        b.visible        = self.visible
+        b.name              = self.name
+        b.vertices          = [v[:] for v in self.vertices]
+        b.density           = self.density
+        b.susceptibility    = self.susceptibility
+        b.remanence_Am      = self.remanence_Am
+        b.remanence_inc_deg = self.remanence_inc_deg
+        b.color             = self.color
+        b.visible           = self.visible
         return b
 
     def vertex_array(self):
@@ -176,8 +193,9 @@ class GravityCanvas(FigureCanvas):
       • Bottom (ax_model)        -- model cross-section; polygon editing
     """
 
-    bodies_changed = pyqtSignal()
-    rms_updated    = pyqtSignal(float)
+    bodies_changed    = pyqtSignal()
+    rms_updated       = pyqtSignal(float)
+    delete_key_pressed = pyqtSignal()   # Delete key on selected body — main window confirms
 
     def __init__(self, parent=None):
         self.fig = Figure(figsize=(9, 8), tight_layout=False)
@@ -199,6 +217,9 @@ class GravityCanvas(FigureCanvas):
         # ★ Earth-field parameters
         self.earth_field_nT = 50000.0   # nT
         self.earth_inc_deg  =  60.0     # degrees
+
+        self.display_mode  = DisplayMode.BOTH
+        self.mag_component = MagComponent.TMI
 
         gs = gridspec.GridSpec(
             2, 1, figure=self.fig,
@@ -404,6 +425,27 @@ class GravityCanvas(FigureCanvas):
                 pass
             self._snap_ring = None
 
+    # ── display mode ──────────────────────────────────────────────────────
+
+    def set_display_mode(self, mode: DisplayMode):
+        self.display_mode = mode
+        show_grav = mode in (DisplayMode.BOTH, DisplayMode.GRAVITY)
+        show_mag  = mode in (DisplayMode.BOTH, DisplayMode.MAGNETICS)
+        self.ax_grav.set_visible(show_grav)
+        self.ax_mag.set_visible(show_mag)
+        self.ax_mag.set_ylabel(self.mag_component.value + " (nT)", color=_MAG_COLOR)
+        # Swap which axis carries the x-tick labels (the visible top axis)
+        self.ax_grav.tick_params(labelbottom=False)
+        self.ax_mag.tick_params(labelbottom=False)
+        self._update_gravity()
+        self.fig.canvas.draw_idle()
+
+    def set_mag_component(self, component: MagComponent):
+        self.mag_component = component
+        self.ax_mag.set_ylabel(component.value + " (nT)", color=_MAG_COLOR)
+        self._update_gravity()
+        self.fig.canvas.draw_idle()
+
     # ── gravity + magnetic computation ────────────────────────────────────
 
     def _profile_x(self):
@@ -414,15 +456,19 @@ class GravityCanvas(FigureCanvas):
 
         # ── gravity ──────────────────────────────────────────────────────
         gz = np.zeros(len(xp))
-        for body in self.bodies:
-            if body.visible and body.is_complete():
-                contrast = body.density - self.bg_density
-                gz += compute_gz(xp, body.vertices, contrast)
+        if self.display_mode in (DisplayMode.BOTH, DisplayMode.GRAVITY):
+            for body in self.bodies:
+                if body.visible and body.is_complete():
+                    contrast = body.density - self.bg_density
+                    gz += compute_gz(xp, body.vertices, contrast)
 
         if self._grav_line is not None:
             self._grav_line.remove()
-        self._grav_line, = self.ax_grav.plot(
-            xp, gz, color=_GRAV_COLOR, lw=1.5, label="Gravity (calc.)", zorder=3)
+        if self.display_mode in (DisplayMode.BOTH, DisplayMode.GRAVITY):
+            self._grav_line, = self.ax_grav.plot(
+                xp, gz, color=_GRAV_COLOR, lw=1.5, label="Gravity (calc.)", zorder=3)
+        else:
+            self._grav_line = None
 
         # ── observed data ────────────────────────────────────────────────
         for attr in ("_obs_line", "_obs_errbar"):
@@ -474,24 +520,46 @@ class GravityCanvas(FigureCanvas):
         self.ax_grav.autoscale_view(scalex=False, scaley=True)
 
         # ── ★ magnetic ───────────────────────────────────────────────────
-        self._update_magnetic(xp)
+        if self.display_mode in (DisplayMode.BOTH, DisplayMode.MAGNETICS):
+            self._update_magnetic(xp)
+        elif self._mag_line is not None:
+            try:
+                self._mag_line.remove()
+            except Exception:
+                pass
+            self._mag_line = None
 
         # ── combined legend ──────────────────────────────────────────────
-        lines1, labs1 = self.ax_grav.get_legend_handles_labels()
-        lines2, labs2 = self.ax_mag.get_legend_handles_labels()
-        if lines1 or lines2:
-            self.ax_grav.legend(lines1 + lines2, labs1 + labs2,
+        lines, labs = [], []
+        if self.display_mode in (DisplayMode.BOTH, DisplayMode.GRAVITY):
+            l1, lb1 = self.ax_grav.get_legend_handles_labels()
+            lines += l1; labs += lb1
+        if self.display_mode in (DisplayMode.BOTH, DisplayMode.MAGNETICS):
+            l2, lb2 = self.ax_mag.get_legend_handles_labels()
+            lines += l2; labs += lb2
+        if lines:
+            self.ax_grav.legend(lines, labs,
                                 loc="upper right", fontsize=7, framealpha=0.7)
 
-    def _update_magnetic(self, xp):                           # ★
-        """Compute and plot total-field magnetic anomaly on ax_mag."""
-        bt = np.zeros(len(xp))
+    def _update_magnetic(self, xp):
+        """Compute and plot the selected magnetic component on ax_mag."""
+        signal = np.zeros(len(xp))
         for body in self.bodies:
-            if body.visible and body.is_complete() and body.susceptibility != 0.0:
-                bt += compute_bt(xp, body.vertices,
-                                 body.susceptibility,
-                                 self.earth_field_nT,
-                                 self.earth_inc_deg)
+            if not (body.visible and body.is_complete()):
+                continue
+            if body.susceptibility == 0.0 and body.remanence_Am == 0.0:
+                continue
+            args = (xp, body.vertices, body.susceptibility,
+                    self.earth_field_nT, self.earth_inc_deg,
+                    body.remanence_Am, body.remanence_inc_deg)
+            if self.mag_component == MagComponent.TMI:
+                signal += compute_bt(*args)
+            elif self.mag_component == MagComponent.BX:
+                bx, _ = compute_bx_bz(*args)
+                signal += bx
+            else:  # BZ
+                _, bz = compute_bx_bz(*args)
+                signal += bz
 
         if self._mag_line is not None:
             try:
@@ -501,8 +569,8 @@ class GravityCanvas(FigureCanvas):
             self._mag_line = None
 
         self._mag_line, = self.ax_mag.plot(
-            xp, bt, color=_MAG_COLOR, lw=1.5, ls="--",
-            label="Magnetic (calc.)", zorder=3)
+            xp, signal, color=_MAG_COLOR, lw=1.5, ls="--",
+            label=f"{self.mag_component.value} (calc.)", zorder=3)
 
         self.ax_mag.relim()
         self.ax_mag.autoscale_view(scalex=False, scaley=True)
@@ -670,7 +738,7 @@ class GravityCanvas(FigureCanvas):
                 self.fig.canvas.draw_idle()
         elif self.mode == Mode.SELECT:
             if event.key == "delete" and self.selected_body is not None:
-                self._delete_selected_body()
+                self.delete_key_pressed.emit()
             elif event.key == "escape":
                 self._deselect()
 
@@ -829,12 +897,14 @@ class GravityCanvas(FigureCanvas):
             "earth_inc_deg":  self.earth_inc_deg,
             # ── bodies ────────────────────────────────────────────────────
             "bodies": [
-                {"name":           b.name,
-                 "density":        b.density,
-                 "susceptibility": b.susceptibility,
-                 "color":          b.color,
-                 "visible":        b.visible,
-                 "vertices":       [v[:] for v in b.vertices]}
+                {"name":               b.name,
+                 "density":            b.density,
+                 "susceptibility":     b.susceptibility,
+                 "remanence_Am":       b.remanence_Am,
+                 "remanence_inc_deg":  b.remanence_inc_deg,
+                 "color":              b.color,
+                 "visible":            b.visible,
+                 "vertices":           [v[:] for v in b.vertices]}
                 for b in self.bodies
             ],
         }
@@ -855,12 +925,14 @@ class GravityCanvas(FigureCanvas):
         PolygonBody._counter = 0
         for bd in d.get("bodies", []):
             b = PolygonBody(
-                vertices       = [list(v) for v in bd["vertices"]],
-                density        = float(bd["density"]),
-                susceptibility = float(bd.get("susceptibility", 0.001)),
-                color          = bd.get("color", "#4C72B0"),
-                name           = bd.get("name", "Body"),
-                visible        = bool(bd.get("visible", True)),
+                vertices          = [list(v) for v in bd["vertices"]],
+                density           = float(bd["density"]),
+                susceptibility    = float(bd.get("susceptibility",    0.001)),
+                remanence_Am      = float(bd.get("remanence_Am",      0.0)),
+                remanence_inc_deg = float(bd.get("remanence_inc_deg", 0.0)),
+                color             = bd.get("color",   "#4C72B0"),
+                name              = bd.get("name",    "Body"),
+                visible           = bool(bd.get("visible", True)),
             )
             b.name = bd.get("name", b.name)
             self.bodies.append(b)
@@ -901,13 +973,13 @@ class GravityCanvas(FigureCanvas):
 # ─────────────────────────────────────────────────────────────────────────────
 
 class ControlsDock(QDockWidget):
-    mode_changed        = pyqtSignal(Mode)
-    profile_changed     = pyqtSignal(float, float, int)
-    depth_changed       = pyqtSignal(float)
-    units_changed       = pyqtSignal(bool)
-    bg_density_changed  = pyqtSignal(float)
-    earth_field_changed = pyqtSignal(float, float)   # ★ F_nT, IE_deg
-    snap_changed        = pyqtSignal(bool)
+    profile_changed      = pyqtSignal(float, float, int)
+    depth_changed        = pyqtSignal(float)
+    units_changed        = pyqtSignal(bool)
+    bg_density_changed   = pyqtSignal(float)
+    earth_field_changed  = pyqtSignal(float, float)   # ★ F_nT, IE_deg
+    snap_changed         = pyqtSignal(bool)
+    display_mode_changed = pyqtSignal(DisplayMode)
 
     def __init__(self, parent=None):
         super().__init__("Controls", parent)
@@ -922,31 +994,6 @@ class ControlsDock(QDockWidget):
 
         self._use_km = True
 
-        # ── mode buttons ──────────────────────────────────────────────────
-        mode_group  = QGroupBox("Editing Mode")
-        mode_layout = QVBoxLayout(mode_group)
-        self._btn_group = QButtonGroup(self)
-        self._btn_group.setExclusive(True)
-        modes = [
-            ("Draw Polygon",  Mode.DRAW,       "LMB: add vertex\nRMB / Enter: close"),
-            ("Select / Move", Mode.SELECT,      "LMB: select body\nDrag vertex to move"),
-            ("Add Vertex",    Mode.ADD_VERTEX,  "LMB: insert vertex on an edge"),
-            ("Delete Body",   Mode.DELETE,      "LMB: remove body"),
-            ("Mask Stations", Mode.MASK,        "LMB in gravity panel: toggle station mask"),
-        ]
-        self._mode_buttons = {}
-        for label, mode, tip in modes:
-            btn = QPushButton(label)
-            btn.setCheckable(True)
-            btn.setToolTip(tip)
-            btn.setMinimumHeight(30)
-            self._btn_group.addButton(btn)
-            self._mode_buttons[mode] = btn
-            mode_layout.addWidget(btn)
-            btn.clicked.connect(lambda _, m=mode: self.mode_changed.emit(m))
-        self._mode_buttons[Mode.SELECT].setChecked(True)
-        layout.addWidget(mode_group)
-
         # ── snapping ──────────────────────────────────────────────────────
         self.chk_snap = QCheckBox("Enable vertex snapping")
         self.chk_snap.setChecked(True)
@@ -955,6 +1002,25 @@ class ControlsDock(QDockWidget):
         self.chk_snap.stateChanged.connect(
             lambda s: self.snap_changed.emit(s == Qt.CheckState.Checked.value))
         layout.addWidget(self.chk_snap)
+
+        # ── display mode ──────────────────────────────────────────────────
+        disp_group  = QGroupBox("Display Mode")
+        disp_layout = QHBoxLayout(disp_group)
+        self._disp_btn_group = QButtonGroup(self)
+        self._disp_btn_group.setExclusive(True)
+        self._disp_buttons = {}
+        for label, dm in [("Gravity", DisplayMode.GRAVITY),
+                          ("Gravity && Magnetics",    DisplayMode.BOTH),
+                          ("Magnetics", DisplayMode.MAGNETICS)]:
+            btn = QPushButton(label)
+            btn.setCheckable(True)
+            btn.setMinimumHeight(26)
+            self._disp_btn_group.addButton(btn)
+            self._disp_buttons[dm] = btn
+            disp_layout.addWidget(btn)
+            btn.clicked.connect(lambda _, d=dm: self.display_mode_changed.emit(d))
+        self._disp_buttons[DisplayMode.BOTH].setChecked(True)
+        layout.addWidget(disp_group)
 
         # ── distance units ────────────────────────────────────────────────
         units_group  = QGroupBox("Distance Units")
@@ -1006,9 +1072,8 @@ class ControlsDock(QDockWidget):
             "Inclination of Earth's field projected onto the profile (degrees, + downward)")
         ef_form.addRow("Inclination IE:", self.spin_field_IE)
 
-        apply_ef_btn = QPushButton("Apply")
-        apply_ef_btn.clicked.connect(self._emit_earth_field)
-        ef_form.addRow(apply_ef_btn)
+        self.spin_field_F.valueChanged.connect(self._emit_earth_field)
+        self.spin_field_IE.valueChanged.connect(self._emit_earth_field)
         layout.addWidget(ef_group)
         # ★ ───────────────────────────────────────────────────────────────
 
@@ -1095,9 +1160,11 @@ COL_COLOR    = 1
 COL_NAME     = 2
 COL_DENSITY  = 3
 COL_CONTRAST = 4
-COL_SUSCEPT  = 5   # ★ susceptibility
-COL_NVERTS   = 6
-N_COLS       = 7   # ★
+COL_SUSCEPT  = 5
+COL_REM_J    = 6   # remanence intensity (A/m)
+COL_REM_INC  = 7   # remanence inclination (degrees)
+COL_NVERTS   = 8
+N_COLS       = 9
 
 VCOL_IDX = 0
 VCOL_X   = 1
@@ -1114,6 +1181,7 @@ class PolygonTableDock(QDockWidget):
     body_changed         = pyqtSignal(object)
     body_vertex_changed  = pyqtSignal(object)
     body_vertex_deleted  = pyqtSignal(object)   # emitted after a vertex is removed
+    body_delete_requested = pyqtSignal(list)    # emitted when user confirms polygon deletion
 
     def __init__(self, parent=None):
         super().__init__("Polygon Bodies", parent)
@@ -1138,13 +1206,16 @@ class PolygonTableDock(QDockWidget):
         self.table.setHorizontalHeaderLabels(
             ["Vis", "Color", "Name",
              "Density\n(kg/m³)", "Contrast\n(kg/m³)",
-             "χ (SI)",           # ★
+             "χ (SI)",
+             "J_rem\n(A/m)", "Inc_rem\n(°)",
              "Verts"])
         hh = self.table.horizontalHeader()
         hh.setSectionResizeMode(COL_NAME,     QHeaderView.ResizeMode.Stretch)
         hh.setSectionResizeMode(COL_DENSITY,  QHeaderView.ResizeMode.ResizeToContents)
         hh.setSectionResizeMode(COL_CONTRAST, QHeaderView.ResizeMode.ResizeToContents)
-        hh.setSectionResizeMode(COL_SUSCEPT,  QHeaderView.ResizeMode.ResizeToContents)  # ★
+        hh.setSectionResizeMode(COL_SUSCEPT,  QHeaderView.ResizeMode.ResizeToContents)
+        hh.setSectionResizeMode(COL_REM_J,    QHeaderView.ResizeMode.ResizeToContents)
+        hh.setSectionResizeMode(COL_REM_INC,  QHeaderView.ResizeMode.ResizeToContents)
         hh.setSectionResizeMode(COL_NVERTS,   QHeaderView.ResizeMode.ResizeToContents)
         hh.setSectionResizeMode(COL_VIS,      QHeaderView.ResizeMode.ResizeToContents)
         hh.setSectionResizeMode(COL_COLOR,    QHeaderView.ResizeMode.ResizeToContents)
@@ -1153,7 +1224,15 @@ class PolygonTableDock(QDockWidget):
         self.table.setMinimumHeight(120)
         self.table.itemChanged.connect(self._on_item_changed)
         self.table.itemSelectionChanged.connect(self._on_selection_changed)
+        self.table.installEventFilter(self)
         left_vb.addWidget(self.table)
+
+        self.btn_del_poly = QPushButton("Delete Selected Polygon(s)")
+        self.btn_del_poly.setToolTip("Remove the selected polygon(s) from the model")
+        self.btn_del_poly.setEnabled(False)
+        self.btn_del_poly.clicked.connect(self._confirm_delete_polygons)
+        left_vb.addWidget(self.btn_del_poly)
+
         splitter.addWidget(left_w)
 
         # ── right: vertex table ───────────────────────────────────────────
@@ -1234,10 +1313,20 @@ class PolygonTableDock(QDockWidget):
         cont_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.table.setItem(row, COL_CONTRAST, cont_item)
 
-        # ★ Susceptibility
+        # Susceptibility
         susc_item = QTableWidgetItem(f"{body.susceptibility:.5f}")
         susc_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         self.table.setItem(row, COL_SUSCEPT, susc_item)
+
+        # Remanence intensity (A/m)
+        rem_j_item = QTableWidgetItem(f"{body.remanence_Am:.4f}")
+        rem_j_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.table.setItem(row, COL_REM_J, rem_j_item)
+
+        # Remanence inclination (degrees)
+        rem_inc_item = QTableWidgetItem(f"{body.remanence_inc_deg:.1f}")
+        rem_inc_item.setTextAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        self.table.setItem(row, COL_REM_INC, rem_inc_item)
 
         # #Vertices (read-only)
         nv_item = QTableWidgetItem(str(len(body.vertices)))
@@ -1326,7 +1415,9 @@ class PolygonTableDock(QDockWidget):
             return
         if len(self._sel_body.vertices) - len(rows) < 3:
             return   # would leave fewer than 3 vertices — refuse silently
-        # Remove in reverse order so earlier indices stay valid
+        # When multiple vertices share the same coordinates, only remove the
+        # one at the selected index (not all duplicates).  Removing in reverse
+        # order keeps earlier indices valid.
         for row in reversed(rows):
             if 0 <= row < len(self._sel_body.vertices):
                 del self._sel_body.vertices[row]
@@ -1334,15 +1425,18 @@ class PolygonTableDock(QDockWidget):
         self.body_vertex_deleted.emit(self._sel_body)
 
     def eventFilter(self, source, event):
-        """Forward Delete / Backspace key presses on the vertex table to the delete action."""
+        """Intercept Delete / Backspace on both tables."""
         from PyQt6.QtCore import QEvent
-        from PyQt6.QtGui import QKeyEvent
-        if (source is self.vert_table
-                and event.type() == QEvent.Type.KeyPress
-                and event.key() in (Qt.Key.Key_Delete, Qt.Key.Key_Backspace)):
-            if self.btn_del_vert.isEnabled():
-                self._delete_selected_vertex()
-            return True
+        if event.type() == QEvent.Type.KeyPress and event.key() in (
+                Qt.Key.Key_Delete, Qt.Key.Key_Backspace):
+            if source is self.table:
+                if self.btn_del_poly.isEnabled():
+                    self._confirm_delete_polygons()
+                return True
+            if source is self.vert_table:
+                if self.btn_del_vert.isEnabled():
+                    self._delete_selected_vertex()
+                return True
         return super().eventFilter(source, event)
 
     def _on_vert_item_changed(self, item: QTableWidgetItem):
@@ -1421,7 +1515,7 @@ class PolygonTableDock(QDockWidget):
                 item.setText(f"{body.density - self._bg_density:.1f}")
                 self._updating = False
 
-        elif col == COL_SUSCEPT:                              # ★
+        elif col == COL_SUSCEPT:
             try:
                 body.susceptibility = float(item.text())
                 self.body_changed.emit(body)
@@ -1430,12 +1524,31 @@ class PolygonTableDock(QDockWidget):
                 item.setText(f"{body.susceptibility:.5f}")
                 self._updating = False
 
+        elif col == COL_REM_J:
+            try:
+                body.remanence_Am = float(item.text())
+                self.body_changed.emit(body)
+            except ValueError:
+                self._updating = True
+                item.setText(f"{body.remanence_Am:.4f}")
+                self._updating = False
+
+        elif col == COL_REM_INC:
+            try:
+                body.remanence_inc_deg = float(item.text())
+                self.body_changed.emit(body)
+            except ValueError:
+                self._updating = True
+                item.setText(f"{body.remanence_inc_deg:.1f}")
+                self._updating = False
+
     # ── row selection ─────────────────────────────────────────────────────
 
     def _on_selection_changed(self):
         if self._updating:
             return
         rows = {idx.row() for idx in self.table.selectedIndexes()}
+        self.btn_del_poly.setEnabled(bool(rows))
         if rows:
             row = min(rows)
             if 0 <= row < len(self._bodies):
@@ -1447,6 +1560,21 @@ class PolygonTableDock(QDockWidget):
         self._sel_body = None
         self._populate_vert_table(None)
         self.body_selected.emit(None)
+
+    def _confirm_delete_polygons(self):
+        """Show a confirmation dialog and emit body_delete_requested if confirmed."""
+        rows = sorted({idx.row() for idx in self.table.selectedIndexes()})
+        bodies = [self._bodies[r] for r in rows if 0 <= r < len(self._bodies)]
+        if not bodies:
+            return
+        names = ", ".join(f'"{b.name}"' for b in bodies)
+        reply = QMessageBox.question(
+            self, "Delete Polygon(s)",
+            f"Delete selected polygon(s)?\n{names}",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self.body_delete_requested.emit(bodies)
 
     def select_body(self, body: Optional[PolygonBody]):
         self._updating = True
@@ -1580,15 +1708,17 @@ class MainWindow(QMainWindow):
         # ── controls dock (left) ──────────────────────────────────────────
         self.controls_dock = ControlsDock(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.controls_dock)
-        self.controls_dock.mode_changed.connect(self._on_mode_changed)
         self.controls_dock.profile_changed.connect(
             lambda xn, xx, np_: self.canvas.set_profile(xn, xx, np_))
         self.controls_dock.depth_changed.connect(self.canvas.set_depth_range)
         self.controls_dock.units_changed.connect(self._on_units_changed)
         self.controls_dock.bg_density_changed.connect(self._on_bg_density_changed)
-        self.controls_dock.earth_field_changed.connect(   # ★
-            self.canvas.set_earth_field)
+        self.controls_dock.earth_field_changed.connect(self.canvas.set_earth_field)
         self.controls_dock.snap_changed.connect(self.canvas.set_snap_enabled)
+        self.controls_dock.display_mode_changed.connect(self.canvas.set_display_mode)
+
+        # ── editing mode toolbar ──────────────────────────────────────────
+        self._build_toolbars()
 
         # ── polygon table dock (bottom) ───────────────────────────────────
         self.table_dock = PolygonTableDock(self)
@@ -1598,7 +1728,9 @@ class MainWindow(QMainWindow):
         self.table_dock.body_changed.connect(self._on_table_body_changed)
         self.table_dock.body_vertex_changed.connect(self._on_vertex_edited)
         self.table_dock.body_vertex_deleted.connect(self._on_vertex_edited)
+        self.table_dock.body_delete_requested.connect(self._delete_bodies)
         self.canvas.bodies_changed.connect(self._sync_table)
+        self.canvas.delete_key_pressed.connect(self._confirm_delete_selected)
 
         # ── inversion dock (right) ────────────────────────────────────────
         self.inv_dock = InversionDock(self)
@@ -1620,15 +1752,75 @@ class MainWindow(QMainWindow):
             "Select mode: click body to select | Draw mode: LMB add vertex, RMB close")
 
         self._build_menu()
+        self._sync_table()
 
-        for key, mode in [("D", Mode.DRAW), ("S", Mode.SELECT),
-                          ("A", Mode.ADD_VERTEX), ("X", Mode.DELETE)]:
-            act = QAction(self)
+    # ── toolbars ──────────────────────────────────────────────────────────
+
+    def _build_toolbars(self):
+        from PyQt6.QtWidgets import QToolBar
+        from PyQt6.QtCore import QSize
+
+        # ── editing mode toolbar ──────────────────────────────────────────
+        mode_tb = QToolBar("Editing Mode", self)
+        mode_tb.setObjectName("mode_toolbar")
+        mode_tb.setIconSize(QSize(24, 24))
+        mode_tb.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
+        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, mode_tb)
+
+        mode_ag = QActionGroup(self)
+        mode_ag.setExclusive(True)
+        self._mode_actions: dict[Mode, QAction] = {}
+
+        mode_defs = [
+            ("Draw a new polygon",  Mode.DRAW,       "D",
+             "LMB: add vertex  |  RMB / Enter: close  |  Esc: cancel",
+             "src/resources/icons/icon-polygon-new-64.svg", "New"),
+            ("Select / Move", Mode.SELECT,      "S",
+             "LMB: select body  |  drag vertex to move",
+             "src/resources/icons/icon-polygon-select-64.svg",
+             "Move"),
+            ("Add Vertex",    Mode.ADD_VERTEX,  "A",
+             "LMB: insert vertex on an edge",
+             "src/resources/icons/icon-add-point-64.svg",
+             "Add"),
+            ("Delete Body",   Mode.DELETE,      "X",
+             "LMB: remove body",
+             "src/resources/icons/icon-remove-point-64.svg",
+             "Delete"),
+            ("Mask Stations", Mode.MASK,        "M",
+             "LMB in gravity panel: toggle station mask",
+             "src/resources/icons/icon-mask-light-64.svg",
+             "Mask"),
+        ]
+        for label, mode, key, tip, icon_path, icon_text in mode_defs:
+            act = QAction(label, self)
+            act.setIcon(QIcon(icon_path))
+            act.setText(icon_text)
+            act.setCheckable(True)
+            act.setToolTip(f"{tip}  [{key}]")
             act.setShortcut(QKeySequence(key))
             act.triggered.connect(lambda _, m=mode: self._on_mode_changed(m))
-            self.addAction(act)
+            mode_ag.addAction(act)
+            mode_tb.addAction(act)
+            self._mode_actions[mode] = act
+        self._mode_actions[Mode.SELECT].setChecked(True)
 
-        self._sync_table()
+        mode_tb.addSeparator()
+
+        # ── magnetic component toolbar ────────────────────────────────────
+        mag_ag = QActionGroup(self)
+        mag_ag.setExclusive(True)
+        self._mag_component_actions: dict[MagComponent, QAction] = {}
+
+        for comp in (MagComponent.TMI, MagComponent.BX, MagComponent.BZ):
+            act = QAction(comp.value, self)
+            act.setCheckable(True)
+            act.setToolTip(f"Display {comp.value} on the magnetic axis")
+            act.triggered.connect(lambda _, c=comp: self.canvas.set_mag_component(c))
+            mag_ag.addAction(act)
+            mode_tb.addAction(act)
+            self._mag_component_actions[comp] = act
+        self._mag_component_actions[MagComponent.TMI].setChecked(True)
 
     # ── menu ──────────────────────────────────────────────────────────────
 
@@ -1679,6 +1871,25 @@ class MainWindow(QMainWindow):
             self.canvas.bodies.clear()
             self.canvas._full_redraw()
             self._sync_table()
+
+    def _confirm_delete_selected(self):
+        """Confirmation dialog triggered by Delete key on the canvas."""
+        body = self.canvas.selected_body
+        if body is None:
+            return
+        reply = QMessageBox.question(
+            self, "Delete Polygon",
+            f'Delete selected polygon(s)?\n"{body.name}"',
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel,
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self._delete_bodies([body])
+
+    def _delete_bodies(self, bodies):
+        """Remove a list of PolygonBody objects from the canvas and sync the table."""
+        for body in bodies:
+            self.canvas.remove_body(body)
+        self._sync_table()
 
     def _delete_selected(self):
         body = self.canvas.selected_body
@@ -1832,9 +2043,9 @@ class MainWindow(QMainWindow):
 
     def _on_mode_changed(self, mode: Mode):
         self.canvas.set_mode(mode)
-        btn = self.controls_dock._mode_buttons.get(mode)
-        if btn:
-            btn.setChecked(True)
+        act = self._mode_actions.get(mode)
+        if act and not act.isChecked():
+            act.setChecked(True)
         labels = {
             Mode.DRAW:       "Draw: LMB add vertex | RMB / Enter close polygon | Esc cancel",
             Mode.SELECT:     "Select: LMB pick body | drag vertex | Del remove",

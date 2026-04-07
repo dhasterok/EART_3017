@@ -112,17 +112,26 @@ def _edge_mag(x1: float, z1: float,
 # ---------------------------------------------------------------------------
 
 def compute_bt(x_obs, vertices, susceptibility: float,
-               F_nT: float, IE_deg: float) -> np.ndarray:
+               F_nT: float, IE_deg: float,
+               remanence_Am: float = 0.0,
+               remanence_inc_deg: float = 0.0) -> np.ndarray:
     """
-    Total-field magnetic anomaly of one 2-D polygon (induced magnetisation).
+    Total-field magnetic anomaly of one 2-D polygon.
+
+    Handles both induced and remanent magnetisation.  The total magnetisation
+    vector is the sum of the two components:
+
+        M_total = M_induced(χ, F, IE) + M_remanent(J_rem, IR)
 
     Parameters
     ----------
-    x_obs         : array-like  -- observation x-positions (km)
-    vertices      : list of [x, z]  -- polygon vertices (km); z ≥ 0 downward
-    susceptibility: float  -- dimensionless SI susceptibility χ
-    F_nT          : float  -- Earth's field total intensity (nT)
-    IE_deg        : float  -- Earth's field inclination (degrees, + downward)
+    x_obs             : array-like  -- observation x-positions (km)
+    vertices          : list of [x, z]  -- polygon vertices (km); z ≥ 0 downward
+    susceptibility    : float  -- dimensionless SI susceptibility χ
+    F_nT              : float  -- Earth's field total intensity (nT)
+    IE_deg            : float  -- Earth's field inclination (degrees, + downward)
+    remanence_Am      : float  -- remanent magnetisation intensity (A/m); default 0
+    remanence_inc_deg : float  -- inclination of remanent magnetisation (degrees); default 0
 
     Returns
     -------
@@ -139,14 +148,20 @@ def compute_bt(x_obs, vertices, susceptibility: float,
 
     # Induced magnetisation
     F_T  = F_nT * 1.0e-9                    # nT → T
-    J    = susceptibility * F_T / MU0       # A m⁻¹  (valid for χ ≪ 1)
-    IE   = math.radians(IE_deg)
-    Mx   = J * math.cos(IE)                 # horizontal (along profile)
-    Mz   = J * math.sin(IE)                 # vertical (downward)
+    J_ind = susceptibility * F_T / MU0      # A m⁻¹  (valid for χ ≪ 1)
+    IE    = math.radians(IE_deg)
+    Mx    = J_ind * math.cos(IE)            # horizontal (along profile)
+    Mz    = J_ind * math.sin(IE)            # vertical (downward)
 
-    # Earth-field unit vector (for total-field projection)
-    ex   = math.cos(IE)
-    ez   = math.sin(IE)
+    # Remanent magnetisation — add to total M
+    if remanence_Am != 0.0:
+        IR  = math.radians(remanence_inc_deg)
+        Mx += remanence_Am * math.cos(IR)
+        Mz += remanence_Am * math.sin(IR)
+
+    # Earth-field unit vector for total-field projection
+    ex = math.cos(IE)
+    ez = math.sin(IE)
 
     dt = np.zeros(len(x_obs))
 
@@ -161,12 +176,63 @@ def compute_bt(x_obs, vertices, susceptibility: float,
             sum_F += Fk
             sum_H += Hk
 
-        Bx = (MU0 / (2.0 * math.pi)) * ( Mx * sum_F - Mz * sum_H)
-        Bz = (MU0 / (2.0 * math.pi)) * ( Mz * sum_F + Mx * sum_H)
+        Bx = (MU0 / (2.0 * math.pi)) * (Mx * sum_F - Mz * sum_H)
+        Bz = (MU0 / (2.0 * math.pi)) * (Mz * sum_F + Mx * sum_H)
 
         dt[k] = (Bx * ex + Bz * ez) * 1.0e9    # T → nT
 
     return dt
+
+
+def compute_bx_bz(x_obs, vertices, susceptibility: float,
+                  F_nT: float, IE_deg: float,
+                  remanence_Am: float = 0.0,
+                  remanence_inc_deg: float = 0.0) -> tuple:
+    """
+    Horizontal (Bx) and vertical (Bz) magnetic field components of one polygon.
+
+    Returns
+    -------
+    (Bx_nT, Bz_nT) : (ndarray, ndarray)  both in nT
+    """
+    x_obs = np.asarray(x_obs, dtype=float)
+    n = len(vertices)
+    if n < 3:
+        z = np.zeros(len(x_obs))
+        return z.copy(), z.copy()
+
+    vx = np.array([v[0] for v in vertices], dtype=float) * M_PER_KM
+    vz = np.array([v[1] for v in vertices], dtype=float) * M_PER_KM
+
+    F_T   = F_nT * 1.0e-9
+    J_ind = susceptibility * F_T / MU0
+    IE    = math.radians(IE_deg)
+    Mx    = J_ind * math.cos(IE)
+    Mz    = J_ind * math.sin(IE)
+
+    if remanence_Am != 0.0:
+        IR  = math.radians(remanence_inc_deg)
+        Mx += remanence_Am * math.cos(IR)
+        Mz += remanence_Am * math.sin(IR)
+
+    bx_arr = np.zeros(len(x_obs))
+    bz_arr = np.zeros(len(x_obs))
+
+    for k, xp_km in enumerate(x_obs):
+        xp_m  = xp_km * M_PER_KM
+        sum_F = 0.0
+        sum_H = 0.0
+        for i in range(n):
+            j = (i + 1) % n
+            Fk, Hk = _edge_mag(vx[i] - xp_m, vz[i],
+                                vx[j] - xp_m, vz[j])
+            sum_F += Fk
+            sum_H += Hk
+
+        bx_arr[k] = (MU0 / (2.0 * math.pi)) * ( Mx * sum_F - Mz * sum_H) * 1.0e9
+        bz_arr[k] = (MU0 / (2.0 * math.pi)) * ( Mz * sum_F + Mx * sum_H) * 1.0e9
+
+    return bx_arr, bz_arr
 
 
 def compute_bt_multi(x_obs, bodies, F_nT: float, IE_deg: float) -> np.ndarray:
