@@ -2,7 +2,7 @@ from pathlib import Path
 from PyQt6.QtWidgets import ( 
         QWidget, QLineEdit, QTableWidget, QComboBox, QPushButton, QCheckBox, QWidget, QTreeView,
         QMenu, QDockWidget, QHeaderView, QToolButton, QSlider, QVBoxLayout, QHBoxLayout, QLabel,
-        QSizePolicy, QScrollArea, QLayout, QToolBox
+        QSizePolicy, QScrollArea, QLayout, QToolBox, QDoubleSpinBox,
     )
 from PyQt6.QtGui import (
     QStandardItem, QStandardItemModel, QFont, QDoubleValidator, QIcon, QCursor, QPainter,
@@ -2154,3 +2154,128 @@ class CustomActionMenu(CustomAction):
         """
         return name in self.submenu_references
 
+
+class RangeWidget(QWidget):
+    """
+    Generic [min, max] range widget with a shared unit label.
+    """
+
+    valueChanged = pyqtSignal(float, float)
+
+    def __init__(
+        self,
+        min_val=0.0,
+        max_val=1.0,
+        step=0.05,
+        decimals=2,
+        suffix=None,
+        parent=None,
+    ):
+        super().__init__(parent)
+
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(6)
+
+        self.min_spin = QDoubleSpinBox()
+        self.max_spin = QDoubleSpinBox()
+
+        for spin in (self.min_spin, self.max_spin):
+            spin.setRange(min_val, max_val)
+            spin.setDecimals(decimals)
+            spin.setSingleStep(step)
+            spin.setKeyboardTracking(False)
+
+        self.min_spin.setValue(min_val)
+        self.max_spin.setValue(max_val)
+
+        self.to_label = QLabel("to")
+        self.unit_label = QLabel(suffix if suffix else "")
+        self.unit_label.setVisible(bool(suffix))
+
+        layout.addWidget(self.min_spin)
+        layout.addWidget(self.to_label)
+        layout.addWidget(self.max_spin)
+        layout.addWidget(self.unit_label)
+
+        self.min_spin.valueChanged.connect(self._emit)
+        self.max_spin.valueChanged.connect(self._emit)
+
+    # =====================================================
+    # Internal
+    # =====================================================
+    def _emit(self):
+        self.valueChanged.emit(
+            self.min_spin.value(),
+            self.max_spin.value()
+        )
+
+    # =====================================================
+    # Value API
+    # =====================================================
+    def minimum(self):
+        return self.min_spin.value()
+
+    def maximum(self):
+        return self.max_spin.value()
+
+    def values(self):
+        return self.minimum(), self.maximum()
+
+    def setValues(self, vmin, vmax):
+        self.min_spin.setValue(vmin)
+        self.max_spin.setValue(vmax)
+
+    # =====================================================
+    # Allowed range API
+    # =====================================================
+    def setAllowedRange(self, vmin, vmax):
+        self.min_spin.setRange(vmin, vmax)
+        self.max_spin.setRange(vmin, vmax)
+
+    def allowedRange(self):
+        return (
+            self.min_spin.minimum(),
+            self.min_spin.maximum(),
+        )
+
+    # =====================================================
+    # Decimals API
+    # =====================================================
+    def setDecimals(self, n):
+        self.min_spin.setDecimals(n)
+        self.max_spin.setDecimals(n)
+
+    def decimals(self):
+        return self.min_spin.decimals()
+
+    # =====================================================
+    # Step API
+    # =====================================================
+    def setSingleStep(self, step):
+        self.min_spin.setSingleStep(step)
+        self.max_spin.setSingleStep(step)
+
+    def singleStep(self):
+        return self.min_spin.singleStep()
+
+    # =====================================================
+    # Unit label API
+    # =====================================================
+    def setSuffix(self, text):
+        self.unit_label.setText(text)
+        self.unit_label.setVisible(bool(text))
+
+    def suffix(self):
+        return self.unit_label.text()
+
+    # =====================================================
+    # Size API
+    # =====================================================
+    def setSpinWidth(self, width):
+        self.min_spin.setFixedWidth(width)
+        self.max_spin.setFixedWidth(width)
+
+    def setMinimumSpinWidth(self, width):
+        self.min_spin.setMinimumWidth(width)
+        self.max_spin.setMinimumWidth(width)

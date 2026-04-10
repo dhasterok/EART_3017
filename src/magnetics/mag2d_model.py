@@ -8,26 +8,26 @@ Reference
 Blakely, R. J. (1995). Potential Theory in Gravity and Magnetic Applications.
     Cambridge University Press, §6.3.
 Won, I. J. & Bevis, M. (1987). Computing the gravitational and magnetic
-    anomalies due to a polygon.  Geophysics, 52(2), 232–238.
+    anomalies due to a polygon.  Geophysics, 52(2), 232-238.
 
 Formula
 -------
 For each polygon edge from P_k = (x_k, z_k) to P_{k+1} (obs at origin):
 
-    a      = x_{k+1} − x_k
-    b      = z_{k+1} − z_k
+    a      = x_{k+1} - x_k
+    b      = z_{k+1} - z_k
     L      = sqrt(a² + b²)
     cos φ  = a / L,  sin φ = b / L
-    p      = (x_{k+1} z_k − x_k z_{k+1}) / L   [signed perp. distance]
-    Δθ     = atan2(z_{k+1}, x_{k+1}) − atan2(z_k, x_k)   [wrapped ±π]
+    p      = (x_{k+1} z_k - x_k z_{k+1}) / L   [signed perp. distance]
+    Δθ     = atan2(z_{k+1}, x_{k+1}) - atan2(z_k, x_k)   [wrapped ±π]
     ln r   = ln(r_{k+1} / r_k)
 
-    F_k  =  p · (cos φ · Δθ − sin φ · ln r)   [= Talwani gravity integral]
+    F_k  =  p · (cos φ · Δθ - sin φ · ln r)   [= Talwani gravity integral]
     H_k  =  p · (sin φ · Δθ + cos φ · ln r)   [magnetic counterpart]
 
 Anomalous field components for magnetization (Mx, Mz):
 
-    Bx = (μ₀/2π) · (Mx · ΣF_k − Mz · ΣH_k)
+    Bx = (μ₀/2π) · (Mx · ΣF_k - Mz · ΣH_k)
     Bz = (μ₀/2π) · (Mz · ΣF_k + Mx · ΣH_k)
 
 Total-field anomaly projected onto Earth's field direction:
@@ -64,7 +64,7 @@ M_PER_KM  = 1_000.0                # m km⁻¹
 def _edge_mag(x1: float, z1: float,
               x2: float, z2: float) -> tuple[float, float]:
     """
-    Blakely / Won–Bevis edge integrals F_k and H_k (obs at origin).
+    Blakely / Won-Bevis edge integrals F_k and H_k (obs at origin).
 
     Returns
     -------
