@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 
-from src.utils.CustomWidgets import RangeWidget
+from src.common.gui.CustomWidgets import RangeWidget
 
 # ============================================================
 # Control Dock

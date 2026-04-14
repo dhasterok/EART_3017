@@ -12,10 +12,10 @@ from PyQt6.QtCore import Qt, QRect, QPropertyAnimation, pyqtProperty, pyqtSignal
 import src.common.format as fmt
 import pandas as pd
 
-from src.common.ColorManager import is_valid_hex_color
-from src.common.ColorSelector import select_color
-from src.app.UITheme import default_font, ThemeManager
-from src.app.config import ICONPATH
+from src.common.color.ColorManager import is_valid_hex_color
+from src.common.color.ColorSelector import select_color
+from src.common.UITheme import default_font, ThemeManager
+from src.common.config import ICONPATH
 
 class VisibilityWidget(QWidget):
     visibilityChanged = pyqtSignal(bool)  # True = shown, False = hidden

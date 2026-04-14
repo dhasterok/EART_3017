@@ -24,16 +24,16 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 # ── path setup ────────────────────────────────────────────────────────────────
-_HERE   = Path(__file__).resolve().parent   # src/gravity/
-_COURSE = _HERE.parent.parent               # new_version/
+_HERE   = Path(__file__).resolve().parent   # src/physics/gravity/
+_COURSE = _HERE.parent.parent.parent       # project root
 if str(_COURSE) not in sys.path:
     sys.path.insert(0, str(_COURSE))
 
-from src.gravity.talwani_model import compute_gz
+from src.physics.gravity.talwani_model import compute_gz
 
 if TYPE_CHECKING:
     from src.gui.gravity2d_gui import GravityCanvas
-    from src.gravity.data_loader import ObservedData
+    from src.physics.gravity.data_loader import ObservedData
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -140,7 +140,7 @@ def apply_model(data: dict, canvas: "GravityCanvas") -> tuple:
     obs_data   : ObservedData or None
     """
     from src.gui.gravity2d_gui import PolygonBody
-    from src.gravity.data_loader import ObservedData
+    from src.physics.gravity.data_loader import ObservedData
 
     # ── profile ───────────────────────────────────────────────────────────
     prof = data.get("profile", {})

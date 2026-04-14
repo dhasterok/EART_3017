@@ -35,12 +35,12 @@ from matplotlib.figure import Figure
 import matplotlib.image as mpimg
 import cmcrameri.cm as cmr
 
-from src.utils.CustomWidgets import CustomAction, ToggleSwitch
-from src.utils.ColorSelector import select_color
-from src.app.config import RESOURCE_PATH, ICONPATH
-from src.utils.ternary_plot import ternary
-from src.utils.ColorManager import convert_color, convert_color_list
-from src.utils.ColorPicker import ImageColorPicker
+from src.common.gui.CustomWidgets import CustomAction, ToggleSwitch
+from src.common.color.ColorSelector import select_color
+from src.common.config import RESOURCE_PATH, ICONPATH
+from src.common.plotting.ternary_plot import ternary
+from src.common.color.ColorManager import convert_color, convert_color_list
+from src.common.color.ColorPicker import ImageColorPicker
 
 # Define transformation matrices
 cb_matrices = {

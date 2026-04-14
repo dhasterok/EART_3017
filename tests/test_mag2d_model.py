@@ -9,7 +9,7 @@ _ROOT = Path(__file__).resolve().parent.parent
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-from src.magnetics.mag2d_model import compute_bx_bz, compute_bt
+from src.physics.magnetics.mag2d_model import compute_bx_bz, compute_bt
 
 
 # ---------------------------------------------------------------------

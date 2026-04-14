@@ -12,10 +12,10 @@ _COURSE = Path(__file__).resolve().parent.parent.parent   # new_version/
 if str(_COURSE) not in sys.path:
     sys.path.insert(0, str(_COURSE))
 
-from src.gravity.sphere import forward_profile, forward_map, forward_sphere_r, jacobian_r, add_noise
+from src.physics.gravity.sphere import forward_profile, forward_map, forward_sphere_r, jacobian_r, add_noise
 from src.inversion.gauss_newton import gauss_newton, StopFlag
-from src.utils.grid_worker import GridSearchWorker
-from src.utils.global_grid_worker import GlobalGridWorker
+from src.common.grids.grid_worker import GridSearchWorker
+from src.common.grids.global_grid_worker import GlobalGridWorker
 
 class MapModelCanvas(FigureCanvas):
     def __init__(self, parent=None):

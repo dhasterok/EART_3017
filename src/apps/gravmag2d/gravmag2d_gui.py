@@ -20,13 +20,15 @@ import sys
 from pathlib import Path
 import numpy as np
 
-_HERE   = Path(__file__).resolve().parent          # src/gui/
-_COURSE = _HERE.parent.parent                       # project root
+_HERE   = Path(__file__).resolve().parent          # src/apps/gravmag2d/
+_COURSE = _HERE.parent.parent.parent               # project root
 if str(_COURSE) not in sys.path:
     sys.path.insert(0, str(_COURSE))
 
-from src.utils.polygon_editor_qt import EditMode, PolygonEditorActions
-from src.gui.gm2d_types import DisplayMode, MagComponent, Mode, PolygonBody
+from src.common.config import ICONPATH
+
+from src.common.gui.polygon_editor_qt import EditMode, PolygonEditorActions
+from src.apps.gravmag2d.gui.gm2d_types import DisplayMode, MagComponent, Mode, PolygonBody
 
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout,
@@ -36,17 +38,17 @@ from PyQt6.QtCore import Qt, QRectF
 from PyQt6.QtGui import QAction, QKeySequence, QIcon, QPixmap
 from PyQt6.QtSvg import QSvgRenderer
 
-from src.gui.gm2d_control_dock import ControlsDock
-from src.gui.gm2d_canvas import MainCanvas
-from src.gui.gm2d_polygon_dock import PolygonDock
-from src.gui.gm2d_inversion_dock import InversionDock
+from src.apps.gravmag2d.gui.gm2d_control_dock import ControlsDock
+from src.apps.gravmag2d.gui.gm2d_canvas import MainCanvas
+from src.apps.gravmag2d.gui.gm2d_polygon_dock import PolygonDock
+from src.apps.gravmag2d.gui.gm2d_inversion_dock import InversionDock
 
 def _svg_icon(path: str, size: int = 64) -> QIcon:
     """
     Load an SVG file and return a QIcon, rasterising via QSvgRenderer.
     This works on Windows even without the Qt SVG image-format plugin.
     """
-    renderer = QSvgRenderer(path)
+    renderer = QSvgRenderer(str(path))
     if not renderer.isValid():
         return QIcon()
     pm = QPixmap(size, size)
@@ -59,7 +61,7 @@ def _svg_icon(path: str, size: int = 64) -> QIcon:
 
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT
 
-from src.gravity.data_loader import load_csv_data, ObservedData
+from src.physics.gravity.data_loader import load_csv_data, ObservedData
 
 
 # DisplayMode, MagComponent, Mode, PolygonBody imported from gm2d_types
@@ -144,8 +146,6 @@ class MainWindow(QMainWindow):
         from PyQt6.QtWidgets import QToolBar
         from PyQt6.QtCore import QSize
 
-        icon_dir = str(_HERE.parent / "resources" / "icons")
-
         mode_tb = QToolBar("Editing Mode", self)
         mode_tb.setObjectName("mode_toolbar")
         mode_tb.setIconSize(QSize(24, 24))
@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
 
         # --- polygon editing actions (from PolygonEditorActions) ---
         # These cover: New, Select, Move, Add Vert, Del Vert, Del Body + Snap
-        self._poly_actions = PolygonEditorActions(icon_dir, parent=self)
+        self._poly_actions = PolygonEditorActions(ICONPATH, parent=self)
         self._poly_actions.mode_changed.connect(
             lambda em: self._on_mode_changed(Mode[em.name] if em is not None else Mode.NONE))
         self._poly_actions.snap_changed.connect(self.canvas.set_snap_enabled)
@@ -167,8 +167,7 @@ class MainWindow(QMainWindow):
         # is handled manually: checking mask deselects all polygon tools, and
         # checking a polygon tool unchecks mask (via _on_mode_changed).
         act_mask = QAction("Mask", self)
-        act_mask.setIcon(_svg_icon(str(_HERE.parent / "resources" / "icons"
-                                       / "icon-mask-light-64.svg")))
+        act_mask.setIcon(_svg_icon(ICONPATH / "icon-mask-light-64.svg"))
         act_mask.setCheckable(True)
         act_mask.setToolTip("Toggle station mask — click stations in the gravity panel  [Ctrl+K]")
         act_mask.setShortcut(QKeySequence("Ctrl+K"))
@@ -181,8 +180,7 @@ class MainWindow(QMainWindow):
         mode_tb.addSeparator()
 
         act_grav = QAction("Gravity", self)
-        act_grav.setIcon(_svg_icon(str(_HERE.parent / "resources" / "icons"
-                                       / "icon-gravity-64.svg")))
+        act_grav.setIcon(_svg_icon(ICONPATH / "icon-gravity-64.svg"))
         act_grav.setCheckable(True)
         act_grav.setChecked(True)
         act_grav.setToolTip("Show / hide gravity profile")
@@ -190,8 +188,7 @@ class MainWindow(QMainWindow):
         self._act_show_gravity = act_grav
 
         act_mag = QAction("Magnetics", self)
-        act_mag.setIcon(_svg_icon(str(_HERE.parent / "resources" / "icons"
-                                      / "icon-compass-64.svg")))
+        act_mag.setIcon(_svg_icon(ICONPATH / "icon-compass-64.svg"))
         act_mag.setCheckable(True)
         act_mag.setChecked(True)
         act_mag.setToolTip("Show / hide magnetics profile")
@@ -382,12 +379,12 @@ class MainWindow(QMainWindow):
     def _export_csv(self):
         """Export the calculated forward model fields to a CSV file."""
         import csv
-        from src.gravity.grav2_5d_model  import compute_gz    as _gz_25d
-        from src.gravity.talwani_model   import compute_gz    as _gz_2d
-        from src.magnetics.mag2_5d_model import compute_bt    as _bt_25d
-        from src.magnetics.mag2_5d_model import compute_bx_bz as _bxbz_25d
-        from src.magnetics.mag2d_model   import compute_bt    as _bt_2d
-        from src.magnetics.mag2d_model   import compute_bx_bz as _bxbz_2d
+        from src.physics.gravity.grav2_5d_model  import compute_gz    as _gz_25d
+        from src.physics.gravity.talwani_model   import compute_gz    as _gz_2d
+        from src.physics.magnetics.mag2_5d_model import compute_bt    as _bt_25d
+        from src.physics.magnetics.mag2_5d_model import compute_bx_bz as _bxbz_25d
+        from src.physics.magnetics.mag2d_model   import compute_bt    as _bt_2d
+        from src.physics.magnetics.mag2d_model   import compute_bx_bz as _bxbz_2d
 
         path, _ = QFileDialog.getSaveFileName(
             self, "Export Forward Model CSV", "",
@@ -500,7 +497,7 @@ class MainWindow(QMainWindow):
             # --- observed data (optional) ---
             od = data.get("observed_data")
             if od is not None:
-                from src.gravity.data_loader import ObservedData
+                from src.physics.gravity.data_loader import ObservedData
                 x_arr  = np.array(od["x_km"],   dtype=float)
                 gz_arr = np.array(od["gz_mGal"], dtype=float)
                 gz_unc = (np.array(od["gz_unc_mGal"], dtype=float)
@@ -550,7 +547,7 @@ class MainWindow(QMainWindow):
                 self._mask_action.blockSignals(True)
                 self._mask_action.setChecked(False)
                 self._mask_action.blockSignals(False)
-            from src.utils.polygon_editor_qt import EditMode as EM
+            from src.common.gui.polygon_editor_qt import EditMode as EM
             try:
                 self._poly_actions.set_mode(EM[mode.name])
             except KeyError:

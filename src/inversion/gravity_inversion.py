@@ -38,7 +38,7 @@ for _p in [str(_HERE), str(_COURSE)]:
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-from src.gravity.talwani_model import compute_gz
+from src.physics.gravity.talwani_model import compute_gz
 
 _LINK_EPS = 1e-9    # km -- vertices closer than this are treated as linked
 _H_XZ     = 1e-3   # km -- finite-difference step for vertex coordinates

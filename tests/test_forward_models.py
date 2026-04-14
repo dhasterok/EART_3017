@@ -44,11 +44,11 @@ _ROOT = Path(__file__).resolve().parent.parent
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-from src.gravity.talwani_model    import compute_gz
-from src.gravity.grav2_5d_model   import compute_gz   as compute_gz_25d
-from src.magnetics.mag2d_model    import compute_bt, compute_bx_bz
-from src.magnetics.mag2_5d_model  import compute_bt   as compute_bt_25d
-from src.magnetics.mag2_5d_model  import compute_bx_bz as compute_bx_bz_25d
+from src.physics.gravity.talwani_model    import compute_gz
+from src.physics.gravity.grav2_5d_model   import compute_gz   as compute_gz_25d
+from src.physics.magnetics.mag2d_model    import compute_bt, compute_bx_bz
+from src.physics.magnetics.mag2_5d_model  import compute_bt   as compute_bt_25d
+from src.physics.magnetics.mag2_5d_model  import compute_bx_bz as compute_bx_bz_25d
 
 
 # ── physical constants ────────────────────────────────────────────────────────

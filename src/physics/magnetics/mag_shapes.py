@@ -8,7 +8,7 @@ Python mirror of mag_shapes.m.  Run from this directory:
 
 import numpy as np
 import matplotlib.pyplot as plt
-from mag_volume import mag_volume
+from src.physics.magnetics.mag_volume import mag_volume
 
 # Observation grid
 x = np.arange(-10, 10.2, 0.2)

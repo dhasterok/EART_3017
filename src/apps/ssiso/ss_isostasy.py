@@ -2,8 +2,8 @@ import sys
 from pathlib import Path
 import numpy as np
 
-_HERE   = Path(__file__).resolve().parent          # src/gui/
-_COURSE = _HERE.parent.parent                       # project root
+_HERE   = Path(__file__).resolve().parent          # src/apps/ssiso/
+_COURSE = _HERE.parent.parent.parent               # project root
 if str(_COURSE) not in sys.path:
     sys.path.insert(0, str(_COURSE))
 
@@ -13,9 +13,9 @@ from PyQt6.QtWidgets import (
     QTableWidgetItem
 )
 
-from src.geothermics.ss_thermal import compute_temperature, compute_elevation
-from src.gui.ssiso_control_dock import ControlDock
-from src.utils.mpl_widget import MplWidget
+from src.physics.geothermics.ss_thermal import compute_temperature, compute_elevation
+from src.apps.ssiso.gui.ssiso_control_dock import ControlDock
+from src.common.gui.mpl_widget import MplWidget
 
 
 # ============================================================

@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import QColor
 
-from src.gui.gm2d_types import PolygonBody
+from src.apps.gravmag2d.gui.gm2d_types import PolygonBody
 
 COL_VIS      = 0
 COL_COLOR    = 1

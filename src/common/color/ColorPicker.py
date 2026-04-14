@@ -20,7 +20,7 @@ from PyQt6.QtGui import (
     QPen, QGuiApplication, QWheelEvent
 )
 from PyQt6.QtCore import Qt, QPoint, QRect, QSize, pyqtSignal
-from src.common.ColorManager import convert_color, convert_color_list
+from src.common.color.ColorManager import convert_color, convert_color_list
 
 from PIL import Image
 from sklearn.decomposition import PCA

@@ -12,14 +12,14 @@ import matplotlib.colors as mcolors
 from PyQt6.QtWidgets import QSizePolicy
 from PyQt6.QtCore import Qt, pyqtSignal
 
-from src.gui.gm2d_types import DisplayMode, MagComponent, Mode, PolygonBody
-from src.gravity.grav2_5d_model  import compute_gz     as _gz_25d
-from src.gravity.talwani_model   import compute_gz     as _gz_2d
-from src.magnetics.mag2_5d_model import compute_bt     as _bt_25d
-from src.magnetics.mag2_5d_model import compute_bx_bz  as _bxbz_25d
-from src.magnetics.mag2d_model   import compute_bt     as _bt_2d
-from src.magnetics.mag2d_model   import compute_bx_bz  as _bxbz_2d
-from src.gravity.data_loader   import ObservedData
+from src.apps.gravmag2d.gui.gm2d_types import DisplayMode, MagComponent, Mode, PolygonBody
+from src.physics.gravity.grav2_5d_model  import compute_gz     as _gz_25d
+from src.physics.gravity.talwani_model   import compute_gz     as _gz_2d
+from src.physics.magnetics.mag2_5d_model import compute_bt     as _bt_25d
+from src.physics.magnetics.mag2_5d_model import compute_bx_bz  as _bxbz_25d
+from src.physics.magnetics.mag2d_model   import compute_bt     as _bt_2d
+from src.physics.magnetics.mag2d_model   import compute_bx_bz  as _bxbz_2d
+from src.physics.gravity.data_loader   import ObservedData
 
 # Colours for the two profile curves
 _GRAV_COLOR = "navy"

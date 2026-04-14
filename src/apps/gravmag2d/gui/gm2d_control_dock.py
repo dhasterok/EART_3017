@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 # QPushButton kept for the Apply Profile button
 from PyQt6.QtCore import Qt, pyqtSignal
 
-from src.utils.CustomWidgets import ToggleSwitch
+from src.common.gui.CustomWidgets import ToggleSwitch
 
 class ControlsDock(QDockWidget):
     profile_changed      = pyqtSignal(float, float, int)

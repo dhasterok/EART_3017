@@ -11,12 +11,12 @@ from enum import Enum, auto
 from pathlib import Path
 import sys
 
-_HERE   = Path(__file__).resolve().parent
-_COURSE = _HERE.parent.parent
+_HERE   = Path(__file__).resolve().parent          # src/apps/gravmag2d/gui/
+_COURSE = _HERE.parent.parent.parent.parent        # project root
 if str(_COURSE) not in sys.path:
     sys.path.insert(0, str(_COURSE))
 
-from src.utils.polygon import Polygon, DEFAULT_COLORS
+from src.common.gui.polygon import Polygon, DEFAULT_COLORS
 
 
 # ── display / component enums ─────────────────────────────────────────────────

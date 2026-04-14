@@ -38,7 +38,7 @@ _COURSE    = _HERE.parent.parent                       # new_version/
 if str(_COURSE) not in sys.path:
     sys.path.insert(0, str(_COURSE))
 
-from src.utils.CustomWidgets import ToggleSwitch
+from src.common.gui.CustomWidgets import ToggleSwitch
 
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QDockWidget, QWidget, QVBoxLayout,
@@ -60,9 +60,9 @@ import matplotlib.patches as mpatches
 import matplotlib.gridspec as gridspec
 import matplotlib.colors as mcolors
 
-from src.gravity.talwani_model import compute_gz
-from src.gravity.data_loader import load_csv_data, ObservedData
-from src.gravity.model_io import save_model, load_model, apply_model
+from src.physics.gravity.talwani_model import compute_gz
+from src.physics.gravity.data_loader import load_csv_data, ObservedData
+from src.physics.gravity.model_io import save_model, load_model, apply_model
 
 
 # ─────────────────────────────────────────────────────────────────────────────
