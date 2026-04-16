@@ -107,7 +107,7 @@ plt.figure(figsize=(7,6))
 im = plt.imshow(
     wdmam_adj,
     cmap="seismic",
-    origin="lower"
+    origin="upper"
 )
 plt.colorbar(im, label="Magnetic anomaly (nT)")
 plt.title("WDMAM (offset‑adjusted, reprojected to SA TMI grid)")
@@ -124,7 +124,7 @@ dy = tmi_transform.e   # will be negative for north-up grids
 x = x0 + dx * np.arange(nx)
 y = y0 + dy * np.arange(ny)
 
-# Reverse y to ensure north-up orientation
+# Flip to south-up (increasing y) for correct display orientation.
 y = y[::-1]
 wdmam_adj = wdmam_adj[::-1, :]
 
