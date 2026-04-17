@@ -1,6 +1,6 @@
 # EART 3017 - Geophysics 3A: Potential Fields and Geothermics
 
-This repository contains source code files used for the Geophysics 3A course at Adelaide University.  The codes include Jupyter Notebook demos, GUIs for calculator-like computations, supporting codes and other files required for assignments.
+This repository contains source code files used for the Geophysics 3A course at Adelaide University.  The codes includes interactive VS Code demos, GUIs for calculator-like computations, supporting codes and other files required for assignments.
 ![A wordle created from the course notes](wordle.png)
 
 ## Course description
