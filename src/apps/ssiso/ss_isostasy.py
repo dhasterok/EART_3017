@@ -66,9 +66,9 @@ class TISApp(QMainWindow):
     # ======================================================
     def _startup(self):
         defaults = [
-            (False, 0, 3.0, 1.5),
-            (False, 16, 2.5, 0.45),
-            (False, 39, 2.5, 0.02),
+            (0,  3.0, 1.5),
+            (16, 2.5, 0.45),
+            (39, 2.5, 0.02),
         ]
 
         for r, row in enumerate(defaults):
@@ -82,25 +82,24 @@ class TISApp(QMainWindow):
     # ======================================================
     def read_layer_table(self):
         t = self.controls.layer_table
-        ztop, k, A, layer_flag = [], [], [], []
+        ztop, k, A = [], [], []
 
         for r in range(t.rowCount()):
-            layer_flag.append(t.item(r, 0).text().lower() == "true")
-            ztop.append(float(t.item(r, 1).text()))
-            k.append(float(t.item(r, 2).text()))
-            A.append(float(t.item(r, 3).text()))
+            ztop.append(float(t.item(r, 0).text()))
+            k.append(float(t.item(r, 1).text()))
+            A.append(float(t.item(r, 2).text()))
 
-        return np.array(ztop), np.array(k), np.array(A), np.array(layer_flag)
+        return np.array(ztop), np.array(k), np.array(A)
 
     # ======================================================
     # Callbacks
     # ======================================================
     def compute_geotherm(self):
         c = self.controls
-        ztop, k, A, _ = self.read_layer_table()
+        ztop, k, A = self.read_layer_table()
 
-        T0 = 20.0
-        qs = c.ref_hf.value()
+        T0 = c.geo_T0.value()
+        qs = c.geo_qs.value()
 
         T = compute_temperature(self.depth, T0, qs, ztop, k, A)
 
@@ -129,9 +128,9 @@ class TISApp(QMainWindow):
 
     def compute_isostatic(self):
         c = self.controls
-        ztop, k, A, _ = self.read_layer_table()
+        ztop, k, A = self.read_layer_table()
 
-        T0 = 20.0
+        T0 = c.geo_T0.value()
         qs = c.ref_hf.value()
         P = c.partition.value()
 
@@ -195,28 +194,9 @@ class TISApp(QMainWindow):
         self.geo_plot.canvas.draw_idle()
         self.elev_plot.canvas.draw_idle()
 
-    def add_layer(self):
-        t = self.controls.layer_table
-        t.insertRow(t.rowCount())
-
-    def remove_layer(self):
-        t = self.controls.layer_table
-        rows = sorted({i.row() for i in t.selectedIndexes()}, reverse=True)
-        for r in rows:
-            t.removeRow(r)
-
     def reset_axes(self):
-        self.geo_plot.ax.cla()
-        self.elev_plot.ax.cla()
-
-        self.geo_plot.ax.set_title("Geotherms")
-        self.geo_plot.ax.set_xlabel("Temperature (°C)")
-        self.geo_plot.ax.set_ylabel("Depth (km)")
-        self.geo_plot.ax.invert_yaxis()
-
-        self.elev_plot.ax.set_title("Thermal Isostasy")
-        self.elev_plot.ax.set_xlabel("Heat Flow (mW m$^{-2}$)")
-        self.elev_plot.ax.set_ylabel("Elevation (km)")
+        self.geo_plot.reset()
+        self.elev_plot.reset()
 
         self.gtherm.clear()
         self.ghandle.clear()
@@ -228,9 +208,6 @@ class TISApp(QMainWindow):
         c.remove_geo_btn.setEnabled(False)
         c.spinner.setValue(0)
 
-        self.geo_plot.canvas.draw_idle()
-        self.elev_plot.canvas.draw_idle()
-
     # ======================================================
     # Signal wiring
     # ======================================================
@@ -239,8 +216,6 @@ class TISApp(QMainWindow):
         c.compute_btn.clicked.connect(self.compute_geotherm)
         c.isostatic_btn.clicked.connect(self.compute_isostatic)
         c.reset_btn.clicked.connect(self.reset_axes)
-        c.add_layer_btn.clicked.connect(self.add_layer)
-        c.remove_layer_btn.clicked.connect(self.remove_layer)
         c.spinner.valueChanged.connect(self.spinner_changed)
         c.remove_geo_btn.clicked.connect(self.remove_geotherm)
 

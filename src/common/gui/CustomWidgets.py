@@ -1522,10 +1522,10 @@ class CustomSlider(QWidget):
             raise ValueError("Orientation must be 'horizontal' or 'vertical'.")
         
         # Create label to display slider value
-        self.label = CustomLineEdit(self,value=initial_value, precision=precision)
+        self.label = CustomLineEdit(self, value=initial_value, precision=precision)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setMaximumWidth(30)
-        self.label.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.label.setFixedWidth(max(55, 10 * (precision + 4)))
+        self.label.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
         
         # Create slider
         if orientation == "horizontal":
@@ -1546,9 +1546,9 @@ class CustomSlider(QWidget):
         self.slider.valueChanged.connect(self.valueChanged.emit)  # Emit custom signal
         self.slider.sliderMoved.connect(self.update_label)
         self.slider.sliderMoved.connect(self.sliderMoved.emit)
-        self.slider.sliderReleased.connect(self.update_label)
-        self.slider.sliderReleased.connect(self.sliderReleased.emit)
-        self.slider.sliderPressed.connect(self.sliderPressed.emit)
+        self.slider.sliderReleased.connect(lambda: self.update_label(self.slider.value()))
+        self.slider.sliderReleased.connect(lambda: self.sliderReleased.emit(self.slider.value()))
+        self.slider.sliderPressed.connect(lambda: self.sliderPressed.emit(self.slider.value()))
         
         # Add widgets to layout
         if (label_position == "low" and orientation == "horizontal") or (label_position == "high" and orientation == "vertical"):
