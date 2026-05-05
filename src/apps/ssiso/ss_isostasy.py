@@ -34,7 +34,6 @@ class TISApp(QMainWindow):
         self.refcurve = None
         self.isoflag = False
         self.ghandle = []
-        self.ehandle = []
 
         # ---------------- Central plots ----------------
         central = QWidget()
@@ -103,7 +102,15 @@ class TISApp(QMainWindow):
 
         T = compute_temperature(self.depth, T0, qs, ztop, k, A)
 
-        entry = {"temperature": T, "qs": qs}
+        e_line = None
+        if self.isoflag:
+            alpha = c.expansivity.value() * 1e-5
+            dz = self.depth[1] - self.depth[0]
+            elev = compute_elevation(dz, T, self.refcurve["temperature"], alpha)
+            e_line, = self.elev_plot.ax.plot(qs, elev, "ob")
+            self.elev_plot.canvas.draw_idle()
+
+        entry = {"temperature": T, "qs": qs, "e_line": e_line}
         self.gtherm.append(entry)
 
         line, = self.geo_plot.ax.plot(T, self.depth, "b-")
@@ -113,18 +120,6 @@ class TISApp(QMainWindow):
         c.spinner.setMaximum(len(self.gtherm))
         c.spinner.setEnabled(True)
         c.remove_geo_btn.setEnabled(True)
-
-        if not self.isoflag:
-            return
-
-        alpha = c.expansivity.value() * 1e-5
-        dz = self.depth[1] - self.depth[0]
-        elev = compute_elevation(dz, T, self.refcurve["temperature"], alpha)
-
-        entry["elevation"] = elev
-        e_line, = self.elev_plot.ax.plot(qs, elev, "ob")
-        self.ehandle.append(e_line)
-        self.elev_plot.canvas.draw_idle()
 
     def compute_isostatic(self):
         c = self.controls
@@ -166,8 +161,9 @@ class TISApp(QMainWindow):
         idx = val - 1
         for i, ln in enumerate(self.ghandle):
             ln.set_color("r" if i == idx else "b")
-        for i, ln in enumerate(self.ehandle):
-            ln.set_color("r" if i == idx else "b")
+        for i, entry in enumerate(self.gtherm):
+            if entry["e_line"] is not None:
+                entry["e_line"].set_color("r" if i == idx else "b")
         self.geo_plot.canvas.draw_idle()
         self.elev_plot.canvas.draw_idle()
 
@@ -179,11 +175,11 @@ class TISApp(QMainWindow):
 
         self.ghandle[idx].remove()
         del self.ghandle[idx]
-        del self.gtherm[idx]
 
-        if self.isoflag:
-            self.ehandle[idx].remove()
-            del self.ehandle[idx]
+        e_line = self.gtherm[idx]["e_line"]
+        if e_line is not None:
+            e_line.remove()
+        del self.gtherm[idx]
 
         c.spinner.setMaximum(len(self.gtherm))
         if not self.gtherm:
@@ -200,7 +196,6 @@ class TISApp(QMainWindow):
 
         self.gtherm.clear()
         self.ghandle.clear()
-        self.ehandle.clear()
         self.isoflag = False
 
         c = self.controls
