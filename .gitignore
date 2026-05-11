@@ -109,7 +109,17 @@ saved
 *.toc
 *.log
 
-
+*.tex
+*.eps
+*.ps
+*.bak
+*.mlapp
+*.m
+Go
+*/figures/
+*.ppt
+*.pptx
+*.mpeg
 
 # Virtual environments
 .venv/
@@ -118,17 +128,19 @@ saved
 .claude/
 CLAUDE.md
 
-week*/
+#week*/
 announcements/
 admin/
 data/
 solutions/
 units/
 geology_primer/
-math_tutorials/
+!geology_primer/*.pdf
+#math_tutorials/
 get_started_guide/
 course_notes/
-lecture_notes/
+!course_notes/*.pdf
+#lecture_notes/
 
 new_geophysics_course.docx
 ~$*
