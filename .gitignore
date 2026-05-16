@@ -138,8 +138,6 @@ geology_primer/
 !geology_primer/*.pdf
 #math_tutorials/
 get_started_guide/
-course_notes/
-!course_notes/*.pdf
 #lecture_notes/
 
 new_geophysics_course.docx

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 576 604.8">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        stroke: #b0b0b0;
+        stroke-dasharray: 1.9 .8;
+        stroke-opacity: .6;
+        stroke-width: .5px;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st5 {
+        stroke-linejoin: round;
+      }
+
+      .st0, .st1, .st2, .st3, .st4, .st6 {
+        fill: none;
+      }
+
+      .st7, .st8, .st9 {
+        font-family: Futura-Medium, Futura;
+        font-size: 10px;
+        font-weight: 500;
+      }
+
+      .st10 {
+        fill: #fff;
+        opacity: .8;
+        stroke: #ccc;
+      }
+
+      .st10, .st8, .st9 {
+        isolation: isolate;
+      }
+
+      .st8 {
+        fill: #333;
+      }
+
+      .st1, .st2, .st3, .st4, .st6 {
+        stroke-linecap: square;
+      }
+
+      .st1, .st2, .st11 {
+        stroke: #4878cf;
+      }
+
+      .st1, .st4 {
+        stroke-width: 1.5px;
+      }
+
+      .st2, .st3 {
+        stroke-width: 1.2px;
+      }
+
+      .st3, .st4, .st12 {
+        stroke: #d65f5f;
+      }
+
+      .st5, .st6 {
+        stroke: #000;
+      }
+
+      .st5, .st6, .st12, .st11 {
+        stroke-width: .8px;
+      }
+
+      .st12 {
+        fill: #efbfbf;
+      }
+
+      .st11 {
+        fill: #b6c9ec;
+      }
+    </style>
+  </defs>
+  <path class="st0" d="M156.3,560V22.2"/>
+  <path id="m29007d4816" class="st5" d="M156.3,560v3.5"/>
+  <text class="st9" transform="translate(148.4 574.6)"><tspan x="0" y="0">2.0</tspan></text>
+  <path class="st0" d="M208.9,560V22.2"/>
+  <path id="m29007d48161" data-name="m29007d4816" class="st5" d="M208.9,560v3.5"/>
+  <text class="st9" transform="translate(201 574.6)"><tspan x="0" y="0">2.5</tspan></text>
+  <path class="st0" d="M261.4,560V22.2"/>
+  <path id="m29007d48162" data-name="m29007d4816" class="st5" d="M261.4,560v3.5"/>
+  <text class="st9" transform="translate(253.5 574.6)"><tspan x="0" y="0">3.0</tspan></text>
+  <path class="st0" d="M314,560V22.2"/>
+  <path id="m29007d48163" data-name="m29007d4816" class="st5" d="M314,560v3.5"/>
+  <text class="st9" transform="translate(306.1 574.6)"><tspan x="0" y="0">3.5</tspan></text>
+  <path class="st0" d="M366.6,560V22.2"/>
+  <path id="m29007d48164" data-name="m29007d4816" class="st5" d="M366.6,560v3.5"/>
+  <text class="st9" transform="translate(358.7 574.6)"><tspan x="0" y="0">4.0</tspan></text>
+  <path class="st0" d="M419.2,560V22.2"/>
+  <path id="m29007d48165" data-name="m29007d4816" class="st5" d="M419.2,560v3.5"/>
+  <text class="st9" transform="translate(411.3 574.6)"><tspan x="0" y="0">4.5</tspan></text>
+  <path class="st0" d="M471.7,560V22.2"/>
+  <path id="m29007d48166" data-name="m29007d4816" class="st5" d="M471.7,560v3.5"/>
+  <text class="st9" transform="translate(463.8 574.6)"><tspan x="0" y="0">5.0</tspan></text>
+  <path class="st0" d="M524.3,560V22.2"/>
+  <path id="m29007d48167" data-name="m29007d4816" class="st5" d="M524.3,560v3.5"/>
+  <text class="st9" transform="translate(516.4 574.6)"><tspan x="0" y="0">5.5</tspan></text>
+  <path id="m8df07c6a87" class="st5" d="M111.4,544.9h-3.5"/>
+  <text class="st9" transform="translate(22.5 548.7)"><tspan x="0" y="0">mantle pyroxenite</tspan></text>
+  <path id="m8df07c6a871" data-name="m8df07c6a87" class="st5" d="M111.4,519.7h-3.5"/>
+  <text class="st9" transform="translate(22.8 523.5)"><tspan x="0" y="0">intrusive komatiite</tspan></text>
+  <path id="m8df07c6a872" data-name="m8df07c6a87" class="st5" d="M111.4,494.5h-3.5"/>
+  <text class="st9" transform="translate(49.3 498.3)"><tspan x="0" y="0">foid gabbro</tspan></text>
+  <path id="m8df07c6a873" data-name="m8df07c6a87" class="st5" d="M111.4,469.3h-3.5"/>
+  <text class="st9" transform="translate(75.6 473.1)"><tspan x="0" y="0">picrite</tspan></text>
+  <path id="m8df07c6a874" data-name="m8df07c6a87" class="st5" d="M111.4,444.2h-3.5"/>
+  <text class="st9" transform="translate(37.9 448)"><tspan x="0" y="0">alkalic gabbro</tspan></text>
+  <path id="m8df07c6a875" data-name="m8df07c6a87" class="st5" d="M111.4,419h-3.5"/>
+  <text class="st9" transform="translate(22.4 422.8)"><tspan x="0" y="0">subalkalic gabbro</tspan></text>
+  <path id="m8df07c6a876" data-name="m8df07c6a87" class="st5" d="M111.4,393.8h-3.5"/>
+  <text class="st9" transform="translate(39.1 397.6)"><tspan x="0" y="0">monzogabbro</tspan></text>
+  <path id="m8df07c6a877" data-name="m8df07c6a87" class="st5" d="M111.4,368.6h-3.5"/>
+  <text class="st9" transform="translate(43.5 372.4)"><tspan x="0" y="0">monzodiorite</tspan></text>
+  <path id="m8df07c6a878" data-name="m8df07c6a87" class="st5" d="M111.4,343.4h-3.5"/>
+  <text class="st9" transform="translate(30.4 347.2)"><tspan x="0" y="0">gabbroic diorite</tspan></text>
+  <path id="m8df07c6a879" data-name="m8df07c6a87" class="st5" d="M111.4,318.3h-3.5"/>
+  <text class="st9" transform="translate(56.5 322.1)"><tspan x="0" y="0">monzonite</tspan></text>
+  <path id="m8df07c6a8710" data-name="m8df07c6a87" class="st5" d="M111.4,293.1h-3.5"/>
+  <text class="st9" transform="translate(74.4 296.9)"><tspan x="0" y="0">diorite</tspan></text>
+  <path id="m8df07c6a8711" data-name="m8df07c6a87" class="st5" d="M111.4,267.9h-3.5"/>
+  <text class="st9" transform="translate(80.1 271.7)"><tspan x="0" y="0">shale</tspan></text>
+  <path id="m8df07c6a8712" data-name="m8df07c6a87" class="st5" d="M111.4,242.7h-3.5"/>
+  <text class="st9" transform="translate(72.4 246.5)"><tspan x="0" y="0">syenite</tspan></text>
+  <path id="m8df07c6a8713" data-name="m8df07c6a87" class="st5" d="M111.4,217.5h-3.5"/>
+  <text class="st9" transform="translate(23.5 221.3)"><tspan x="0" y="0">quartz monzonite</tspan></text>
+  <path id="m8df07c6a8714" data-name="m8df07c6a87" class="st5" d="M111.4,192.4h-3.5"/>
+  <text class="st9" transform="translate(47.2 196.2)"><tspan x="0" y="0">granodiorite</tspan></text>
+  <path id="m8df07c6a8715" data-name="m8df07c6a87" class="st5" d="M111.4,167.2h-3.5"/>
+  <text class="st9" transform="translate(74.7 171)"><tspan x="0" y="0">wacke</tspan></text>
+  <path id="m8df07c6a8716" data-name="m8df07c6a87" class="st5" d="M111.4,142h-3.5"/>
+  <text class="st9" transform="translate(69.8 145.8)"><tspan x="0" y="0">rhyolite</tspan></text>
+  <path id="m8df07c6a8717" data-name="m8df07c6a87" class="st5" d="M111.4,116.8h-3.5"/>
+  <text class="st9" transform="translate(71.6 120.6)"><tspan x="0" y="0">granite</tspan></text>
+  <path id="m8df07c6a8718" data-name="m8df07c6a87" class="st5" d="M111.4,91.6h-3.5"/>
+  <text class="st9" transform="translate(73.4 95.4)"><tspan x="0" y="0">arkose</tspan></text>
+  <path id="m8df07c6a8719" data-name="m8df07c6a87" class="st5" d="M111.4,66.4h-3.5"/>
+  <text class="st9" transform="translate(58.7 70.2)"><tspan x="0" y="0">litharenite</tspan></text>
+  <path id="m8df07c6a8720" data-name="m8df07c6a87" class="st5" d="M111.4,41.3h-3.5"/>
+  <text class="st9" transform="translate(63 45.1)"><tspan x="0" y="0">quartzite</tspan></text>
+  <path class="st2" d="M190.3,544.9h66.3"/>
+  <path class="st2" d="M158.4,519.7h90.5"/>
+  <path class="st2" d="M161.7,494.5h23.3"/>
+  <path class="st2" d="M168.9,469.3h76.9"/>
+  <path class="st2" d="M152.1,444.2h92.8"/>
+  <path class="st2" d="M151.4,419h97.7"/>
+  <path class="st2" d="M144.1,393.8h61.5"/>
+  <path class="st2" d="M153.5,368.6h72.3"/>
+  <path class="st2" d="M168.2,343.4h67"/>
+  <path class="st2" d="M135.5,318.3h108.6"/>
+  <path class="st2" d="M174.1,293.1h81.4"/>
+  <path class="st3" d="M142.2,267.9h137.4"/>
+  <path class="st2" d="M146,242.7h74.6"/>
+  <path class="st2" d="M169.7,217.5h99.7"/>
+  <path class="st2" d="M171,192.4h140.5"/>
+  <path class="st3" d="M139.4,167.2h142.4"/>
+  <path class="st2" d="M214.4,142h117.6"/>
+  <path class="st2" d="M182.1,116.8h132.8"/>
+  <path class="st3" d="M148.9,91.6h129.4"/>
+  <path class="st3" d="M132.1,66.4h152.6"/>
+  <path class="st3" d="M251.1,41.3h293.4"/>
+  <path class="st6" d="M111.4,560V22.2"/>
+  <path class="st6" d="M565.2,560V22.2"/>
+  <path class="st6" d="M111.4,560h453.8"/>
+  <path class="st6" d="M111.4,22.2h453.8"/>
+  <path class="st11" d="M201.3,548h31v-6.3h-31v6.3Z"/>
+  <path class="st11" d="M232.8,522.9h5.5v-6.3h-5.5v6.3Z"/>
+  <path class="st11" d="M162.6,497.7h17.2v-6.3h-17.2v6.3Z"/>
+  <path class="st11" d="M178.4,472.5h19.6v-6.3h-19.6v6.3Z"/>
+  <path class="st11" d="M183.5,447.3h29.5v-6.3h-29.5v6.3Z"/>
+  <path class="st11" d="M170.5,422.1h42.5v-6.3h-42.5v6.3Z"/>
+  <path class="st11" d="M171.3,396.9h27v-6.3h-27v6.3Z"/>
+  <path class="st11" d="M176.3,371.8h20.5v-6.3h-20.5v6.3Z"/>
+  <path class="st11" d="M184.1,346.6h35.8v-6.3h-35.8v6.3Z"/>
+  <path class="st11" d="M159.3,321.4h26.7v-6.3h-26.7v6.3Z"/>
+  <path class="st11" d="M196.4,296.2h30.9v-6.3h-30.9v6.3Z"/>
+  <path class="st12" d="M187.2,271h58.5v-6.3h-58.5v6.3Z"/>
+  <path class="st11" d="M159,245.9h24.3v-6.3h-24.3v6.3Z"/>
+  <path class="st11" d="M191.2,220.7h46.5v-6.3h-46.5v6.3Z"/>
+  <path class="st11" d="M207.6,195.5h53v-6.3h-53v6.3Z"/>
+  <path class="st12" d="M201.8,170.3h61.2v-6.3h-61.2v6.3Z"/>
+  <path class="st11" d="M229.1,145.1h59.3v-6.3h-59.3v6.3Z"/>
+  <path class="st11" d="M219.4,120h49.4v-6.3h-49.4v6.3Z"/>
+  <path class="st12" d="M177.3,94.8h81.3v-6.3h-81.3v6.3Z"/>
+  <path class="st12" d="M166.5,69.6h90.6v-6.3h-90.6v6.3Z"/>
+  <path class="st12" d="M313.9,44.4h160.7v-6.3h-160.7v6.3Z"/>
+  <path class="st1" d="M218.6,548v-6.3"/>
+  <path class="st1" d="M235.2,522.9v-6.3"/>
+  <path class="st1" d="M169.5,497.7v-6.3"/>
+  <path class="st1" d="M191.6,472.5v-6.3"/>
+  <path class="st1" d="M197.8,447.3v-6.3"/>
+  <path class="st1" d="M181,422.1v-6.3"/>
+  <path class="st1" d="M190.7,396.9v-6.3"/>
+  <path class="st1" d="M185.7,371.8v-6.3"/>
+  <path class="st1" d="M198.6,346.6v-6.3"/>
+  <path class="st1" d="M169.5,321.4v-6.3"/>
+  <path class="st1" d="M206.8,296.2v-6.3"/>
+  <path class="st4" d="M211.9,271v-6.3"/>
+  <path class="st1" d="M168.7,245.9v-6.3"/>
+  <path class="st1" d="M213.3,220.7v-6.3"/>
+  <path class="st1" d="M229.8,195.5v-6.3"/>
+  <path class="st4" d="M244.5,170.3v-6.3"/>
+  <path class="st1" d="M267.3,145.1v-6.3"/>
+  <path class="st1" d="M242.5,120v-6.3"/>
+  <path class="st4" d="M220.7,94.8v-6.3"/>
+  <path class="st4" d="M248,69.6v-6.3"/>
+  <path class="st4" d="M409.7,44.4v-6.3"/>
+  <text class="st8" transform="translate(213.8 539.3)"><tspan x="0" y="0">10</tspan></text>
+  <text class="st8" transform="translate(232.7 514.1)"><tspan x="0" y="0">5</tspan></text>
+  <text class="st8" transform="translate(166.9 488.9)"><tspan x="0" y="0">5</tspan></text>
+  <text class="st8" transform="translate(186.8 463.7)"><tspan x="0" y="0">15</tspan></text>
+  <text class="st8" transform="translate(193 438.6)"><tspan x="0" y="0">27</tspan></text>
+  <text class="st8" transform="translate(176.2 413.4)"><tspan x="0" y="0">51</tspan></text>
+  <text class="st8" transform="translate(185.9 388.2)"><tspan x="0" y="0">10</tspan></text>
+  <text class="st8" transform="translate(180.9 363)"><tspan x="0" y="0">19</tspan></text>
+  <text class="st8" transform="translate(193.8 337.8)"><tspan x="0" y="0">22</tspan></text>
+  <text class="st8" transform="translate(164.7 312.6)"><tspan x="0" y="0">22</tspan></text>
+  <text class="st8" transform="translate(202 287.5)"><tspan x="0" y="0">48</tspan></text>
+  <text class="st8" transform="translate(207.1 262.3)"><tspan x="0" y="0">17</tspan></text>
+  <text class="st8" transform="translate(163.9 237.1)"><tspan x="0" y="0">26</tspan></text>
+  <text class="st8" transform="translate(208.5 211.9)"><tspan x="0" y="0">51</tspan></text>
+  <text class="st8" transform="translate(225 186.7)"><tspan x="0" y="0">87</tspan></text>
+  <text class="st8" transform="translate(239.7 161.6)"><tspan x="0" y="0">14</tspan></text>
+  <text class="st8" transform="translate(264.7 136.4)"><tspan x="0" y="0">8</tspan></text>
+  <text class="st8" transform="translate(235.5 111.2)"><tspan x="0" y="0">460</tspan></text>
+  <text class="st8" transform="translate(215.9 86)"><tspan x="0" y="0">10</tspan></text>
+  <text class="st8" transform="translate(245.4 60.8)"><tspan x="0" y="0">7</tspan></text>
+  <text class="st8" transform="translate(404.9 35.7)"><tspan x="0" y="0">25</tspan></text>
+  <path class="st10" d="M380,556h179.6c1.1,0,1.6-.5,1.6-1.6v-30.7c0-1.1-.5-1.6-1.6-1.6h-179.6c-1.1,0-1.6.5-1.6,1.6v30.7c0,1.1.5,1.6,1.6,1.6Z"/>
+  <path class="st11" d="M384.6,534.4h16v-5.6h-16v5.6Z"/>
+  <text class="st9" transform="translate(407 534.4)"><tspan x="0" y="0">Igneous / Metaigneous</tspan></text>
+  <path class="st12" d="M384.6,550.1h16v-5.6h-16v5.6Z"/>
+  <text class="st9" transform="translate(407 550.1)"><tspan x="0" y="0">Sedimentary / Metasedimentary</tspan></text>
+  <text class="st7" transform="translate(278 591.9)"><tspan x="0" y="0">Thermal Conductivity (W m</tspan></text>
+  <text class="st7" transform="translate(401 588.6) scale(.6)"><tspan x="0" y="0">–1</tspan></text>
+  <text class="st7" transform="translate(408.4 591.9)"><tspan x="0" y="0" xml:space="preserve"> K</tspan></text>
+  <text class="st7" transform="translate(418.1 588.6) scale(.6)"><tspan x="0" y="0">–1</tspan></text>
+  <text class="st7" transform="translate(425.4 591.9)"><tspan x="0" y="0">)</tspan></text>
+</svg>
