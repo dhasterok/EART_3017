@@ -134,7 +134,7 @@ def _tsolve(To, z, iz, ix, zb, K, H_node, q0=None):
     # Depth mask: below zb → hold temperature fixed at Tb (applied via To)
     z_2d  = z[i_sl, np.newaxis]
     zb_2d = zb[np.newaxis, j_sl]
-    interior_mask = z_2d <= zb_2d
+    interior_mask = z_2d < zb_2d   # strict < so the node AT zb is held at Tb, not solved
 
     with np.errstate(invalid='ignore', divide='ignore'):
         Tn_new = np.where(interior_mask & (denom > 0),
@@ -245,9 +245,11 @@ def ssthermal(x, z, Ts, Tb, qs, qflag, zb, bflag, k_cell, h_cell,
     else:
         print(f"  Warning: did not converge after {max_iter} iterations.")
 
-    # Surface heat flow: K * dT/dz at the top node (K[0,:,1] = face conductivity
-    # between surface node and first interior node, matching MATLAB K(1,:,2))
-    q0_out = K[0, :, 1] * (T[1, :] - T[0, :]) / (z[1] - z[0])
+    # Heat flow from the gradient between nodes 1 and 2 (first two nodes below
+    # the surface). Using a fixed pair of interior nodes avoids the column-by-column
+    # depth variation that makes the base-gradient estimate noisy.
+    dz = z[1] - z[0]
+    q0_out = K[2, :, 0] * (T[2, :] - T[1, :]) / dz
 
     return T, q0_out
 
@@ -294,7 +296,7 @@ A0     = 1.5     # µW/m³
 lam    = 0.43    # 1/km decay constant
 
 z_mid  = z[:-1] + dz / 2                             # cell-centre depths (km)
-ks_1d  = k0 * (1 - np.exp(-lam * z_mid))             # conductivity profile
+ks_1d  = k0 - np.exp(-lam * z_mid)                   # conductivity profile
 hs_1d  = A0 * (1 - np.exp(-lam * z_mid))             # heat production profile
 
 K_cell = np.tile(ks_1d[:, np.newaxis], (1, nc - 1))  # (nr-1, nc-1)
@@ -318,10 +320,15 @@ T, q2d = ssthermal(x, z, Ts, Tb, qs=30.0, qflag=0,
                    k_cell=K_cell, h_cell=H_cell,
                    tol=5e-3, verbose=True)
 
-# ── 1-D analytical heat-flow estimate ────────────────────────────────────────
-# Heat flow through a slab with exponentially increasing conductivity
-q1d = ((Tb - Ts) * k0 * lam
-       / (np.log(1 - k0 * np.exp(lam * h)) - np.log(1 - k0)))
+# ── 1-D heat-flow estimate ────────────────────────────────────────────────────
+# Exact 1-D steady-state solution (no heat production) for k(z) = k0 - exp(-λz).
+# MATLAB wrote the denominator as log(1-k0*exp(λh)) - log(1-k0); both arguments
+# are negative so MATLAB's complex logs cancel the iπ terms, giving a real result.
+# Equivalent real-valued form: log(k0*exp(λh)-1) - log(k0-1).
+q1d = (Tb - Ts) * k0 * lam / (np.log(k0 * np.exp(lam * h) - 1) - np.log(k0 - 1))
+
+print(f"q1d  min={q1d.min():.2f}  max={q1d.max():.2f}  mean={q1d.mean():.2f}  mW/m²")
+print(f"q2d  min={q2d.min():.2f}  max={q2d.max():.2f}  mean={q2d.mean():.2f}  mW/m²")
 
 # ── Plots ─────────────────────────────────────────────────────────────────────
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
@@ -330,7 +337,7 @@ ax1.plot(x, q1d, 'b-', label='1-D analytical')
 ax1.plot(x, q2d, 'r-', label='2-D numerical')
 ax1.errorbar(xq, qo, yerr=qe, fmt='ko', label='Observed')
 ax1.set_xlim(0, 240)
-ax1.set_ylim(20, 100)
+ax1.set_ylim(20, 120)
 ax1.set_xlabel('Distance (km)')
 ax1.set_ylabel('Heat flow (mW/m²)')
 ax1.legend()
@@ -341,7 +348,7 @@ ax2.imshow(T, extent=[x[0], x[-1], z[-1], z[0]],
 ax2.plot(x, dig, 'k-', linewidth=1, label='Sediment base')
 ax2.set_xlabel('Distance (km)')
 ax2.set_ylabel('Depth (km)')
-ax2.set_aspect(10)
+ax2.set_aspect(20)
 ax2.legend()
 
 plt.tight_layout()
