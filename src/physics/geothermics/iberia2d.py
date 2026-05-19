@@ -151,24 +151,28 @@ def _tsolve(To, z, iz, ix, zb, K, H_node, q0=None):
 
 
 def ssthermal(x, z, Ts, Tb, qs, qflag, zb, bflag, k_cell, h_cell,
-              tol=2e-4, max_iter=500_000, verbose=True):
+              tol=2e-4, max_iter=500_000, verbose=True,
+              plot_interval=0, plot_pause=1.0):
     """
     2-D steady-state heat conduction solver (Jacobi iteration).
 
     Parameters
     ----------
-    x, z    : 1-D coordinate arrays (km)
-    Ts      : float or (nx,) surface temperature (°C)
-    Tb      : float or (nx,) basal temperature (°C)
-    qs      : float or (nx,) surface heat flow (mW/m²)
-    qflag   : 0 = Dirichlet top BC, 1 = Neumann top BC
-    zb      : (nx,) depth to lower thermal boundary (km)
-    bflag   : 1 = use provided zb; 0 = use bottom of domain
-    k_cell  : (nz-1, nx-1) cell-centred thermal conductivity (W/m/K)
-    h_cell  : (nz-1, nx-1) cell-centred heat production (µW/m³)
-    tol     : convergence tolerance (°C)
-    max_iter: maximum number of Jacobi iterations
-    verbose : print convergence progress
+    x, z          : 1-D coordinate arrays (km)
+    Ts            : float or (nx,) surface temperature (°C)
+    Tb            : float or (nx,) basal temperature (°C)
+    qs            : float or (nx,) surface heat flow (mW/m²)
+    qflag         : 0 = Dirichlet top BC, 1 = Neumann top BC
+    zb            : (nx,) depth to lower thermal boundary (km)
+    bflag         : 1 = use provided zb; 0 = use bottom of domain
+    k_cell        : (nz-1, nx-1) cell-centred thermal conductivity (W/m/K)
+    h_cell        : (nz-1, nx-1) cell-centred heat production (µW/m³)
+    tol           : convergence tolerance (°C)
+    max_iter      : maximum number of Jacobi iterations
+    verbose       : print convergence progress
+    plot_interval : update live convergence figure every this many iterations
+                    (0 = disabled)
+    plot_pause    : seconds to pause after each live figure update (default 1.0)
 
     Returns
     -------
@@ -224,8 +228,39 @@ def ssthermal(x, z, Ts, Tb, qs, qflag, zb, bflag, k_cell, h_cell,
         T[ind_b:, j] = Tb[j]
 
     # ── Inverse grid-spacing squared ─────────────────────────────────────────
+    dz_step = z[1] - z[0]
     iz = 1.0 / np.diff(z)**2
     ix = 1.0 / np.diff(x)**2
+
+    # ── Optional live convergence figure ──────────────────────────────────────
+    if plot_interval > 0:
+        plt.ion()
+        fig_live, (ax_lhf, ax_lT) = plt.subplots(2, 1, figsize=(10, 8))
+        fig_live.suptitle('Convergence monitor')
+
+        _im = ax_lT.imshow(T, extent=[x[0], x[-1], z[-1], z[0]],
+                           aspect='auto', cmap='RdYlBu_r', origin='upper',
+                           vmin=Ts.min(), vmax=Tb.max())
+        ax_lT.plot(x, zb, 'k-', linewidth=1, label='Sediment base')
+        #plt.colorbar(_im, ax=ax_lT, label='Temperature (°C)')
+        plt.colorbar(_im, ax=ax_lT, orientation='horizontal', label='Temperature (°C)',
+             shrink=0.7, pad=0.18)
+        ax_lT.set_xlabel('Distance (km)')
+        ax_lT.set_ylabel('Depth (km)')
+        ax_lT.legend(loc='lower left')
+        ax_lT.set_aspect(20)
+
+        _q0_init = K[2, :, 0] * (T[2, :] - T[1, :]) / dz_step
+        ax_lhf.plot(x, qs, 'r--', label='Reference $q_s$')
+        ax_lhf.plot(x, _q0_init, color='steelblue', alpha=0.35, linewidth=0.8)
+        ax_lhf.set_xlabel('Distance (km)')
+        ax_lhf.set_ylabel('Heat flow (mW/m²)')
+        ax_lhf.legend()
+        ax_lhf.grid(True)
+        _ttl = ax_lhf.set_title('Iteration 0')
+
+        plt.tight_layout()
+        plt.pause(plot_pause)
 
     # ── Jacobi iteration ─────────────────────────────────────────────────────
     q0_arg = qs if qflag == 1 else None
@@ -238,6 +273,16 @@ def ssthermal(x, z, Ts, Tb, qs, qflag, zb, bflag, k_cell, h_cell,
         if verbose and (c == 1 or c % 1000 == 0):
             print(f"  iter {c:5d}  max ΔT = {change:.6f} °C")
 
+        if plot_interval > 0 and c % plot_interval == 0:
+            _q0_now = K[2, :, 0] * (T[2, :] - T[1, :]) / dz_step
+            ax_lhf.plot(x, _q0_now, color='steelblue', alpha=0.35, linewidth=0.8)
+            ax_lhf.relim()
+            ax_lhf.autoscale_view()
+            _ttl.set_text(f'Iteration {c},  max ΔT = {change:.4f} °C')
+            _im.set_data(T)
+            plt.draw()
+            plt.pause(plot_pause)
+
         if change < tol:
             if verbose:
                 print(f"  Converged at iter {c}  (max ΔT = {change:.6f} °C)")
@@ -245,11 +290,22 @@ def ssthermal(x, z, Ts, Tb, qs, qflag, zb, bflag, k_cell, h_cell,
     else:
         print(f"  Warning: did not converge after {max_iter} iterations.")
 
+    if plot_interval > 0:
+        _ttl.set_text(f'Converged — iteration {c},  max ΔT = {change:.6f} °C')
+        _im.set_data(T)
+        ax_lhf.plot(x, K[2, :, 0] * (T[2, :] - T[1, :]) / dz_step,
+                    color='navy', linewidth=1.5, label='Computed $q_0$ (final)')
+        ax_lhf.legend()
+        ax_lhf.relim()
+        ax_lhf.autoscale_view()
+        plt.draw()
+        plt.pause(plot_pause)
+        plt.ioff()
+
     # Heat flow from the gradient between nodes 1 and 2 (first two nodes below
     # the surface). Using a fixed pair of interior nodes avoids the column-by-column
     # depth variation that makes the base-gradient estimate noisy.
-    dz = z[1] - z[0]
-    q0_out = K[2, :, 0] * (T[2, :] - T[1, :]) / dz
+    q0_out = K[2, :, 0] * (T[2, :] - T[1, :]) / dz_step
 
     return T, q0_out
 
@@ -292,15 +348,46 @@ Tb = 40 + (65 - 40) / 240 * x                        # basal temperature, linear
 
 # ── Material properties (exponential increase with depth) ─────────────────────
 k0     = 2.25    # W/m/K
+kw     = 0.6     # W/m/K conductivity of pore water (assumed constant)
 A0     = 1.5     # µW/m³
+phi0   = 0.25    # porosity fraction
 lam    = 0.43    # 1/km decay constant
 
 z_mid  = z[:-1] + dz / 2                             # cell-centre depths (km)
-ks_1d  = k0 - np.exp(-lam * z_mid)                   # conductivity profile
-hs_1d  = A0 * (1 - np.exp(-lam * z_mid))             # heat production profile
+phi    = phi0 * np.exp(-lam * z_mid)                 # porosity profile
+ks_1d  = 1.0 / ((1 - phi) / k0 + phi / kw)          # harmonic mean conductivity
+hs_1d  = A0 * (1 - phi)                              # heat production (solid fraction)
 
 K_cell = np.tile(ks_1d[:, np.newaxis], (1, nc - 1))  # (nr-1, nc-1)
 H_cell = np.tile(hs_1d[:, np.newaxis], (1, nc - 1))  # (nr-1, nc-1)
+
+# ── Material properties figure ────────────────────────────────────────────────
+fig_mat, (ax_phi, ax_k, ax_A) = plt.subplots(1, 3, figsize=(12, 5), sharey=True)
+
+ax_phi.plot(phi, z_mid, 'b-')
+ax_phi.set_xlabel('Porosity')
+ax_phi.set_ylabel('Depth (km)')
+ax_phi.set_title('Porosity')
+ax_phi.grid(True)
+
+ax_k.plot(ks_1d, z_mid, 'b-')
+ax_k.axvline(k0, color='k',       linestyle='--', label=f'$k_0$ = {k0} W m$^{{-1}}$ K$^{{-1}}$')
+ax_k.axvline(kw, color='steelblue', linestyle='--', label=f'$k_w$ = {kw} W m$^{{-1}}$ K$^{{-1}}$')
+ax_k.set_xlabel('Thermal conductivity (W m$^{-1}$ K$^{-1}$)')
+ax_k.set_title('Thermal Conductivity')
+ax_k.legend(fontsize=8)
+ax_k.grid(True)
+
+ax_A.plot(hs_1d, z_mid, 'b-')
+ax_A.axvline(A0, color='k', linestyle='--', label=f'$A_0$ = {A0} µW m$^{{-3}}$')
+ax_A.set_xlabel('Heat production (µW m$^{-3}$)')
+ax_A.set_title('Heat Production')
+ax_A.legend(fontsize=8)
+ax_A.grid(True)
+
+ax_phi.set_ylim(bottom=0)
+ax_phi.invert_yaxis()   # shared y — inverts all three panels
+plt.tight_layout()
 
 # ── Observed heat flow (Iberian Abyssal Plain, Louden et al. 1997) ────────────
 hf = np.loadtxt(DATA / "Iberia_HF.csv", delimiter=',', skiprows=1)
@@ -318,14 +405,17 @@ print("Running 2-D steady-state thermal solver …")
 T, q2d = ssthermal(x, z, Ts, Tb, qs=30.0, qflag=0,
                    zb=dig, bflag=1,
                    k_cell=K_cell, h_cell=H_cell,
-                   tol=5e-3, verbose=True)
+                   tol=5e-3, verbose=True, plot_interval=100, plot_pause=1.5)
 
 # ── 1-D heat-flow estimate ────────────────────────────────────────────────────
-# Exact 1-D steady-state solution (no heat production) for k(z) = k0 - exp(-λz).
-# MATLAB wrote the denominator as log(1-k0*exp(λh)) - log(1-k0); both arguments
-# are negative so MATLAB's complex logs cancel the iπ terms, giving a real result.
-# Equivalent real-valued form: log(k0*exp(λh)-1) - log(k0-1).
-q1d = (Tb - Ts) * k0 * lam / (np.log(k0 * np.exp(lam * h) - 1) - np.log(k0 - 1))
+# Thermal resistance integral q = ΔT / ∫₀ʰ dz/k(z).  No closed form exists for
+# the harmonic-mean k(z), so integrate numerically over the cell-centred grid.
+q1d = np.zeros(nc)
+for j in range(nc):
+    n_cells = int(round(dig[j] / dz))
+    if n_cells > 0:
+        R = np.sum(dz / ks_1d[:n_cells])   # thermal resistance (m²·K/W)
+        q1d[j] = (Tb[j] - Ts) / R
 
 print(f"q1d  min={q1d.min():.2f}  max={q1d.max():.2f}  mean={q1d.mean():.2f}  mW/m²")
 print(f"q2d  min={q2d.min():.2f}  max={q2d.max():.2f}  mean={q2d.mean():.2f}  mW/m²")
@@ -343,13 +433,66 @@ ax1.set_ylabel('Heat flow (mW/m²)')
 ax1.legend()
 ax1.grid(True)
 
-ax2.imshow(T, extent=[x[0], x[-1], z[-1], z[0]],
-           aspect='auto', cmap='RdYlBu_r', origin='upper')
+im2 = ax2.imshow(T, extent=[x[0], x[-1], z[-1], z[0]],
+                 aspect='auto', cmap='RdYlBu_r', origin='upper')
 ax2.plot(x, dig, 'k-', linewidth=1, label='Sediment base')
+
+isotherms = np.linspace(Ts, Tb.mean(), 5)[1:-1]   # 3 intermediate values
+cs = ax2.contour(x, z, T, levels=isotherms, colors='k',
+                 linestyles='--', linewidths=0.8)
+ax2.clabel(cs, fmt='%.0f °C', fontsize=7, inline=True)
+
 ax2.set_xlabel('Distance (km)')
 ax2.set_ylabel('Depth (km)')
 ax2.set_aspect(20)
-ax2.legend()
+ax2.legend(loc='lower left')
+fig.colorbar(im2, ax=ax2, orientation='horizontal', label='Temperature (°C)',
+             shrink=0.7, pad=0.18)
+
+plt.tight_layout()
+
+# ── Heat-flow residual figure ─────────────────────────────────────────────────
+q2d_obs = np.interp(xq, x, q2d)          # model q at each observation site
+res     = qo - q2d_obs                    # observed − modelled
+
+mad  = np.mean(np.abs(res))                         # L1: mean absolute deviation (mW/m²)
+
+valid = np.isfinite(qe) & (qe > 0)                 # exclude zero/NaN uncertainties
+if valid.any():
+    wmad = np.mean(np.abs(res[valid]) / qe[valid])  # L1: weighted MAD (σ units)
+else:
+    wmad = np.nan
+
+fig_res, (ax_rx, ax_rh) = plt.subplots(1, 2, figsize=(11, 5))
+
+# Left: residual vs distance with observation uncertainties
+ax_rx.axhline(0, color='k', linewidth=0.8, linestyle='--')
+ax_rx.errorbar(xq, res, yerr=qe, fmt='o', color='steelblue',
+               ecolor='steelblue', elinewidth=1, capsize=3,
+               label='Residual ± 1σ')
+ax_rx.set_xlabel('Distance (km)')
+ax_rx.set_ylabel('Residual (mW m$^{-2}$)')
+ax_rx.set_title('Heat flow residual  (observed − 2-D model)')
+ax_rx.set_xlim(0, 240)
+ax_rx.legend()
+ax_rx.grid(True)
+ax_rx.text(0.05, 0.2,
+           f'MAD = {mad:.1f} mW m$^{{-2}}$\n'
+           f'WMAD = {wmad:.2f} σ',
+           transform=ax_rx.transAxes, ha='left', va='top', fontsize=9,
+           bbox=dict(boxstyle='round,pad=0.4', facecolor='white', alpha=0.85))
+
+# Right: histogram of residuals
+nbins = max(25, int(np.ceil(len(res) / 3)))
+ax_rh.hist(res, bins=nbins, color='steelblue', edgecolor='white', alpha=0.8)
+ax_rh.axvline(0,          color='k', linewidth=0.8, linestyle='--', label='Zero')
+ax_rh.axvline(np.median(res), color='r', linewidth=1.2, linestyle='-',
+              label=f'Median = {np.median(res):.1f} mW m$^{{-2}}$')
+ax_rh.set_xlabel('Residual (mW m$^{-2}$)')
+ax_rh.set_ylabel('Count')
+ax_rh.set_title('Residual distribution')
+ax_rh.legend(fontsize=8)
+ax_rh.grid(True, axis='y')
 
 plt.tight_layout()
 plt.show()
