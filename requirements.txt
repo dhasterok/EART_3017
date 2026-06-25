@@ -1,0 +1,34 @@
+# Core scientific stack
+numpy>=1.24
+scipy>=1.10
+pandas>=1.5
+xarray>=2022.12
+
+# Plotting
+matplotlib>=3.6          # backend_qtagg requires >= 3.5; PyQt6 backend stable from 3.6
+cmcrameri>=0.7
+
+# GUI
+PyQt6>=6.4
+
+# Geospatial
+geopandas>=0.12
+pyproj>=3.4
+rasterio>=1.3
+shapely>=2.0
+affine>=2.3
+netCDF4>=1.6
+
+# Machine learning
+scikit-learn>=1.2
+
+# Notebook / interactive
+ipywidgets>=8.0
+
+# Utilities
+Pillow>=9.0
+ppigrf>=1.0
+tqdm>=4.64
+
+# Testing
+pytest>=7.0
