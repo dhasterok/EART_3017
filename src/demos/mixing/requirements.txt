@@ -1,0 +1,4 @@
+numpy
+matplotlib
+PyQt6
+lame-core @ git+https://github.com/dhasterok/lame-core.git
