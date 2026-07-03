@@ -1,0 +1,48 @@
+\begin{table}[bth]
+    \centering
+    \caption{Wave velocity in common geophysical and geoscientific systems}
+    \label{tab:wave_velocity}
+    \begin{tabularx}{\textwidth}{lXYX}
+        \toprule
+        \textbf{System} &
+        \textbf{Wave type} &
+        \textbf{Velocity expression} &
+        \textbf{Controlling properties} \\
+        \midrule
+        Elastic solids
+        & Seismic body waves
+        & $c \sim \sqrt{\mathrm{elastic modulus}/\rho}$
+        & Bulk/shear modulus, density \\
+
+        Elastic solids
+        & Seismic surface waves
+        & $c \lesssim c_S$
+        & Near-surface structure, layering \\
+
+        Fluids
+        & Acoustic waves
+        & $c = \sqrt{K/\rho}$
+        & Bulk modulus, density \\
+
+        Electromagnetics
+        & EM waves (GPR, radar)
+        & $c = 1/\sqrt{\mu\varepsilon}$
+        & Permeability, permittivity \\
+
+        Thermal systems
+        & Thermal waves
+        & $c_{\mathrm{phase}} = \omega/k$
+        & Diffusivity, forcing frequency \\
+
+        Fluid surfaces
+        & Gravity waves
+        & $c \sim \sqrt{g\lambda}$
+        & Gravity, wavelength \\
+
+        Porous media
+        & Pressure waves
+        & $c \sim \sqrt{K_{\mathrm{eff}}/\rho_{\mathrm{eff}}}$
+        & Frame rigidity, fluid coupling \\
+        \bottomrule
+    \end{tabularx}
+\end{table}

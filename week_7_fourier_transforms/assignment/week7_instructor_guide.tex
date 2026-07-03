@@ -1,0 +1,366 @@
+\documentclass[11pt]{article}
+
+\usepackage{notes}        % custom package (optional)
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\geometry{margin=1in}
+
+\title{Fourier Transforms with Potential Fields \\
+Instructor Key and Interpretation Guide}
+\author{Geophysics IIIA \\ D. Hasterok}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose of This Document}
+
+This document provides an instructor-only interpretation guide and marking key for
+the Jupyter notebook practical on Fourier transforms applied to gravity and magnetic
+data from South Australia.  It is intended to clarify expected observations, physical
+interpretations, and common student misconceptions.  Students are not expected to
+provide all of the detail included here; rather, this guide defines what constitutes
+a sound geophysical understanding for each question.
+
+\section*{Notebook Structure}
+
+The practical notebook (\texttt{week\_7\_fourier.ipynb}) is organised into six
+sections:
+\begin{enumerate}
+  \item Load and display gravity, magnetics, and topography/sediment grids
+  \item Interactive profile selection (click on a map, or use fallback coordinates)
+  \item One-dimensional profile continuation with an interactive slider
+  \item Two-dimensional gravity continuation and isostatic comparison
+  \item Reduction to the pole (interactive inclination and declination sliders)
+  \item Sediment-thickness correction for RTP (\emph{optional/exploratory})
+\end{enumerate}
+The problem set (\texttt{week7\_problem\_set.tex}) mirrors this structure with 20
+questions grouped into five assessed sections plus one optional section.
+
+\section*{Learning Outcomes}
+
+By the end of this practical, students should be able to:
+\begin{itemize}
+  \item Interpret spatial and spectral representations of potential-field data
+  \item Explain upward and downward continuation as frequency-domain operations
+  \item Distinguish regional and residual fields and critically evaluate the
+        choices involved
+  \item Compare spectral and isostatic approaches to defining a regional gravity
+        field
+  \item Apply reduction to the pole and understand its assumptions and limitations
+  \item Discuss how sediment thickness affects the interpretation of magnetic data
+  \item Appreciate the non-uniqueness and ill-posed nature of potential-field
+        interpretation
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Section~1 — One-Dimensional Profile Continuation (Q1--5)}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Students extract co-located gravity and magnetic profiles along a user-selected
+great-circle path, then apply the 1-D continuation filter
+$H(k, z) = e^{-2\pi|k|z}$ (wavenumber in cycles~km$^{-1}$, height $z$ in km)
+using an interactive slider from $-20$ to $+100$~km.
+
+\subsection*{Q1 — Upward continuation as a low-pass filter}
+
+\paragraph{Expected answer.}
+Narrow, localised anomalies disappear first because they correspond to high
+spatial wavenumbers; the exponential decay factor $e^{-2\pi|k|z}$ is smallest
+for large $|k|$.  Broad, regional features persist longest because they are
+associated with small $|k|$.  This implies that short-wavelength anomalies
+originate from shallow sources, while long-wavelength anomalies reflect deeper or
+more laterally extensive structure.
+
+\paragraph{Common misconceptions.}
+\begin{itemize}
+  \item Claiming that broad anomalies disappear first.
+  \item Confusing amplitude attenuation with frequency-independent smoothing.
+\end{itemize}
+
+\subsection*{Q2 — Residual anomalies}
+
+\paragraph{Expected answer.}
+The residual (observed $-$ regional) emphasises sources not accounted for by the
+long-wavelength regional, typically shallower lithological contrasts, intrusive
+bodies, or structural offsets.  Gravity and magnetic residuals are often
+spatially correlated where lithology governs both density and susceptibility
+(e.g.\ mafic intrusions), but may disagree where remanent magnetisation decouples
+the two fields, or where a density contrast exists without a corresponding
+susceptibility contrast.
+
+\subsection*{Q3 — Choosing a continuation height}
+
+\paragraph{Expected answer.}
+\begin{enumerate}[label=\alph*.]
+  \item Defensible criteria include: visual inspection (the height at which known
+        deep regional features become smooth while local anomalies remain visible
+        in the residual); comparison with independent depth estimates (e.g.\ Moho
+        depth from seismic); spectral depth analysis (slope of the log-power
+        spectrum); or geological judgement about the expected crustal structure.
+  \item Sensitivity is typically high.  Students should observe that the
+        character of the residual changes substantially over a range of only a
+        few kilometres, which is a key point about the subjective nature of the
+        regional--residual separation.
+\end{enumerate}
+
+\subsection*{Q4 — Instability of downward continuation}
+
+\paragraph{Expected answer.}
+\begin{enumerate}[label=\alph*.]
+  \item Visible instability (ringing, oscillations, extreme amplitudes) typically
+        sets in within a few kilometres of downward continuation.  The exact
+        depth depends on the noise level of the dataset.
+  \item Magnetic data tend to become unstable at shallower depths than gravity
+        because magnetic datasets typically have higher spatial frequency content
+        and more noise.
+  \item The filter $e^{+2\pi|k||z|}$ amplifies all wavenumbers; high-wavenumber
+        noise grows fastest.  The effective maximum stable depth is set by the
+        noise floor of the measurement, which differs between the two datasets.
+\end{enumerate}
+
+\subsection*{Q5 — Physical meaning of the continued field}
+
+\paragraph{Expected answer.}
+Yes, the upward-continued profile should look physically reasonable: it represents
+the field that would be measured on a higher observation surface.  It should be
+smoother and lower in amplitude.  Features that seem unreasonable (e.g.\
+negative-amplitude oscillations flanking a positive body) may reflect edge effects
+from the FFT (wrap-around), or the presence of sources that violate the
+harmonic-function assumption (e.g.\ sources within the continuation region).
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Section~2 — 2-D Gravity Continuation and Isostasy (Q6--9)}
+% ─────────────────────────────────────────────────────────────────────────────
+
+The 2-D continuation filter $H = e^{-2\pi\sqrt{k_x^2+k_y^2}\,z}$ is applied to
+the full gravity grid with a fixed reference height of 25~km for the comparison
+maps.  An Airy isostatic correction is computed as
+$g_\mathrm{iso} = 2\pi G\,\rho_c\, h$, where $h$ is positive topography
+(sub-sea-level values are zeroed).
+
+\subsection*{Q6 — Spectral regional vs isostatic correction}
+
+\paragraph{Expected answer.}
+The two fields share long-wavelength trends but differ in detail.
+\begin{enumerate}[label=\alph*.]
+  \item Broad agreement is expected in elevated terrain where Airy compensation
+        is a reasonable approximation.
+  \item The largest differences occur in areas of thick sedimentary basins (which
+        have near-zero topography but significant subsurface density variation),
+        along the coast (ocean loading is not captured), and in regions of
+        tectonic flexure where isostasy is not locally achieved.
+\end{enumerate}
+
+\subsection*{Q7 — Residual comparison and compensation depth}
+
+\paragraph{Expected answer.}
+Students should find rough visual agreement at continuation heights in the range
+of 30--50~km, consistent with compensation depths for cratonic crust.  This does
+not prove compensation depth equals that height; it reflects the scale of the
+features that Airy compensation removes.
+
+\subsection*{Q8 — Anomalies not explained by isostasy}
+
+\paragraph{Expected answer.}
+Anomalies in the spectral residual but absent from the isostatic residual reflect
+features accounted for by upward continuation but not by Airy topographic
+compensation, e.g.\ deep crustal density contrasts, underplated mafic material,
+or lateral mantle heterogeneity.  The converse (present in isostatic but not
+spectral residual) may indicate shallow features whose gravity is removed by
+continuation but not by the topographic model.
+
+\subsection*{Q9 — Limitations of the Airy model}
+
+\paragraph{Expected answer.}
+Key assumptions and their failure modes:
+\begin{itemize}
+  \item \emph{Local compensation:} flexural rigidity of the lithosphere means
+        loads are regionally compensated; the Airy model therefore over-corrects
+        beneath narrow ranges and under-corrects adjacent to them.
+  \item \emph{Uniform crustal density $\rho_c$:} lateral variations in crustal
+        composition are ignored.
+  \item \emph{Topography as the only load:} sediment thickness, ice loading, and
+        internal density anomalies are not accounted for.
+  \item \emph{Flat Moho geometry:} the model assumes a planar reference Moho,
+        ignoring pre-existing crustal structure.
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Section~3 — Reduction to the Pole (Q10--13)}
+% ─────────────────────────────────────────────────────────────────────────────
+
+The stabilised RTP filter
+$H_\mathrm{RTP} = \bar{\Theta}^2 / (|\Theta|^2 + \varepsilon)^2$
+is applied to the total magnetic intensity (TMI) grid.  Physical spacing in km
+is used for the wavenumber axes.  Students explore inclination ($-90°$ to $-10°$)
+and declination ($-30°$ to $+30°$) interactively.
+
+\subsection*{Q10 — Effect on anomaly positions}
+
+\paragraph{Expected answer.}
+In the Southern Hemisphere, positive TMI anomalies are displaced southward from
+their sources due to the negative inclination of the ambient field.  RTP shifts
+anomaly maxima northward, centring them above the causative bodies.  The shift
+magnitude depends on inclination; at $I \approx -60°$ (typical for South
+Australia) the displacement is moderate, of order 5--20~km for typical anomaly
+widths.  Shape changes from asymmetric (TMI) to more symmetric (RTP) should also
+be noted.
+
+\subsection*{Q11 — Stability at low inclinations}
+
+\paragraph{Expected answer.}
+\begin{enumerate}[label=\alph*.]
+  \item Artefacts typically appear at inclinations shallower than about $\pm15°$
+        to $\pm20°$, though the water-level parameter $\varepsilon = 0.05$
+        provides some stability.  Students should see ringing and extreme
+        amplitudes in the RTP map as the slider approaches $0°$.
+  \item Near the equator ($I \approx 0$), the direction-cosine factor $\Theta$
+        approaches zero for wavenumbers in the north--south direction, making the
+        filter singular.  The inversion is numerically unstable even with
+        regularisation, so RTP cannot be reliably applied at low magnetic
+        latitudes.
+\end{enumerate}
+
+\subsection*{Q12 — Difference map (RTP $-$ TMI)}
+
+\paragraph{Expected answer.}
+The difference map highlights the phase correction — positive differences appear
+to the north of anomaly centres (where RTP has moved the peak) and negative
+differences to the south.  This dipolar difference pattern encodes the along-field
+asymmetry of the original TMI anomaly.  Larger differences indicate either a
+stronger phase shift (lower inclination, shallower source) or stronger
+magnetisation contrast.
+
+\subsection*{Q13 — Remanent magnetisation}
+
+\paragraph{Expected answer.}
+The RTP filter applies a single phase correction based on the ambient-field
+direction.  Where a body carries remanent magnetisation in a significantly
+different direction (e.g.\ a reversely magnetised unit), RTP will
+\emph{over-correct} or \emph{under-correct} the anomaly, potentially distorting
+its shape and position rather than centring it.  Students who have covered
+remanence (e.g.\ in Week 6) may identify candidate anomalies as those that do
+not become symmetric after RTP, or that show unexpected polarity.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Section~4 — Sediment-Thickness Correction (Optional, Q14--17)}
+% ─────────────────────────────────────────────────────────────────────────────
+
+This section is explicitly marked optional in the problem set.  It is intended as
+an exploratory exercise.  The combined filter applies RTP plus a downward
+continuation of $z_\mathrm{sed}$~km damped by a Gaussian taper of length scale
+$\lambda$~km.
+
+\subsection*{Q14 — Where the correction matters most}
+
+\paragraph{Expected answer.}
+The largest differences between standard and sediment-corrected RTP should appear
+in regions of thickest sediment (the Officer Basin, Murray Basin, and Eucla
+Basin).  Students should verify this against the sediment-thickness map shown in
+Section~1 of the notebook.
+
+\subsection*{Q15 — Role of the damping parameter $\lambda$}
+
+\paragraph{Expected answer.}
+Increasing $\lambda$ (the Gaussian taper length scale) progressively damps the
+short-wavelength amplification of the sediment correction.  At large $\lambda$,
+the correction effectively removes the sediment-depth inversion entirely for
+high wavenumbers, leaving only the long-wavelength component.  Whether this is
+geologically sensible depends on the data noise level; students should observe
+that large $\lambda$ produces a smooth but geologically uninformative correction,
+while small $\lambda$ produces artefacts.
+
+\subsection*{Q16 — Validity of the uniform approximation}
+
+\paragraph{Expected answer.}
+\begin{enumerate}[label=\alph*.]
+  \item The approximation is most valid where sediment thickness is close to the
+        mean value, i.e.\ in moderately covered areas away from basin margins.
+        It is least valid in the centres of thick basins (over-correction) and
+        in exposed basement terranes (unnecessary correction).
+  \item A rigorous spatially variable correction would require either a
+        depth-to-basement model at grid resolution, a tiled spectral approach
+        (windowed FFT with spatial overlap), or iterative modelling.
+\end{enumerate}
+
+\subsection*{Q17 — Analogous gravity correction}
+
+\paragraph{Expected answer.}
+A downward-continuation gravity correction for sediment would attempt to recover
+the gravity field at the basement surface rather than the observation surface.
+It would differ from the Airy correction in that: (1) the Airy correction removes
+the long-wavelength gravity effect of the isostatic root driven by topography,
+whereas a sediment downward continuation attempts to resolve the gravity field at
+depth; and (2) a downward continuation is inherently unstable, while the Airy
+correction is a stable forward model.  Both approaches are geologically
+approximate.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Section~5 — Synthesis (Q18--20)}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection*{Q18 — Wavelength and depth}
+
+\paragraph{High-quality answer.}
+The approximate relationship is $\lambda \approx 2\pi\,d$, where $\lambda$ is the
+dominant wavelength and $d$ is the source depth (derived from the radial decay of
+a point source).  Key assumptions are: isolated, compact sources; source-free
+continuation region; and stationary noise statistics.  A misleading depth estimate
+arises when a large, laterally extensive source (e.g.\ a thick sedimentary basin)
+dominates the long-wavelength signal — the ``depth'' inferred from the spectral
+slope would reflect the lateral extent of the source, not its burial depth.
+
+\subsection*{Q19 — Spectral vs isostatic regional field}
+
+\paragraph{High-quality answer.}
+\emph{Spectral continuation} is mathematically objective and requires no
+geological model, but the choice of height is arbitrary and geologically
+unmotivated; it works well for separating sources at different depths.
+\emph{Isostatic correction} is physically motivated and removes the predicted
+gravity of crustal roots, but assumes a specific compensation mechanism (Airy),
+requires density parameters, and fails in regions of flexural or dynamic
+topography.  The spectral approach is preferred for exploratory analysis; the
+isostatic approach is preferred where the geological setting supports local Airy
+compensation and the goal is to isolate intra-crustal anomalies.
+
+\subsection*{Q20 — Non-uniqueness}
+
+\paragraph{High-quality answer.}
+A concrete example: at a suitable continuation height, the spectral residual
+gravity map closely resembles the isostatic residual gravity map, yet the two
+are derived from entirely different assumptions (mathematical filter vs.\
+physical compensation model).  Both ``explain'' the observations, but they imply
+different geological models.  Discriminating between them would require
+independent constraints such as seismic refraction or reflection profiles (to
+determine actual Moho depth and crustal thickness), well data (to constrain
+density and susceptibility), or receiver function analysis.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section*{Marking Guidance}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+  \item \textbf{Full marks} require correct physical reasoning, not just
+        description of what is seen on screen.
+  \item \textbf{Partial marks} for correct observation without physical
+        explanation, or correct explanation applied to an incorrect observation.
+  \item \textbf{No marks} for purely descriptive statements that restate the
+        question (e.g.\ ``the continued field is smoother because continuation
+        makes it smoother'').
+  \item The synthesis questions (Q18--20) are worth more and should demonstrate
+        integration across sections.  Accept well-reasoned answers that differ
+        from the expected answer provided the geophysical logic is sound.
+  \item The optional sediment correction section (Q14--17) is marked generously
+        given its exploratory nature; acknowledge any thoughtful engagement with
+        the instability and approximation issues.
+\end{itemize}
+
+\vspace{1em}
+\noindent\textbf{End of Instructor Key}
+
+\end{document}

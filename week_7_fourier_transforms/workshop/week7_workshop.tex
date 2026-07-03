@@ -1,0 +1,111 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics 3A: Potential Fields \& Geothermics}
+\rhead{Week 7 Workshop}
+\cfoot{\thepage}
+
+\title{Week 7 -- Workshop Plan\\Fourier Transforms and Potential Fields}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Workshop Overview}
+
+This workshop develops intuition for Fourier methods in potential-field geophysics
+and applies them to gravity and magnetic interpretation.
+The emphasis is on understanding how sampling, filtering, and phase
+control what geological information can be recovered.
+
+\section*{Learning Objectives}
+
+By the end of this workshop, students should be able to:
+\begin{itemize}
+  \item Relate spatial wavelength to source depth and geometry
+  \item Recognize aliasing and understand its consequences
+  \item Interpret gravity and magnetic spectra in geological terms
+  \item Apply upward and downward continuation appropriately
+  \item Explain the purpose and limitations of reduction to the pole (RTP)
+\end{itemize}
+
+\section*{Timeline and Activities}
+
+\subsection*{0--15 min \quad Introduction and framing}
+\begin{itemize}
+  \item Why Fourier methods appear everywhere in potential-field geophysics
+  \item Review of key ideas: wavelength, sampling, phase
+  \item Overview of the day's activities
+\end{itemize}
+
+\subsection*{15--40 min \quad Demo 1: What a Fourier transform does}
+\begin{itemize}
+  \item Decomposing a signal into frequency, amplitude, and phase
+  \item Phase as a measure of shift and geometry
+  \item Padding and windowing
+\end{itemize}
+
+\noindent\textbf{Key emphasis:} Fourier transforms reorganize information; they do not interpret it.
+
+\subsection*{40--75 min \quad Demo 2: Spatial sampling and aliasing}
+\begin{itemize}
+  \item Synthetic fold and Basin-and-Range gravity models
+  \item Station spacing and Nyquist wavelength
+  \item Aliasing as coherent but incorrect structure
+\end{itemize}
+
+\noindent\textbf{Key emphasis:} Sampling decisions set a hard limit on geological resolution.
+
+\subsection*{75--95 min \quad Real data case study: Nevada gravity}
+\begin{itemize}
+  \item Complete Bouguer gravity of Nevada
+  \item E--W and N--S power spectra
+  \item Identification of Basin-and-Range wavelengths
+\end{itemize}
+
+\subsection*{95--115 min \quad Isostatic correction and filtering}
+\begin{itemize}
+  \item Airy isostasy as a physical low-pass filter
+  \item Isostatic residual gravity
+  \item High-pass filtering and wavelength selection
+\end{itemize}
+
+\noindent\textbf{Key emphasis:} Filtering encodes geological assumptions.
+
+\subsection*{115--135 min \quad Inversion example}
+\begin{itemize}
+  \item Parker--Oldenburg sediment thickness inversion
+  \item Interpretation and limitations
+  \item Effect of aliasing on inversion results
+\end{itemize}
+
+\subsection*{135--165 min \quad Magnetic interpretation: RTP and maar geometry}
+\begin{itemize}
+  \item Magnetic anomalies as vector fields
+  \item Cone/maar geometry and asymmetric anomalies
+  \item Reduction to the pole as a phase operation
+\end{itemize}
+
+\noindent\textbf{Key emphasis:} RTP rotates phase; it does not filter noise.
+
+\subsection*{165--180 min \quad Synthesis and discussion}
+\begin{itemize}
+  \item Gravity vs magnetics: robustness and fragility
+  \item When Fourier methods help—and when they mislead
+  \item Connection to upcoming assignments and field interpretation
+\end{itemize}
+
+\section*{Key Takeaways}
+
+\begin{itemize}
+  \item Fourier methods are powerful but unforgiving
+  \item Sampling precedes interpretation
+  \item Phase carries geometry
+  \item Geological assumptions are embedded in every filter
+\end{itemize}
+
+\end{document}

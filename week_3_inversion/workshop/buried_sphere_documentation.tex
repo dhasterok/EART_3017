@@ -1,0 +1,82 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+\usepackage{siunitx}
+\sisetup{detect-all=true}
+
+\title{Buried Sphere Documentation}
+\author{Derrick Hasterok}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Forward model}
+We model the vertical gravity anomaly at the surface produced by a buried sphere of depth $z$ (to center), radius $R$, and density contrast $\Delta\rho$. For a station at horizontal radius $r=\sqrt{x^2+y^2}$,
+\begin{equation}
+  g(r;z,R,\Delta\rho) = G\,\left(\frac{4\pi}{3} R^3\,\Delta\rho\right)\,\frac{z}{\bigl(r^2+z^2\bigr)^{3/2}},
+  \label{eq:forward}
+\end{equation}
+with $G$ the gravitational constant. This is nonlinear in $z$ and linear in the \emph{amplitude} $R^3\,\Delta\rho$.
+
+\section*{Analytical Jacobian}
+Let $A = G\,\tfrac{4\pi}{3}$ and $B(r,z)=\dfrac{z}{(r^2+z^2)^{3/2}}$. Then $g = A\,R^3\,\Delta\rho\,B$ and the Fréchet derivatives for a station at radius $r$ are
+\begin{align}
+  \frac{\partial g}{\partial z} &= A\,R^3\,\Delta\rho\,\frac{\partial B}{\partial z},
+  & \frac{\partial B}{\partial z} &= \frac{r^2-2z^2}{\bigl(r^2+z^2\bigr)^{5/2}}, \\
+  \frac{\partial g}{\partial R} &= 3A\,R^2\,\Delta\rho\,B = 3A\,R^2\,\Delta\rho\,\frac{z}{\bigl(r^2+z^2\bigr)^{3/2}}, \\
+  \frac{\partial g}{\partial \Delta\rho} &= A\,R^3\,B = A\,R^3\,\frac{z}{\bigl(r^2+z^2\bigr)^{3/2}}.
+\end{align}
+For a dataset with stations $\{r_i\}_{i=1}^N$, the Jacobian $J$ has rows $\bigl[\partial g_i/\partial z,\;\partial g_i/\partial R,\;\partial g_i/\partial \Delta\rho\bigr]$ evaluated at the current model.
+
+\paragraph{Derivation of $\partial B/\partial z$.}
+With $B=z\,(r^2+z^2)^{-3/2}$,
+\begin{align}
+  \frac{\partial B}{\partial z}
+  &= (r^2+z^2)^{-3/2} + z\left(-\tfrac{3}{2}\right)(r^2+z^2)^{-5/2}\,(2z) \\
+  &= \frac{1}{(r^2+z^2)^{3/2}} - \frac{3z^2}{(r^2+z^2)^{5/2}}
+   = \frac{r^2-2z^2}{(r^2+z^2)^{5/2}}.
+\end{align}
+
+\section*{Least-squares inversion (Gauss--Newton)}
+We seek $p=[z, R, \Delta\rho]^\top$ that minimizes a weighted least-squares objective
+\begin{equation}
+  \Phi(p) = \bigl\| W_d\,(d - g(p)) \bigr\|_2^2 + \lambda^2\,\bigl\| W_m\,(p - p_{\mathrm{ref}}) \bigr\|_2^2,
+  \label{eq:objective}
+\end{equation}
+where $d$ are observations, $W_d$ is the data-weighting (often $\sigma^{-1}I$), $W_m$ is a model weighting (identity for 0th-order), $p_{\mathrm{ref}}$ is a reference model, and $\lambda\ge0$ is the regularization (damping) parameter.
+Linearizing $g(p)\approx g(p_0)+J\,(p-p_0)$ gives the normal equations for the increment $\Delta p$:
+\begin{equation}
+  \bigl(J^\top W_d^\top W_d J + \lambda^2 W_m^\top W_m\bigr)\,\Delta p
+  = J^\top W_d^\top W_d\,\bigl(d - g(p_0)\bigr) + \lambda^2 W_m^\top W_m\,(p_{\mathrm{ref}}-p_0).
+\end{equation}
+In the app, the default is $W_d=I$, $W_m=I$, $p_{\mathrm{ref}}=p_0$, reducing to a Levenberg--Marquardt step
+\begin{equation}
+  (J^\top J + \lambda^2 I)\,\Delta p = J^\top\,(d - g(p_0)).
+\end{equation}
+\paragraph{Role of $\lambda$.} Small $\lambda$ approaches Gauss--Newton (fast, but can be unstable if $J^\top J$ is ill-conditioned). Large $\lambda$ yields smaller, more stable steps (gradient-descent-like), helpful far from the solution or with strong trade-offs.
+
+\section*{Uncertainty and resolution}
+After convergence to $\hat p$, approximate the model covariance by
+\begin{equation}
+  \mathrm{Cov}(p) \;\approx\; \sigma^2\,\bigl(J^\top J + \lambda^2 I\bigr)^{-1},
+\end{equation}
+with $\sigma^2$ the residual variance $\|d-g(\hat p)\|_2^2/(N-M)$. For a parameter pair (indices $i,j$), extract the $2\times2$ submatrix and plot the 95\% confidence ellipse using $\Delta\chi^2\approx5.991$ (2 DOF). The principal axes are given by the eigenpairs of the $2\times2$ covariance.
+
+\section*{Units: SI vs mGal}
+The forward model uses SI throughout (\si{m/s^2}); many field datasets are displayed in mGal. Convert by $g_{\mathrm{mGal}} = 10^5\,g_{\mathrm{SI}}$ and $\sigma_{\mathrm{SI}} = 10^{-5}\,\sigma_{\mathrm{mGal}}$.
+
+\section*{Common diagnostics with the app}
+\begin{itemize}[nosep]
+  \item \textbf{Pairwise vs global search:} slice minima need not coincide with the global minimum in 3--D. Differences highlight trade-offs and the effect of fixing the third parameter.
+  \item \textbf{Inversion path:} the projected path on $(\Delta\rho,R)$, $(\Delta\rho,z)$, $(R,z)$ reveals step size control by $\lambda$ and curvature of $\Phi$.
+  \item \textbf{Noise and sampling:} increasing $\sigma$ or coarsening station spacing widens the misfit basin and inflates uncertainty ellipses.
+\end{itemize}
+
+\section*{References (short list)}
+\begin{thebibliography}{9}
+\bibitem{Blakely} R. Blakely, \textit{Potential Theory in Gravity and Magnetic Applications}, Cambridge University Press, 1995.
+\bibitem{Menke} W. Menke, \textit{Geophysical Data Analysis: Discrete Inverse Theory}, 3rd ed., Academic Press, 2012.
+\bibitem{Aster} R. C. Aster, B. Borchers, and C. H. Thurber, \textit{Parameter Estimation and Inverse Problems}, 3rd ed., Elsevier, 2019.
+\end{thebibliography}
+
+\end{document}

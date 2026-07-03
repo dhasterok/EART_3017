@@ -1,0 +1,89 @@
+\begin{activity}
+
+\section{Purpose}{Tectonic Plate vs. Freight Train}
+
+The purpose of this activity is both a warm-up and an introduction to back-of-the-envelope (BOTE) problem solving.  So called a BOTE calculation because it is one that can be done relatively simply on a small piece of scrap paper.  Such calculations often result in order-of-magnitude estimates, are a way to place rough bounds on a value, and can be used test simple hypotheses before more complex computations are required.  It is a useful skill because it can be done in the field to do simple interpretations of data or during a chat with colleagues over drinks/dinner.
+
+\section{How to do BOTE calculations}
+
+Work backwards.  Start with the last equation you will need to solve the problem.  Write down what you know and identify what you don't.  Often you will need to do multiple calculations on the way to solving the problem.
+
+A couple things to keep in mind:
+\begin{description}
+    \item [round quantities] -- we are generally looking for order-of-magnitude estimates, not precise answers;
+    \item [estimate unknowns] -- few values are truely unknown, bounds even rough can often be set;
+    \item [use geometric means] -- you will find that when using bounds values tend towards the smaller bound, a geometic mean $g = \sqrt(\text{lower} \times \text{upper})$ of the bounds is often closer to the truth than an arithmetic mean;
+    \item [use scientific notation] -- quicker for many unit conversions, multiplication and division;
+    \item [dimensional analyis] -- always check your units, it can reduce the number of mistakes and can be a way to construct equations when you can't remember the exact formula
+\end{description}
+
+\subsection{Rounding}
+We can round numbers to make calculations quicker and easier.  For example, how many seconds are there in a year?  The exact answer requires the number of seconds in a minute, the number of minutes in an hour, the number of hours in a day, and the number of days in a year (don't forget leap years).  
+
+That's too complicated.  The number is approximately $3.15\times10^{7}$~\si{s}.  There are two values I keep in my head, $\pi \times 10^{7}$~\si{s} and $3\times10^{7}$.  The former is useful because $\pi$ shows up in a lot of equations and this is often an easy way to cancel it, and the later is rounded.
+
+\subsection{Bounds}
+Even when we have little information about the value for a property or a quantity, we can place some rough bounds if we can't compute it from an equation where we have better constraints on all the terms.  For example, we know the velocity of a tectonic plate is between 0 and some value.  We can easily outwalk it so we know it is less than \si{m.s^{-1}}.  You might have heard that it is about the rate that fingernails grow.  Some will be faster and some slower, so I might choose a value between say 10 and 100~\si{mm.a^{-1}}. Many natural values are log-normally distributed, which means they are skewed towards lower values but have long tails on the high end.  In such cases it makes more sense to use a geometric mean to calculate an average than an arithmetic mean.  The geometric mean of two values is simply the square root of their product, in our plate velocity example,
+\begin{align*}
+    v_g &= \sqrt{(\SI{10}{mm.a^{-1}})(\SI{100}{mm.a^{-1}})}
+    &= \sqrt{(\SI{1000}{mm.a^{-1}})}
+    &\approx \SI{30}{mm.a^{-1}} ,
+\end{align*}
+which in this case turns out to be about right.
+
+\subsection{Scientific notation}
+Scientific notation converts every number into a decimal multiplied by a power of 10, i.e., $m \times 10^{n}$, where $m$ is a decimal value and $n$ is an integer.  The number $m$ is called the mantissa or significand and $n$ is called the order or exponent.  When multiplying two numbers in scientific notation, we multiply the mantissa and add the orders,
+\[
+    (m_1 \times 10^{n_1}) (m_2 \times 10^{n_2}) = 
+    (m_1 \cdot m_2) \times 10^{n_1 + n_2}\! .
+\]
+Division likewise is easier,
+\[
+    \frac{m_1 \times 10^{n_1}} {m_2 \times 10^{n_2}} = 
+    \frac{m_1}{m_2} \times 10^{n_1 - n_2}\! .
+\]
+Because we often only care about order-of-magnitude rather than precise estimates, we can limit our $m_1$ and $m_2$ to one to two digits.
+
+Many unit conversion become a sinch in scientific notation.  Using our seconds in a year above, if we needed the number of seconds in a million years (as geoscientists we often work in deep time) we multiply by $10^6$.  Hence, $(3 \times 10^{7}~\si{s.a^{-1}}) (10^6~\si{a.Ma^{-1}}) = 3 \times 10^{13}~\si{s.Ma^{-1}}$.
+
+\subsection{Dimensional analysis as a test}
+Dimensional analysis is the process of checking units during mathematical operations to ensure that the correct units are determined in the end.  For example, if you calculate the force of gravity from $F = mg$, how do you know that you end up with the appropriate units of newtons (N)?  We can write this as an equation:
+\begin{align*}
+    F &= m g \\
+    [\si{N}] &\overset{?}{=} [\si{kg}] [\si{m.s^{-2}}] \\
+    [\si{N}] &= [\si{kg.m.s^{-2}}] \\
+\end{align*}
+Of course, this can only be verified as correct if you know that a newton is defined as a \si{kg.m.s^{-2}}, so it is useful to know how units are defined in terms of base units like \si{m}, \si{s}, \si{kg}, \si{C}, etc.
+
+Let's look at another example, the calculation of pressure.  Such a calculation is commonplace for geoscientist.  Often we report pressures in mega-pascals, \si{MPa}.  The equation for pressure is simple,
+\[
+    P = \rho g h\! ,
+\]
+where $\rho$ is the average density of rock above the point of interest, $g$ is the gravitational acceleration, and $h$, is the thickness of rock above. Density is typically reported in \si{kg.m^{-3}}, gravity in \si{m.s^{-2}}, and height in \si{km}.  Note neither pressure or height are reported in standard SI units.  So let's see if this works dimensionally,
+\begin{align*}
+    [\si{MPa}] &\overset{?}{=} [\si{kg.m^{-3}}][\si{m.s^{-2}}][\si{km}] \\
+    [\si{MPa}][\si{Pa.MPa^-1} \cdot 10^{-6}] &\overset{?}{=} [\si{kg.m^{-2}.s^{-2}}][\si{km}][\si{m.km^{-1}} \cdot 10^{-3}] \\
+    10^{-6} [\si{Pa}] &\overset{?}{=} 10^{-3} [\si{kg.m^{-1}.s^{-2}}] , \\
+\end{align*}
+since a \si{Pa} is a \si{N.m^{-2}} or a \si{kg.s^{-2}.m^{-1}}, we can see
+\[
+    10^{-6}[\si{Pa}] \neq 10^{-3} [\si{Pa}]\! .
+\]
+So, we are missing a conversion factor of $10^{-3}$ to give our units in \si{MPa}.
+
+\begin{questions}
+    \question{Tectonic Plate versus Freight Train}
+        For this problem, I want you to answer two questions:
+        \begin{parts}
+            \part Which has larger momentum?  Momentum is given by $p = m v$, where $m$ is mass and $v$ is velocity.
+            \part Which has larger kinetic energy?  Kinetic energy is given by $K = \tfrac{1}{2} m v^2$.
+        \end{parts}
+
+        Remember to work backwards. Start with mass, how do you estimate it for a tectonic plate, a freight train?  Google won't be much help because it cannot tell you the answer (and often gives one orders of magnitude off when students ask).  You'll need to do some out of the box thinking, recall some things you might know and some things you might not, for instance, what comprises a plate, not just horizontally, but vertically?
+
+        You can use Google for some basic geology questions, but don't ask it for numbers/quantities.
+\end{questions}
+
+\clearpage
+Use this page to complete your BOTE estimates.
+\end{activity}

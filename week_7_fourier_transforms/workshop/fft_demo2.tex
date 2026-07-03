@@ -1,0 +1,138 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+
+\title{Fourier Transforms:\\
+Spatial Sampling, Spectra, and Isostatic Gravity}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics 3A: Potential Fields \& Geothermics}
+\rhead{Week 7 Aliasing Demo}
+\cfoot{\thepage}
+
+\title{Week 7 --- Demo: Sampling, Spectra, and Isostatic Gravity}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Purpose of the Demonstration}
+
+This demonstration extends the basic ideas of Fourier transforms developed in Demo~1 to explore the impacts of sampling on what information can be recovered from series data.
+
+The notebook progresses deliberately from:
+\begin{itemize}
+  \item synthetic geological models with known truth,
+  \item explore impact of sampling size,
+  \item see how aliasing can cause misinterpretation.
+\end{itemize}
+
+\section{In-Class Demonstration Outline}
+
+A suggested walkthrough is:
+
+\begin{enumerate}
+  \item \textbf{Synthetic folds:} increase station spacing until aliasing occurs.
+  \item \textbf{Synthetic Basin--Range:} observe dominance of regional signal.
+  \item \textbf{Spectra:} show migration of power with coarser sampling.
+\end{enumerate}
+
+
+\section{Sampling and Aliasing in Space}
+
+A spatially varying gravity field $g(x)$ can be represented as a sum of spatial
+frequencies (wavenumbers):
+\begin{equation}
+g(x) = \int \hat{g}(k)\, e^{i 2\pi k x}\, \mathrm{d}k ,
+\end{equation}
+where $k$ is the spatial frequency (cycles per unit distance) and
+the corresponding wavelength is $\lambda = 1/k$.
+
+If the field is sampled at spacing $\Delta x$, the Nyquist wavelength is
+\begin{equation}
+\lambda_N = 2 \Delta x .
+\end{equation}
+
+Wavelengths shorter than $\lambda_N$ cannot be represented correctly.
+Instead, their energy is mapped to longer wavelengths:
+this is \emph{aliasing}.
+
+\subsection{Key property of aliasing}
+
+Aliasing is not noise and not a numerical error.  The Fourier transform recovers a \emph{coherent but incorrect} spectrum.  Once aliasing occurs, the original short-wavelength information is irretrievably lost.
+
+To put it simply, there are four consequences of aliasing:
+\begin{itemize}
+  \item You can't get what you want
+  \item You get something else instead
+  \item You don't know that you've done it
+  \item You can't fix it after it is done
+\end{itemize}
+
+\section{Synthetic Fold and Basin--Range Models}
+
+To make aliasing unambiguous, the notebook first uses synthetic geological models.
+
+\subsection{Anticline--syncline model}
+
+The folded interface is defined as
+\begin{equation}
+z(x) = z_0 + A \sin\!\left(\frac{2\pi x}{\lambda}\right),
+\end{equation}
+with wavelength $\lambda = 20$~km.
+A pedagogical forward model is used in which the gravity response is proportional
+to interface depth:
+\begin{equation}
+g(x) \propto z(x).
+\end{equation}
+
+This model is not physically exact, but it preserves the correct relationship between
+geological wavelength and gravity wavelength.
+It is sufficient for illustrating sampling and aliasing.
+
+\subsection{Basin--and--Range style model}
+
+A more realistic gravity field is constructed as the superposition of
+two spatial scales:
+\begin{equation}
+z(x) = z_0
++ A_s \sin\!\left(\frac{2\pi x}{\lambda_s}\right)
++ A_d \sin\!\left(\frac{2\pi x}{\lambda_d}\right),
+\end{equation}
+where:
+\begin{itemize}
+  \item $\lambda_s \sim 20$~km represents individual basins and ranges,
+  \item $\lambda_d \sim 120$~km represents deep crustal or lithospheric structure.
+\end{itemize}
+
+The resulting gravity profile mimics real Basin-and-Range Bouguer gravity:
+short-wavelength basin anomalies ride on a strong long-wavelength regional field.
+
+\section{Detrending and Its Limitations}
+
+Polynomial detrending removes long-wavelength components of a signal.
+In spectral terms, it acts as a crude high-pass filter.
+However:
+\begin{itemize}
+  \item detrending is not physically motivated,
+  \item high-order detrending can remove real geological signal,
+  \item detrending does not correct aliasing.
+\end{itemize}
+
+The notebook uses detrending only as a stepping stone toward a physically based
+regional correction.
+
+
+\section{Key Takeaways}
+
+\begin{itemize}
+  \item Station spacing sets a hard limit on geological resolution.
+  \item Aliasing produces coherent but incorrect structure.
+  \item Isostatic correction is a physical hypothesis expressed as a Fourier filter.
+  \item Spectral methods do not protect against poor sampling.
+  \item Interpretation begins with survey design, not inversion.
+\end{itemize}
+
+\end{document}

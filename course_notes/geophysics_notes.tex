@@ -1,0 +1,91 @@
+\documentclass[final,oneside,12pt,a4paper,titlepage]{book}
+
+\usepackage[sectionbib]{chapterbib}
+\usepackage{notes}
+\usepackage{pifont}
+\usepackage{undertilde}
+
+\setcounter{tocdepth}{2}
+\hyphenation{in-ter-con-nect-ed}
+
+% bibliography renamed
+\renewcommand{\bibname}{Further Reading}
+
+\title{Geophysics Course Notes\\[1em]
+    \includegraphics[width=4cm]{../au-logo-dark-blue-horizontal.png}}
+\author{Adelaide University\\
+    Derrick Hasterok \\
+    Thomas Reverso}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth,angle=-90]{wordle2.png}
+\end{figure}
+\clearpage
+
+%\bibliographystyle{elsarticle-harv}
+\maketitle
+\pagenumbering{roman}
+\tableofcontents
+
+\include{pr	eface/preface}
+\pagenumbering{arabic}
+
+\part{Fundamentals of Geophysics}
+% An introduction to geophysics
+\include{introduction/introduction}
+
+% Physical properties
+\include{physprop/properties}
+
+% Equation specific chapters --- Geophysics agnostic
+\include{potential/potential}
+\include{diffusion/diffusion}
+\include{waves/waves}
+
+\part{Geophysical Fields and Methods}
+% Potential fields (mostly)
+\include{gravity/gravity}
+\include{gravity/isostasy}
+\include{magnetics/magnetics}
+\include{magnetics/paleomagnetics}
+\include{geothermics/geothermics_1}
+\include{geothermics/geothermics_2}
+\include{electromagnetics/electrostatics}
+
+% Diffusion (mostly)
+% Electromagnetics
+\include{electromagnetics/electromagnetics}
+
+% Wave Equation (definitely)
+% Seismology
+\include{seismology/seismology}
+\include{seismology/seismics}
+
+\part{Computational and Inverse Methods}
+% Numerical methods
+\include{numerical/fourier_series}
+\include{numerical/fourier_transforms}
+\include{numerical/differences}
+\include{numerical/inversion}
+\include{numerical/inversion2}
+
+\part{Math Appendices}
+\appendix
+\include{math_primer/math_primer}
+\include{math_primer/algebra}
+\include{math_primer/complex_numbers}
+\include{math_primer/linear_algebra}
+\include{math_primer/vectors}
+\include{math_primer/coordinates}
+\include{math_primer/calculus}
+\include{math_primer/vector_calculus}
+
+%\singlespace
+%\bibliographystyle{elsarticle-harv}
+%\bibliography{ref}
+%\endsinglespace
+
+\end{document}

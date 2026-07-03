@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{notes}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+\setlist[itemize]{leftmargin=*}
+\setlist[enumerate]{leftmargin=*}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics IIIA: Potential Fields \& Geothermics}
+\rhead{Week 4 Workshop}
+\cfoot{\thepage}
+
+\title{Week 4 -- Workshop Plan\\Gravity: Density, Structures, and Non-Uniqueness}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-0.75em}
+\noindent\textbf{Duration:} 3 hours \hfill \textbf{Setting:} Workshop room (whiteboards; projector)
+
+% ---------------------------------------------------------
+\section*{Purpose}
+This workshop develops intuition about how density varies in porous and compacted materials, how different subsurface structures relate to density contrasts, and how the buried sphere solution illustrates non-uniqueness in gravity. Students work from physical reasoning, analytic solutions, and qualitative cross-section analysis. The session prepares students for Week~5 (filters, upward/downward continuation, reduction-to-the-pole).
+
+% ---------------------------------------------------------
+\section*{Learning Outcomes}
+\begin{itemize}
+  \item Estimate bulk density of porous materials using simple mixing laws.
+  \item Explain how compaction and pore-fluid substitution change density.
+  \item Predict density contrasts for various geologic structures.
+  \item Interpret gravity anomaly width--depth relationships for the buried sphere.
+  \item Recognise non-uniqueness and explain why lenticular shallow bodies can mimic deep spheres.
+\end{itemize}
+
+% ---------------------------------------------------------
+\section*{Roles and Grouping}
+Mixed groups of 4--5 with geology and physics/engineering backgrounds.  
+Rotate roles: \emph{Facilitator}, \emph{Math Lead}, \emph{Geology Lead}, \emph{Skeptic/QC}, \emph{Recorder}.
+
+% ---------------------------------------------------------
+\section*{Session Flow (180 min)}
+
+\subsection*{0--10 min: Warm-up --- ``Why does density matter?''}
+In groups, list three factors controlling density of Earth materials.  
+Share: how do porosity, mineral composition, and pore fluids alter density?  
+(Students recall Week~2 density work with igneous samples.)
+
+% ---------------------------------------------------------
+\subsection*{10--45 min: Activity A --- Density of a Two-Component Porous Sandstone}
+\textbf{Goal:} Build intuition for porosity, compaction, and fluid-substitution effects.
+% links to week4_sandstone_activity
+
+\textbf{Tasks (Worksheet A):}
+\begin{enumerate}
+  \item Derive an expression for the density of a multicomponent system with porosity.
+  \item Explore how reducing porosity (compaction from burial) and/or changing the type of fluid filling pores affects bulk density.
+  \item Discuss: which fluid contrast would be measurable with gravity alone?
+\end{enumerate}
+
+Groups record 3--4 bullet points about physical intuition (e.g., why air-filled rocks are anomalously light; why compaction increases density nonlinearly).
+
+% ---------------------------------------------------------
+\subsection*{45--75 min: Activity B --- Geologic Structures to Geologic Anomalies}
+\textbf{Goal:} Connect geology to density contrast and anomaly expectations.
+
+\textbf{Structures to analyse (Worksheet B):}
+
+\textbf{Group tasks:}
+\begin{enumerate}
+  \item Discuss geologic structures that may be described by the simple shapes.
+  \item Propose plausible density contrasts ($\Delta\rho$) given typical lithologies.
+  \item Predict qualitative anomaly shape: narrow/broad? symmetric/asymmetric? positive/negative?
+  \item One group presents each structure; whole class discusses similarities and differences.
+\end{enumerate}
+
+% ---------------------------------------------------------
+\subsection*{75--105 min: Activity C --- Buried Sphere: Width--Depth and Non-Uniqueness}
+\textbf{Goal:} Work with the buried sphere analytic solution and explore non-uniqueness.
+
+\textbf{Given:}  
+The vertical gravity from a buried sphere of radius $a$, density contrast $\Delta\rho$, and centre depth $z_0$ is:
+\[
+  g_z(x) = \frac{4\pi G}{3}\Delta\rho\, a^3
+            \frac{z_0}{(x^2+z_0^2)^{3/2}}.
+\]
+
+\textbf{Tasks (Worksheet C):}
+\begin{enumerate}
+  \item Measure the \emph{half-width} $x_{1/2}$ from provided plots and derive:
+        \[
+          \frac{x_{1/2}}{z_0} = \sqrt{2^{2/3} - 1}.
+        \]
+  \item Explain why increasing depth increases width but decreasing $\Delta\rho$ does not.
+  \item Discuss non-uniqueness: why can shallow, lens-shaped bodies (``lenticular'') mimic deep spheres?
+  \item Instructor demonstration: Python simulation showing buried sphere vs.\ lenticular bodies with same peak and width.
+\end{enumerate}
+
+\subsection*{105--135 min: Activity D --- Superposition: Build-an-Anomaly}
+\textbf{Goal:} Construct a plausible local cross-section and its gravity by summing components.\\
+\textbf{Provided:} \emph{Superposition Component Library} with scaled kernels (normalized shapes) for: basement step (sedimentary wedge), mafic dike (2D cylinder proxy), felsic pluton (broad polygon), thin regolith cap (negative slab).\\
+\textbf{Tasks:}
+\begin{enumerate}
+  \item Draft a geologically plausible cross-section (2--3 bodies) with $\Delta\rho$ from Activity~A.
+  \item Place laterally, set depths/widths, scale amplitudes, and \emph{sum} the responses (trace overlays on graph paper).
+  \item Annotate why the geology is plausible (lithology, structure, relative timing).
+\end{enumerate}
+\textbf{Deliverable:} Labeled cross-section + composite gravity + legend of component contributions.
+
+\subsection*{135--165 min: Activity E --- Match-Three: Cross-Sections \texorpdfstring{$\leftrightarrow$}{↔} Gravity Profiles}
+\textbf{Goal:} Practice non-uniqueness reasoning with realistic models.\\
+\textbf{Provided:} \emph{Match-Three Handout} --- three local-style cross-sections (A--C) and three gravity profiles (1--3) designed to be confusable.\\
+\textbf{Tasks:}
+\begin{enumerate}
+  \item Match each profile to the most plausible cross-section using: (i) half-width/FWHM (depth cue); (ii) edge slopes/asymmetry (contacts, wedges); (iii) amplitude scaling with $\Delta\rho$ and size.
+  \item Propose one additional observation to break any tie (e.g., rock density control, mapping a contact, short-station-spacing gradient, borehole, susceptibility).
+  \item Role inversion: \emph{Geologists} present the math-based width--depth rationale; \emph{Phys/Eng} defend the geology.
+\end{enumerate}
+\textbf{Deliverable:} One page with matches (A$\to$?, B$\to$?, C$\to$?) + tie-breaker justification.
+
+
+% ---------------------------------------------------------
+\subsection*{165--180 min: Wrap-up}
+\begin{enumerate}
+  \item Which factor (porosity, fluid, composition) most strongly affects density in shallow basins?
+  \item Which structural density contrast is hardest to distinguish with gravity alone?
+\end{enumerate}
+
+% ---------------------------------------------------------
+\section*{Materials}
+\begin{itemize}
+  \item Worksheet A: Two-Component Sandstone Density
+  \item Worksheet B: Structure Density Reasoning
+  \item Worksheet C: Buried Sphere and Width--Depth
+  \item Python code for instructor demo
+\end{itemize}
+
+\section*{Assessment}
+\begin{itemize}
+  \item Worksheet submissions (one per group).
+  \item Quality of group discussion and presentations.
+  \item Exit ticket reflection.
+\end{itemize}
+
+\end{document}

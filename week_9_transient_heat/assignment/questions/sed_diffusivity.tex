@@ -1,0 +1,40 @@
+\item \label{itm:diff} {\bf [5 pts.]} Thermal diffusivity of marine sediments \\
+Sediment compaction tends to follow an exponential decay relationship, hence we
+can estimate the porosity of the sediment as a function of depth by
+\begin{equation}
+    \phi(z) = \phi_0 e^{-z/h},
+\end{equation}
+where $\phi_0$ is the unloaded porosity and $h$ is the scale length for
+compaction.
+\begin{table}[hbt]
+    \caption{Properties of oceanic sediments}
+    \label{tab:oseds}
+    \centering
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        \textbf{property} &
+        \textbf{seawater} &
+        \textbf{carbonate ooze} &
+        \textbf{pelagic clay} \\
+        \midrule
+        $\phi_0$ & {} & 0.656 & 0.812 \\
+        $h$ [m] & {} & 1278 & 664 \\
+        $\rho$ [kg~m$^{-3}$] & 1030 & 2700 & 2500 \\
+        $C_P$ [J~kg$^{-1}$~K$^{-1}$] & 4060 & 815 & 860 \\
+        $k$ [W~m$^{-1}$~K$^{-1}$] & 0.6 & 2.24 & 2.3 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+To compute the effective properties, we use the mixing relations,
+\begin{align}
+    C_P &= C_{P,m} (1 - \phi) + C_{P,w} \phi \\
+    \rho &= \rho_m (1 - \phi) + \rho_w \phi \\
+    k &= k_m^{(1 - \phi)} k_w^\phi .
+\end{align}
+For carbonate ooze and pelagic clay, make a plots of
+\begin{enumerate}
+    \item $\phi(z)$
+    \item $k(z)$
+    \item $\kappa(z)$
+    \item How does compaction affect the rate at which heat can be transferred?
+\end{enumerate}

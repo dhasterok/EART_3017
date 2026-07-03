@@ -1,0 +1,637 @@
+\documentclass[final,a4paper,12pt]{article}
+
+\usepackage{notes}
+\setlength\parskip{1ex}
+\setlength\parindent{0cm}
+
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\newtheorem{problem}{Problem}[section]
+
+
+\title{Geophysics III}
+\author{Complex Numbers Tutorial}
+\date{}
+
+
+\begin{document}
+\maketitle
+
+\epigraph{``You would have to be half mad to dream me up.''}
+{{\normalfont ---\ Lewis Carroll}, Alice in Wonderland}
+
+\section{Number Sets}
+Before we go down the rabbit hole, I need to introduce you to a few bits of
+terminology.  Mathematicians especially, but physicists also use these terms and
+notation as shorthand to identify groups of numbers with certain
+characteristics.  These are identified in Table~\ref{tab:sets}.  The largest
+number set is the set of all complex numbers which includes all combinations of
+real and imaginary numbers (Figure~\ref{fig:sets}).
+\begin{table}[hbt]
+    \caption{Number Sets}
+    \label{tab:sets}
+    \begin{tabularx}{\textwidth}{cX}
+        Notation & Number set \\
+        $\mathbb{N}$ & Natural (counting) numbers: $1, 2, 3, \ldots$ \\
+        $\mathbb{Z}$ & Integers: $\ldots -3, -2, -1, 0 1, 2, 3, \ldots$;
+        includes $\mathbb{N}$ \\
+        $\mathbb{R}$ & Real numbers: all rational and irrational numbers,
+        $(-\infty, \infty)$; rational numbers include all integers and numbers
+        that can be expressed as one integer divided by another, while
+        irrational numbers are the numbers which cannot be expresses as integer
+        ratios (e.g., $\pi$, $e$, $\sqrt{2}$);
+        includes $\mathbb{N}$ and $\mathbb{Z}$ \\
+        $\mathbb{R}^+$ & Real positive numbers, $(0, \infty)$ \\
+        $\mathbb{R}^+_0$ & Real positive numbers and zero, $[0, \infty)$ \\
+        $\mathbb{I}$ & Imaginary numbers: all numbers that can be expressed as a
+        real number times $\sqrt{-1}$, i.e. numbers that when squared give a
+        negative, rather than positive, number \\
+        $\mathbb{C}$ & Complex numbers: All numbers containing a real
+        ($\mathbb{R}$) and an imaginary part ($\mathbb{I}$)
+    \end{tabularx}
+\end{table}
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[height=4cm]{figures/number_sets.eps}
+    \caption{Relationship between the number sets listed in
+    Table~\ref{tab:sets}.  Sets such as $\mathbb{N}$ are entirely captured by
+    $\mathbb{Z}$.  All numbers, both real, $\mathbb{R}$ and purely imaginary,
+    $\mathbb{I}$, as well as any arbitrary combination of the two, are included
+    in the set of complex numbers, $\mathbb{C}$.  The $\mathbb{R}$ and
+    $\mathbb{I}$ sets intersect only at $0$ (white point) and therefore are
+    orthogonal.}
+    \label{fig:sets}
+\end{figure}
+
+\section{Introduction}
+Mathematicians have problems with things that are undefined.  I can't blame them.
+There is something not satisfying when trying to compute a number and instead
+you run up against something that is not allowed under the current set of rules.
+So what is a mathematician do?
+
+Make new rules and see where they lead.  Take for example the square root
+function.  In a more classical scheme, the square root function is
+typically defined for positive numbers, i.e.,
+\[
+    y =
+    \begin{cases}
+        \sqrt{x} & x \geq 0 \\
+        \mathrm{undefined} & \text x < 0 \\
+    \end{cases} ,
+\]
+where $x, y \in \mathbb{R}$.  But what happens when x is negative?  For example,
+imagine the case when $y = \sqrt{-1}$.  Mathematicians long ago considered this
+question, but initially found no significance beyond mere curiosity; hence, the
+name imaginary was given to this group of numbers.  But as it turns out, they
+can be used as a compact way to describe waves (we're a bit far from that at the
+moment, but we'll get there).
+
+\section{Notation}
+We denote the imaginary number by $i$, defined as
+\begin{equation}
+    i \equiv \sqrt{-1}.
+\end{equation}
+Hence, $i^2 = -1$.  We can write any negative root as
+\begin{align*}
+    \sqrt{-b^2} &= \sqrt{(-1)(b^2)}, \\
+    &= b \sqrt{-1}, \\
+    &= b i,
+\end{align*}
+where $b \in \mathbb{R}$.  What this tells us is that we can represent an
+imaginary number as {\it the} imaginary number, $i$, multiplied by a real number.
+
+We can now extend our definition of the square root to include the root of
+negative numbers,
+\begin{equation*}
+    y = \begin{cases}
+        \sqrt{x} & x \geq 0 \\
+        i \sqrt{\abs{x}} & x < 0 \\
+        \end{cases} ,
+\end{equation*}
+where $x \in \mathbb{R}$, $\abs{x}$ is the absolute value of $x$, and $y \in
+\mathbb{C}$.
+
+Although this tutorial covers complex numbers, dealing with them is not
+necessarily complex.  In fact, if you are familiar and comfortable with vectors,
+dealing with complex numbers is in some ways very similar.
+
+A complex number has both a real part and a purely imaginary part and can be
+written in the form,
+\begin{equation}
+    \mlbox[ ] {z} {complex number}
+    =
+    \mlbox[
+        labelstyle={xshift=-1cm, below of=m\themathLableNode,below
+        of=m\themathLableNode},
+        linestyle={out=90,in=270, latex-}]
+        {a} {real part}
+    +
+    \mlbox[
+        labelstyle={xshift=1cm, below of=m\themathLableNode,below
+        of=m\themathLableNode},
+        linestyle={out=90,in=270, latex-}]
+        {b i} {imaginary part}
+\end{equation}
+where $a, b \in \mathbb{R}$.  Just like vector components, the real part and
+imaginary part cannot be combined.  There are several other ways to represent a
+complex number and we'll get to those in a bit.
+
+
+\section{The Complex Plane}
+Imagine an infinite line (no artists here, it must be straight).  On this line,
+we'll add a zero.  It doesn't matter where we place it since the line is
+infinite on either side, it just gives us a point of reference from which to
+define our positive and negative directions.  If we make everything to the right
+positive and everything to the left negative, we can mark out divisions at
+integer steps from zero.  This is our real number line and represents all real
+numbers.  Between the integers, we have the infinite number of points between
+including the rational and irrational numbers.
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[]{figures/real_number_line.eps}
+    \caption{The real number line.  Selected numbers from some of the number
+    sets are identified.  While example rational and irrational numbers are
+    singled out of the real number line, in reality, there are an infinitely
+    many numbers between each integer value.}
+    \label{fig:real}
+\end{figure}
+
+Now imagine a second number line much the same, but each tick mark on this new
+line represents an integral step in either the positive, $+i$, or negative,
+$-i$, direction.  In between we have all the rational and irrational imaginary
+numbers all the same.  We have a $0i$, but $0$ multiplied by any number, $i$
+included, is $0$.  Hence, $0$ occurs on both the real and imaginary number lines
+indicating that they intersect.  Because real and imaginary numbers cannot be
+added, the two number lines must be orthogonal (at right angles to each other).
+
+So now plotting complex numbers is much like plotting (x,y) Cartesian pairs that
+you are already familiar with (Figure~\ref{fig:complex}).
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[]{figures/complex_plane.eps}
+    \caption{The complex plane, $\mathbb{C}$ includes both the real,
+    $\mathbb{R}$, and imaginary number lines, $\mathbb{I}$, which intersect at
+    $0 = 0i$.  An example point is shown at $(x,y) = (1,2)$.}
+    \label{fig:real}
+\end{figure}
+
+\section{Math Operations involving Complex Numbers}
+\subsection{Complex Operators}
+Note for the imaginary function it returns a real number $b$.  The final
+operator that we will define is called the {\it complex conjugate} ($*$).
+If $z = x + iy$, then the complex conjugate of $z$ is
+\begin{equation}
+    z^* = x - iy,
+\end{equation}
+which simply changes the sign of the imaginary part.  This may seem like a very
+silly operator, but, as you will soon see, is vital to computing the magnitude
+(norm) of a complex number.
+
+At times, we want to isolate the real part.  To signify that we are only using
+the real part we define a function, $\Re$, which returns the real part.  For
+example, for a complex number, $z$, written in the form $x + iy$, we want the
+function to yield
+\begin{equation*}
+    \Re(z) = x .
+\end{equation*}
+Likewise, there we need a function that returns the imaginary part,
+\begin{equation*}
+    \Im(z) = y .
+\end{equation*}
+Each of these functions are defined in terms of the complex conjugate,
+\begin{align}
+    \Re(z) &= \frac{z + z^*}{2} \label{eq:real} \\
+    \Im(z) &= \frac{z - z^*}{2i} . \label{eq:imag}
+\end{align}
+
+\subsection{Basic Operations}
+Many arithmetic operations involving complex numbers are very similar to those
+for vectors where the real and imaginary parts are treated as separate
+components.  Consider two complex numbers, $z_1 = a + ib$ and $z_2 = c + id$.
+To add and subtract $z_1$ and $z_2$,
+\begin{align*}
+    z_1 + z_2 &= (a + ib) + (c + id) \\
+    &= (a + c) + i(b + d) , \\
+    z_1 - z_2 &= (a + ib) - (c + id) \\
+    &= (a - c) + i(b - d) .
+\end{align*}
+To multiply, distribute as you might a polynomial and collect terms,
+\begin{align*}
+    z_1 z_2 &= (a + ib) (c + id) \\
+    &= ac + iad + ibc + i^2 bd \\
+    &= ac + iad + ibc - bd \\
+    &= (ac - bd) + i (ad + bc) . \\
+\end{align*}
+
+To divide, we employ the complex conjugate to remove a complex number from the
+denominator, e.g.,
+\begin{align*}
+    \frac{z_1}{z_2} &= \frac{(a + ib)}{(c + id)} \\
+    \frac{z_1}{z_2}\frac{z_2^*}{z_2^*} &=
+        \frac{(a + ib)}{(c + id)} \frac{(c - id)}{(c - id)} \\
+    \frac{z_1 z_2^*}{\abs{z_2}} &= 
+        \frac{(ac + bd) + (bc - ad) i)}{(c^2 + d^2)} . \\
+\end{align*}
+
+\begin{problem}
+Show
+\begin{equation*}
+    \frac{1}{1 - i} = \frac{1 + i}{2} .
+\end{equation*}
+\end{problem}
+
+\subsection{Norm}
+How big is $4 + 1i$ and is it greater than $2 + 3i$?  We often need to know just
+how big a complex number is, but how to tell?  This concept will make a bit more
+sense once we define the complex number in a trigonometric representation (e.g.,
+Figure~\ref{fig:complex}).  The size (magnitude) of a complex number is called
+the norm and is computed as a distance from the origin to the complex point.
+For a vector, this is simply done by using the Pythagorean theorem; i.e., if $v
+= x \hat{x} + y \hat{y}$,
+\begin{align*}
+    \abs{v} &= (v \cdot v)^{1/2} \\
+    &= [(x \hat{x} + y \hat{y}) \cdot (x \hat{x} + y \hat{y})]^{1/2} \\
+    &= (x^2 + y^2)^{1/2} .
+\end{align*}
+where $\hat{x}$ and $\hat{y}$ are unit vectors in the $x$ and $y$ directions,
+respectively.
+
+We wish to define a similar norm for complex numbers, but if you were to say
+square each component, we would have the following problem: $x^2 + (iy)^2 = x^2
+- y^2$.  Note that this is the difference the squares, not the length we
+expected.  For complex numbers, the norm is defined in terms of the number and
+its conjugate as
+\begin{align*}
+    \abs{z} &= (zz^*)^{1/2} \\
+    &= [(x + iy)(x - iy)]^{1/2} \\
+    &= (x^2 - ixy + ixy  - i^2 y^2)^{1/2} \\
+    &= (x^2 - (-1)y^2)^{1/2} \\
+    &= (x^2 + y^2)^{1/2} .
+\end{align*}
+
+
+\section{Alternative Representations}
+\subsection{Trigonometric Functions}
+The $x + iy$ form makes it easy to separate the real and imaginary parts and
+plot on the complex plane.  However, as you will see when we get to functions,
+the standard form may not be the most straightforward physical description.  To
+aid interpretation, we can write a complex number as
+\begin{equation}
+    z =
+    \mlbox[ ] {\abs{z}}{magnitude} 
+    (\cos 
+    \mlbox[
+    labelstyle={xshift=0.85cm, below of=m\themathLableNode,below
+        of=m\themathLableNode},
+        linestyle={out=90,in=270, latex-}]
+    {\phi}{phase angle} + i \sin 
+    \mlbox[
+    labelstyle={xshift=-0.85cm, below of=m\themathLableNode,below
+        of=m\themathLableNode},
+        linestyle={out=90,in=270, latex-}]
+    {\phi}{}) ,
+\end{equation}
+where $\phi$ is the phase angle.
+
+This trigonometric representation comes from transformation of a complex number
+from $x + iy$ form to a polar coordinate reference frame.  Just as we would for
+a Cartesian coordinate pair, we can determine the polar parameters in terms of
+the distance from the origin (magnitude) and an angle, which we define as
+counterclockwise from the real axis (Figure~\ref{fig:complex}).
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[]{figures/complex_polar.eps}
+    \caption{Complex plane and relationships between orthogonal coordinates, a
+    circle (polar coordinates), and the natural number.}
+    \label{fig:complex}
+\end{figure}
+
+To find the magnitude, we compute the norm,
+\begin{equation*}
+    \abs{z} = (x^2 + y^2)^{1/2} .
+\end{equation*}
+Note that I use the single bar, $|$, on either side of the variable above to
+denote the norm, but it is very common to see a double bar to denote the same
+(e.g., $\norm{z}$).  The $\abs{z}$ or $\norm{z}$ are used by some authors to
+indicate different things so it is a good idea to determine how the author
+defines them.  It may seem as if I have defined the complex number in terms of
+itself---or rather it's norm---but in reality, $\abs{z}$ is a real-valued
+constant or a real-valued function (i.e., a function with no complex part).
+
+The phase is determined by the ratio of the imaginary to the real parts by
+\begin{equation}
+    \phi = \tan^{-1} \frac{\Im{z}}{\Re{z}} .
+    \label{eq:phase}
+\end{equation}
+
+By using Equations~\ref{eq:real} and \ref{eq:imag}, we find the useful
+result,
+\begin{align*}
+    \tan \phi &= \frac{\displaystyle \frac{z - z^*}{2}}
+    {\displaystyle \frac{z + z^*}{2}} \\
+    \tan \phi &= \frac{z - z^*}{z + z^*} . \\
+\end{align*}
+
+To convert from the trigonometric representation to $x + iy$ form,
+\begin{align}
+    x &= \abs{z} \cos \phi , \\
+    y &= \abs{z} \sin \phi .
+\end{align}
+
+\begin{problem}
+Using $z = x + iy$, show that $\tan \phi = \frac{y}{x}$.
+\end{problem}
+
+\begin{problem}
+What is the complex conjugate of $z = \abs{z}(\cos \phi + i \sin \phi)$?
+\end{problem}
+
+
+
+\subsection{Exponential Function}
+The exponential form is advantageous because it is perhaps the most compact way
+to write a complex number (function) and contains the same easily identifiable
+information content as the trigonometric form.  Another reason to write a
+complex number in exponential form is that it tends to simplify derivatives.
+Recall $\dv{}{x}e^x = e^x$ for $x \in \mathbb{R}$.  For complex exponentials,
+$\dv{}{z}e^z = e^z$ for $z \in \mathbb{C}$.  More on this later.
+
+The exponential form is given as
+\begin{equation}
+    z = \mlbox[]{\abs{z}}{magnitude} e^{i
+    \mlbox[labelstyle={xshift=1.2cm},linestyle={out=270,in=90, latex-}]
+    {\phi}{phase}} ,
+\end{equation}
+where $\abs{z}$ is the magnitude and $\phi$ is the phase angle.  The complex
+number $z$ need not be constant, but may be any arbitrary function.  Likewise,
+the phase may also be a function defined as above in Equation~\ref{eq:phase}.
+
+{\it Proof:}
+The exponential form may seem like a long way from our $x + iy$ or the
+trigonometric forms so lets explore where this comes from and then we'll
+describe a few important values.  We can represent many functions, $f(z)$, about
+a given point, $a$, by an infinite series (called a Taylor series) given by
+\begin{align*}
+    f(z) &= f(a) + \sum_{n = 1}^\infty f^{(n)}(a) \frac{(z - a)^n}{n!} \\
+    f(z) &= f(a) + f^{(1)}(a) (z - a) + f^{(2)}(a) \frac{(z - a)^2}{2!}
+        + f^{(3)}(a) \frac{(z - a)^3}{3!} + \ldots +
+        + f^{(n)}(a) \frac{(z - a)^n}{n!} + \ldots ,
+\end{align*}
+where $f^{(n)}(a)$ signifies the $n$-th derivative of $f(z)$ evaluated at $a$
+and $n!$ is the factorial function for $n$, i.e., $n! = 1 \cdot2 \cdot 3
+\cdot\ldots n$.  At $a = 0$ and when $x \in \mathbb{R}$,
+\begin{equation*}
+    e^{x} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!}
+        + \frac{x^5}{5!} + \ldots .
+\end{equation*}
+Likewise, we can represent the sine an cosine functions as
+\begin{align*}
+    \cos x &= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \ldots \\
+    \sin x &= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \ldots .
+\end{align*}
+
+Now suppose $x = i \phi$, the exponential function becomes
+\begin{equation*}
+    e^{i\phi} = 1 + i\phi + \frac{(i\phi)^2}{2!} + \frac{(i\phi)^3}{3!}
+        + \frac{(i\phi)^4}{4!} + \frac{(i\phi)^5}{5!} + \ldots .
+\end{equation*}
+If we employ the following repeating pattern from integer powers of $i$, i.e.,
+\begin{align*}
+    i^1 &= i \\ 
+    i^2 &= -1 \\ 
+    i^3 &= -i \\ 
+    i^4 &= 1 \\ 
+    i^5 &= i \\
+    \vdots ,
+\end{align*}
+we find
+\begin{equation*}
+    e^{i\phi} = 1 + i\phi - \frac{\phi^2}{2!} - \frac{i \phi^3}{3!}
+        + \frac{\phi^4}{4!} + \frac{i \phi^5}{5!} - \ldots .
+\end{equation*}
+Using the same relationships above for sine and cosine ($x = \phi$), we find
+\begin{equation*}
+    \cos \phi + i \sin \phi = 
+        1 + i\phi - \frac{x^2}{2!} - \frac{i \phi^3}{3!} + \frac{x^4}{4!} 
+        + \frac{i \phi^5}{5!} - \ldots .
+\end{equation*}
+And thus it is shown that
+\begin{equation}
+    e^{i \phi} = \cos \phi + i \sin \phi .
+\end{equation}
+Q.E.D.
+
+\begin{problem}
+Using the trigonometric representation, show
+\begin{align*}
+    e^{i0} & = 1 \\
+    e^{i \frac{\pi}{4}} & = \frac{\sqrt{2}}{2} + \frac{\sqrt{2}}{2} i \\
+    e^{i \frac{\pi}{2}} & = i \\
+    e^{i \pi} & = -1 \\
+    e^{i \frac{3\pi}{2}} & = -i \\
+    e^{i n \pi} &=
+    \begin{cases}
+        1 & n\ \text{is even} \\
+        -1 & n\ \text{is odd} \\
+    \end{cases}
+\end{align*}
+\end{problem}
+
+\begin{problem}
+What is the complex conjugate of $e^{i \phi}$?
+\end{problem}
+
+
+\section{Complex Functions}
+Some of the functions that we will examine in class are complex functions
+(specifically waves).  A function similar to one we will discuss in class can be
+written
+\begin{equation}
+    E_x (z) = E_0 \exp \left[-\frac{(1 + i)}{\sqrt{2}} z \right] .
+    \label{eq:cfunc}
+\end{equation}
+In this example, $z$ is a spatial coordinate and no longer a complex number.
+The function is shown in Figure~\ref{fig:cfunc3}.  The resultant function is a
+spiral in the complex plane that exponentially approaches zero as $z$ increases.
+Functions in 3-dimensional plots can be relatively difficult to interpret so we
+often represent them parametrically\footnote{Parametric equations are ones in
+which the coordinates are represented as functions of a single variable.
+Typically, these are represented in polar notation.  For example, for a circle
+with radius $r$, $r^2 = x^2 + y^2$, can be represented parametrically as a
+function of a single parameter, $\theta$,
+\begin{align*}  
+    x &= r \cos \theta \\
+    y &= r \sin \theta .
+\end{align*}}.
+In the case of complex functions, the parametric
+function is plotted on the complex plane.
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[]{figures/complex_func3.eps}
+    \caption{A complex function (Equation~\ref{eq:cfunc}) of $z$.  $E_0$ is
+    assumed to be $1$.   The real and imaginary parts as a function of $z$ are
+    shown in red and as a projection onto the complex plane in blue.
+    Figure~\ref{fig:cfunc} shows the projection onto the complex plane.}
+    \label{fig:cfunc3}
+\end{figure}
+
+We've already discussed the complex plane.  Plotting a complex function is no
+different than plotting an ordinary set of $x$ and $y$ components, in this case
+real and imaginary.  The difference being the representation of the function not
+as a typical input versus output but as a parametric function, that is
+\begin{align*}
+    x &= \Re(E_x(z)) \\
+    y &= \Im(E_x(z)) ,
+\end{align*}
+where $x$ are the real values of the function and $y$ are the imaginary values
+of the function.  One approach is to rewrite our equation in $x + iy$ form so
+that the real and imaginary parts can be easily separated, which we can do via
+the trigonometric representation.
+
+To write the function in Equation~\ref{eq:cfunc} in $x + iy$ form,
+\begin{align*}
+    E_x (z) &= E_0 \exp \left[ -\frac{(1 + i)}{\sqrt{2}} z \right] \\
+    &= E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        \exp \left( -\frac{i}{\sqrt{2}} z \right) \\
+    &= E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        \left[ \cos \left( -\frac{1}{\sqrt{2}} z \right) + 
+        i \sin \left( -\frac{1}{\sqrt{2}} z \right) \right] .
+\end{align*}
+We can now define our parametric equations:
+\begin{align}
+    \Re(E_x(z)) &= E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        \cos \left( -\frac{1}{\sqrt{2}} z \right) ,\\
+    \Im(E_x(z)) &= E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        \sin \left( -\frac{1}{\sqrt{2}} z \right) .
+\end{align}
+The parametric functions produce the projection of the spiral on the complex
+plane (Figure~\ref{fig:cfunc}).
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[]{figures/complex_func.eps}
+    \caption{The parameterized plot of the complex function in
+    Equation~\ref{eq:cfunc}.  The spiral nature of this equation is clearly
+    evident in this plot.  We can describe each point along the plot in terms of
+    two parameters, a distance from the origin (norm) and an angle
+    counterclockwise from the real axis (phase).}
+    \label{fig:cfunc}
+\end{figure}
+
+A complex function can sometimes be a bit difficult to interpret---we live in a
+real space, not an imaginary one---so it can be advantageous to write our
+equation as real numbers that we can ascribe physical meaning to our function,
+namely a magnitude and a phase.  We have already found these parameters
+inadvertently on our way to a trigonometric representation,
+\begin{align}
+    \abs{E_x (z)} &= E_0 \exp \left[ -\frac{z}{\sqrt{2}} \right] ,\\
+    \phi &= -\frac{z}{\sqrt{2}} . \\
+\end{align}
+The results are shown in Figure~\ref{fig:cfunc2}.  Note $2\pi$ has been added to
+the phase so that it is positive.
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[]{figures/complex_func2.eps}
+    \caption{Representation of the complex function in Equation~\ref{eq:cfunc}
+    as a magnitude (a) and phase (b) as a function of the independent variable
+    $z$.}
+    \label{fig:cfunc2}
+\end{figure}
+For the parametric equations, the magnitude is given by
+\begin{align*}
+    \abs{E_x(z)} &= (\Re(E_x)^2 + \Im(E_x)^2)^{1/2} \\
+    &= \left[
+        E_0^2 \exp \left( -\frac{2}{\sqrt{2}} z \right) 
+            \cos^2 \left( -\frac{1}{\sqrt{2}} z \right)
+        + E_0^2 \exp \left( -\frac{2}{\sqrt{2}} z \right) 
+            \sin^2 \left( -\frac{1}{\sqrt{2}} z \right)
+    \right]^{1/2} \\
+    &= E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        \left[ \cos^2 \left( -\frac{1}{\sqrt{2}} z \right)
+            + \sin^2 \left( -\frac{1}{\sqrt{2}} z \right)
+        \right]^{1/2} \\
+    &= E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        ( 1 )^{1/2} \\
+    &= E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) , \\
+\end{align*}
+and the phase is given by
+\begin{align*}
+    \phi &= \tan^{-1} \left[\frac{\Im(E_x)}{\Re(E_x)} \right] \\
+    &= \tan^{-1} \left[\frac{E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        \sin \left( -\frac{1}{\sqrt{2}} z \right)}
+        {E_0 \exp \left( -\frac{1}{\sqrt{2}} z \right) 
+        \cos \left( -\frac{1}{\sqrt{2}} z \right)} \right] \\
+    &= \tan^{-1} \left[\frac{\sin \left( -\frac{1}{\sqrt{2}} z \right)}
+        { \cos \left( -\frac{1}{\sqrt{2}} z \right)} \right] \\
+    &= \tan^{-1} \left[\tan \left( -\frac{1}{\sqrt{2}} z \right) \right] \\
+    &=  -\frac{1}{\sqrt{2}} z .
+\end{align*}
+
+
+\section{Derivatives of Complex Functions}
+I won't have you perform any derivatives of complex functions as part of the
+course.  But for those that are interested, I've included this brief
+(non-comprehensive) section that will give you a basis in the idea of complex
+derivatives.  Taking derivatives of complex functions is not necessarily much
+more complex than derivatives of real-valued functions.  The sum, product, chain
+rule, etc. all still hold.  However, there are extra conditions that must be met
+in order for the derivative to exist.
+
+Consider a complex function, $f(z) = u(x,y) + i v(x,y)$, which we construct
+using two functions $u$ and $v$.  Recall from our calculus discussions that the
+derivative at a point, $z_0$, is defined as
+\begin{equation*}
+    \left. \dv{}{z} f(z) \right|_{z = z_0} =
+        \lim_{\Delta z \to 0} \frac{f(z_0 + \Delta z) - f(z_0)}{\Delta z}
+\end{equation*}
+Since $\Delta z = \Delta x + i \Delta y$, $\Delta z \to 0$ can occur by either
+$\Delta x \to 0$ or $i \Delta y \to 0$.  Hence the derivative of a complex
+function, $f(z)$, may be performed by either
+\begin{align}
+    \dv{}{z} f(z) &= \pdv{u}{x} + i \pdv{v}{x} ,\label{eq:dzdx}\\
+    \dv{}{z} f(z) &= -i\pdv{u}{y} + \pdv{v}{y} .\\
+    \label{eq:dzdy}
+\end{align}
+These equations leads to the Cauchy-Riemann equations,
+\begin{gather}
+    \pdv{u}{x} = \pdv{v}{y} ,\\
+    \pdv{u}{y} = -\pdv{v}{x} ,
+\end{gather}
+implying that we have somewhat of a choice in how we determine the derivative of
+our complex function.  The Cauchy-Riemann equations also show that the functions
+$u$ and $v$ must be related in this manner at every point $z_0$, and if not, the
+function is not differentiable.
+
+Let's take a look at $e^z$ and show that it's derivative is in fact itself.
+Using the standard from for a complex number,
+\begin{align*}
+    e^z &= e^{x + i y} \\
+    &= e^x e^{i y} \\
+    &= e^x (\cos y + i \sin y) \\
+    &= e^x \cos y + e^x i \sin y .
+\end{align*}
+Since we can choose $x$ or $y$ to take our derivative, we'll take $x$ for
+simplicity first,
+\begin{align*}
+    \dv{}{z} e^z &= \pdv{}{x}(e^x \cos y) + i \pdv{}{x} (e^x \sin y) \\
+    &= e^x \cos y + i e^x \sin y \\
+    &= e^z .
+\end{align*}
+But we aren't done.  We must show that the Cauchy-Riemann equations hold or that
+both relationships in Equations~\ref{eq:dzdx},
+\begin{align*}
+    \pdv{}{x} (e^x \cos y) &= \pdv{}{y} [e^x \sin y] \\
+    e^x \cos y &= e^x \cos y ,
+\end{align*}
+and Equation \ref{eq:dzdy} yield the same
+result,
+\begin{align*}
+    \pdv{}{y} (e^x \cos y) &= -\pdv{}{x} [e^x \sin y] \\
+    - e^x \sin y &= - e^x \sin y .
+\end{align*}
+Since the Cauchy-Riemann conditions are met and $e^z$ is continuous, the
+derivative of $e^z$ is in fact itself.
+
+\end{document}

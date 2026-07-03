@@ -1,0 +1,61 @@
+{\bf Thermal diffusivity of marine sediments} \\
+Sediment compaction tends to follow an exponential decay relationship, hence we
+can estimate the porosity of the sediment as a function of depth by
+\begin{equation}
+    \phi(z) = \phi_0 e^{-z/h},
+\end{equation}
+where $\phi_0$ is the unloaded porosity and $h$ is the scale length for
+compaction.
+\begin{table}[hbt]
+    \centering
+    \caption{Properties of oceanic sediments}
+    \label{tab:oseds}
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Property} &
+        \textbf{Seawater} &
+        \textbf{Carbonate Ooze} &
+        \textbf{Pelagic Clay} \\
+        \midrule
+        $\phi_0$ & {} & 0.656 & 0.812 \\
+        $h$ [m] & {} & 1278 & 664 \\
+        $\rho$ [\si{kg.m^{-3}}] & 1030 & 2700 & 2500 \\
+        $C_P$ [\si{J.kg^{-1}.K^{-1}}] & 4060 & 815 & 860 \\
+        $k$ [\si{W.m^{-1}.K^{-1}}] & 0.6 & 2.24 & 2.3 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+To compute the effective properties, we use the mixing relations,
+\begin{align}
+    C_P &= C_{P,m} (1 - \phi) + C_{P,w} \phi \\
+    \rho &= \rho_m (1 - \phi) + \rho_w \phi \\
+    k &= k_m^{(1 - \phi)} k_w^\phi .
+\end{align}
+For carbonate ooze and pelagic clay, make a plots of
+\begin{enumerate}
+    \item $\phi(z)$
+    \item $k(z)$
+    \item $\kappa(z)$
+
+    {\bf Answer:} \\
+    It can be a bit of a pain to compute each of these graphs by hand and it is
+    therefore best to do so using a spreadsheet or matlab or some other similar
+    type program.
+    \begin{figure}[hbt]
+        \centering
+        \includegraphics[]{figures/sedprop.eps}
+        \caption{Ocean sediment properties: (a) porosity, (b) thermal
+        conductivity, (c) thermal diffusivity for (blue) carbonate and (red)
+        pelagic sediments. Note: to compute the thermal diffusivity, you will
+        need to find the relationship between thermal diffusivity and
+        othermaterial properties, i.e., $\kappa = \frac{k}{\rho C_P}$.}
+        \label{fig:sedprop}
+        
+    \end{figure}
+    \item How does compaction affect the rate at which heat can be transferred?
+
+    {\bf Answer:} \\
+    Since thermal conductivity and thermal diffusivity both increase with
+    decreasing porosity, compaction increases the efficacy of heat transfer.
+\end{enumerate}
+

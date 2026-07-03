@@ -1,0 +1,37 @@
+\documentclass[11pt,a4paper,final]{article}
+\usepackage[test,key]{aucourse}
+
+% key option:
+%   - title automatically appends "--- Key"
+%   - page numbering becomes "Key--N" in BrickRed
+%   - \ans expands to \color{BrickRed} for colouring answer text
+
+\unitnum{1}
+
+\begin{document}
+
+\maketitle
+
+\begin{questions}
+    \question[6]{Question Title}
+    Question body text.
+
+    \begin{parts}
+        \part First sub-question.
+
+        {\ans Answer text appears in red.}
+
+        \part Second sub-question.
+
+        {\ans Another answer in red.}
+    \end{parts}
+
+    \question[4]{Question Title}
+    Question body.
+
+    {\ans Full answer here.}
+\end{questions}
+
+Total: \showtotal~pts
+
+\end{document}

@@ -1,0 +1,469 @@
+\documentclass[final,a4paper,12pt]{article}
+\usepackage{notes}
+
+\newcommand{\half}{\tfrac{1}{2}}
+
+\title{Problem Set: Numerical Methods}
+\author{Geophysics 3A}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Background}
+
+Cooling through oceanic seafloor is relatively well-characterized by a plate
+cooling model. Heat flow patterns at the surface are more complicated as
+hydrothermal circulation redistributes heat in the upper oceanic crust.
+Sediments covering the oceanic crust cut off ventilated flow directly between
+the igneous crust and the oceans. However, the igneous basement has sufficiently
+high permeability that fluids can continue to circulate beneath the sediments.
+
+In this practical, we will use a finite difference solution to the heat equation
+to model heat flow through sediments and to the surface.
+
+Modeling heat flow through sediments is complicated---not because the physics is
+complex---but because the geometry is irregular. The depth to the
+sediment--basement interface varies laterally, and sediment compaction alters
+the physical properties of the sediments with depth.
+
+\textbf{Important assumption:} Thermal conductivity and heat production vary
+\textbf{only with depth} due to compaction, while sediment thickness varies
+laterally. This combination produces a fully two-dimensional temperature and
+heat flow field.
+
+
+Because of these complexities, a numerical approach is required rather than an
+analytic solution.
+
+\bigskip
+\section{Finite Difference Formulation}
+
+
+
+We will construct a 2-D steady-state solution to the heat equation. In the
+numerical grid:
+
+\begin{itemize}
+    \item Temperatures and depth are defined at \textbf{nodes}
+    \item Thermal conductivity and heat production are defined at
+    \textbf{cell centers}
+\end{itemize}
+
+Follow the steps below carefully.
+
+\bigskip
+
+\begin{enumerate}
+
+\item \textbf{Governing equation}
+
+\textbf{Task:} Write down the partial differential equation governing steady-state
+heat conduction in two dimensions with spatially variable thermal conductivity
+$k$ and heat production $A$.
+
+\textbf{Hint:} Combine conservation of energy with Fourier's law.
+
+\bigskip
+
+\item \textbf{Boundary conditions}
+
+The temperatures at the ocean--sediment interface and the sediment--basement
+interface are fixed. However, the side boundaries require special treatment.
+
+\begin{enumerate}
+
+\item \textbf{Top and bottom boundaries}
+
+\textbf{Task:} Write expressions for:
+\begin{itemize}
+    \item the surface temperature
+    \item the basal temperature
+\end{itemize}
+
+\textbf{Note:} The basal temperature may vary laterally.
+
+\medskip
+
+\item \textbf{Side boundaries (insulating)}
+
+We assume no heat can flow across the vertical sides of the model.
+
+\textbf{Task:}
+\begin{itemize}
+    \item Write the mathematical condition for zero heat flux
+    \item Express this condition in finite difference form
+\end{itemize}
+
+\end{enumerate}
+
+\bigskip
+
+\item \textbf{Finite difference equation}
+
+\begin{figure}[h!]
+\begin{center}
+\begin{tikzpicture}[scale=2.5]
+
+    % --- Draw grid ---
+    \draw[gray!40] (-2,-2) grid (2,2);
+
+    % --- Shade central cells ---
+    \foreach \x/\z in {-0.5/-0.5, 0.5/-0.5, -0.5/0.5, 0.5/0.5} {
+        \fill[blue!10] (\x-0.5,\z-0.5) rectangle (\x+0.5,\z+0.5);
+    }
+
+    % --- Cell-centred properties (with half indices) ---
+    \node at (-0.5,-0.5) {\small 
+        $\begin{aligned}
+        k_{i-\half,j+\half} \\
+        A_{i-\half,j+\half}
+        \end{aligned}$
+    };
+    \node at (0.5,-0.5)  {\small 
+        $\begin{aligned}
+            k_{i+\half,j+\half} \\
+            A_{i+\half,j+\half}
+        \end{aligned}$
+    };
+    \node at (-0.5,0.5)  {\small 
+        $\begin{aligned}
+            k_{i-\half,j-\half} \\
+            A_{i-\half,j-\half}
+        \end{aligned}$
+    };
+    \node at (0.5,0.5)   {\small 
+        $\begin{aligned}
+            k_{i+\half,j-\half} \\
+            A_{i+\half,j-\half}
+        \end{aligned}$
+    };
+
+    % --- Nodes (temperatures) ---
+    \fill (0,0) circle (1pt) node[above right] {$T_{i,j}$};
+    \fill (1,0) circle (1pt) node[right] {$T_{i+1,j}$};
+    \fill (-1,0) circle (1pt) node[left] {$T_{i-1,j}$};
+    \fill (0,1) circle (1pt) node[above] {$T_{i,j-1}$};
+    \fill (0,-1) circle (1pt) node[below] {$T_{i,j+1}$};
+
+    % --- Stencil links ---
+    \draw[dashed] (0,0) -- (1,0);
+    \draw[dashed] (0,0) -- (-1,0);
+    \draw[dashed] (0,0) -- (0,1);
+    \draw[dashed] (0,0) -- (0,-1);
+
+    % --- Grid spacing ---
+    \draw[<->] (-2.2,0) -- (-2.2,1)
+        node[midway,left] {$\Delta z$};
+
+    \draw[<->] (-1,-2.2) -- (0,-2.2)
+        node[midway,below] {$\Delta x$};
+
+\end{tikzpicture}
+\end{center}
+\caption{Stencil for the 2-D thermal problem.  The temperatures are \emph{node centered} (defined at the nodes, circles).  The thermal properties are \emph{cell centered} (defined at the center of the cells, rectangles).  The cell positions are defined in terms of $(i,j)$ as the (column, row) positions associated with $(x,z)$.}
+\label{fig:stencil}
+\end{figure}
+
+
+\textbf{Task:} Derive the finite difference equation for the temperature at node
+$(i,j)$ using a central difference approximation.
+
+\textbf{Important:}
+\begin{itemize}
+    \item Write the equation in terms of heat fluxes entering and leaving the node
+    \item Use conductivities defined at the \textbf{interfaces} (up, down, left, right)
+\end{itemize}
+
+\textbf{Your answer should clearly show:}
+\begin{itemize}
+    \item contributions from all four neighbouring nodes
+    \item the role of heat production at the node
+\end{itemize}
+
+\bigskip
+
+\item \textbf{Heat production at nodes}
+
+Heat production is defined at cell centres, but the finite difference equation
+requires values at nodes.
+
+\textbf{Task:}
+\begin{enumerate}
+    \item Derive an expression for heat production at node $(i,j)$ using the
+    arithmetic mean of the four surrounding cells.
+    \item \textbf{Then simplify:} Assume heat production varies only with depth
+    (i.e.\ $A = A(z)$). What does your expression reduce to?
+\end{enumerate}
+
+\bigskip
+
+\item \textbf{Thermal conductivity in four directions}
+
+Thermal conductivity varies with depth due to compaction.
+
+\textbf{Task:} Write expressions for conductivity in the four directions
+(up, down, left, right) from node $(i,j)$.
+
+\textbf{Hint:} Use the arithmetic mean of adjacent cell values in the direction
+of heat flow.
+
+\bigskip
+
+\item \textbf{Porosity-controlled properties}
+
+Sediment compaction reduces porosity with depth according to:
+\begin{equation}
+\phi = \phi_0 \exp(-z/\lambda)
+\end{equation}
+
+\bigskip
+
+\textbf{Tasks:}
+
+\begin{enumerate}
+    \item Thermal conductivity depends on both the sediment matrix and pore fluid.
+    Using a harmonic mean, show that:
+    \[
+    k = \left( \frac{1-\phi}{k_m} + \frac{\phi}{k_w} \right)^{-1}
+    \]
+
+    \item Heat production is associated with the solid matrix only. Show that:
+    \[
+    A = A_0 (1-\phi)
+    \]
+
+    \item \textbf{Explain qualitatively:}
+    \begin{itemize}
+        \item How does conductivity vary with depth?
+        \item How does heat production vary with depth?
+    \end{itemize}
+
+\end{enumerate}
+
+\bigskip
+
+\item \textbf{Surface heat flow}
+
+\textbf{Task:} Derive an expression for vertical surface heat flow using your
+finite difference solution.
+
+\textbf{Hint:} Use the temperature gradient between the uppermost nodes.
+
+\bigskip
+
+\item \textbf{Conceptual question (important)}
+
+\textbf{Question:}
+
+\emph{If thermal conductivity $k$ and heat production $A$ vary only with depth
+(and not laterally), what causes the temperature and heat flow field to be
+two-dimensional?}
+
+\textbf{Answer clearly in words.}
+
+\medskip
+
+\textbf{Hint:} Think about the role of geometry.
+
+\bigskip
+
+\item \textbf{Sketching exercise}
+
+Draw a cross section across a buried bathymetric high.
+
+\textbf{Tasks:}
+\begin{itemize}
+    \item Draw two cases:
+    \begin{enumerate}
+        \item 1-D (uniform sediment thickness)
+        \item 2-D (varying sediment thickness)
+    \end{enumerate}
+    \item On each sketch, show:
+    \begin{itemize}
+        \item isotherms
+        \item heat flow directions
+    \end{itemize}
+\end{itemize}
+
+\end{enumerate}
+
+\bigskip
+\section{Computational Exercise}
+
+After completing the formulation, run \verb+iberia2d.py+.
+
+The data are from heat flow measurements collected on the Iberian Abyssal Plain.
+Sediment thickness is derived from seismic data, and thermal properties are
+estimated from measurements and core samples.
+
+The goal is to develop a 2-D thermal model that matches the observations.
+
+\bigskip
+
+\begin{enumerate}
+\setcounter{enumi}{9}
+
+\item \textbf{Model comparison}
+
+The blue model is 1-D and the red model is 2-D.
+
+\textbf{Tasks:}
+\begin{itemize}
+    \item Describe how well each model fits the observed data
+    \item Identify where each model performs well or poorly
+\end{itemize}
+
+\bigskip
+
+\item \textbf{3-D effects}
+
+\textbf{Task:} Describe how heat flow over a 2-D ridge differs from that over a
+buried seamount (a 3-D feature).
+
+\textbf{Answer in words:}
+\begin{itemize}
+    \item How do heat flow patterns differ?
+    \item Would including 3-D effects significantly reduce the misfit?
+\end{itemize}
+
+\bigskip
+
+\item \textbf{Improving the model}
+
+\textbf{Task:} If 3-D geometry does not fully explain the data, suggest ways to
+improve the model.
+
+\end{enumerate}
+
+\end{document}
+
+% \documentclass[final,a4paper,12pt]{article}
+% \usepackage{notes}
+
+% \title{Problem Set: Numerical Methods}
+% \author{Geophysics 3A}
+% \date{}
+
+% \begin{document}
+% \maketitle
+
+% \section{Background}
+% Cooling through oceanic seafloor is relatively well-characterized by a plate
+% cooling model.  Heat flow patterns at the surface are more complicated as
+% hydrothermal circulation redistributes the heat in the upper oceanic crust.
+% Sediments covering the oceanic crust cut off ventilated flow directly between
+% the igneous crust and oceans.  The igneous basement has a high enough
+% permeability that fluids can continue to circulate
+% vigorously.
+
+% In this practical, we'll use a finite difference solution to the heat
+% equation to model to model heat flow through the sediments and out of the
+% surface.
+
+% \section{Finite Differences}
+% Modeling heat flow through the sediments is complicated---not because it is
+% complex---by a variable depth to the sediment--basement interface.
+% An additional complexity arises as a result of sediment compaction which alters
+% the physical properties (thermal conductivity and heat production) of the
+% sediment.  While neither complexity is difficult to model, they can make it
+% considerably more difficult to develop an analytic solution.  Hence, a numerical
+% approach is the best option for a solution.
+
+% Where sediment cover is thick enough to blanket all basement highs, fluid flow
+% across the crust--ocean interface is cutoff.  The sediments insulate the
+% lithosphere, but fluid circulation within the igneous basement continues
+% maintaining a constant temperature at the sediment--basement interface.  Bottom
+% water temperatures at the ocean--sediment interface are also constant.  Thermal
+% equilibrium is established within the sediments above.
+
+% Let's develop 2-D steady-state temperature solution to solve for heat flow
+% through the sediments.  Heat production and thermal conductivity will be
+% assigned to the cells and temperature and depth to the nodes.  Follow the
+% following steps below to derive a method for numerically computing heat flow:
+% \newcounter{savenum}
+% \begin{enumerate}
+%     \item What PDE governs the system?  Remember, we are doing this for a 2-D
+%         volume, incorporating a changing thermal conductivity and heat
+%         production with depth.
+
+%     \item Temperatures at the ocean--crust and sediment--basement interfaces are
+%     simple since they are fixed, but the insulating conditions at the side
+%     must be handled separately.  Write an expression for the temperatures on
+%     either vertical boundary of the model.
+%     \begin{enumerate}
+%         \item What are the surface and basal boundary conditions? (Hint: they are
+%         described above).
+
+%         \item We will assume insulating conditions (zero-flux) on the vertical sides
+%         of our boundary.  
+%     \end{enumerate}
+
+%     \item What is the central difference solution for $T_{i,j}$ at a location
+%         $(z_i, x_j)$?  At the moment, use $k_{i,j}$ as the effective
+%         conductivity and $A_{i,j}$ as the effective heat production at $(z_i,
+%         x_j)$.
+
+%     \item What is the average heat production at node $(i,j)$, estimated from
+%         the weighted arithmetic mean of the surrounding cells?
+
+%     \item For the thermal conductivity, we need to take into account the
+%         anisotropy since the in conductivity varies vertically due to
+%         compaction.  This means we need to know the thermal conductivity, for
+%         heat flowing in four directions, up, down, left and right from each
+%         node $(i,j)$.  Write an express for the thermal conductivity in each of the four
+%         directions, using the arithmetic mean of the two conductivities in each
+%         of the cells in the direction heat is flowing.
+
+%     \item We'll assume porosity increases with depth in the sediments according
+%         to the relationship
+%         \begin{equation}
+%             \phi = \phi_0 \exp\left( -z / \lambda \right)
+%         \end{equation}
+%         where $\lambda$ is the compaction length and $\phi_0$ is the surface
+%         porosity.  Now write a relationship for the conductivity and heat
+%         production with depth knowing the conductivity of the matrix is $k_m$
+%         and the heat production of the matrix is $A_m$.  (You've did something
+%         similar a couple assignments ago.)
+
+%     \item Once we have a temperature model, we need to estimate the vertical
+%         surface heat flow using our finite difference solution.
+%     \setcounter{savenum}{\value{enumi}}
+
+%     \item Before we move onto the computational portion of the practical, draw a
+%         cross section across a 2-D bathymetric high.  Repeat the drawing so that
+%         you have two copies to the left and right of each other.  Now draw the
+%         expected pattern of heat flow and isotherms expected for the 1-D and 2-D
+%         cases.
+% \end{enumerate}
+
+% Following the completion of your formulation, use the finite difference
+% formulation in \verb+ssthermal.m+ to solve for the 2D heat flow.
+% Background on the problem you will be solving: the data we are modeling comes
+% from a set of heat flow data collected on the Iberian plain on the Atlantic
+% seafloor.  Seismic data was collected which gives us an estimate of the sediment
+% thickness.  Thermal conductivity is estimated either during measurement, or on
+% sediment cores on the ship.  The goal of this modeling exercise is to develop a
+% 2D thermal model which fit the data.  Initial modeling with a constant
+% sediment-basement temperature did not fit the data properly so a simple linear
+% increase in this basal temperature towards the continental shelf was
+% incorporated.
+
+% Make sure you have downloaded all the necessary codes and data files.
+
+% Run \verb+iberia2d+.
+
+% \begin{enumerate}\addtocounter{enumi}{\value{savenum}}
+%     \item The blue model is 1-D and the red model is 2-D.  How well does each
+%     model fit the observed data?
+
+%     \item This model is 2-D, but bathymetry variations occur in 3-D.  Describe
+%     (in words, no numbers/equations necessary) how the heat flow across a
+%     2-D ridge would differ from a buried seamount.  Would accounting for 3-D
+%     bathymetry variations account for the much of the misfit in the data?
+
+%     \item If not all the data can be described by a move to 3-D, how might we
+%     improve this model?
+% \end{enumerate}
+
+% \end{document}

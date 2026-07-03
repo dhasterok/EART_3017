@@ -1,0 +1,225 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics IIIA: Potential Fields \& Geothermics}
+\rhead{Week 8 Archean Heat Production}
+\cfoot{\thepage}
+
+\title{Week 8 --- Activity: Archean Heat Production}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose}
+
+To connect radioactive decay, crustal differentiation, and geological processes to the observed heat production of ancient continental crust, we'll investigate the following question ``Why is Archean heat production so low?''
+
+\section*{Radiogenic decay}
+The concentration of a radioactive isotope is given by
+\[
+C(t) = C_0 e^{-\lambda t},
+\]
+and the corresponding heat production is
+\[
+A(t) = \sum_i H_i \lambda_i C_i(t),
+\]
+where $H_i$ is the heat released per decay and $\lambda_i$ is the decay constant.
+
+\section*{Observation}
+Simple decay arguments predict higher heat production in the Archean than today, yet preserved Archean crust shows relatively modest values.
+
+
+\section*{Tasks}
+For each mechanism below, explain qualitatively how it could reduce the heat
+production of preserved crustal rocks:
+\begin{enumerate}
+  \item Differentiation and melt extraction of LILEs (K, Th, U).
+  \item Selective erosion of felsic upper crust.
+  \item Reworking: remelting and redistribution of existing crust.
+  \item Foundering of dense mafic lower crust or arc roots.
+  \item Secular evolution of mantle temperature.
+\end{enumerate}
+
+\subsection*{Differentiation}
+Concept: Heat-producing elements (K, Th, U) behave as incompatible elements and strongly partition into melts.
+
+Let $D \ll 1$ be the bulk partition coefficient of a heat-producing element.
+For fractional melting,
+\[
+C_{\text{solid}} = C_0 (1 - F)^{(1/D - 1)},
+\]
+where $F$ is the melt fraction.  You could think of this simply as:
+\[
+C_{\text{crust}} \approx \frac{C_{\text{mantle}}}{D} \, F
+\]
+
+% Interpretation
+
+% Small melt fractions efficiently extract LILEs into crust.
+% The mantle is depleted, and crustal heat production becomes front-loaded early in Earth history.
+% This explains early high HP but does not guarantee preservation.
+
+\subsection*{Selective erosion}
+Concept: Heat production is concentrated in felsic upper crust, which is preferentially eroded.
+
+Treat the crust as two reservoirs.  Let $A_u$ be upper crust heat production.  If erosion removes heat-producing material at rate $E$,
+\[
+\frac{dA_u}{dt} = -E A_u.
+\]
+Solution:
+\[
+A_u(t) = A_{u0} e^{-Et}
+\]
+
+% Interpretation
+
+% Erosion selectively removes the most heat-producing part of the crust.
+% Older crust tends to retain lower average heat production, even if originally enriched.
+% This acts independently of radioactive decay.
+
+\subsection*{Reworking}
+Reworking here will be defined as reheating---past the closure temperatures of geochronometers---and remelting of existing crust rather than net addition of new crust.
+
+Concept: Old crust is repeatedly melted, mixed, and redistributed during later tectonic events.
+
+Schematic formulation: Model reworking as a mixing process.  Let a fraction $R$ of crust be reprocessed per event.
+\[
+A_{n+1} = (1 - R) A_n + R A_{\text{new}},
+\]
+
+where \(A_{\text{new}}\) reflects heat production typical of newly generated crust.
+
+% Interpretation
+
+% Reworking homogenizes and dilutes extreme HP values.
+% High Archean HP signatures are progressively erased.
+% Preserved Archean crust is not pristine.
+
+\subsection*{Foundering}
+Concept: Dense, mafic, heat-poor material is preferentially removed from the lithosphere.
+
+Let the lower crustal mass is reduced over time.  If mafic lower crust is removed at rate $F_d$,
+\[
+\frac{dM_{lc}}{dt} = -F_d M_{lc}.
+\]
+
+The average crustal heat production becomes:
+\[
+\bar{A}(t) = \frac{A_u M_u + A_{lc} M_{lc}(t)}{M_u + M_{lc}(t)}.
+\]
+
+% Interpretation
+
+% Foundering removes heat-poor material.
+% This can make the remaining crust appear felsic, buoyant, and thermally stable.
+% It biases what crust survives to the present.
+
+\subsection*{Secular cooling}
+Concept: The mantle was hotter early, affecting melt production rather than radiogenic inventory.
+
+Mantle potential temperature declines approximately as:
+\[
+T_m(t) = T_{m0} e^{-t/\tau},
+\]
+
+where \(\tau \sim 1\text{--}2\)~Ga is a thermal timescale.
+Melt production gives:
+\[
+F(t) \propto T_m(t) - T_{\text{solidus}}.
+\]
+
+% Interpretation
+
+% Hotter mantle → more melting → more differentiation.
+% Early Earth transfers HP to crust efficiently.
+% Later Earth is melt-limited, not HP-limited.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabularx}{\textwidth}{@{}XXXX@{}}
+    \toprule
+    \textbf{Process} &
+    \textbf{Primary Physical Mechanism} &
+    \textbf{Effect on Heat-Producing Elements (K, Th, U)} &
+    \textbf{Primary Geological Consequence} \\
+    \midrule
+    Radiogenic decay &
+    Exponential decay of radioactive isotopes &
+    Monotonic decrease of heat production with time &
+    Higher heat production in the past; explains first-order time trend only \\[0.3em]
+
+    Differentiation and melt extraction &
+    Incompatible elements partition strongly into melts ($D \ll 1$) &
+    Rapid transfer of LILEs from mantle to crust early in Earth history &
+    Early enrichment of crust; depletion of mantle \\[0.3em]
+
+    Selective erosion &
+    Preferential removal of felsic, heat-rich upper crust &
+    Progressive loss of the most heat-producing crustal components &
+    Older crust appears cooler than expected from decay alone \\[0.3em]
+
+    Reworking (remelting and redistribution) &
+    Repeated partial melting and crustal mixing &
+    Dilution and homogenization of extreme heat production signatures &
+    Preserved Archean crust is rarely pristine \\[0.3em]
+
+    Foundering of mafic lower crust &
+    Removal of dense, heat-poor lower lithosphere &
+    Bias toward preservation of felsic, buoyant crust &
+    Thermally stable, thick continental lithosphere \\[0.3em]
+
+    Secular mantle thermal evolution &
+    Early high mantle temperatures enhance melt production &
+    Controls efficiency of LILE extraction rather than inventory &
+    Strong early differentiation followed by declining crustal growth \\
+
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+\section*{Synthesis Questions}
+\begin{enumerate}
+  \item Which processes change the \emph{distribution} of heat-producing elements?
+  \item Which processes affect what crust is \emph{preserved}?
+  \item Why does radioactive decay alone fail to predict observed Archean heat production?
+\end{enumerate}
+
+Which processes primarily:
+\begin{itemize}
+  \item redistribute heat-producing elements?
+  \item remove heat-producing material from the crust?
+  \item bias what crust survives to the present day?
+\end{itemize}
+
+
+\section*{Reflection}
+Why is radioactive decay alone insufficient to explain Archean heat production patterns?
+
+% Archean heat production is low not because the early Earth lacked radioactive elements, but because Earth efficiently rearranged and removed them over time.
+
+\textbox{Concept Takeaway: Heat Production, Curvature, and Preservation}
+{
+Radiogenic decay alone predicts that heat production should decrease smoothly with time, but observed Archean crust shows much lower heat production than this simple expectation.
+
+The heat production of preserved continental crust reflects the combined effects
+of:
+\begin{itemize}
+  \item \emph{redistribution} of heat-producing elements through differentiation and melting,
+  \item \emph{removal} of heat-rich material by erosion and tectonic processes, and
+  \item \emph{preservation bias}, where buoyant, felsic, and thermally stable crust is more likely to survive.
+\end{itemize}
+
+In steady-state geotherms, these processes matter because crustal heat production controls the \emph{curvature} of the geotherm:
+\[
+T(z) = T_0 + \frac{q_0}{k}z - \frac{A}{2k}z^2.
+\]
+
+Two regions with identical surface heat flow can therefore have very different Moho temperatures, lithospheric thicknesses, and long-term stability depending on how heat-producing elements were redistributed and preserved through time.
+}
+
+\end{document}

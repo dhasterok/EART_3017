@@ -1,0 +1,220 @@
+\documentclass[final,a4paper,12pt]{article}
+
+\usepackage{notes}
+\setlength\parskip{1ex}
+\setlength\parindent{0cm}
+\usepackage{float}
+\usepackage{mathtools}
+
+\newcommand\qeq{\stackrel{\mathclap{\normalfont\mbox{?}}}{=}}
+
+\title{Geophysics III}
+\author{Derivations Tutorial}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+{\it What are derivations and why do we do them?} \\
+A derivation is the process of developing a relationship between one or more
+variables that provide physical insight into a scientific problem.  These can be
+quite formal, but are often used to develop a mathematical formulation to
+predict or model observations.  Derivations can also be used to develop
+corrections to data (you'll see the end result in the gravity corrections).
+
+{\it Why do I make you do derivations?} \\
+Some of you will enjoy them, but for the rest, I do have very good reasons for
+having you perform derivations.  I can give you a fish, or teach you how to
+catch one.  If you learn how to do a derivation it will give you the experience
+that will help you follow along when you read papers involving derivations and
+perhaps help you gain confidence to do them in the future if the need arise.
+
+The other reason I have you do derivations is that it will help you gain
+insights into a problem that you otherwise might not get from a single equation.
+Often a derivation starts from a relatively general point and through a series
+of approximations and/or constraints arrives at a specific solution.  The
+solution may not be true in all cases as a result of these assumptions and
+constraints.  Seeing, rather than being told, why the solution is limited is an
+important part of understanding a physical process.  I want you to gain the
+fundamental insight that may be useful in the future, while the equations we
+derive may not.
+
+\section{How to do a derivation}
+For this course, I want you to be as organized and prescriptive as possible when
+setting up and then deriving your solutions.  Being methodical will help make
+the process of easier.  It also makes derivations easier to read---and easier to
+assign partial credit!  It may not be necessary to do each of these steps every
+time, but these are the generalized steps and reasons why they are a good idea.
+There are 4 steps.  To remember them you can use the acronym: {\bf D$^{3}$C},
+which stands for {\bf d}raw, {\bf d}efine, {\bf d}erive, and {\bf c}heck.  {\bf
+Do NOT input values before you complete the derivation.}
+\begin{enumerate}
+    \item {\bf Draw} a picture and annotate the drawing with the symbols you
+    will use in the derivation.
+
+    Drawing a picture can help focus the problem, but also gives you an
+    opportunity to see all the parts and how they relate to one another.
+
+    \item {\bf Define} the symbols and give their values and units, including
+    physical constants.  You can do this as a table or as a simple list.  This
+    is also a good spot to identify the key assumptions and/or constraints that
+    you may know {\it a priori}.  See how I have done the example below.  You
+    might leave a few lines space below the list in the event that you need to
+    add variables at a later point.
+
+    Making a list of all the symbols and their meaning improves the readability
+    in case you use a different symbol than someone else might for the same
+    variable.  It also gives you the opportunity to identify the knowns and
+    unknowns which can help as you decide what you need to do to solve the
+    problem.
+    
+    It is best to use symbols by convention of the field within which
+    they are used so that it avoids confusion.
+
+    \item {\bf Derive} a key result, taking care to keep the equations in
+    symbolic notation (don't plug in values).  Enumerate key equations that you
+    know you will need up front.  This includes any systems of equations,
+    initial and boundary conditions.  Number these equations as it will make it
+    easier to refer to them later.  Identify the key steps, locations where:
+    assumptions/constraints are applied; approximations are made; and a shift in
+    focus is made (e.g. you start deriving a secondary result before
+    continuing).  While you are working up your derivation, think about where
+    you where you want to go and what you need to do to get there.
+
+    This not only makes it easier to assign partial credit, but also means that
+    the solution you have at the end can be used for any set of inputs, not just
+    the ones you currently have.  If we always inserted values at the earliest
+    possible point, we would have to rederive the result every time we wanted to
+    change our inputs.
+
+    \item {\bf Check} your answer.  Once you have a symbolic solution YOU ARE
+    NOT DONE.  Since you may not know what you are looking for, there are
+    several ways to check your solution.  First, perform a dimensional analysis
+    (check units) if the units work out properly you've cleared the simplest
+    hurdle.  Next, make sure the solution satisfies the initial and boundary
+    conditions.  If you know the solution is asymptotic, make sure it satisfies
+    those limits (e.g., if the result should approach zero as position or time
+    approaches infinity).  Finally, you can graph the result as a final test, but
+    generally the first two are sufficient.
+
+    Does the solution make sense.  Generally, if the solution satisfies the
+    applied constraints and the units work out properly you likely have the
+    correct solution to the problem.  If you do the test and it doesn't satisfy
+    the constraints or dimensional analysis, make a note of it and try to
+    identify the location where things most likely went awry.  Doing so will
+    vastly improve your partial credit when things don't go as planned.
+
+    Checking your answer is another way to get partial credit if your solution
+    isn't correct.  If you can't figure out the answer to a problem, but check
+    the solution and can articulate why your answer cannot possibly be correct
+    you will earn some points you would have otherwise lost.
+
+    \item Once you are satisfied with your result, input values if necessary and
+    circle your solution (it helps me know when you think you are done).  I also
+    encourage you to discuss your derivations with someone else since it is one
+    of the best ways to make sure that it is clear and complete.  Try them
+    yourself, but I encourage you to work in groups to find the solutions.
+\end{enumerate}
+
+
+\section{Example}
+We will be doing similar isostasy (buoyancy related) problems in a couple weeks
+so don't worry if you don't understand the entire derivation.  You will soon.
+
+\noindent {\bf Problem:} \\
+What is the height mantle root necessary for an Airy model of isostatic
+compensation?  Write in terms of the density contrast between the crust and
+mantle (i.e.\ $\Delta \rho = \rho_{m} - \rho_{c}$).
+\clearpage
+
+\noindent {\bf Answer:} \\
+{\bf Draw}\\
+We begin by drawing a picture of the system and labeling the important
+components.
+\begin{figure}[H]
+  \centerline{
+    \includegraphics[]{columns.eps}
+  }
+  \caption{Isostatic columns.}
+  \label{fig-columns}
+\end{figure}
+Note that the figure is cartoonish. While there are terms that labeled that
+will eventually be canceled out, we need them as place holders so they are
+initially defined.
+
+{\bf Describe}\\
+Knowns:\\
+elevation, [m]: $\Delta \varepsilon$ \\
+upper crustal density, [kg~m$^{-3}$]: $\rho_{t}$ \\
+density contrast mantle to crust, [kg~m$^{-3}$]: $\Delta \rho = \rho_{m} -
+\rho_{c}$ \\
+gravitational acceleration, [m s$^{-2}$]: $g$
+
+Unknowns:\\
+height of column 1, [m]: $h_{1}$ \\
+height of column 2, [m]: $h_{2}$ \\
+thickness of mantle root, [m]: $r$ \\
+
+Solve for $r$, [m].
+
+{\bf Derive}\\
+We start by equating columns pressures at a common depth of compensation,
+\begin{equation}
+    \underbrace{\rho_{c} g h_{1} + \rho_{m} g r}_{\mbox{\scriptsize column 1}} = 
+    \underbrace{\rho_{t} g \Delta \varepsilon + \rho_{c} g (h_{2} - \Delta
+    \varepsilon)}_{\mbox{\scriptsize column 2}}.
+    \label{eq-column}
+\end{equation}
+Because $g$ is in every term in Equation~\ref{eq-column}, it can be canceled
+out,
+\begin{equation}
+    \rho_{c} h_{1} + \rho_{m} r = 
+    \rho_{t} \Delta \varepsilon + \rho_{c} (h_{2} - \Delta \varepsilon).
+    \label{eq-column2}
+\end{equation}
+
+\begin{framed}
+{\it Assumption:} The density of air is negligible so we do not need a pressure term to account for the additional pressure of the air column.  To prove that we don't need an air term, we can do a back of the envelope calculation to compare the relative pressures of a lithospheric column to that of the air column.  The density of air is on order 2~kg~m$^{-3}$ and the density of rock is on the order of 3000~kg~m$^{-3}$.  The height of the air column is on the order of 1~km and the height of the crust on the order of 30~km.  Hence, the ratio of the two terms is
+\begin{align*}
+    \frac{\rho_c h_c}{\rho_{\mathrm{air}} \Delta \varepsilon} &=
+    \frac{(\SI{3000}{kg.m^{-3}})(\SI{30}{km})}
+    {(\SI{2}{kg.m^{-3}})(\SI{1}{km})} \\
+    &= \frac{90000}{2}\\
+    &= 4.5 \times 10^{4}. \\
+\end{align*}
+It really doesn't matter if the heights vary considerably, the end result is similar, the pressure due to a column of crust is on the order of 10,000 times larger, so we can effectively ignore the influence of air above the column.
+\end{framed}
+
+Next, we equate column heights
+\begin{equation}
+    h_{2} = \Delta \varepsilon + h_{1} + r .
+    \label{eq-height}
+\end{equation}
+Next, we can substitute Equation \ref{eq-height} into the modified pressure Equation \ref{eq-column2}.  And after some algebra, we arrive at a solution for
+the root,
+\begin{align*}
+    \rho_{c} h_{1} + \rho_{m} r &= \rho_{t} \Delta \varepsilon
+        + \rho_{c}(\Delta \varepsilon + h_{1} + r - \Delta \varepsilon), \\
+    \rho_{m} r - \rho_{c} r &= \rho_{t} \Delta \varepsilon 
+        + \rho_{c} h_{1} - \rho_{c} h_{1}, \\
+    (\rho_{m} - \rho_{c}) r &= \rho_{t} \Delta \varepsilon, \\
+    r &= \frac{\rho_{t}}{\rho_{m} - \rho_{c}} \Delta \varepsilon. \\
+\end{align*}
+Recall from the problem statement that we are looking for a solution in terms of $\Delta \rho$,
+\begin{equation*}
+\boxed{
+    r = \frac{\rho_{t}}{\Delta \rho} \Delta \varepsilon
+}\; .
+\end{equation*}
+
+{\bf Check}\\
+Let us check the units,
+\begin{align*}
+    [\text{m}] &\qeq \frac{[\text{kg m}^{-3}]}{[\text{kg m}^{-3}]} [\text{m}], \\
+    [\text{m}] &= [\text{m}].
+\end{align*}
+
+Our units check out.  Unfortunately, for this derivation there aren't any additional tests we can use to verify the validity of the solution.
+
+\end{document}

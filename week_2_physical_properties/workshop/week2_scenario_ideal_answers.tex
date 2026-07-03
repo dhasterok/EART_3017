@@ -1,0 +1,190 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{parskip}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{notes}
+
+\title{Week 2 -- Modeling Property Scenarios:\\Idealized Answers}
+\author{Geophysics 3A: Potential Fields \\ \& Geothermics}
+\date{}
+
+\newcommand{\procon}{\vspace{0.4em}\begin{multicols}{2}
+\noindent\textbf{Pros}
+\begin{itemize}[leftmargin=*]
+  \item \leavevmode
+\end{itemize}
+\columnbreak
+\noindent\textbf{Cons}
+\begin{itemize}[leftmargin=*]
+  \item \leavevmode
+\end{itemize}
+\end{multicols}}
+
+\begin{document}
+\maketitle
+These model answers illustrate one strong, defensible pathway for each scenario. They reflect strategies discussed in the Week 2 notes on physical properties: direct measurement; composition/mineral-mode estimates; geochemical proxies (e.g., K--U--Th for heat production); empirical correlations (e.g., density--velocity); thermodynamic/\,$P$--$T$ corrections; and cautious use of indirect geophysical inference where appropriate. (Course notes on physical properties and estimation strategies).\footnote{See course notes: state-variable control ($P$, $T$, composition, porosity/cracks), mixing-behaviour by property class, composition-based prediction of $A$, $k$, and density trends; limitations and non-uniqueness of proxy methods.
+\label{notesref}}
+
+\section*{Scenario A: Basin Density Model (Resources/Tectonics)}
+\textbf{Goal recap.} Build a depth-dependent density model for a layered basin to support gravity modelling and compaction analysis.
+
+\paragraph{Questions for the geologist (2--3)}
+\begin{itemize}[leftmargin=*]
+  \item What are the mapped stratigraphic units and their lateral continuity; where do cores tie to the seismic horizons? (Needed to honour layering and compaction trends.)~(Notes: properties vary by lithology and state variables.)\label{notesref}
+  \item What are porosity/\,grain-density measurements from cores (dry, saturated, submerged) and how do they vary with depth/diagenesis?~(Porosity affects bulk density; cracks/porosity can matter even when crystalline rock density changes little.)\label{notesref}
+  \item Evidence for fluid substitution, cementation, or overpressure that would alter compaction laws?
+\end{itemize}
+
+Preferred method \& why\\
+\textbf{Core-calibrated density--depth curves per facies, tied to seismic stratigraphy.} Compute bulk density from core measurements (grain density + porosity), derive empirical $\rho(z)$ trends by unit, then propagate along seismic horizons; fill gaps with composition/lithology-based estimates where no core exists. Validate forward-modelled gravity against observations and iterate. This leverages direct measurements where available and honours the layered geometry the seismic defines, while acknowledging that density is largely bulk-additive and predictable from composition and porosity.\label{notesref}
+
+\begin{multicols}{2}
+\textbf{Pros}
+\begin{itemize}[leftmargin=*]
+  \item Uses \emph{direct} core data to anchor $\rho(z)$; unit-specific compaction captured.\label{notesref}
+  \item Seismic ties enforce stratigraphic consistency across the basin.
+\end{itemize}
+\columnbreak
+\textbf{Cons}
+\begin{itemize}[leftmargin=*]
+  \item Core coverage may be sparse; lateral heterogeneity between wells remains.\label{notesref}
+  \item Fluid/pressure effects and diagenetic changes introduce uncertainty in porosity--depth laws.
+\end{itemize}
+\end{multicols}
+
+\section*{Scenario B: Mountain-Belt Cross-Section (Tectonics)}
+\textbf{Goal recap.} Provide unit densities for a balanced cross-section (dam siting context), testing isostasy and gravity fit with sparse samples.
+
+\paragraph{Questions for the geologist}
+\begin{itemize}[leftmargin=*]
+  \item What are the dominant lithologies and metamorphic grades along section (map + prior exploration reports)?~(Density correlates with composition and metamorphic state.)\label{notesref}
+  \item Are there systematic fabrics (foliation, layering) or fluid alteration zones that might affect cracks/porosity?\label{notesref}
+  \item Availability of any archival core/hand samples for grain-density validation?
+\end{itemize}
+
+Preferred method \& why\\
+\textbf{Composition/lithology-based density estimates by unit, calibrated with any available samples, with P--T adjustments from metamorphic grade.} Use mapped lithologies and representative compositions to assign grain densities, adjust for metamorphic state (denser eclogitic/mafic assemblages, lower for felsic), and apply modest porosity where appropriate (sediments). Validate against regional gravity; iterate unit densities within plausible ranges to achieve fit. Composition-based density is supported by the notes (e.g., felsic/mafic trends, Fe--Mg control), while acknowledging uncertainties from fabric and fractures.\label{notesref}
+
+\begin{multicols}{2}
+\textbf{Pros}
+\begin{itemize}[leftmargin=*]
+  \item Feasible with sparse sampling; leverages widely available geological maps.\label{notesref}
+  \item Naturally integrates with gravity modelling for plausibility checks.
+\end{itemize}
+\columnbreak
+\textbf{Cons}
+\begin{itemize}[leftmargin=*]
+  \item Non-uniqueness; multiple density assignments can fit gravity.\label{notesref}
+  \item Localized alteration/cracking not captured by map-scale lithology alone.
+\end{itemize}
+\end{multicols}
+
+\section*{Scenario C: Upper-Mantle Density for Isostasy (Geodynamics)}
+\textbf{Goal recap.} Convert regional tomography ($V_p$, $V_s$) into an upper-mantle density model for isostasy and subduction dynamics (to 410 km).
+
+\paragraph{Questions for the geologist}
+\begin{itemize}[leftmargin=*]
+  \item What petrologic constraints exist for wedge and slab compositions (peridotite, pyrolite variants, hydrated/\,metasomatized domains)?~(Composition controls density and elastic moduli.)\label{notesref}
+  \item Thermal structure priors (slab geotherm, wedge temperatures) and presence of partial melt or water?~(Temperature decreases velocity and density via thermal expansion/softening; hydration affects velocities.)\label{notesref}
+  \item Expected phase boundaries (e.g., 410 km olivine--wadsleyite) along the transect?
+\end{itemize}
+
+Preferred method \& why\\
+\textbf{Velocity-to-density conversion using mineral-physics-informed relations with P--T--composition corrections.} Start from tomography to obtain $V_p$, $V_s$ anomalies; adopt a reference mantle model and compute density via calibrated $\rho(V_p, V_s, P, T, X)$ relations (or $\rho$ from $K_S$, $\mu$, and thermal expansion), applying geotherm-based temperature corrections and composition scenarios. This aligns with notes that properties depend on P--T and composition; velocities increase with pressure, decrease with temperature, and cracks/fluids complicate shallow mantle.\label{notesref}
+
+\begin{multicols}{2}
+\textbf{Pros}
+\begin{itemize}[leftmargin=*]
+  \item Directly leverages available tomography; consistent with geodynamic inputs.\label{notesref}
+  \item Can explore scenario envelopes (dry vs hydrated wedge; warm vs cold slab).
+\end{itemize}
+\columnbreak
+\textbf{Cons}
+\begin{itemize}[leftmargin=*]
+  \item Conversion non-unique; requires mineral-physics assumptions and geotherm priors.\label{notesref}
+  \item Attenuation, anisotropy, and melt can bias $V_p$/$V_s$ without straightforward density equivalents.
+\end{itemize}
+\end{multicols}
+
+\section*{Scenario D: Aeromagnetic Susceptibility Model (Mineral/Exploration)}
+\textbf{Goal recap.} Build a susceptibility model that distinguishes prospective units and identifies where remanence may invalidate induced-only assumptions.
+
+\paragraph{Questions for the geologist}
+\begin{itemize}[leftmargin=*]
+  \item Lithologies and expected magnetic minerals (magnetite/hematite/ilmenite) and their alteration/oxidation states?~(Magnetic properties are mineralogically controlled.)\label{notesref}
+  \item Evidence for remanent magnetization (cooling, chemical remanence, volcanic units)? Domains where induced-only is unsafe?
+  \item Any existing hand-sample/\,core susceptibility measurements to calibrate ranges by unit?
+\end{itemize}
+
+Preferred method \& why\\
+\textbf{Hybrid approach: direct susceptibility measurements on representative samples to anchor unit-wise $\chi$, supplemented by lithology-based ranges elsewhere; test for remanence during inversion/interpretation.} Susceptibility is best constrained by measurement because it depends on specific magnetic phases and grain size; where sampling is impossible, use typical $\chi$ ranges by lithology, flagged with higher uncertainty. During modeling, evaluate phase/\,directional misfits suggestive of significant remanence. This mirrors notes emphasizing mineralogical control and limits of indirect proxies.\label{notesref}
+
+\begin{multicols}{2}
+\textbf{Pros}
+\begin{itemize}[leftmargin=*]
+  \item Anchors inversion with real $\chi$ values; improves discrimination of units.\label{notesref}
+  \item Explicitly surfaces remanence risk where induced models fail to match data.
+\end{itemize}
+\columnbreak
+\textbf{Cons}
+\begin{itemize}[leftmargin=*]
+  \item Sampling bias (outcrops/roads) may under-represent subsurface units.\label{notesref}
+  \item $\chi$ alone does not quantify remanence; requires additional magnetic information or assumptions.
+\end{itemize}
+\end{multicols}
+
+\section*{Scenario E: Heat-Flow Study in Granitic Terrane (Geothermal/Environmental)}
+\textbf{Goal recap.} Estimate $k(T)$ and radiogenic heat production for granites and metasediments to forecast geotherms and transients; pilot holes exist in overlying basin, granite known only from gravity.
+
+\paragraph{Questions for the geologist}
+\begin{itemize}[leftmargin=*]
+  \item Representative lithologies/compositions of granites and metasediments (regional analogues if direct samples absent)?~(Composition controls A and influences k.)\label{notesref}
+  \item Any K--U--Th data from nearby outcrops/archives; variability expected across facies?\label{notesref}
+  \item Basin geometry and basement depth from gravity/seismic to set layer thicknesses for thermal models?
+\end{itemize}
+
+Preferred method \& why\\
+\textbf{Composition-based A from K--U--Th where available; conductivity $k(T)$ estimated from composition/mineralogy (or $V_p$ proxy in basin sediments), constrained by pilot-hole temperature gradients; basement geometry from gravity.} Use pilot wells to calibrate basin sediment $k$ and surface heat flow; estimate granite A from regional geochemistry and map plausible $k$ from mineralogy; propagate uncertainties with envelope models. Notes indicate heat production can be predicted from composition and that conductivity often correlates with composition or $V_p$; tie to layer geometry for thermal modeling.\label{notesref}
+
+\begin{multicols}{2}
+\textbf{Pros}
+\begin{itemize}[leftmargin=*]
+  \item Leverages existing pilot-hole data to constrain near-surface thermal state.\label{notesref}
+  \item Physically motivated estimates of A and k from composition/mineralogy.
+\end{itemize}
+\columnbreak
+\textbf{Cons}
+\begin{itemize}[leftmargin=*]
+  \item Basement properties remain uncertain without direct samples; multiple granite variants possible.\label{notesref}
+  \item k anisotropy and temperature dependence add uncertainty in transient predictions.
+\end{itemize}
+\end{multicols}
+
+\section*{Scenario F: Geothermal Heat Flow at Base of Antarctic Ice Sheet (Geothermal/Glaciology)}
+\textbf{Goal recap.} Develop basal heat-flow inputs for ice-dynamics stability assessment; nunatak samples/geochemistry exist near coast; regional seismic (low-res) and gravity (high-res) are available; interior is poorly exposed.
+
+\paragraph{Questions for the geologist}
+\begin{itemize}[leftmargin=*]
+  \item Crustal/lithologic provinces expected beneath the ice interior (from regional geology and nunatak analogues)?~(Composition controls A and influences k.)\label{notesref}
+  \item Any heat-flow or temperature constraints (boreholes, radar internal layers/\,basal conditions) to calibrate models? (External geophysics to cross-check.)
+  \item Evidence for radiogenic granites vs mafic provinces inland; degree of heterogeneity?
+\end{itemize}
+
+Preferred method \& why\\
+\textbf{Regional prior approach: map A and k using composition inferences from nunatak geochemistry and tectonic province analogues; constrain crustal thickness/geometry with gravity + seismic; assimilate ice-temperature/radar indicators where available.} Predict A from K--U--Th of coastal outcrops with uncertainty bounds; extrapolate cautiously inland using tectonic/domain mapping; assign k from mineralogy/rock type ranges; use gravity+seismic to define thermal layer thicknesses; test model families against ice temperature/flow indicators. Notes support composition-based A and k estimation and stress uncertainty where sampling is limited.\label{notesref}
+
+\begin{multicols}{2}
+\textbf{Pros}
+\begin{itemize}[leftmargin=*]
+  \item Feasible despite limited exposure; integrates multiple datasets for consistency.\label{notesref}
+  \item Produces uncertainty-bounded priors suitable for ice-flow modelling sensitivity tests.
+\end{itemize}
+\columnbreak
+\textbf{Cons}
+\begin{itemize}[leftmargin=*]
+  \item Extrapolation from nunataks may misrepresent inland lithologies; large uncertainty in A.\label{notesref}
+  \item Sparse calibration for $k(T)$ and basal conditions; anisotropy/fluids may not be captured.
+\end{itemize}
+\end{multicols}
+
+\end{document}

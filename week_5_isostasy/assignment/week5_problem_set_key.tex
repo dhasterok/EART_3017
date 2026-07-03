@@ -1,0 +1,216 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+
+\title{Solution Set: Gravity Anomalies and Isostatic Response}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question 2: Shallow and Deep Bodies}
+
+\subsection*{(A) Gravity anomaly of a 2-D polygon}
+
+The Talwani et al.\ (1959) formulation gives the exact vertical gravity anomaly for a
+two-dimensional body of constant density contrast $\Delta\rho$ with polygonal geometry.
+The method assumes:
+\begin{itemize}
+    \item infinite extent perpendicular to the $x$--$z$ plane,
+    \item constant density contrast,
+    \item observation at the surface ($z=0$).
+\end{itemize}
+
+The total anomaly is obtained as the sum of contributions from each polygon edge.
+No approximation is made beyond the 2-D assumption. Implementation is most easily
+performed by looping over polygon edges in Python or MATLAB.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{(B) Triangular rift basin}
+
+\subsubsection*{(1) Geometry}
+
+The basin is bounded by two faults dipping at $60^\circ$ and has a total vertical
+offset of $\SI{5}{km}$. The basin is centered at $(0,0)$, with the surface at $z=0$.
+
+The horizontal half-width of the basin is:
+\[
+w = \frac{(5/2)}{\tan 60^\circ} \approx \SI{1.44}{km}.
+\]
+
+A suitable clockwise ordering of vertices is:
+\[
+(-1.44,0), \quad (0,-5), \quad (1.44,0).
+\]
+
+\subsubsection*{(2) Gravity anomaly}
+
+Using the polygon equation with a negative density contrast typical of sediments
+($\Delta\rho \approx -400~\si{kg\,m^{-3}}$), the computed anomaly is negative and symmetric.
+The anomaly decays smoothly to zero at large distances from the basin.
+
+\subsubsection*{(3) Interpretation}
+
+\begin{itemize}
+    \item The maximum horizontal gradient occurs near the basin edges, not at the basin center.
+    \item Because the geometry is symmetric, the anomaly is symmetric about $x=0$.
+\end{itemize}
+
+The gravity signal is dominated by the sloping fault planes rather than the deepest
+point of the basin.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{(C) Trapezoidal rift basin}
+
+\subsubsection*{(1) Geometry}
+
+The trapezoidal basin has the same surface coordinates as part (B) but a flat base
+at $\SI{3}{km}$ depth. The sidewall dips are comparable to those in the triangular case.
+One valid vertex ordering is:
+\[
+(-1.44,0),\ (-0.44,-3),\ (0.44,-3),\ (1.44,0).
+\]
+
+\subsubsection*{(2) Gravity anomaly}
+
+The trapezoidal basin produces a broader, smoother anomaly compared to the triangular
+basin, with reduced curvature near the edges.
+
+\subsubsection*{(3) Comparison}
+
+\begin{itemize}
+    \item \textbf{Edge slope} controls the location and sharpness of gradients.
+    \item \textbf{Depth extent} controls anomaly amplitude and wavelength.
+    \item \textbf{Density contrast} scales the magnitude but does not strongly affect shape.
+\end{itemize}
+
+Different basin geometries with similar edges and depths can produce very similar
+gravity anomalies.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{(D) Basin over a crustal root}
+
+The crustal root is represented by a triangular body of width $\SI{30}{km}$ and
+maximum thickness $\SI{10}{km}$. Typical density contrasts are:
+\[
+\Delta\rho_{\text{basin}} \sim -400~\si{kg\,m^{-3}}, \qquad
+\Delta\rho_{\text{root}} \sim +300~\si{kg\,m^{-3}}.
+\]
+
+\subsubsection*{Root alone}
+
+The root produces a long-wavelength, low-amplitude anomaly dominated by its depth
+and width.
+
+\subsubsection*{Basin alone}
+
+The basin produces a short-wavelength anomaly dominated by edge effects.
+
+\subsubsection*{Combined model}
+
+When the basin and root are combined, the shallow basin dominates the short-wavelength
+signal, while the root affects the long-wavelength background. With suitable basin
+parameters, the combined anomaly can closely resemble a basin-only anomaly.
+
+This demonstrates the fundamental non-uniqueness of gravity interpretation.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question 3: Isostasy --- Oceanic vs Continental Lithosphere}
+
+Isostatic columns constructed using crustal thickness alone cannot balance oceanic
+and continental lithosphere. Balance requires a density difference within the mantle
+lithosphere of order:
+\[
+\Delta\rho \sim 30\text{--}60~\si{kg\,m^{-3}},
+\]
+which can plausibly be explained by compositional or thermal differences.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question 4: Isostatic Response to Erosion}
+
+\subsection*{(A) Single-layer crust}
+
+Assume:
+\[
+\rho_c = 2800~\si{kg\,m^{-3}}, \qquad \rho_m = 3300~\si{kg\,m^{-3}}.
+\]
+
+The Airy isostatic factor is:
+\[
+\alpha = \frac{\rho_m - \rho_c}{\rho_m} \approx 0.15.
+\]
+
+\subsubsection*{(1) Instantaneous erosion of \SI{2}{km}}
+
+Surface lowering:
+\[
+\Delta \varepsilon = 2~\si{km} \times \alpha \approx 0.30~\si{km}.
+\]
+New elevation:
+\[
+\varepsilon \approx \SI{5.8}{km}.
+\]
+
+\subsubsection*{(2) Total erosion to baseline}
+
+\[
+E = \frac{\varepsilon_0}{\alpha} \approx \frac{6.1}{0.15} \approx \SI{41}{km}.
+\]
+
+\subsubsection*{(3) Fraction replaced by rebound}
+
+\[
+1-\alpha \approx 85\%.
+\]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{(B) Continuous erosion with rebound}
+
+The erosion law is:
+\[
+\frac{dE}{dt} = k\,\varepsilon,
+\qquad k = \SI{0.1}{Myr^{-1}}.
+\]
+
+Under Airy isostasy:
+\[
+\frac{d\varepsilon}{dt} = -\alpha \frac{dE}{dt}
+= -\alpha k \varepsilon.
+\]
+
+\subsubsection*{(1) General solution}
+
+\[
+\varepsilon(t) = \varepsilon_0 e^{-\alpha k t}.
+\]
+
+\subsubsection*{(2) No rebound limit}
+
+If $\alpha=1$:
+\[
+\varepsilon(t) = \varepsilon_0 e^{-k t}.
+\]
+
+\subsubsection*{(3) Initial erosion rates}
+
+With $\varepsilon_0 = \SI{6100}{m}$:
+\[
+\left.\frac{dE}{dt}\right|_{t=0} = 610~\si{m\,Myr^{-1}}, \qquad
+\left.\frac{d\varepsilon}{dt}\right|_{t=0} \approx 91~\si{m\,Myr^{-1}}.
+\]
+
+\subsubsection*{(4) Time to erode 95\% of relief}
+
+\[
+t_{95} = \frac{\ln(20)}{\alpha k}
+\approx \SI{200}{Myr}.
+\]
+
+\subsubsection*{(5) Interpretation}
+
+Isostatic rebound increases erosion timescales by more than an order of magnitude,
+allowing large mountain belts to persist for hundreds of millions of years despite
+vigorous erosion.
+
+\end{document}

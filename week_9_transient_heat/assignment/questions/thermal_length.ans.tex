@@ -1,0 +1,64 @@
+{\bf Back of the envelope}\\
+In addition to solving the problems below, discuss the typical values and/or
+ranges for the parameters you will need?
+\begin{enumerate}
+    \item How long does it take a thermal perturbation at the base of a
+    craton to reach the surface?  Consider what you will need to know to
+    solve this problem.  
+    
+    {\bf Answer:} \\
+    Again, we will use the thermal length estimate for the time
+    (Equation~\ref{eq:tscale}).  We need only two parameters then to
+    estimate how long it takes the perturbation to reach the surface: the
+    thermal diffusivity and the thickness of the lithosphere.  The
+    lithosphere is typically between 70 and 200~km thick.  The thermal
+    diffusivity of most Earth materials are about $1 \times
+    10^{-6}$~m$^{2}$~Ma$^{-1}$ which we will want in units of
+    km$^{2}$~Ma$^{-1}$ so that we arrive at the correct units of Ma in our
+    final result.
+    
+    So a little trick here.  If you want to convert the number of seconds
+    into years, you can approximate the number of seconds in a year as $\pi
+    \times 10^7$.  The real number is 31557600 so our approximation is in
+    error by 0.45\% (who cares).  This can be a really handy trick if you
+    want to cancel a $\pi$ out of a back the envelope equation.
+
+    Now back to the problem, converting the thermal diffusivity,
+    \begin{align*}
+        \kappa &= (10^{-6} \text{ m$^{2}$ s$^{-1}$})(\pi \times
+        10^{13}
+        \text{ s Ma$^{-1}$})(10^{-6} \text{ km m$^{-1}$}) \\
+        &\approx 30 \text{ km$^2$ Ma$^{-1}$} .
+    \end{align*}
+    Inputting our diffusivity and lithospheric thickness into the thermal
+    length equation,
+    \begin{align*}
+        t &= \frac{(70\text{ km})^2}{(4) (30 \text{ km$^2$~Ma$^{-1}$})}\\
+        &\approx 40 \text{ Ma},
+    \end{align*}
+    if the lithosphere is thin and 
+    \begin{align*}
+        t &= \frac{(200\text{ km})^2}{(4) (30 \text{ km$^2$~Ma$^{-1}$})}\\
+        &\approx 330 \text{ Ma},
+    \end{align*}
+    if the lithosphere is thick.  Either way, it can take a very long time
+    for a temperature perturbation to reach the surface.
+
+    \item The retreat of glaciers at the end of the Pleistocene
+    ($\sim$10~ka) allowed warmer air temperatures to heat the ground.  How
+    deep a borehole would we need to observe temperatures undisturbed by
+    warming? Assume a diffusivity of $0.8 \times 10^{-6}$~m$^2$~s$^{-1}$.
+
+    {\bf Answer:} \\
+    This time, we know the time so we and the diffusivity so all we need now
+    is to estimate the depth the heat pulse has penetrated, which we
+    estimate using Equation~\ref{eq:zscale}
+    \begin{align*}
+        z &= 2 [(0.8 \times 10^{-6} \text{ m$^{2}$~s$^{-1}$})(\pi \times
+        10^{11} \text{ s ka$^{-1}$})(10 \text{ ka})]^{1/2} \\
+        z &\approx 1000 \text{ m}
+    \end{align*}
+    So in 10,000 years, the change in surface temperature that resulted from
+    glacial retreat has propagated only about 1000~m (1~km) into the Earth.
+\end{enumerate}
+

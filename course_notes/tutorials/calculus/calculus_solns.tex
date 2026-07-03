@@ -1,0 +1,129 @@
+\documentclass[final,a4paper,12pt]{article}
+
+\usepackage{notes}
+\setlength\parskip{1ex}
+\setlength\parindent{0cm}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{problem}{Problem}[section]
+\newtheorem{solution}{Solution}[section]
+
+\title{Geophysics III}
+\author{Calculus Tutorial Solutions}
+
+
+\begin{document}
+\maketitle
+
+\section{Derivative Practice Problems}
+
+\begin{problem}
+    Plate Cooling \\
+    To find the heat flow from the temperature, we need to take the derivative
+    of the temperature with respect to depth; the solution includes the
+    following derivative
+    \begin{equation*}
+        \od{}{z} \frac{1}{n} \sin \left( \frac{n \pi z}{L} \right)
+    \end{equation*}
+\end{problem}
+
+\begin{solution}
+    Step 1:
+    \begin{align*}
+        \od{}{z} \frac{1}{n} \sin \left( \frac{n \pi z}{L} \right) 
+        && \od{}{x} a u &= a \od{}{x} u \\
+        && a &= \frac{1}{n} \\ 
+        && u &= \sin \left( \frac{n \pi z}{L} \right) \\
+        \frac{1}{n} \od{}{z} \sin \left( \frac{n \pi z}{L} \right)
+    \end{align*}
+    Step 2:
+    \begin{align*}
+        \frac{1}{n} \od{}{z} \sin \left( \frac{n \pi z}{L} \right)
+        && \od{}{x} a u &= a \od{}{x} u \\
+        && a &= \frac{1}{n} \\ 
+        && u &= \sin \left( \frac{n \pi z}{L} \right) \\
+        \frac{1}{n} \sin \left( \frac{n \pi z}{L} \right) \od{}{z} \left( \frac{n \pi z}{L} \right)
+    \end{align*}
+\end{solution}
+
+\begin{problem}
+    Seismic Reflection \\
+    To find the minimum travel-time due to a seismic reflection off a boundary,
+    we need to take the derivative of t(x) as below,
+    \begin{equation*}
+        \od{}{x} v_1^{-1} [ (h^2 + x^2)^{1/2} + (h^2 + (d - x)^2)^{1/2}]
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Decompression Melting \\
+    To model partial melting, you need to take the derivative of the melt
+    depression term,
+    \begin{equation*}
+        \od{}{F} K \left( \frac{X_0}{D + F(1 - D)} \right)^\gamma .
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Gravity on an Ellipsoid \\
+    As part of the derivation to determine the gravity of an ellipsoid (remember
+    we make an ellipsoidal correction to gravity), we need to differentiate the
+    equation of an ellipsoid,
+    \begin{equation}
+    \od{}{\theta} \frac{1 - f}{1 - f\sin^2 \theta} .
+    \end{equation}
+\end{problem}
+
+
+
+
+\section{Integral Practice Problems}
+
+\begin{problem}
+    Steady-State Temperature \\
+    To find the temperature in a half-space, we need to integrate the thermal
+    gradient with depth,
+    \begin{equation*}
+        \int \left( \frac{q_0}{k} - \frac{A}{k} z \right) \dd{z} ,
+    \end{equation*}
+    where $q_0$, $A$, and $k$ are constants.
+\end{problem}
+
+\begin{problem}
+    Radioactive Decay \\
+    To find the number of parent radionuclides present due to radioactive
+    decay, we need to integrate both sides of the following equation,
+    \begin{equation*}
+        \int_{N_0}^N \frac{\dd{N'}}{N'} = - \int_0^t \lambda \dd{t'} ,
+    \end{equation*}
+    and once complete, solve for $N$.
+\end{problem}
+
+\begin{problem}
+    Buried Slab \\
+    This integral is similar to one we needed for our buried slab problem,
+    \begin{equation*}
+        \int_0^R \frac{r}{(r^2 + z^2)^{3/2}} \dd{r} .
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Mass Flux \\
+    The mass flux of asthenosphere (mass passing a given point per unit time)
+    moved by a tectonic plate can be expressed as
+    \begin{equation*}
+        \int_0^h \rho u_0 \frac{y}{h} \dd{y} .
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Entropy \\
+    In petrology, the entropy is a key thermodynamic parameter.  The change in
+    entropy is related to temperature as
+    \begin{equation}
+        \Delta S = \int_{T_1}^{T_2} \frac{C_P}{T} \dd{T} .
+    \end{equation}
+\end{problem}
+
+\end{document}

@@ -1,0 +1,713 @@
+\documentclass[final,a4paper,12pt]{article}
+
+\usepackage{notes}
+\setlength\parskip{1ex}
+\setlength\parindent{0cm}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\newtheorem{problem}{Problem}[section]
+
+\title{Geophysics III}
+\author{Calculus Tutorial}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+Derivatives and integrals seem to frighten most students.  Perhaps because most
+of us are taught to fear math and the further one gets in math the more it
+should be feared.  Calculus can at times be rather complex, but in general it is
+relatively easy (especially derivatives) and requires learning a few simple
+rules and a handful of standard forms.  Most derivatives and many integrals can
+be simplified into one of any of these standard forms, but it requires seeing
+patterns that allow us to transform a more complicated forms into a simple
+standard one.  Mostly, learning how to use calculus will take a little
+experience but not a lot of hard work.
+
+Calculus is the study of infinitesimals, that is the study of operations
+performed on functions as changes in the distance between two knowns become
+really really small. This allow us to determine slopes and inflection points,
+areas and volumes, maxima and minima, and averages.  To understand calculus, we
+first need to understand the concept of limits and infinitesimals.  We'll start
+there, but then continue onto derivatives and integrals which give us all the
+wonderful things I just mentioned.
+
+\section{Limits}
+Limits give us the ability to describe the class of problems where we wish to
+know the value of a function while approaching some known point, but cannot
+quite reach it.  This may sound a little silly at first blush, but there are
+plenty of points we cannot reach, $\infty$ and $-\infty$ for starters.  But for
+some functions, such as $x^{-1}$, we cannot evaluate the function at 0 or
+another some other well defined point(s).  Don't believe me.  Go ahead.  Your
+calculator will cowardly refuse to answer if you try.
+
+We write a the limit of a function at $x$ as
+\begin{equation}
+    \mlbox[
+        labelstyle={xshift=-3cm,yshift=0.5em},
+        linestyle={out=270,in=90, latex-}]
+        {\lim_{x \to x_0}} {indicates limit as $x$ approaches $x_0$}
+    \mlbox[
+        labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+        {f(x)} {function of $x$}
+    = 
+    \mlbox[
+        labelstyle={xshift=2cm},
+        linestyle={out=270,in=90, latex-}]
+        {L} {limit of function at $x_0$*} ,
+\end{equation}
+*where $f(x_0)$ may be undefined, but can be predicted.
+
+So how do limits work?  As an example, suppose we wanted to know what
+happens to $\exp(-x)$ as $x$ approaches 1.  This is a trivial case since we can
+easily evaluate the function to find $\exp(-1) = e^{-1}$.
+
+Now suppose we wanted to know what happens when $x$ becomes infinite.  We
+cannot directly evaluate $\exp(-\infty)$ so we need a way to determine the value
+at $\infty$, we write this problem as
+\begin{equation}
+    \lim_{x \to \infty} \exp(-x) = ? ,
+\end{equation}
+which we would read as, the limit of $\exp(-x)$ as $x$ approaches $\infty$.  If
+we rewrite this problem just a little,
+\begin{equation}
+    \lim_{x \to \infty} \frac{1}{\exp(x)} = \frac{1}{\displaystyle \lim_{x \to \infty} \exp(x)} .
+\end{equation}
+We can write $\exp(x)$ as an infinite series
+\begin{equation}
+    \exp(x) = \sum_{k = 0}^\infty \frac{x^k}{k!} \approx 1 + x + \frac{x^2}{2} +
+    \frac{x^3}{6} + \frac{x^4}{24} + \cdots .
+\end{equation}
+Clearly as $x \to \infty$, this infinite series then implies $\displaystyle \lim_{x \to \infty}
+\exp(x) = \infty$ and likewise $\displaystyle \lim_{x \to \infty} \exp(-x) = 0$.  In
+fact, one could prove that for any positive number greater than 1,
+$a^{-\infty} = 0$.  The result detailed above really reiterates what we could have
+guessed all along since the answer is well known, but it may not
+always be possible to guess accurately---we'll generally stick to things that
+are well known in this class.
+
+Let's return to $x^{-1}$ as $x \to 0$.  If we were to plot this function, we
+would see that for positive values of $x$, the function as small values is very
+large and for small negative values it is very small.  This presents a problem
+because the two branches of the function approach different values depending on
+which side of 0 we approach from.  Hence, for some cases, we have to indicate
+our direction of approach which we can do by $x \to 0^+$ from above and $x \to
+0^-$ from below.
+
+Like I mentioned before, we'll stick to cases where we know what the asymptotic
+value is (or easy to guess) without having to do a bunch of rigorous work.
+Hopefully now, you have an idea of what a limit is doing and how we write it.
+
+\section{Infinitesimals}
+Zeno, an ancient Greek mathematician, posed a paradox, that illustrates
+infinitesimals fantastically.  In the course of a race, a runner will reach a
+point that is half the distance between the start and finish.  Some time later,
+he is half way between the half way mark and the finish (at the quarter mark).
+And again he must reach a point that is half way between the quarter mark and
+the finish---and so on, such that he must always reach a point that is half way
+between a previous half way mark and the finish line without crossing.  So then,
+how can the runner ever reach the finish line if they must always reach a point
+half way between the finish and a point not quite there.  An infinitesimal is
+just that, a point that you can never quite reach.  How small are they?  I don't
+know, but I can always make a quantity smaller than a number you suggest.  It is
+kinda like when kids discover infinity and find that some infinities are larger
+than others.
+
+``Oh yeah, infinity plus one.''
+
+``Nuh-uh, infinity times infinity.''
+
+Calculus relies on this concept of infinitesimals, small numbers so small such
+that there is nothing smaller except 0 itself.
+
+
+\section{Derivatives}
+When we take a derivative we are determining how fast a function is changing
+with respect to something---a spatial coordinate (say $z$), time or
+whatever.  You are already familiar with derivatives.  Your car's speedometer
+reports a derivative of your position with respect to time.  The slopes on a ski
+run are the derivative of elevation with respect to position.  The cricket
+scoring runs per over is also a derivative with respect to overs.  So
+derivatives are used frequently even though we may not always think of them in
+this way.
+
+\subsection{Slope}
+Derivatives are all about rates and differences.  More specifically, the rate in
+change of a function at a point.  As an example, we will look at one of the
+simplest functions one can draw, a line.
+
+Recall the general equation of a line, $y = m x + b$, where $m$ is the slope and
+$b$ is the $y$-intercept.  A derivative is very similar to our definition of
+slope, which for a line is defined as 
+\begin{equation}
+    m = \frac{y_2 - y_1}{x_2 - x_1} ,
+\end{equation}
+where $(x_1,y_1)$ and $(x_2,y_2)$ are any two points on the line but $x_1 \neq
+x_2$.  We can write these differences in $x$ as $\Delta x = x_2 - x_1$ and
+similarly for $y$, $\Delta y = y_2 - y_1$, which gives for the slope
+\begin{equation}
+    m = \frac{\Delta y}{\Delta x} .
+\end{equation}
+If we reduce $\Delta x$, making it smaller and smaller, $\Delta y$ will likewise
+shrink since the slope of the line must remain constant.  If we continue to make
+$\Delta x$ smaller such that it approaches zero, but never reaches zero, we can
+say that $\Delta x$ is infinitesimally small.  This concept of infinitesimals is
+fundamental to understanding both derivatives and integrals.
+
+We express this idea of an infinitesimally small quantity as $\dd{x}$.
+Mathematically, we would say that in the limit as $\Delta x$ approaches zero,
+the result is $\dd{x}$. In math speak, we write this limit as $\lim_{\Delta x \to
+0} = \dd{x}$.  So how small is $\dd{x}$?  I can't put an exact number on it.
+However, if you choose a value, I can always find a smaller value between your
+choice and zero.  As a result of $\dd{x} \to 0$, $\Delta y$ must also tend to
+zero, giving us $\dd{y}$.  Remember for a line no matter how small $\dd{x}$ and
+$\dd{y}$ become, the ratio of the two will always yield a constant, the slope,
+\begin{equation}
+    m = \frac{\dd{y}}{\dd{x}} .
+\end{equation}
+
+We call the above result a derivative.  In this case, specifically the
+derivative of a line.  The derivative of a line is the slope of the line at
+every point along it.  So the derivative is the rate in change of the function
+($y$) with respect to the independent variable ($x$).  While the derivative of
+a function is a constant only if the function is a line, this
+concept of measuring the change in a function over a very small change in the
+independent variable is kept.
+
+If you are interested, look up the epsilon-delta proof online, it is the formal
+proof of what we have just described above.
+
+\subsection{Anatomy of a Derivative}
+Above, we showed that the derivative of a line is its slope.  We can extend this
+idea of the slope at a point for any function, $f(x)$, more generally.  To
+express this idea, we write
+\begin{equation}
+    \mlbox[
+        labelstyle={yshift=0.5em},
+        linestyle={}]
+        {\dv{}{x}} {differential operator}
+    \mlbox[
+        labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+        {f(x)} {function of $x$}
+    = 
+    \mlbox[
+        labelstyle={xshift=2cm},
+        linestyle={out=270,in=90, latex-}]
+        {f'(x)} {derivative of $f(x)$} .
+\end{equation}
+where $f(x)$ is an arbitrary function of $x$, $x$ is the independent variable,
+and $f'(x)$ is the derivative of $f(x)$ and also a function of $x$.  The
+$\dv{}{x}$ is called the differential operator.  If you are unfamiliar with the
+term operator, an operator is a symbol or collection of symbols when taken as a
+whole that perform a defined mathematical task.  For example, the `$\dv{}{x}$'
+operator indicates that we take the derivative of a function with respect to $x$
+just as a `$+$' means that we add the quantities on either side.
+
+\subsection{Practical Differentiation}
+We could of course spend the time---as one might in a math course---by deriving
+and proving the rules and standard forms for differentiation.  However, since
+mathematicians have already done the hard work for us, we can just focus on using them
+instead.  All or at least nearly all of the derivatives and rules we will need
+for this course can be found in the math appendices under the table of
+derivatives.
+
+When I say that all the derivatives that we will need for the course are found
+within the table of derivatives, it does not necessarily mean that they are
+symbol for symbol the same.  Every equation you will encounter can be rearranged
+into one of these common forms.  I've included the table again below for
+convenience, but how do we use them?
+
+\subsubsection{Table of Common Derivatives}
+\input{tod}
+
+\subsubsection{Using the Derivative Table}
+The derivative table above can be used to take the derivatives of many more
+functional forms than those shown in the table.  In fact, the table is much more
+general than it appears.  The letters `$a$' and `$n$' in the table indicate
+constants.  These constants can be anything---a number, a collection of
+constants, a function of an independent variable---so long as it isn't a
+function of the variable of differentiation.  The letters `$u$' and `$v$' are
+both functions of $x$, which can be any arbitrary function so long as it is
+differentiable (we discussed this on problem set 1).  But this table doesn't
+just work for derivatives with respect to $x$.  They can be with respect to any
+independent variable.
+
+So what to do if our problem does not look like one of the derivatives listed on
+the table?
+\begin{enumerate}
+    \item Find a set of functions and constants which transform the original
+    function to look like a form in the table; that is, by choosing an appropriate
+    function, $u(x)$ and/or $v(x)$, and/or constants, $a$ and/or $n$.
+
+    \item Copy the derivative from the table that matches the transformed
+    equation.
+
+    \item Substitute our original constants and functions into the standard
+    derivative solution.
+
+    \item Perform the next derivative, repeating the previous three steps until
+    $\dv{u}{x} = \dv{x}{x} = 1$ or $\dv{a}{x} = 0$.
+\end{enumerate}
+
+One thing you will discover is that for a large majority of these problems, we will
+have to take several derivatives.
+
+\begin{example}
+    Suppose,
+    \begin{equation*}
+        f(x) = \frac{1}{(x^2 + c^2)^{1/2}} ,
+    \end{equation*}
+    where $c$ is a constant.  Find
+    \begin{equation*}
+        \dv{}{x}\Biggl(\frac{1}
+        {(
+            \mlbox[
+                labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+                {x^2 + c^2} {$= u(x)$}
+            )
+            \mlbox[
+                labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+                {^{1/2}} {$= n$} 
+        }\Biggr) .
+    \end{equation*}
+
+    If you look at the table of derivatives, you will not find this exact
+    solution listed.  However, looking at the table and our function we can see
+    that if we write our function as
+    \begin{align*}
+        f(x) &= \frac{1}{u^n} , \\
+        u &= x^2 + c^2 , \\
+        n &= \frac{1}{2} .
+    \end{align*}
+    The derivative of this function is in our table of derivatives,
+    \begin{equation*}
+        \dv{}{x}\left( \frac{1}{u^n} \right) = -n \frac{1}{u^{n+1}} \dv{u}{x} .  
+    \end{equation*}
+    Substituting the original transformed values back in our transform, we find
+    \begin{equation*}
+        \dv{}{x}\left( \frac{1}{u^n} \right) =
+        - \frac{1}{2} \frac{1}{(x^2 + c^2)^{1/2+1}} \dv{}{x} (x^2 + c^2) .
+    \end{equation*}
+    So you'll see we have another derivative that we need to determine, but at
+    least we have simplified our original derivative.  Using the same procedure
+    again, we need to transform the derivative term into one in the table.   
+    \begin{equation*}
+        \dv{}{x} \frac{1}{(x^2 + c^2)^{1/2}} = 
+        - \frac{1}{2} \frac{1}{(x^2 + c^2)^{3/2}} \dv{}{x} (
+        \mlbox[ ] {x^2} {$= u(x)$}
+        + 
+        \mlbox[
+            labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+            {c^2} {$= v(x)$}
+        ) .
+    \end{equation*}
+    Looking at the table of derivatives, we see that we can write our derivative
+    in the form
+    \begin{equation*}
+        \dv{}{x} (u + v) = \dv{u}{x} + \dv{v}{x} .
+    \end{equation*}
+    Therefore,
+    \begin{equation*}
+        \dv{}{x} \frac{1}{(x^2 + c^2)^{1/2}} = 
+        - \frac{1}{2} \frac{1}{(x^2 + c^2)^{3/2}} \Biggl(\dv{}{x} 
+        \mlbox[ ] {x} {$= u(x)$}
+        \mlbox[
+            labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+            {^2} {$= n$}
+        + \dv{}{x}
+        \mlbox[
+            labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+            {c^2} {$= a$}
+        \Biggr) .
+    \end{equation*}
+    Now we have two derivatives that we need to evaluate.  For the first, we use
+    \begin{align*}
+        \dv{}{x} u^n &= n u^{n-1} \dv{u}{x}\\
+        &= 2 x^{2-1} \dv{x}{x} .
+    \end{align*}
+    Since we can see from the table that $\dv{x}{x} = 1$, the result of the
+    derivative $\dv{x^2}{x} = 2x$.  Turning our attention to the second derivative,
+    we see from the table of derivatives that $\dv{a}{x} = 0$ when $a$ is
+    independent of $x$.  Now we've completed all the derivatives we need to
+    perform and we can focus on simplifying our expression,
+    \begin{align*}
+        \dv{}{x} \frac{1}{(x^2 + c^2)^{1/2}} &= - \frac{1}{2} \frac{1}{(x^2 +
+        c^2)^{3/2}} (2 x + 0) , \\
+        \dv{}{x} \frac{1}{(x^2 + c^2)^{1/2}} &= - \frac{x}{(x^2 +
+        c^2)^{3/2}} ,
+    \end{align*}
+    and we are done.
+
+    This process may have seemed long and laborious, but the more you do them,
+    the faster you will become.  Also you'll start to see several steps ahead,
+    which will allow you to more rapidly discover the solution.
+
+    We could go one set further and ask what the slope of a function is at a
+    particular point, say $x = x_0$.  In this case, we determine the derivative
+    and then evaluate our result with $x$ replaced by the value $x_0$.
+\end{example}
+
+
+\subsubsection{Practice Problems}
+I will give you some time to try these and then we'll do them together as part
+of the tutorial.
+
+\begin{problem}
+    Plate Cooling \\
+    To find the heat flow from the temperature, we need to take the derivative
+    of the temperature with respect to depth; the solution includes the
+    following derivative
+    \begin{equation*}
+        \dv{}{z} \frac{1}{n} \sin \left( \frac{n \pi z}{L} \right)
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Seismic Reflection \\
+    To find the minimum travel-time due to a seismic reflection off a boundary,
+    we need to take the derivative of t(x) as below,
+    \begin{equation*}
+        \dv{}{x} v_1^{-1} [ (h^2 + x^2)^{1/2} + (h^2 + (d - x)^2)^{1/2}]
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Decompression Melting \\
+    To model partial melting, you need to take the derivative of the melt
+    depression term,
+    \begin{equation*}
+        \dv{}{F} K \left( \frac{X_0}{D + F(1 - D)} \right)^\gamma .
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Gravity on an Ellipsoid \\
+    As part of the derivation to determine the gravity of an ellipsoid (remember
+    we make an ellipsoidal correction to gravity), we need to differentiate the
+    equation of an ellipsoid,
+    \begin{equation}
+    \dv{}{\theta} \frac{1 - f}{1 - f\sin^2 \theta} .
+    \end{equation}
+\end{problem}
+
+\subsection{Maxima and Minima}
+One of the really useful applications of a derivative is its use to determine
+the locations of maxima and minima of a function.  While some functions extend
+to $\pm\infty$, there may be individual points where a function decreases in
+value before increasing (minima) or increases in value before decreasing
+(maxima).  For a maxima, logic tells us that there must be some point along the
+path for which the slope on the left is positive and the slope on the right is
+negative.  If so, there must be a point where the slope changes sign and,
+therefore, must be zero.  So if we want to know where this point occurs, then we
+simply find our expression for the derivative and set it equal to zero (i.e.,
+$\dv{f(x)}{x} = 0$) and then solve for $x$.  The same must also be true for
+minima.  So we may not know, simply by taking the derivative, whether the point
+we found is a maximum or minimum, but we can easily check by plotting the
+function.
+
+An extension of the maxima and minima is finding the points for which the slope
+of a function is maximum or minimum (these points are called inflection points).
+How might we find these points using derivatives?
+
+\subsection{Multiple Derivatives}
+As alluded to previously, it is possible to take the derivative of a function
+multiple times.  The second derivative of a function is quite commonly used to
+describe physical systems.  We often call the second derivative the curvature
+because it tells us how fast the slope is changing.
+
+To take multiple derivatives, all you need to do is follow the rules to find the
+derivative of a function, then take the derivative of the result, and so on
+until the desired derivative is reached.  To indicate higher order derivatives,
+we include the order of the derivative, e.g., for a second order derivative,
+\begin{equation}
+    \dv{}{x}\dv{f(x)}{x} = \dv[2]{f(x)}{x} .
+\end{equation}
+I cannot think of
+any derivatives higher than order four in geoscience, and those are uncommon,
+used only in flexural problems.  Generally, you won't need
+to take more than one or two.
+
+\subsection{Partial Derivatives}
+Suppose we had a function that had multiple independent variables, i.e.,
+$f(x,y,z)$.  For example, gravity fields due to a sphere, elevation, and
+temperatures within the Earth.  We can also take the derivatives of these
+functions.  However, when we do so, we specify the independent variable or
+multiple independent variables to differentiate with respect to.  We call these
+derivatives partial derivatives.  When we take partial derivatives, we change
+our notation slightly, exchanging our `$d$' with a `$\partial$'.  Because each
+variable is independent of the others, when we take a derivative with respect 
+
+
+
+\section{Integrals}
+Integrals are the opposite of a derivative, and are called by some an
+anti-derivatives.  The fundamental theorem of calculus defines an integral this
+way, i.e.,
+\begin{equation*}
+    f(x) = \dv{}{x} \int_0^x f(x') \dd{x'} ,
+\end{equation*}
+which basically says the integral is the opposite of a derivative.
+
+We use integrals to determine the area or volume defined by some boundary.  A
+submarine uses its velocity and the time it travels in a given direction to
+calculate the position of a ship.  The electrical energy you consume is
+determined by the integral of your power consumption, which is used to figure
+your bill from the power company.  The color of an object is results from the
+integral of the spectrum of light reflected off the object and the sensitivity
+of the cones in your eyes.
+
+\subsection{Areas}
+To perform a derivative, we determine the ratio between small differences in a
+function with small differences in the independent variable.  An integral does
+the opposite, determining the sum of small areas.  The areas are the products
+between small differences of the independent variable and the average of the
+function over the same intervals, i.e.,
+\begin{equation*}
+    F(x) = \sum_{i = 1}^{N} \frac{(f(x_i) + f(x_{i-1}))}{2} (x_i - x_{i-1}) .
+\end{equation*}
+as the interval $\Delta x_i = x_i - x_{i-1}$ gets smaller and smaller, it becomes
+an infinitesimal just as we described previously in the derivative section.  If
+we chose our $x_i$'s such that they were all the same size, then over the
+interval from $a$ to $b$, we can write
+\begin{equation*}
+    \dd{x_i} = \dd{x} = \frac{b - a}{N} .
+\end{equation*}
+As the interval becomes smaller and smaller, i.e., $N \to \infty$, $f(x_i)
+\approx f(x_{i-1})$.  This allows us to write
+\begin{equation*}
+    F = \sum_{i = 1}^{N} f(x_i) \dd{x_i} = \int_a^b f(x) \dd{x} .
+\end{equation*}
+In fact, the integral symbol, $\int$, was originally an $S$ to signify that an
+integral was a sum, so the symbol itself is a stylized $S$ retaining that
+connection.
+
+\subsection{Anatomy of an Integral}
+Above, we showed that the integral of a line is related to its area beneath a
+curve.  We can extend this idea of the area over any interval $[a,b]$ for a function,
+$f(x)$, more generally.  To express this idea, we write the definite integral
+\begin{equation}
+    \mlbox[
+        labelstyle={xshift=-2cm, yshift=1em},
+        linestyle={out=270,in=180, latex-}]
+        {\int_a^b} {integral with limits $[a,b]$}
+    \mlbox[
+        labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+        {f(x)} {integrand, function of $x$}
+    \mlbox[ ] {\dd{x}} {variable of integration, $x$}
+    = 
+    \mlbox[
+        labelstyle={xshift=3cm, yshift=1em},
+        linestyle={out=270,in=90, latex-}]
+        {F(x)} {integral of $f(x)$}
+    \mlbox[
+        labelstyle={xshift=2cm,below of=m\themathLableNode,below of=m\themathLableNode},
+        linestyle={out=90,in=270, latex-}]
+        {|_a^b} {evaluated from $a$ to $b$}
+    = F(b) - F(a)
+\end{equation}
+where $f(x)$ is an arbitrary function of $x$, $x$ is the independent variable,
+and $F(x)$ is the integral and also a function of $x$.  An integral is often
+taken over a bounded region from $[a,b]$.  Not all integrals have limits.  In
+these cases, the integral is called an indefinite integral and the solution will
+include an arbitrary constant.
+
+\subsection{Practical Integration}
+Just as there is for derivatives, a table of integrals can be utilized to
+simplify complex integrals.  The steps to using them and find a solution are
+similar to those we used for a derivative.  Although, there is an extra step
+necessary to transform the infinitesimals from one into another.
+
+\subsubsection{Table of Common Integrals}
+\input{toi}
+
+\subsubsection{Using the Integral Table}
+We use the integral table in a similar way we use the derivative table.  If our
+form is in the table, we copy it and we're done.  But if not, there are multiple
+methods for determining the integral to a function.  We will discuss a few here.
+This first integration method is by substitution using a transform function
+similar to our method for derivatives above,
+\begin{enumerate}
+    \item Find an equation u(x) which simplifies our function.
+    \item Determine $\dv{u}{x}$ and solve for $\dd{u}$ to replace the variable of
+    integration.
+    \item Copy the integral from the table that matches our transformed
+    function.
+    \item Substitute our constants and functions into the standard integral solution.
+    \item If there are any integrals remaining, repeat steps above or use
+    another method.
+\end{enumerate}
+
+\begin{example}
+    Integrate
+    \begin{equation*}
+        \int x e^{-x^2} \dd{x} .
+    \end{equation*}
+    We need a function that can transform our problem above into one that is
+    located in the table.  To do so, we look for the integral that has an $\exp$
+    term.  It may take a little practice to see which function to use as a
+    transform, but in this case, we use $u = -x^2$.
+    
+    We also need to change our variable of integration to $u$.  To do so, we
+    need to start with the derivative of our transform with respect to
+    $x$, i.e.,
+    \begin{align*}
+        \dv{u}{x} &= -2 x \\
+        \dd{u} &= -2 x \dd{x} \\
+        -\frac{\dd{u}}{2 x} &= \dd{x} .
+    \end{align*}
+    Now we can transform the integral in to a simpler form,
+    \begin{align*}
+        \int x e^{-x^2} \dd{x} &= \int x e^u \left(- \frac{\dd{u}}{2 x} \right) \\
+        &= \int -\frac{1}{2} e^u \dd{u} .
+    \end{align*}
+    Solving this integral and substituting back in our original function, we
+    find
+    \begin{align*}
+        -\frac{1}{2} \int e^u \dd{u} &= -\frac{1}{2} e^u \\
+        &= -\frac{1}{2} e^{-x^2} .
+    \end{align*}
+
+\end{example}
+
+The second integration method requires integration by parts.  To integrate by
+parts,
+\begin{enumerate}
+    \item Find two functions, $u(x)$ and $v(x)$ so that we can write our
+    expression as $\int u \dd{v}$ .  We'll need $\dv{v}{x}$ in order to make this
+    substitution.
+    \item Write the solution to the integration by parts form found in the
+    table, i.e., $\int u \dd{v} = u v - \int v \dd{u}$.
+    \item Solve the integral $\int v \dd{u}$ by the first or third method.
+\end{enumerate}
+
+\begin{example}
+    Integrate
+    \begin{equation*}
+        \int x \cos x \dd{x} .
+    \end{equation*}
+
+    Choosing $u = x$ and $v = \sin x$, we can determine $\dd{v}$,
+    \begin{align*}
+        \dv{v}{x} &= \cos x \\
+        \dd{v} &= \cos x \dd{x}
+    \end{align*}
+    Using the integral solution for parts,
+    \begin{equation}
+        \int u \dd{v} = u v - \int v \dd{u} ,
+    \end{equation}
+    substitute in our equations,
+    \begin{equation*}
+        \int x \cos x \dd{x} = x \sin x - \int \sin x \dd{x} .
+    \end{equation*}
+    Next, we solve the new integral using the form from the integral table and
+    we are done,
+    \begin{equation*}
+        \int x \cos x \dd{x} = x \sin x + \cos x + C,
+    \end{equation*}
+    where $C$ is an arbitrary constant as a resulting from the indefinite
+    integral.
+\end{example}
+
+The third integration method is similar to the substitution method, but
+specifically applies to trigonometric substitution.  This method is essentially
+a coordinate transformation.  To do this, we apply the following substitutions
+\begin{align}
+    a^2 - x^2 & x = a \sin \theta \\
+    x^2 + a^2 & x = a \tan \theta \\
+    x^2 - a^2 & x = a \frac{1}{\cos \theta} .
+\end{align}
+Once we make our substitution, we follow one of the other two integration
+methods above.
+
+
+\subsubsection{Practice Problems}
+
+\begin{problem}
+    Steady-State Temperature \\
+    To find the temperature in a half-space, we need to integrate the thermal
+    gradient with depth,
+    \begin{equation*}
+        \int \left( \frac{q_0}{k} - \frac{A}{k} z \right) \dd{z} ,
+    \end{equation*}
+    where $q_0$, $A$, and $k$ are constants.
+\end{problem}
+
+\begin{problem}
+    Radioactive Decay \\
+    To find the number of parent radionuclides present due to radioactive
+    decay, we need to integrate both sides of the following equation,
+    \begin{equation*}
+        \int_{N_0}^N \frac{\dd{N'}}{N'} = - \int_0^t \lambda \dd{t'} ,
+    \end{equation*}
+    and once complete, solve for $N$.
+\end{problem}
+
+\begin{problem}
+    Buried Slab \\
+    This integral is similar to one we needed for our buried slab problem,
+    \begin{equation*}
+        \int_0^R \frac{r}{(r^2 + z^2)^{3/2}} \dd{r} .
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Mass Flux \\
+    The mass flux of asthenosphere (mass passing a given point per unit time)
+    moved by a tectonic plate can be expressed as
+    \begin{equation*}
+        \int_0^h \rho u_0 \frac{y}{h} \dd{y} .
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Entropy \\
+    In petrology, the entropy is a key thermodynamic parameter.  The change in
+    entropy is related to temperature as
+    \begin{equation}
+        \Delta S = \int_{T_1}^{T_2} \frac{C_P}{T} \dd{T} .
+    \end{equation}
+\end{problem}
+
+
+\subsection{Mean of a function}
+In addition to finding areas and volumes, we can use integrals to find the mean
+of a function.  For example, take a function between two points, say $x_1$ and
+$x_2$.  Assuming our function is continuous, logic will tell us that our
+function must pass through the mean value at least once on our chosen interval.
+This is called the mean value theorem.  To find the mean value of our function
+is sort of like taking the arithmetic mean of a discrete set of point and
+dividing by the number of points only we take the sum over infinitely small
+intervals and divide by the total width of the intervals.  To write this as an
+integral,
+\begin{equation}
+    \overline{f(x)} = \frac{1}{(x_2 - x_1)}\int_{x_1}^{x_2} f(x) \dd{x} ,
+\end{equation}
+where the bar over the function indicates the mean of the function.
+
+\subsection{Multiple Integrals}
+Just as we had for derivatives, we can take multiple integrals.  We might do
+this for the accelerations that we measure from an earthquake to determine the
+change in displacement of the ground surface during an earthquake.
+
+To determine a multiple integral, we would write
+\begin{equation*}
+    \int \left(\int f(x) \dd{x}\right) \dd{x} = \iint f(x) \dd{x^2} .
+\end{equation*}
+
+If we are taking multiple derivatives, but not for the same coordinate, then we
+are finding the integral of a surface or a volume, i.e.,
+\begin{align*}
+    \text{surface:} \quad & \iint f(x,y) \dd{x} \dd{y} \\
+    \text{volume:} \quad & \iiint f(x,y,z) \dd{x} \dd{y} \dd{z}
+\end{align*}
+Often when we evaluate surface or volume integrals it is advantageous to make a
+transform to another coordinate system first in order to exploit symmetries
+simplify the integration.  For example, it is easier to integrate the gravity
+field due to a sphere in spherical coordinates than in Cartesian coordinates.
+
+\end{document}

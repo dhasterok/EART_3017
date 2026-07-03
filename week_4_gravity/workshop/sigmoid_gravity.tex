@@ -1,0 +1,150 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{notes}   % User preference
+
+\begin{document}
+
+\title{Gravity of a Sigmoid Lopolith and Comparison to a Sphere}
+\author{}
+\date{}
+\maketitle
+
+\section*{1. Sigmoid and Scale Parameters}
+
+We model radial smoothing with a sigmoid
+\[
+s(r) = \frac12 \left[ 1 - \tanh\!\left( \frac{r}{w} \right) \right],
+\]
+where $w$ controls the transition width; as $w \to 0$, $s(r)$ approaches a Heaviside step. The derivative is
+\[
+s'(r) = -\frac{1}{2w}\,\operatorname{sech}^2\!\left(\frac{r}{w}\right).
+\]
+Throughout, $J_0(\cdot)$ denotes the Bessel function of the first kind (order zero).
+
+\section*{2. Lopolith Geometry (Model B)}
+
+Let the top and bottom surfaces be
+\[
+a_{\mathrm{top}}(r) = z_0 + A_{\mathrm{top}}\, s(r), 
+\qquad
+a_{\mathrm{bot}}(r) = z_0 - A_{\mathrm{bot}}\, s(r),
+\]
+so the vertical thickness is
+\[
+t(r) = a_{\mathrm{top}}(r) - a_{\mathrm{bot}}(r)
+= (A_{\mathrm{top}} + A_{\mathrm{bot}})\, s(r).
+\]
+Special cases:
+\begin{itemize}
+\item Flat top, curved base: $A_{\mathrm{top}} = 0$.
+\item Curved top, flat base: $A_{\mathrm{bot}} = 0$.
+\item Symmetric lens (lopolith): $A_{\mathrm{top}} = A_{\mathrm{bot}}$ (positive for a lens, negative for a trough).
+\end{itemize}
+
+\section*{3. Areal Mass and the Hankel Transform (intuition and formula)}
+
+Assuming constant density contrast $\Delta\rho$, the areal mass (thin-sheet approximation) is
+\[
+\Delta m(r) = \Delta\rho\, t(r).
+\]
+
+\paragraph{Why $J_0$ appears.}
+An axisymmetric sheet can be decomposed into rings of radius $r$ and width $\mathrm{d}r$.
+The vertical gravity at observation radius $R$ from such a ring, integrated over azimuth, reduces in the wavenumber domain to a product with $J_0(kR)$ by the Bessel addition theorem. This is the axisymmetric analogue of using the 2-D Fourier transform for cartesian symmetry.
+
+\paragraph{Hankel transform pair.}
+We use the zeroth-order Hankel transform
+\[
+\widetilde{f}(k) = \int_0^\infty f(r)\,J_0(kr)\,r\,\mathrm{d}r,
+\qquad
+f(r) = \int_0^\infty \widetilde{f}(k)\,J_0(kr)\,k\,\mathrm{d}k.
+\]
+
+\paragraph{Vertical gravity as a spectral low-pass.}
+For a reference depth $z_0$,
+\[
+g_z(R)
+= 2\pi G \int_0^\infty J_0(kR)\, e^{-k z_0}\, k\, \widetilde{\Delta m}(k)\, \mathrm{d}k.
+\]
+The factor $e^{-k z_0}$ is a low-pass: deeper sources are smoother. For our sigmoid, using the known transform of $\operatorname{sech}^2$ and integrating once with respect to $r$, we have the accurate closed-form approximation
+\[
+\widetilde{s}(k)
+\approx
+\frac{\pi w^2}{2}\,\frac{k w}{\sinh\!\big(\tfrac{\pi k w}{2}\big)}.
+\]
+Hence
+\[
+\widetilde{\Delta m}(k)
+\approx
+\Delta\rho\,(A_{\mathrm{top}} + A_{\mathrm{bot}})
+\frac{\pi w^2}{2}\,
+\frac{k w}{\sinh\!\big(\tfrac{\pi k w}{2}\big)}.
+\]
+
+\section*{4. Vertical Gravity Anomaly: Exact Integral and Analytic Approximation}
+
+\paragraph{Exact Hankel integral.}
+\[
+g_z(R)
+\approx
+2\pi G\,\Delta\rho\,(A_{\mathrm{top}} + A_{\mathrm{bot}})
+\int_0^\infty
+J_0(kR)\, e^{-k z_0}\,
+\frac{\pi w^2}{2}\,
+\frac{k^2 w}{\sinh\!\big(\tfrac{\pi k w}{2}\big)}
+\, \mathrm{d}k.
+\]
+
+\subsection*{4.1 Effective-depth approximation and FWHM--depth estimator}
+
+For moderate-to-high $k$,
+\[
+\frac{1}{\sinh\!\Big(\frac{\pi k w}{2}\Big)} \approx 2\,e^{-\frac{\pi k w}{2}},
+\]
+so the combined damping $e^{-k z_0}/\sinh(\cdot)$ behaves like $e^{-k z_{\mathrm{eff}}}$ with
+\[
+z_{\mathrm{eff}} \equiv z_0 + \frac{\pi}{2}\,w.
+\]
+Matching leading moments yields the proxy
+\[
+g_z^{\text{sig}}(R)
+\approx
+\mathcal{A}\,
+\frac{z_{\mathrm{eff}}}{\big(R^2 + z_{\mathrm{eff}}^{2}\big)^{3/2}},
+\qquad
+\mathcal{A} = C\,G\,\Delta\rho\,(A_{\mathrm{top}} + A_{\mathrm{bot}})\,w^{3},
+\]
+with $C = \mathcal{O}(10)$ (a convenient peak-matched choice is $C\approx 4\pi^2$).
+
+\paragraph{FWHM--depth relation.}
+For this proxy,
+\[
+R_{1/2} = z_{\mathrm{eff}}\sqrt{2^{2/3}-1} \approx 0.766\,z_{\mathrm{eff}},
+\quad
+\mathrm{FWHM} \approx 2R_{1/2} \approx 1.532\,z_{\mathrm{eff}}.
+\]
+Therefore,
+\[
+\boxed{\, z_0 \approx \frac{\mathrm{FWHM}}{1.532} - \frac{\pi}{2}\,w \,}
+\]
+providing a practical depth estimate once $w$ is known (or co-estimated).
+
+\section*{5. Comparison with a Buried Sphere}
+
+A sphere of radius $a$ with center depth $z_0$ has
+\[
+g_z^{\text{sphere}}(R)
+=
+\frac{4\pi G}{3}\,\Delta\rho\,a^3\,
+\frac{z_0}{\big(R^2 + z_0^2\big)^{3/2}}.
+\]
+The sigmoid-lens proxy shares this shape with $z_0$ replaced by $z_{\mathrm{eff}}$, explaining why the two anomalies can be difficult to distinguish from profile data alone.
+
+\section*{References}
+\begin{itemize}
+\item Blakely, R. J. (1995), \emph{Potential Theory in Gravity and Magnetic Applications}, Cambridge Univ. Press.
+\item Parker, R. L. (1973), ``The Rapid Calculation of Potential Anomalies,'' \emph{Geophys. J. R. Astr. Soc.}, 31(4), 447--455.
+\item Gradshteyn, I. S., \& Ryzhik, I. M. (2014), \emph{Table of Integrals, Series, and Products}, 8th ed., Academic Press.
+\end{itemize}
+
+\end{document}

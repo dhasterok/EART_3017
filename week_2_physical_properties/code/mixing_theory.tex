@@ -1,0 +1,376 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Preamble ----------
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{notes}
+\usepackage{bm}
+
+\title{Geometry--Transport Theory Notes\\[0.3em]
+\large Layers, Dijkstra Paths, Directed Random Walks, and Full Diffusion}
+\author{Geophysics IIIA: Potential Fields \& Geothermics}
+\date{\today}
+
+% Small helpers
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+
+\begin{document}
+\maketitle
+
+\section*{Why these notes}
+These notes are meant to guide \emph{geologists} (and geophysicists) through the mental model behind our Week~2 simulator. We focus on three ideas you already use in field interpretation:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Geometry}: Are conductive elements arranged \emph{parallel} to the heat-flow direction, \emph{perpendicular} as \emph{layers}, or \emph{granular} without a preferred direction?
+  \item \textbf{Contacts}: Are boundaries \emph{sharp} (sedimentary beds, strong foliation) or \emph{diffuse} (metamorphic reaction fronts, chemical diffusion)?
+  \item \textbf{Continuity}: Are layers \emph{continuous} or \emph{leaky} (pinch-outs, small gaps, cross-cutting features)?
+\end{enumerate}
+With just these three levers, we can anticipate whether the bulk (effective) behavior tends toward \textbf{arithmetic}, \textbf{geometric}, or \textbf{harmonic} mixing, and therefore whether traversal time is \emph{fast}, \emph{intermediate}, or \emph{slow}.
+
+\section{Why We Model: From Geological Complexity to Tractable Insight}
+Geology is gloriously complex. Rocks record overlapping thermal, chemical, mechanical, and fluid histories across scales that range from the crystal lattice to the lithosphere. As geophysicists, we build \emph{simplified models} to make this complexity scientifically accessible. A model is not the Earth—it is a deliberately constrained representation that isolates the dominant processes, keeps the mathematics or computation tractable, and yields predictions we can test against observations.
+
+\paragraph{Abstraction with purpose.}
+Most geophysical questions do not require every microscopic detail of mineral chemistry or every fold and fault to be represented explicitly. Instead, we identify the \emph{controlling factors} for a given phenomenon. For thermal transport, geometry (parallel vs.\ series), property contrasts, and continuity/leakiness of layers typically dominate the outcome far more than sub--pixel textures. By abstracting to these controls, we transform an intractable natural system into a \emph{well-posed} problem with clear assumptions, known limitations, and falsifiable predictions.
+
+\paragraph{From field complexity to tractable building blocks.}
+In practice, we map complex terrains onto simple, interpretable building blocks: layered media, granular mixtures, or anisotropic fabrics with a small number of parameters (thickness, contact sharpness, continuity, meander, and statistical variability of properties). These building blocks are not crude approximations; they are the \emph{minimal hypotheses} that carry the physics. They let us compute effective properties, anticipate end-member behaviors (arithmetic, geometric, harmonic mixing), and understand which observations will be most diagnostic in the field or lab.
+
+\paragraph{Start simple, then earn your complexity.}
+Most successful modeling programs begin with a simple formulation that captures first-order behavior. We compare those predictions to measurements (e.g., heat flow, gravity, magnetics, seismic velocities). Where mismatches appear, we \emph{learn}—either the geometry is different than assumed, the property contrasts are mis-specified, or additional processes (e.g., diffuse contacts, leaks, anisotropy, or coupling to fluids) matter. We then layer in the \emph{next} piece of complexity that is supported by data. In this way, models evolve like good geological maps: from reconnaissance to detail, guided by evidence rather than by a desire to reproduce every possible feature.
+
+\paragraph{The power of simplification.}
+Simplified models sharpen scientific reasoning. They:
+\begin{itemize}
+  \item expose which variables actually control the outcome (and which do not);
+  \item provide closed-form or computationally cheap predictions for fast iteration;
+  \item make uncertainty transparent by linking each assumption to a measurable effect; and
+  \item create a common language across geology and geophysics (e.g., “sharp, continuous series layers will drive harmonic behavior across bedding”).
+\end{itemize}
+This disciplined simplification is not a retreat from reality; it is our most reliable path \emph{toward} it. By confronting data with models that are only as complex as necessary—and no more—we accelerate understanding, guide new measurements, and build confidence that when we do add complexity, it is justified, testable, and explanatory rather than decorative.
+
+\vspace{0.25em}
+\begin{tcolorbox}[colback=blue!1!white,colframe=blue!40!black,title=The one-sentence rule]
+Parallel (lanes $\parallel$ flow) $\Rightarrow$ \textbf{arithmetic} (fastest);\\
+Random granular $\Rightarrow$ \textbf{geometric} (middle);\\
+Series (layers $\perp$ flow) $\Rightarrow$ \textbf{harmonic} (slowest).
+\end{tcolorbox}
+
+\medskip
+We describe four levels of modeling fidelity:
+\begin{enumerate}
+  \item \textbf{Layer construction} (two or three components) used to synthesize $k(x,y)$.
+  \item \textbf{Shortest--time path} (Dijkstra): fast, pathway--dominant surrogate.
+  \item \textbf{Directed random walk}: mid--fidelity, stochastic diffusion with drift.
+  \item \textbf{Full diffusion} (PDE): steady--state or transient solution of $\nabla\!\cdot(k\nabla T)=0$ or $\partial_t T=\nabla\!\cdot(k\nabla T)$.
+\end{enumerate}
+
+\section{Constructing Layered Media $k(x,y)$}
+We synthesize a spatial conductivity field $k(x,y)$ with controls that match geological intuition:
+
+\paragraph{Components and fractions.} For two components $A,B$ (or three $A,B,C$), choose area fractions $f_A, f_B$ ($+f_C$) with $f_A+f_B(+f_C)=1$.
+
+\paragraph{Layer counts and thickness.} For series--oriented layering (layers $\perp$ transport), specify integers $(N_A,N_B)$ (and optionally $N_C$). Draw raw thicknesses for each set,
+\[
+    t_i \sim
+    \begin{cases}
+        \text{lognormal with CV} & \text{(lognormal option)}\\
+        \text{uniform about }1\text{ with CV} & \text{(uniform option)}
+    \end{cases}
+\]
+then rescale so $\sum_{i\in A} t_i = f_A H$ and $\sum_{i\in B} t_i = f_B H$ (and similarly for $C$ if stand--alone layers exist). Interleave $A,B,A,B,\dots$ to fill the height $H$.
+
+\paragraph{Meander (sinusoidal undulation).} For interface $i$ between layers, define a meandering centerline
+\[
+    y_i(x) \;=\; y_{i,0} + A_{\text{meander}}\;\sin\!\Big(\tfrac{2\pi}{\lambda_{\text{meander}}}x + \phi_i\Big),
+\]
+with amplitude $A_{\text{meander}}$ (px), wavelength $\lambda_{\text{meander}}$ (px), and random phase $\phi_i$.
+
+\paragraph{Contact sharpness (diffuse interfaces).} Let $w_{\text{int}}\ge 0$ be the interface half--width (px). For a point $(y,x)$, let $d$ be the signed distance to the nearest interface (positive in $A$, negative in $B$). A \emph{soft indicator} (mixing weight) for $A$ is
+\[
+    \alpha_A(y,x) \;=\; \tfrac12\Big(1 + \erf\!\Big(\frac{d}{\sqrt{2}\,w_{\text{int}}}\Big)\Big),\qquad \alpha_B=1-\alpha_A.
+\]
+Sharp contacts are recovered with $w_{\text{int}}=0$ (i.e., indicator becomes binary).
+
+\paragraph{Continuity vs.\ leaks.} With probability $p_{\text{cont}}$ a layer is continuous. Otherwise, we insert \emph{gap segments} of mean length $L_{\text{gap}}$, creating \emph{leaky} layering. This moves behavior away from the harmonic limit toward geometric.
+
+\paragraph{Three components with affinity (A--B--C).} Split $f_C$ into an \emph{attachable} part $\eta_{\text{attach}}f_C$ and a \emph{stand--alone} part $(1-\eta_{\text{attach}})f_C$. If both affinities $(\phi_{CA},\phi_{CB})$ are below a threshold $\tau_{\text{aff}}$, treat the attachable part as stand--alone. Otherwise split attachable $C$ proportionally by $\phi_{CA}\!:\!\phi_{CB}$ and \emph{embed} it in $A$ or $B$ using weights $W_A=\phi_{CA}\alpha_A$ and $W_B=\phi_{CB}\alpha_B$, rescaled so the domain integrals equal the prescribed $C$ amounts in $A$ or $B$. Any stand--alone remainder forms $N_C\!\ge\!1$ C layers with the same diffuse/continuity rules. This captures associations like “C likes A more than B” (e.g., biotite with quartz--feldspar).
+
+\paragraph{Conductivity realization and normalization.} Draw $\ln k_A\!\sim\!\mathcal N(\mu_A,\sigma_A)$, $\ln k_B\!\sim\!\mathcal N(\mu_B,\sigma_B)$ (and $\ln k_C$ if used), add optional pixel--scale noise, then \emph{geometrically blend}:
+\[
+    \ln k(y,x)=\alpha_A \ln k_A + \alpha_B \ln k_B \;(+\;\alpha_C \ln k_C), \qquad k=\exp(\ln k),
+\]
+and normalize to $\overline{k}=1$ for fair comparisons across geometries.
+
+\paragraph{Parallel orientation.} Lanes $\parallel$ transport are obtained by rotating the constructed series field by $90^\circ$ (or by swapping $x$/$y$ roles during construction).
+
+\bigskip
+
+\section{Dijkstra Shortest--Time Path (Pathway--Dominant Surrogate)}
+Define a \emph{per--cell cost} $c=1/k$ so higher $k$ means lower cost. On the 4--neighbor lattice, Dijkstra computes a path $\gamma$ from left to right minimizing
+\[
+    \mathcal{T}(\gamma)=\sum_{(y,x)\in\gamma} \frac{1}{k(y,x)}.
+\]
+\paragraph{What it captures.} The \textbf{best available corridor} through the medium. It is very fast, highlights how geometry steers transport, and correctly orders mixing scenarios in most cases:
+\[
+    \text{parallel (arithmetic) fastest} \;<\; \text{random granular (geometric)} \;<\; \text{series (harmonic) slowest}.
+\]
+\paragraph{What it does \emph{not} capture.} Diffusion is a \emph{field} phenomenon: flux spreads through \emph{all} cells. Dijkstra avoids low--$k$ regions entirely and returns a \emph{single} route (a geodesic in a resistance metric), thus providing a lower bound on traversal time and an upper bias on effective $k$.
+
+\section{Directed Random Walk (Mid--Fidelity Stochastic Diffusion)}
+A compromise between Dijkstra and full diffusion is a \emph{biased Markov jump process}:
+\begin{itemize}
+  \item At cell $(y,x)$, propose a move to a neighbor $j\in\{\uparrow,\downarrow,\leftarrow,\rightarrow\}$ with probability
+  \[
+    P((y,x)\!\to\! j) \;\propto\; k(j)\,\Big(1+\beta\,\hat{\mathbf e}\!\cdot\!\hat{\mathbf d}_{j}\Big),
+  \]
+  where $\hat{\mathbf e}$ is the left$\to$right drive direction, $\hat{\mathbf d}_{j}$ is the unit step to $j$, and $\beta\in[0,1)$ controls bias strength.
+  \item Each step accrues a local time cost (e.g.\ $\Delta t=1/k$ or constant time per hop with $k$ only in the transition probabilities).
+  \item Repeat walkers until absorption at the right boundary; collect first--passage times and their distribution.
+\end{itemize}
+\paragraph{Why it is more realistic.} Low--$k$ zones are used rarely but not excluded; parallel pathways contribute collectively; the ensemble mean of first--passage time approaches diffusive behavior as the number of walkers grows. It is still simple to implement and animate, and much cheaper than solving the PDE.
+
+\section{Full Diffusion (PDE Model)}
+The physical model for steady conduction is
+\[
+    \nabla\!\cdot\!\big(k\nabla T\big) \;=\; 0
+    \quad\text{in }\Omega,\qquad
+    T(0,y)=T_L,\;\; T(W,y)=T_R,
+\]
+with insulating or periodic conditions on the top/bottom as desired. A discrete solution (finite differences, finite volumes) yields a temperature field $T$, flux $\mathbf q=-k\nabla T$, and an \emph{effective conductivity} through the domain,
+\[
+    k_{\text{eff}} \;=\; \frac{\displaystyle \int_{\partial\Omega_R} \mathbf q\!\cdot\!\mathbf n\,ds}{\displaystyle \frac{T_L - T_R}{W}\,H},
+\]
+where $\partial\Omega_R$ is the right edge. Transient diffusion solves $\partial_t T=\nabla\!\cdot(k\nabla T)$ for time--dependent phenomena or first--passage statistics.
+
+\section{Mixing Laws and Geometry}
+For \emph{series} layers (layers $\perp$ transport), with layer thicknesses $t_i$ and within--layer conductivities $k_i$,
+\[
+    \frac{1}{k_{\text{eff}}^{\text{series}}} \;=\; \sum_i \frac{t_i}{H}\,\frac{1}{k_i}.
+\]
+For \emph{parallel} lanes (lanes $\parallel$ transport), with lane widths $w_i$,
+\[
+    k_{\text{eff}}^{\text{parallel}} \;=\; \sum_i \frac{w_i}{W}\,k_i.
+\]
+For \emph{random granular} mixtures with lognormal variability, $k_{\text{eff}}$ often trends toward the \emph{geometric mean} at the representative elementary volume. Diffuse contacts shift series behavior toward geometric; leaky layers (continuity $<1$) also move harmonic toward geometric.
+
+\section{Comparing the Three Numerical Surrogates}
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{3.1cm}p{5.0cm}p{5.5cm}@{}}
+    \toprule
+    \textbf{Model} & \textbf{What it computes} & \textbf{Pros / Cons \& What students see} \\
+    \midrule
+    \textbf{Dijkstra (shortest--time path)} &
+    Single lowest--resistance route $\gamma$ minimizing $\sum 1/k$ along $\gamma$. &
+    \emph{Pros:} Extremely fast; sharp geometric intuition (lanes vs.\ barriers).\\
+    \emph{Cons:} Not diffusive; ignores parallel flow; lower bound on time; can over--favor edges unless start/exit are randomized. \\
+    \midrule
+    \textbf{Directed random walk (biased diffusion)} &
+    Ensemble of stochastic paths with transition probabilities $\propto k$ (plus drift). First--passage time distribution to the right boundary. &
+    \emph{Pros:} Uses all routes stochastically; mean time closer to diffusion; visually compelling; still simple and fast.\\
+    \emph{Cons:} Requires many walkers for low variance; parameter $\beta$ must be chosen; not an exact PDE solution. \\
+    \midrule
+    \textbf{Full diffusion (PDE)} &
+    Steady solution of $\nabla\!\cdot(k\nabla T)=0$ (or transient). Effective $k$ from net flux. &
+    \emph{Pros:} Physically correct and deterministic; gives $T$ and $\mathbf q$ everywhere.\\
+    \emph{Cons:} Most computationally expensive; solver complexity; harder to narrate live. \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\section{Relating Models to Predictions in Class}
+\subsection*{Before running}
+Given component means/variances (often lognormal) and layer proportions:
+\begin{enumerate}
+  \item If component $C$ \emph{attaches} to $A$ (or $B$), estimate an in--layer geometric blend
+  $\ln \tilde{k}_A = (1-\theta_A)\ln k_A + \theta_A \ln k_C$ (and similarly for $B$),
+  where $\theta_A \approx f_C^{A}/f_A$ is the fraction of $C$ placed within $A$ layers.
+  \item Use \textbf{harmonic} across series layers or \textbf{arithmetic} across parallel lanes to estimate $k_{\text{eff}}$.
+  \item Convert to a traversal time proxy, $t_{\text{pred}} \approx \tau\,W/k_{\text{eff}}$,
+  with optional tortuosity $\tau\ge1$ to account for 4--neighbor detours.
+\end{enumerate}
+
+\subsection*{What to expect}
+\begin{itemize}
+  \item \textbf{Parallel (arithmetic)} is the \emph{fastest}. Adding diffuse interfaces within lanes has little impact on macroscopic arithmetic averaging.
+  \item \textbf{Series (harmonic)} is the \emph{slowest} if layers are continuous and contacts are sharp. Diffuse contacts ($w_{\text{int}}>0$) and leaks ($p_{\text{cont}}<1$) move behavior toward geometric.
+  \item \textbf{Random granular} trends to the \emph{geometric} mean at the REV scale; path surrogates (Dijkstra / random walks) will sit between arithmetic and harmonic, typically near geometric unless contrast is low.
+\end{itemize}
+
+\section{Practical Implementation Notes (for the GUI)}
+\begin{itemize}
+  \item \textbf{Series/Parallel via rotation:} Build series--oriented layers once, then rotate by $90^\circ$ to obtain parallel lanes with identical parameter semantics.
+  \item \textbf{Start/Exit policy:} For path models, use a \emph{uniform random start} on the left and a \emph{free exit} on the right to avoid center bias.
+  \item \textbf{Edge--stable colorbar:} Create the colorbar axes once and update its mappable (prevents creeping axes during animation).
+  \item \textbf{Animation points:} When drawing a moving marker with Matplotlib, pass 1--element sequences to \verb|set_data| (e.g., \verb|[x],[y]|).
+\end{itemize}
+
+\section*{Takeaways for Students}
+\begin{enumerate}
+  \item \textbf{Geometry governs transport}: parallel (arithmetic) $<$ granular (geometric) $<$ series (harmonic).
+  \item \textbf{Interfaces matter}: sharp, continuous barriers drive harmonic limits; diffuse or leaky contacts weaken series behavior.
+  \item \textbf{Surrogates vs.\ physics}: Dijkstra highlights dominant corridors; directed random walks emulate diffusion with bias; PDE solutions yield the full field.
+\end{enumerate}
+
+
+
+
+%=====================================================================
+\section{Constructing the layered media $k(x,y)$ (geologist's view)}
+We build a conductivity map $k(x,y)$ that looks and behaves like rock fabrics.
+
+\subsection*{Components and thickness}
+Choose two or three components (e.g., A = quartz--feldspar, B = mica-rich, C = mafic). Pick area fractions $f_A, f_B, f_C$ with $f_A+f_B(+f_C)=1$. For layers $\perp$ flow (series geometry), set minimum counts $N_A\!\ge\!1$, $N_B\!\ge\!2$ (and $N_C$ if C has its \emph{own} layers). More layers $\Rightarrow$ thinner beds.
+
+\subsection*{Sharp vs.\ diffuse contacts (error-function edge)}
+A \emph{sharp} contact is a clean boundary; a \emph{diffuse} contact is a transitional zone. We parameterize contact half-width $w_{\text{int}}$ (pixels). At each point we compute a soft weight
+\[
+\alpha_A = \tfrac12\Big(1 + \erf\!\Big(\frac{d}{\sqrt{2}\,w_{\text{int}}}\Big)\Big),\qquad \alpha_B=1-\alpha_A,
+\]
+where $d$ is signed distance to the nearest interface (positive on the A side). $w_{\text{int}}=0$ gives sharp contacts; larger $w_{\text{int}}$ smears the contact and moves behavior toward \emph{geometric} mixing locally.
+
+\subsection*{Continuity and leaks}
+We assign a \emph{continuity probability} $p_{\text{cont}}$. If a layer is \emph{non-continuous} ($1-p_{\text{cont}}$), we insert small gap segments with mean length $L_{\text{gap}}$. These \emph{leaks} let some flow slip around barriers, shifting \emph{series} behavior toward \emph{geometric}.
+
+\subsection*{Meander (undulating layers)}
+To look geological without breaking continuity, each interface centerline $y_i(x)$ can \emph{meander}:
+\[
+y_i(x) = y_{i,0} + A_{\text{meander}}\sin\Big(\frac{2\pi}{\lambda_{\text{meander}}}\,x + \phi_i\Big).
+\]
+Small amplitudes add realism without changing the mixing regime.
+
+\subsection*{Three components with \emph{affinity} (A--B--C)}
+Component C can \emph{attach} preferentially to A or B:
+\begin{itemize}[leftmargin=*]
+\item Affinities $\phi_{CA},\phi_{CB}\in[0,1]$: C likes to co-locate with A vs.\ B.
+\item Attach fraction $\eta_{\text{attach}}$: what portion of C tries to attach; the rest becomes its \emph{own} layers.
+\item If both affinities are low, C forms stand-alone layers (e.g., distinct mica or Fe-rich bands).
+\end{itemize}
+Within layers, we blend \emph{geometrically} in log space:
+\[
+\ln k = \alpha_A \ln k_A + \alpha_B \ln k_B \;(+\,\alpha_C \ln k_C),\qquad k = e^{\ln k}.
+\]
+Finally, we normalize $\overline{k}=1$ so different geometries compare fairly.
+
+%=====================================================================
+\section{Anisotropy \& mixing (for geologists)}
+\subsection*{What anisotropy means here}
+\textbf{Anisotropy} = bulk properties depend on direction. In our context:
+\begin{itemize}[leftmargin=*]
+\item \emph{Parallel lanes} (e.g., permeable streaks along bedding): very easy flow along lanes, poor connectivity across $\Rightarrow$ \textbf{arithmetic} along the lanes.
+\item \emph{Series layers} (barriers perpendicular to flow): must cross low-$k$ layers in series $\Rightarrow$ \textbf{harmonic} across the stack.
+\item \emph{Granular / equant} fabrics (no strong orientation): effective at REV tends toward the \textbf{geometric} mean.
+\end{itemize}
+
+\subsection*{How contacts \& continuity modulate anisotropy}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Sharp \& continuous layers}: maximize anisotropy (strong harmonic across, strong arithmetic along).
+\item \textbf{Diffuse contacts ($w_{\text{int}}>0$)}: soften anisotropy because transitions act like local micro-mixes $\Rightarrow$ push toward geometric.
+\item \textbf{Leaky layers ($p_{\text{cont}}<1$)}: provide shortcuts around barriers $\Rightarrow$ again push series behavior toward geometric.
+\end{itemize}
+
+\subsection*{Practical geological reads}
+\begin{itemize}[leftmargin=*]
+\item \emph{Sedimentary stacks with tight, clean bedding planes} $\Rightarrow$ expect \textbf{harmonic} across-bedding limits.
+\item \emph{Heavily foliated gneiss with consistent mineral bands} $\Rightarrow$ strong anisotropy and harmonic limits across foliation.
+\item \emph{Diffusive metasomatic fronts, graded beds, migmatitic transitions} $\Rightarrow$ contacts are broader; expect movement toward \textbf{geometric}.
+\end{itemize}
+
+%=====================================================================
+\section{Three modeling levels (what students will see)}
+\subsection*{(1) Dijkstra: shortest--time path}
+We treat each cell's \emph{cost} as $1/k$ and find the \emph{minimum-sum} route left$\to$right on the 4-neighbor grid. It identifies the \textbf{best corridor}. This is not diffusion (it ignores parallel flow), but it cleanly demonstrates how geometry controls the dominant route:
+\[
+t_{\text{parallel}} < t_{\text{granular}} < t_{\text{series}}.
+\]
+
+\subsection*{(2) Directed random walk: mid-fidelity diffusion}
+We let a “phonon” hop to neighbors with probability $\propto k$ \emph{plus} a mild rightward bias (to represent boundary forcing). Many walkers explore the whole medium; highs are favored but lows still get some traffic. The mean first-passage time \emph{approaches} diffusive behavior without solving a PDE.
+
+\subsection*{(3) Full diffusion (PDE)}
+Solve $\nabla\!\cdot(k\nabla T)=0$ with $T=T_L$ on the left and $T=T_R$ on the right; extract flux $\mathbf{q}=-k\nabla T$ and effective $k$ from net flux. Most physical and deterministic, but computationally heavier and less “live-demo” friendly.
+
+\subsection*{How these relate to mixing laws}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Series (layers $\perp$ flow)}: $k_{\text{eff}}^{-1} = \sum_i (t_i/H)\,k_i^{-1}$ (\emph{harmonic}). Diffuse/ leaky layers move toward \emph{geometric}.
+\item \textbf{Parallel (lanes $\parallel$ flow)}: $k_{\text{eff}} = \sum_i (w_i/W)\,k_i$ (\emph{arithmetic}).
+\item \textbf{Granular}: effective $k$ at REV is near a \emph{geometric} mean for lognormal contrasts.
+\end{itemize}
+
+%=====================================================================
+\section{How to tune the model (step-by-step, geologist's checklist)}
+\subsection*{A. Start with the fabric you see}
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Choose geometry:} Series (layers $\perp$ flow), Parallel (lanes $\parallel$ flow), or Random (granular).\\
+\emph{Sedimentary/foliated strata $\to$ Series; channelized/lineated fabrics $\to$ Parallel; massive equant $\to$ Random.}
+\item \textbf{Set component fractions} ($f_A,f_B(,f_C)$) from mapped proportions or modal estimates.
+\item \textbf{Pick layer counts:} $N_A\!\ge\!1$, $N_B\!\ge\!2$ (and $N_C$ if C has its own layers).\\
+\emph{More layers $\Rightarrow$ thinner beds; thick--thin experiments show the harmonic limit clearly.}
+\end{enumerate}
+
+\subsection*{B. Decide how sharp the contacts are}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Sharp contacts:} $w_{\text{int}}=0$--1 px (sedimentary bed boundaries, strong foliation).
+\item \textbf{Diffuse contacts:} $w_{\text{int}}=2$--5 px (metamorphic reaction fronts, diffusive replacement).\\
+\emph{Larger $w_{\text{int}}$ will push behavior toward geometric.}
+\end{itemize}
+
+\subsection*{C. Continuity and meander}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Continuity} $p_{\text{cont}}$ close to 1 for clean barriers; reduce to 0.7--0.9 to introduce realistic \emph{leaks}. Use small $L_{\text{gap}}$ to avoid creating full percolation channels.
+\item \textbf{Meander} with small amplitude ($A_{\text{meander}}$ 1--3 px) and long wavelength to look realistic without changing the regime.
+\end{itemize}
+
+\subsection*{D. Third component (C) behavior}
+\begin{itemize}[leftmargin=*]
+\item \textbf{Affinities} $(\phi_{CA},\phi_{CB})$: set high to the partner you expect C to track (e.g., biotite with Qz--Fsp). If both low, let C form its own layers.
+\item \textbf{Attach fraction} $\eta_{\text{attach}}$: how much of C is embedded within A/B vs.\ forming C-only layers.
+\end{itemize}
+
+\subsection*{E. Sanity checks \& predictions}
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Within-layer blend}: if C attaches to A or B, estimate an in-layer geometric blend
+$\ln \tilde{k}_A=(1-\theta_A)\ln k_A+\theta_A \ln k_C$ with $\theta_A\approx f_C^{A}/f_A$ (similar for B).
+\item \textbf{Across-layer mix}: use \emph{harmonic} for series or \emph{arithmetic} for parallel to estimate $k_{\text{eff}}$.
+\item \textbf{Traversal time proxy:} $t_{\text{pred}}\approx \tau\,W/k_{\text{eff}}$ where $\tau\!\ge\!1$ is a \emph{tortuosity} factor (accounts for small detours in the pixel grid).\\
+\emph{In clean layers, $\tau\!\approx\!1.0$--1.1; in meandering/leaky cases, $\tau\!\approx\!1.1$--1.3.}
+\end{enumerate}
+
+%=====================================================================
+\section{Comparing the three numerical surrogates}
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{3.3cm}p{5.1cm}p{5.8cm}@{}}
+\toprule
+\textbf{Model} & \textbf{What it computes} & \textbf{Pros / Cons \& What you'll see} \\
+\midrule
+\textbf{Dijkstra (shortest path)} &
+Single lowest-resistance route $\sum 1/k$. &
+\emph{Pros:} Fast, shows dominant corridors; ordering matches mixing intuition when geometry is correct. \\
+& & \emph{Cons:} Not diffusive; ignores parallel flow; lower bound on time; may overuse edges unless start is randomized and exit is “free”. \\
+\midrule
+\textbf{Directed random walk} &
+Ensemble of walkers with $P(\text{step})\propto k$ + small rightward bias. &
+\emph{Pros:} Uses all routes with preference; mean first-passage time closer to diffusion; compelling visuals. \\
+& & \emph{Cons:} Needs many walkers for low variance; parameter for bias must be chosen. \\
+\midrule
+\textbf{Full diffusion (PDE)} &
+Solve $\nabla\!\cdot(k\nabla T)=0$; get $T$ and $\bm q$ everywhere. &
+\emph{Pros:} Physically complete; gives effective $k$ and field maps. \\
+& & \emph{Cons:} Heavier compute; less immediate for live tuning. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%=====================================================================
+\section*{Takeaways to emphasize in class}
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Geometry governs}: Parallel $<$ Granular $<$ Series for traversal time.
+\item \textbf{Contacts \& leaks matter}: Sharp \& continuous layers force harmonic behavior; diffuse or leaky boundaries relax toward geometric.
+\item \textbf{Surrogate choice}: Dijkstra shows the corridor; random walks show distributed diffusion; PDE is the truth model.
+\end{enumerate}
+
+\end{document}
+
+\end{document}

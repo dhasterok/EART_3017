@@ -1,0 +1,44 @@
+\documentclass[final,a4paper,12pt]{article}
+\usepackage[assignment]{aucourse}
+
+\weeknum{1}
+\topic[Short Title]{Full Assignment Topic}
+
+\begin{document}
+
+\maketitle
+
+% ---- Questions --------------------------------------------------------------
+% Use \question[pts]{title} inside a questions environment.
+% Split around intervening code blocks and resume numbering with [resume].
+
+\begin{questions}
+    \question[5]{First Question Title}
+    Question body text.
+
+    \begin{parts}
+        \part First sub-question.
+        \part Second sub-question.
+    \end{parts}
+\end{questions}
+
+% --- Run some code / examine a figure here ---
+
+\begin{questions}[resume]
+    \question[5]{Second Question Title}
+    Question body text.
+
+    \begin{parts}
+        \part First sub-question.
+    \end{parts}
+
+    % --- Intermediate code step ---
+
+    \begin{parts}[resume]
+        \part Second sub-question (continues lettering from above).
+    \end{parts}
+\end{questions}
+
+Total: \showtotal~pts
+
+\end{document}

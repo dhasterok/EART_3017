@@ -1,0 +1,145 @@
+\ntextbox{Extended derivation of the Gauss--Newton method}{
+    Newton's method approximates the objective function locally by a quadratic in model space and computes a model update that aims to reach the local minimum in a single step. This large-step behavior can be efficient when the approximation is accurate, but it can also be unstable and may cause the solution to overshoot or converge to a different minimum.  In contrast, steepest descent (Section~\ref{sec:steepest})methods use only gradient information and take smaller steps, making them more stable but often slower to converge.  The Gauss--Newton method is an approximation of Newton's method, which we'll get to towards the end of the derivation.
+
+    \medskip
+    \noindent\textbf{Newton's Method} \\
+    We start by expanding the objective function, $\Phi(\vb{m} + \Delta \vb{m})$, using a Taylor series about the current model $\vb{m}$:
+    \[
+        \Phi(\vb{m}+\Delta \vb{m}) =
+        \Phi(\vb{m})
+        + \pdv{\Phi}{\vb{m}}\T \Delta\vb{m}
+        + \frac{1}{2} \Delta\vb{m}\T \pdv[2]{\Phi}{\vb{m}} \Delta\vb{m}
+        + \varepsilon.
+    \]
+
+    Here, the first derivative corresponds to the gradient of the objective function,
+    \[
+        \pdv{\Phi}{\vb{m}} = \grad_{\vb{m}} \Phi(\vb{m}) =
+        \begin{bmatrix}
+            \pdv{\Phi}{m_1} \\
+            \vdots \\
+            \pdv{\Phi}{m_M}
+        \end{bmatrix} .
+    \]
+    where $\grad_{\vb{m}}$ denotes the gradient with respect to the model parameters.  For the remaining derivation, we'll revert to $\grad$ as it is standard notation.  The second derivative defines the Hessian matrix,
+    \[
+        \pdv[2]{\Phi}{\vb{m}} = \vb{H} =
+        \begin{bmatrix}
+            \pdv{\Phi}{m_1}{m_1} & \cdots & \pdv{\Phi}{m_1}{m_M} \\
+            \vdots & \ddots & \vdots \\
+            \pdv{\Phi}{m_M}{m_1} & \cdots & \pdv{\Phi}{m_M}{m_M}
+        \end{bmatrix}.
+    \]
+
+    Neglecting higher-order terms, the Taylor expansion becomes
+    \[
+        \Phi(\vb{m} + \Delta\vb{m})
+        \approx
+        \Phi(\vb{m})
+        + \grad\Phi\T \Delta\vb{m}
+        + \frac{1}{2} \Delta\vb{m}\T \vb{H} \Delta\vb{m}.
+    \]
+
+    Newton's method chooses $\Delta\vb{m}$ to minimize this quadratic approximation. Taking the derivative with respect to $\Delta\vb{m}$ gives
+    \[
+        \grad \Phi + \vb{H} \Delta\vb{m} = 0,
+    \]
+    so that
+    \[
+        \Delta\vb{m} = - \vb{H}^{-1} \grad \Phi.
+    \]
+    The update is therefore
+    \begin{equation}
+        \vb{m}_{i+1} = \vb{m}_i + \Delta\vb{m}
+        = \vb{m}_i - \vb{H}^{-1} \grad \Phi.
+        \label{eq:newton_update}
+    \end{equation}
+
+    \medskip
+    \noindent\textbf{Gradient and Hessian for least-squares objectives} \\
+    Let the objective function be
+    \[
+        \Phi(\vb{m}) = \norm{\vb{r}}_2^2 = \vb{r}\T \vb{r},
+    \]
+    where $\vb{r} = \vb{d} - \vb{f}(\vb{m})$.  While we typically express the forward problem as
+    \[
+        \tilde{\vb{d}} = \Fop(\vb{m}),
+    \]
+    where $\Fop$ is a (generally nonlinear) operator. For the purpose of differentiation, it is convenient to express this operator in component form,
+    \[
+        \vb{f}(\vb{m}) =
+        \begin{bmatrix}
+            f_1(\vb{m}) \\
+            \vdots \\
+            f_N(\vb{m})
+        \end{bmatrix}
+        \equiv \Fop(\vb{m}).
+    \]
+
+    Taking the gradient,
+    \[
+        \grad \Phi = -2 \pdv{\vb{f}}{\vb{m}}\T \vb{r}.
+    \]
+
+    The Jacobian is defined as
+    \[
+        \vb{J} = \pdv{\vb{f}}{\vb{m}} = 
+        \begin{bmatrix}
+            \pdv{f_1}{m_1} & \cdots & \pdv{f_1}{m_M} \\
+            \vdots & \ddots & \vdots \\
+            \pdv{f_N}{m_1} & \cdots & \pdv{f_N}{m_M}
+        \end{bmatrix},
+    \]
+    so that
+    \[
+        \pdv{\vb{r}}{\vb{m}} = -\vb{J}.
+    \]
+    Now using the Jacobian,
+    \begin{equation}
+        \grad \Phi = -2 \vb{J}\T \vb{r}.
+        \label{eq:grad_obj}
+    \end{equation}
+    Differentiating again gives the Hessian,
+    \[
+        \vb{H}
+        = 2 \vb{J}\T \vb{J}
+        + 2 \sum_{i=1}^N r_i \vb{H}_i,
+    \]
+    where $(\vb{H}_i)_{jk} = \pdv{r_i}{m_j}{m_k}$ is the second derivative of the residuals.  The first term ($\vb{J}\T \vb{J}$) represents curvature arising from data sensitivities, while the second term reflects nonlinear curvature of the forward model itself.
+
+    \medskip
+    \noindent\textbf{Gauss--Newton approximation} \\
+    The Gauss--Newton method adds an approximation to the Hessian.  The Hessian is expensive to compute and includes second derivatives of the forward model, which are often difficult to evaluate accurately and can amplify noise.  For these reasons, it is common to approximate the Hessian using only first-derivative information.
+
+    Near a solution, the residuals are small, $r_i \approx 0$, and the second term becomes negligible.  This assumption results in the Gauss--Newton approximation for the Hessian, i.e.,
+    \begin{equation}
+        \vb{H} \approx 2 \vb{J}\T \vb{J}.
+        \label{eq:hessian}
+    \end{equation}
+    If the residuals are exactly linear in the parameters, then
+    \[
+        \pdv{r_i}{m_j}{m_k} = 0,
+    \]
+    and the approximation becomes exact.
+
+    Substituting Equations~\ref{eq:grad_obj} and \ref{eq:hessian} into the Newton update (Equation~\ref{eq:newton_update}) yields
+    \[
+        \Delta \vb{m} = (\vb{J}\T \vb{J})^{-1} \vb{J}\T \vb{r}.
+    \]
+    This result shows that each iteration of a nonlinear inversion reduces to solving a linear least-squares problem using the current model as a reference.  Finally,
+    \[
+        \vb{m}_{i+1} = \vb{m}_i + \Delta \vb{m}.
+    \]
+
+    \medskip
+    \noindent\textbf{Adding Weights}\\
+    As before, we can add weights to the formulation.  Since the weighting matrix does not depend on the model parameters, it enters the derivation as a constant scaling, allowing us to define
+    \[
+        \vb{J}_w = \vb{W}_d \vb{J}, \quad
+        \vb{r}_w = \vb{W}_d \vb{r}.
+    \]
+    This transform results in the weighted Gauss--Newton model update,
+    \[
+        \Delta \vb{m} = (\vb{J}_w\T \vb{J}_w)^{-1} \vb{J}_w\T \vb{r}_w.
+    \]
+}{core}\label{box:newton}

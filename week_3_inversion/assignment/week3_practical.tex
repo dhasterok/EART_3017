@@ -1,0 +1,110 @@
+
+% Week 3 Practical: Inversion (LLSQ, Linearization, Newton)
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+\usepackage{siunitx}
+\usepackage{booktabs}
+
+\title{Geophysics 3A -- Week 3 Practical\\\large Linear and Non--linear Inversion in Practice}
+\author{Potential Fields \& Geothermics}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section*{Overview}
+This practical consolidates three pillars of inversion introduced in the Week~3 materials: (i) linear least squares (LLSQ) and weighted LLSQ; (ii) linearization of a nonlinear forward model (geometric mean of conductivity) to obtain a linear inverse problem; and (iii) Newton/ Gauss--Newton inversion for a nonlinear thermal conductivity model. You will:
+\begin{enumerate}
+  \item build and fit a linear model between density and seismic velocity (Problem~1);
+  \item derive a linearized model for effective thermal conductivity from normative mineralogy and invert for mineral conductivities (Problem~2);
+  \item implement Newton's method to fit laboratory thermal conductivity data for a plagioclase solid solution (Problem~3).
+\end{enumerate}
+These tasks mirror the lecture/workshop derivations and the Week~2 computations, but now in Python with an emphasis on reproducible workflows.
+
+\section*{Learning outcomes}
+By the end, you should be able to (i) formulate $\mathbf d = \mathbf G\,\mathbf m$ for linear/linearized problems; (ii) apply weighting and compute parameter uncertainties; (iii) construct a Fréchet/Jacobian matrix for a chosen nonlinear model and run damped Gauss--Newton updates; and (iv) articulate the tradeoff between misfit and regularization.
+
+\section*{Data and file names}
+Place the following CSV files in the same folder as the notebook (exact column names may differ depending on the provided datasets):
+\begin{itemize}
+  \item \texttt{density\_velocity.csv} with columns such as \texttt{RHO} [\si{kg\,m^{-3}}] and \texttt{VP} [\si{km\,s^{-1}}].
+  \item \texttt{thermo\_mineralogy.csv} with columns: sample ID; measured effective thermal conductivity $k_\text{eff}$ [\si{W\,m^{-1}\,K^{-1}}]; normative mineral fractions $w_{j i}$ for minerals $i=1,\dots,p$ that sum to 1 for each sample $j$.
+  \item \texttt{tc\_plag.csv} with columns: molar fraction An ($x$), temperature $T$ [K], conductivity $k$ [\si{W\,m^{-1}\,K^{-1}}].
+  \item (Optional for comparison) \texttt{mineral\_k\_ref.csv} with columns: mineral name, $k$ [\si{W\,m^{-1}\,K^{-1}}] at reference $T$.
+\end{itemize}
+
+\section*{Submission}
+Submit a single PDF (export of the completed notebook with outputs) together with your Python notebook \texttt{week3\_practical.ipynb}. Ensure figures are labeled and code is commented. Include brief answers to questions inline as Markdown cells.
+
+\section{Problem 1: Linear modeling of density vs. seismic velocity}
+You will fit a linear model relating density and $V_P$, extending Week~2.
+
+\paragraph{Model forms.} Consider the linear (in parameters) models:
+\begin{align}
+  \rho &= m_0 + m_1 V_P, \\
+  \log \rho &= n_0 + n_1 V_P, \quad\text{(alternative if a log--linear trend fits better)}
+\end{align}
+where parameters $(m_0,m_1)$ or $(n_0,n_1)$ are estimated by LLSQ.
+
+\paragraph{Tasks.}
+\begin{enumerate}
+  \item Load the dataset and construct the operator matrix $\mathbf A$ (columns of ones and $V_P$). Solve $\min\limits_{\mathbf m} \lVert \mathbf d - \mathbf A\,\mathbf m \rVert_2$.
+  \item Report best--fit parameters, 1$\sigma$ uncertainties (from the parameter covariance), RMS misfit, and a residuals plot.
+  \item Repeat in log--space if warranted. Compare models visually and statistically; interpret in terms of lithology and scatter sources.
+  \item (Optional) Include heteroscedastic weights if uncertainties vary per datum.
+\end{enumerate}
+
+\section{Problem 2: Geometric mean conductivity from normative mineralogy (linearization)}
+Let a rock's effective thermal conductivity be modeled by a geometric mean of mineral conductivities
+\begin{equation}
+  k_{\text{eff},j} = \prod_{i=1}^{p} k_i^{\,w_{j i}}, \quad \sum_{i=1}^{p} w_{j i} = 1, \label{eq:geom}
+\end{equation}
+for sample $j=1,\dots,N$. Taking logarithms gives a linear system in the unknown mineral conductivities:
+\begin{equation}
+  \log k_{\text{eff},j} = \sum_{i=1}^{p} w_{j i}\, \log k_i. \label{eq:lin}
+\end{equation}
+Define $d_j = \log k_{\text{eff},j}$, unknowns $m_i = \log k_i$, and $A_{j i} = w_{j i}$. Then $\mathbf d = \mathbf A\,\mathbf m$.
+
+\paragraph{Tasks.}
+\begin{enumerate}
+  \item Assemble $\mathbf A$ from normative mineral fractions and $\mathbf d$ from measurements. Solve the LLSQ problem for $\mathbf m$ and report $k_i = e^{m_i}$ with 95\% CIs.
+  \item Diagnose conditioning of $\mathbf A$ (rank, condition number). If ill--posed, add a small Tikhonov term $\lambda^2\lVert\mathbf m-\mathbf m_0\rVert_2^2$ and comment on the trade--off.
+  \item Compare the inferred $k_i$ with laboratory references when available (provide a table/plot if you have \texttt{mineral\_k\_ref.csv}). Discuss agreement and potential biases (texture, porosity, temperature).
+\end{enumerate}
+
+\section{Problem 3: Newton / Gauss--Newton inversion for a nonlinear conductivity model}
+Use the (nonlinear) plagioclase solid solution model
+\begin{equation}
+  k(x,T) = \big(m_0 + m_1 x + m_2 x^2\big)\,\left(\frac{298}{T}\right)^{m_3}, \label{eq:model}
+\end{equation}
+where $x$ is molar fraction An and $T$ is temperature in K. The Fr\'echet (Jacobian) entries are
+\begin{align}
+  \frac{\partial k}{\partial m_0} &= \left(\frac{298}{T}\right)^{m_3}, &
+  \frac{\partial k}{\partial m_1} &= x\left(\frac{298}{T}\right)^{m_3}, &
+  \frac{\partial k}{\partial m_2} &= x^2\left(\frac{298}{T}\right)^{m_3}, \\
+  \frac{\partial k}{\partial m_3} &= \big(m_0 + m_1 x + m_2 x^2\big)\left(\frac{298}{T}\right)^{m_3} \log\!\left(\frac{298}{T}\right). \label{eq:jac}
+\end{align}
+
+\paragraph{Tasks.}
+\begin{enumerate}
+  \item Implement a Gauss--Newton solver minimizing $\phi(\mathbf m)=\lVert \mathbf d-\mathbf f(\mathbf m)\rVert_2^2 + \lambda^2\lVert\mathbf m-\mathbf m_0\rVert_2^2$ with optional damping/line search. Start from a reasonable $\mathbf m_0$.
+  \item Report the parameter estimates with 95\% confidence intervals from the approximate covariance $(\mathbf F^T\mathbf F)^{-1}$ scaled by the residual variance.
+  \item Explore sensitivity to starting model and to $\lambda$; comment on convergence/divergence and stability.
+  \item Plot fitted curves at several An values and inspect residuals vs. temperature.
+\end{enumerate}
+
+\section*{Deliverables}
+For each problem include: figures (data + model; residuals), parameter tables with uncertainties, and brief interpretations (2--4 sentences each). Comment on linear vs. nonlinear structure, conditioning, and physical plausibility.
+
+\section*{Appendix: Useful formulas}
+\paragraph{LLSQ and covariance.} For $\mathbf d=\mathbf A\,\mathbf m+\boldsymbol\epsilon$, the LLSQ solution is $\hat{\mathbf m}= (\mathbf A^T\mathbf A)^{-1}\mathbf A^T\mathbf d$. If the residual variance is $\hat\sigma^2=\lVert\mathbf d-\mathbf A\hat{\mathbf m}\rVert_2^2/\max(N-p,1)$, then $\operatorname{Cov}(\hat{\mathbf m})\approx \hat\sigma^2(\mathbf A^T\mathbf A)^{-1}$.
+
+\paragraph{Weighted LLSQ.} With data weights $\mathbf W_d$, solve $\min\lVert \mathbf W_d(\mathbf A\,\mathbf m-\mathbf d)\rVert_2$. Equivalent normal equations: $(\mathbf A^T\mathbf W_d^T\mathbf W_d\,\mathbf A)\,\mathbf m=\mathbf A^T\mathbf W_d^T\mathbf W_d\,\mathbf d$.
+
+\paragraph{Geometric mean linearization.} From Eq.~\eqref{eq:geom}, taking logs yields Eq.~\eqref{eq:lin}, linear in $\log k_i$.
+
+\paragraph{Gauss--Newton step.} With Jacobian $\mathbf F$, solve $(\mathbf F^T\mathbf F+\lambda^2\mathbf I)\,\Delta\mathbf m=\mathbf F^T(\mathbf d-\mathbf f(\mathbf m))$ and update $\mathbf m\leftarrow \mathbf m + \alpha\,\Delta\mathbf m$ with optional step length $\alpha$.
+
+\vspace{1ex}
+\noindent\textbf{Notes.} Use SI units consistently. If any dataset lacks uncertainties, assume equal weights or motivate a reasonable weighting scheme. Be explicit about any transformations (e.g., log space).
+
+\end{document}

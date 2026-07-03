@@ -1,0 +1,74 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+
+\begin{document}
+\section{Epilogue: Fields, Properties and Earth Processes}
+Across this course, the geophysical methods introduced are unified by a common objective: to use indirect observations to infer the physical state, structure, and evolution of the Earth. Gravity, magnetics, geothermics, electrostatics, and seismology do not represent isolated approaches, but rather different lenses through which to view the same underlying material system. Their logical progression reflects changes in governing equations, characteristic timescales, and dominant physical processes, but also a growing depth of constraint—from bulk properties and long wavelengths toward increasingly detailed images of Earth structure. Taken together, these methods provide a framework for interrogating the Earth as a coupled physical system rather than as a collection of independent datasets.
+
+A central unifying theme is the role of material properties and how they manifest across different fields. Gravity constrains the distribution of mass and density, which governs isostatic balance, influences seismic wave speeds through elastic moduli, and enters thermal problems through heat capacity and pressure-dependent transport. Geothermics focuses on temperature and internal heat sources, linking thermal structure to composition and radiogenic element distribution. Temperature, in turn, strongly affects electrical resistivity through thermally activated conduction mechanisms, controls the stability and remanence of magnetic minerals, and modifies seismic velocities and attenuation. Electrical methods exploit this sensitivity to resistivity to image fluids and melts, which play a critical role in heat transport, deformation, and magmatism. In this way, temperature provides a bridge between thermal, electrical, magnetic, and seismic observations.
+
+Seismology completes this picture by offering a level of spatial resolution unmatched by other methods, allowing direct imaging of interfaces, heterogeneity, and structure from the crust to the deep mantle. These images provide context and constraint for interpreting gravity anomalies, magnetic signatures, resistivity variations, and thermal models, anchoring them in a geometrical framework shaped by tectonics. At the same time, tectonic processes themselves—deformation, magmatism, fluid migration, and lithospheric evolution—generate many of the signals observed by geophysical methods, reminding us that structure and process are inseparable. Seismology thus both benefits from and informs the interpretation of all other geophysical observations.
+
+Underlying all methods is a shared reliance on physical intuition as much as formal analysis. Numerical forward modeling and inverse techniques provide powerful and transferable tools for relating models to data, but they do not replace an understanding of how fields respond to sources, boundaries, and material contrasts. Developing intuition for scale, sensitivity, and non-uniqueness is essential for making sense of the diversity of geophysical phenomena observed on Earth. Ultimately, the methods presented in this course are best viewed as complementary components of a single effort: to understand the Earth's present-day structure, its chemical and thermal heterogeneity, its tectonic and magmatic evolution, and the processes that continue to shape it.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  scale=0.95,
+  every node/.style={font=\small},
+  state/.style={draw, rounded corners, fill=gray!15, align=center},
+  prop/.style={draw, rounded corners, fill=blue!10, align=center},
+  meth/.style={draw, circle, fill=green!10, align=center},
+  proc/.style={draw, ellipse, fill=orange!10, align=center},
+  arr/.style={->, thick}
+]
+
+% ---------- Central state ----------
+\node[state, fill=gray!25] (state) at (0,0)
+{State variables\\[2pt]
+\textbf{Temperature}\\
+\textbf{Pressure}\\
+\textbf{Composition}};
+
+% ---------- Physical properties ----------
+\node[prop] (dens)  at (-4, 2) {Density};
+\node[prop] (elas)  at (-4,-2) {Elastic\\properties};
+\node[prop] (res)   at (0, 4)  {Electrical\\resistivity};
+\node[prop] (k)     at (4, 2)  {Thermal\\conductivity};
+\node[prop] (mag)   at (4,-2)  {Magnetic\\properties};
+
+% ---------- Methods ----------
+\node[meth] (grav) at (-6, 2)  {Gravity};
+\node[meth] (seis) at (-6,-2)  {Seismology};
+\node[meth] (em)   at (0, 6)   {EM\\methods};
+\node[meth] (ther) at (6, 2)   {Geothermics};
+\node[meth] (magn) at (6,-2)   {Magnetics};
+
+% ---------- Processes ----------
+\node[proc] (tect) at (0,-5)
+{Tectonics, magmatism,\\
+fluid flow, deformation};
+
+% ---------- Connections ----------
+% State → properties
+\draw[arr] (state) -- (dens);
+\draw[arr] (state) -- (elas);
+\draw[arr] (state) -- (res);
+\draw[arr] (state) -- (k);
+\draw[arr] (state) -- (mag);
+
+% Properties → methods
+\draw[arr] (dens) -- (grav);
+\draw[arr] (elas) -- (seis);
+\draw[arr] (res)  -- (em);
+\draw[arr] (k)    -- (ther);
+\draw[arr] (mag)  -- (magn);
+
+% Processes → state
+\draw[arr, dashed] (tect) -- (state);
+
+\end{tikzpicture}
+\caption{Conceptual hierarchy linking Earth processes to state variables, physical properties, and geophysical observations. Methods sample different properties, which are controlled by a shared thermodynamic state.}
+\end{figure}
+
+\end{document}

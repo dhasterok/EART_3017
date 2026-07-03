@@ -1,0 +1,118 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{notes}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+\setlist[itemize]{leftmargin=*}
+\setlist[enumerate]{leftmargin=*}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics IIIA: Potential Fields \& Geothermics}
+\rhead{Week 4 Workshop}
+\cfoot{\thepage}
+
+\title{Week 4 -- Workshop Plan\\Gravity: Density, Superposition, and Geological Plausibility}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-0.75em}
+\noindent\textbf{Duration:} 3 hours \hfill \textbf{Setting:} Workshop room (whiteboards; projector)
+
+\section*{Purpose}
+Strengthen intuition linking density contrasts and geometry to gravity anomalies, \emph{without heavy derivations}. Students will use provided gravity solutions to reason about amplitude, width, and depth; apply \emph{superposition} to build plausible anomalies from multiple bodies; and match geologic cross-sections to gravity profiles. The session primes students for the subsequent stairwell free-air practical and density measurements (Week~2 and lab).
+
+\section*{Learning Outcomes}
+\begin{itemize}
+  \item Use given gravity solutions (slab, 2D cylinder, 2D polygon intuition) to reason about amplitude, width/half-width, and depth.
+  \item Apply superposition to construct composite anomalies from multiple bodies with realistic $\Delta\rho$.
+  \item Connect mineralogical density estimates to plausible $\Delta\rho$ for modeling and discuss detectability.
+  \item Tackle non-uniqueness by proposing auxiliary observations that break model ties.
+\end{itemize}
+\textit{Reference: Week~4 notes on gravitational potential/fields, cylinder/polygon results, and width--depth relationships.}
+
+\section*{Roles and Grouping}
+Mixed groups of 4--5 with geology \& physics/engineering. Rotate roles: \emph{Facilitator}, \emph{Math Lead}, \emph{Geology Lead}, \emph{Skeptic/QC}, \emph{Recorder}.
+
+\section*{Session Flow (180 min)}
+\subsection*{0--10 min: Warm-up --- ``Read the Curve''}
+Show three schematic gravity profiles: narrow positive peak; broad, low-amplitude swell; negative trough. In groups, identify sign, relative width (depth cue), and at least one plausible geologic cause for each. Share one observation per group.
+
+\subsection*{10--35 min: Activity A --- Density Reality Check}
+\textbf{Goal:} Ground $\Delta\rho$ used later in measured rock densities.\\
+\textbf{Given:} Hand samples from Week~2 + their measured hydrostatic densities.\\
+\textbf{Tasks:}
+\begin{enumerate}
+  \item Estimate mineral fractions and compute theoretical density (weighted by mineral densities).
+  \item Compare to measured; compute \% error; explain discrepancy (porosity, alteration, mis-ID).
+  \item Propose a realistic $\Delta\rho$ range (e.g., felsic vs.\ mafic, ore vs.\ host) to use in modeling today.
+  \item Comment on detectability of the resulting anomaly magnitude in a near-surface survey.
+\end{enumerate}
+\textbf{Deliverable:} One-page table (\emph{Density Worksheet}).
+
+\subsection*{35--65 min: Activity B --- Start-from-Solution Mini-Sprint}
+\textbf{Goal:} Use (not derive) standard results to reason about scale and shape.\\
+\textbf{Provided:} \emph{Formula Sheet} with: (i) infinite slab $\Delta g = 2\pi G\,\Delta\rho\,t$ and applicability; (ii) 2D cylinder \emph{response shapes/width--depth cues}; (iii) polygonal body \emph{edge/gradient} intuition.\\
+\textbf{Pick two micro-tasks:}
+\begin{enumerate}
+  \item Given target $\Delta g$ and $t$, back-compute $\Delta\rho$ for a slab and sanity-check against Activity~A.
+  \item From a pre-plotted cylinder response, measure half-width and estimate burial depth; predict how doubling $\Delta\rho$ or radius changes amplitude (not width).
+  \item For a simple 2D rectangle (polygon), mark where the steepest gradients occur and explain why edges dominate.
+\end{enumerate}
+\textbf{Deliverable:} Board photo + ``Assumptions \& Limits'' (3 lines).
+
+\subsection*{65--110 min: Activity C --- Superposition: Build-an-Anomaly}
+\textbf{Goal:} Construct a plausible local cross-section and its gravity by summing components.\\
+\textbf{Provided:} \emph{Superposition Component Library} with scaled kernels (normalized shapes) for: basement step (sedimentary wedge), mafic dike (2D cylinder proxy), felsic pluton (broad polygon), thin regolith cap (negative slab).\\
+\textbf{Tasks:}
+\begin{enumerate}
+  \item Draft a geologically plausible cross-section (2--3 bodies) with $\Delta\rho$ from Activity~A.
+  \item Place laterally, set depths/widths, scale amplitudes, and \emph{sum} the responses (trace overlays on graph paper).
+  \item Annotate why the geology is plausible (lithology, structure, relative timing).
+\end{enumerate}
+\textbf{Deliverable:} Labeled cross-section + composite gravity + legend of component contributions.
+
+\subsection*{110--150 min: Activity D --- Match-Three: Cross-Sections \texorpdfstring{$\leftrightarrow$}{↔} Gravity Profiles}
+\textbf{Goal:} Practice non-uniqueness reasoning with realistic models.\\
+\textbf{Provided:} \emph{Match-Three Handout} --- three local-style cross-sections (A--C) and three gravity profiles (1--3) designed to be confusable.\\
+\textbf{Tasks:}
+\begin{enumerate}
+  \item Match each profile to the most plausible cross-section using: (i) half-width/FWHM (depth cue); (ii) edge slopes/asymmetry (contacts, wedges); (iii) amplitude scaling with $\Delta\rho$ and size.
+  \item Propose one additional observation to break any tie (e.g., rock density control, mapping a contact, short-station-spacing gradient, borehole, susceptibility).
+  \item Role inversion: \emph{Geologists} present the math-based width--depth rationale; \emph{Phys/Eng} defend the geology.
+\end{enumerate}
+\textbf{Deliverable:} One page with matches (A$\to$?, B$\to$?, C$\to$?) + tie-breaker justification.
+
+\subsection*{150--165 min: Practical Prep --- Free-Air Gradient}
+The stairwell practical follows this workshop. In groups, draft a 3-bullet measurement plan (leveling, approach dial consistently to avoid backlash, clamp before moving, floor $\Delta h$, calibration factor, averaging and uncertainty). Target magnitude: $\sim 0.3086~\mathrm{mGal\,m^{-1}}$ (sign per course convention).
+
+\subsection*{165--180 min: Exit Ticket}
+\begin{enumerate}
+  \item Which single assumption in your superposition model, if wrong, most alters your interpretation?
+  \item What extra observation would you collect next to reduce non-uniqueness, and why?
+\end{enumerate}
+
+\section*{Materials}
+\begin{itemize}
+  \item Density Worksheet (Activity~A).
+  \item Formula Sheet (Activity~B).
+  \item Superposition Component Library (Activity~C).
+  \item Match-Three Handout (Activity~D).
+  \item Whiteboards, pens, graph paper, rulers.
+\end{itemize}
+
+\section*{Assessment}
+\begin{itemize}
+  \item Activity~A worksheet (completeness; plausible $\Delta\rho$ ranges).
+  \item Activity~B board photo + assumptions.
+  \item Activity~C cross-section, composite gravity, and legend consistency.
+  \item Activity~D matches and quality of the tie-breaker argument.
+  \item Exit ticket reflection.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,54 @@
+\begin{table}[htp]
+    \centering
+    \caption{Diffusivity and its relationship to transport efficiency, and storage in geophysical diffusion processes, $\kappa = k/c$.}
+    \label{tab:diffusivity}
+    \small
+    \begin{tabularx}{\textwidth}{lYcYcYcc}
+        \toprule
+        \textbf{System} 
+        & \textbf{Potential} 
+        & $\phi$
+        & \textbf{Transport efficiency} 
+        & $k$
+        & \textbf{Storage term} 
+        & $c$
+        & \textbf{Diffusivity} \\
+        \midrule
+        Heat conduction 
+        & temperature & $T$ 
+        & thermal conductivity & $k$ 
+        & density \& specific heat capacity & $\rho C_P$ 
+        & $\displaystyle \kappa = \frac{k}{\rho C_P}$ \\
+
+        Chemical diffusion 
+        & concentration & $C$ 
+        & molecular diffusivity & $D$ 
+        & $1$ (per unit concentration) &
+        & $\displaystyle \kappa = D$ \\
+
+        Groundwater flow 
+        & hydraulic head & $h$ 
+        & hydraulic conductivity & $K$ 
+        & specific storage & $S_s$ 
+        & $\displaystyle \kappa = \frac{K}{S_s}$ \\
+
+        EM diffusion 
+        & electric \& magnetic field & $E$, $H$
+        & electrical conductivity & $\sigma$ 
+        & magnetic permeability & $\mu$ 
+        & $\displaystyle \kappa = \frac{1}{\mu\sigma}$ \\
+
+        Fluid diffusion
+        & velocity & $\vb{v}$ 
+        & dynamic viscosity & $\mu$ 
+        & mass density & $\rho$ 
+        & $\displaystyle \kappa = \nu = \frac{\mu}{\rho}$ \\
+
+        Sediment transport
+        & elevation, sediment thickness & $h$
+        & sediment mobility & $k_s$ 
+        & effective density ($\phi$ = porosity) & $\rho_s(1 - \phi)$
+        & $\displaystyle \kappa \sim \frac{k_s}{\rho_s(1 - \phi)}$ \\
+        \bottomrule
+    \end{tabularx}
+\end{table}

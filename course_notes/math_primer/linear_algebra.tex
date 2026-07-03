@@ -1,0 +1,371 @@
+\chapter{Linear Algebra: Stuck in the Matrix}
+
+Up to this point we have written equations independent of each other.
+
+Earlier we described our vectors by
+\begin{equation}
+    \vb{r} = (r_x,r_y,r_z) = r_x \vu{x} + r_y \vu{y} + r_z \vu{z} .
+\end{equation}
+However, there is another way.  We can express a vector as a either a single row
+or single column matrix, e.g.
+\begin{align}
+    \mat{r} & = \begin{bmatrix}
+            r_x & r_y & r_z
+        \end{bmatrix} && \text{row vector} , \\
+    & = \begin{bmatrix}
+            r_x \\ r_y \\ r_z
+        \end{bmatrix} && \text{column vector} . \\
+\end{align}
+Note: we change the notation for a vector from $\vb{r}$ to $\mat{r}$ when
+we express it as a matrix.  While this change in notation is not really
+necessary it is a commonly used convention.
+
+
+\section{Matrix Math}
+
+Matrix notation allows us to compactly represent systems of linear equations.
+For example, a system of three equations in three unknowns can be written as
+\begin{align}
+    a_{11} x + a_{12} y + a_{13} z &= b_1 ,\\
+    a_{21} x + a_{22} y + a_{23} z &= b_2 ,\\
+    a_{31} x + a_{32} y + a_{33} z &= b_3 .
+\end{align}
+This can be expressed in matrix form as
+\begin{equation}
+    \mathbf{A} \vb{x} = \vb{b},
+\end{equation}
+where
+\begin{equation}
+    \mathbf{A} =
+    \begin{bmatrix}
+        a_{11} & a_{12} & a_{13} \\
+        a_{21} & a_{22} & a_{23} \\
+        a_{31} & a_{32} & a_{33}
+    \end{bmatrix}, \quad
+    \vb{x} =
+    \begin{bmatrix}
+        x \\ y \\ z
+    \end{bmatrix}, \quad
+    \vb{b} =
+    \begin{bmatrix}
+        b_1 \\ b_2 \\ b_3
+    \end{bmatrix}.
+\end{equation}
+
+Matrix multiplication follows a row-by-column rule. The $(i,j)$ element of the
+product $\mathbf{C} = \mathbf{A}\mathbf{B}$ is given by
+\begin{equation}
+    c_{ij} = \sum_{k} a_{ik} b_{kj}.
+\end{equation}
+This operation is only defined when the number of columns in $\mathbf{A}$ equals
+the number of rows in $\mathbf{B}$.
+
+Note that matrix multiplication is generally \emph{not commutative}, i.e.
+\begin{equation}
+    \mathbf{A}\mathbf{B} \neq \mathbf{B}\mathbf{A}.
+\end{equation}
+
+
+\section{Matrix Operators}
+
+\subsection{Determinant}
+
+The determinant is a scalar quantity associated with a square matrix. For a
+$2\times2$ matrix,
+\begin{equation}
+    \mathbf{A} =
+    \begin{bmatrix}
+        a & b \\
+        c & d
+    \end{bmatrix},
+\end{equation}
+the determinant is
+\begin{equation}
+    \det(\mathbf{A}) = ad - bc.
+\end{equation}
+
+For a $3\times3$ matrix,
+\begin{equation}
+    \det(\mathbf{A}) =
+    \begin{vmatrix}
+        a_{11} & a_{12} & a_{13} \\
+        a_{21} & a_{22} & a_{23} \\
+        a_{31} & a_{32} & a_{33}
+    \end{vmatrix},
+\end{equation}
+which can be expanded along the first row as
+\begin{equation}
+    \det(\mathbf{A}) =
+    a_{11}
+    \begin{vmatrix}
+        a_{22} & a_{23} \\
+        a_{32} & a_{33}
+    \end{vmatrix}
+    - a_{12}
+    \begin{vmatrix}
+        a_{21} & a_{23} \\
+        a_{31} & a_{33}
+    \end{vmatrix}
+    + a_{13}
+    \begin{vmatrix}
+        a_{21} & a_{22} \\
+        a_{31} & a_{32}
+    \end{vmatrix}.
+\end{equation}
+
+The determinant has several important interpretations:
+\begin{itemize}
+    \item It measures the scaling of volume under the linear transformation.
+    \item If $\det(\mathbf{A}) = 0$, the matrix is singular (non-invertible).
+    \item The sign indicates orientation (e.g.\ right-handed vs left-handed).
+\end{itemize}
+
+\subsection{Transpose}
+
+The transpose of a matrix, denoted $\mathbf{A}^T$, is obtained by swapping rows
+and columns:
+\begin{equation}
+    (\mathbf{A}^T)_{ij} = a_{ji}.
+\end{equation}
+
+For example,
+\begin{equation}
+    \mathbf{A} =
+    \begin{bmatrix}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22}
+    \end{bmatrix}
+    \quad \Rightarrow \quad
+    \mathbf{A}^T =
+    \begin{bmatrix}
+        a_{11} & a_{21} \\
+        a_{12} & a_{22}
+    \end{bmatrix}.
+\end{equation}
+
+Important properties include
+\begin{align}
+    (\mathbf{A}^T)^T &= \mathbf{A}, \\
+    (\mathbf{A}\mathbf{B})^T &= \mathbf{B}^T \mathbf{A}^T.
+\end{align}
+
+A matrix is called \emph{symmetric} if $\mathbf{A}^T = \mathbf{A}$.
+
+\subsection{Inverse}
+
+The inverse of a matrix $\mathbf{A}$, denoted $\mathbf{A}^{-1}$, satisfies
+\begin{equation}
+    \mathbf{A}^{-1} \mathbf{A} = \mathbf{A} \mathbf{A}^{-1} = \mathbf{I},
+\end{equation}
+where $\mathbf{I}$ is the identity matrix.
+
+For a $2\times2$ matrix,
+\begin{equation}
+    \mathbf{A} =
+    \begin{bmatrix}
+        a & b \\
+        c & d
+    \end{bmatrix},
+\end{equation}
+the inverse is
+\begin{equation}
+    \mathbf{A}^{-1}
+    =
+    \frac{1}{ad - bc}
+    \begin{bmatrix}
+        d & -b \\
+        -c & a
+    \end{bmatrix},
+\end{equation}
+provided that $\det(\mathbf{A}) \neq 0$.
+
+For larger matrices, the inverse is typically computed using row reduction or
+numerical methods.
+
+In practice (especially in geophysics), it is often preferable to solve
+\begin{equation}
+    \mathbf{A}\vb{x} = \vb{b}
+\end{equation}
+without explicitly computing $\mathbf{A}^{-1}$, as direct inversion can be
+numerically unstable and computationally expensive.
+
+\section{Eigenvalues and Eigenvectors}
+
+Eigenvalues and eigenvectors describe how a matrix transforms a vector. In
+particular, they identify directions that are stretched or compressed without
+being rotated.
+
+An eigenvector $\vb{v}$ of a matrix $\mathbf{A}$ satisfies
+\begin{equation}
+    \mathbf{A} \vb{v} = \lambda \vb{v},
+\end{equation}
+where $\lambda$ is the corresponding eigenvalue.
+
+This equation says that applying $\mathbf{A}$ to $\vb{v}$ simply scales the
+vector by a factor $\lambda$, without changing its direction.
+
+To compute eigenvalues, we rewrite the equation as
+\begin{equation}
+    (\mathbf{A} - \lambda \mathbf{I}) \vb{v} = \vb{0}.
+\end{equation}
+For non-trivial solutions ($\vb{v} \neq \vb{0}$), we require
+\begin{equation}
+    \det(\mathbf{A} - \lambda \mathbf{I}) = 0.
+\end{equation}
+This is called the \emph{characteristic equation}, and its solutions give the
+eigenvalues $\lambda$.
+
+Once the eigenvalues are known, the corresponding eigenvectors are found by
+solving
+\begin{equation}
+    (\mathbf{A} - \lambda \mathbf{I}) \vb{v} = \vb{0}.
+\end{equation}
+
+Eigenvalues and eigenvectors have important physical interpretations. In
+geophysics, for example:
+\begin{itemize}
+    \item Eigenvectors often represent principal directions (e.g.\ principal
+    stress or strain axes).
+    \item Eigenvalues represent magnitudes along those directions.
+\end{itemize}
+
+For symmetric matrices, which commonly arise in physical problems, eigenvectors
+are orthogonal and eigenvalues are real. This greatly simplifies their
+interpretation.
+
+\section{Singular Value Decomposition (SVD)}
+
+The singular value decomposition (SVD) is one of the most powerful and widely
+used tools in linear algebra, particularly for solving inverse problems and
+analyzing ill-conditioned systems.
+
+Any $m \times n$ matrix $\mathbf{A}$ can be written as
+\begin{equation}
+    \mathbf{A} = \mathbf{U} \boldsymbol{\Sigma} \mathbf{V}^T,
+\end{equation}
+where
+\begin{itemize}
+    \item $\mathbf{U}$ is an $m \times m$ orthogonal matrix,
+    \item $\mathbf{V}$ is an $n \times n$ orthogonal matrix,
+    \item $\boldsymbol{\Sigma}$ is an $m \times n$ diagonal matrix containing
+    non-negative values.
+\end{itemize}
+
+The diagonal entries of $\boldsymbol{\Sigma}$,
+\begin{equation}
+    \sigma_1 \geq \sigma_2 \geq \cdots \geq 0,
+\end{equation}
+are called the \emph{singular values} of $\mathbf{A}$.
+
+\subsection*{Interpretation}
+
+The SVD provides a geometric interpretation of a matrix as a sequence of three
+operations:
+\begin{enumerate}
+    \item $\mathbf{V}^T$: rotates the input vector into a new coordinate system,
+    \item $\boldsymbol{\Sigma}$: stretches (or compresses) along orthogonal
+    directions,
+    \item $\mathbf{U}$: rotates the result into the final coordinate system.
+\end{enumerate}
+
+Thus, $\mathbf{A}$ maps a unit sphere into an ellipsoid, whose principal axes
+are given by the columns of $\mathbf{U}$ and whose lengths are the singular
+values $\sigma_i$.
+
+\subsection*{Connection to Eigenvalues}
+
+The singular values are related to the eigenvalues of $\mathbf{A}^T \mathbf{A}$:
+\begin{equation}
+    \mathbf{A}^T \mathbf{A} \vb{v}_i = \sigma_i^2 \vb{v}_i,
+\end{equation}
+where $\vb{v}_i$ are the columns of $\mathbf{V}$. Similarly,
+\begin{equation}
+    \mathbf{A} \mathbf{A}^T \vb{u}_i = \sigma_i^2 \vb{u}_i,
+\end{equation}
+where $\vb{u}_i$ are the columns of $\mathbf{U}$.
+
+\subsection*{Rank and Singular Values}
+
+The rank of $\mathbf{A}$ is equal to the number of non-zero singular values:
+\begin{equation}
+    \mathrm{rank}(\mathbf{A}) = \# \{ \sigma_i > 0 \}.
+\end{equation}
+
+Small singular values indicate directions in which the matrix has little
+sensitivity. In practice, very small $\sigma_i$ are often treated as zero,
+revealing effective rank deficiency.
+
+\subsection*{Solving Linear Systems}
+
+The SVD provides a stable way to solve
+\begin{equation}
+    \mathbf{A} \vb{x} = \vb{b},
+\end{equation}
+especially when $\mathbf{A}$ is ill-conditioned or not square.
+
+The solution can be written as
+\begin{equation}
+    \vb{x} = \mathbf{V} \boldsymbol{\Sigma}^{-1} \mathbf{U}^T \vb{b},
+\end{equation}
+where $\boldsymbol{\Sigma}^{-1}$ is formed by inverting the non-zero singular
+values.
+
+If some singular values are zero (or very small), the inverse does not exist in
+the usual sense. In this case, we use the \emph{pseudo-inverse},
+\begin{equation}
+    \mathbf{A}^{+} = \mathbf{V} \boldsymbol{\Sigma}^{+} \mathbf{U}^T,
+\end{equation}
+which provides the least-squares solution.
+
+\subsection*{Importance in Geophysics}
+
+SVD is particularly useful in geophysical applications:
+\begin{itemize}
+    \item It reveals rank deficiency and non-uniqueness in inverse problems.
+    \item It identifies poorly constrained model parameters (small $\sigma_i$).
+    \item It provides a natural framework for regularization by damping small
+    singular values.
+\end{itemize}
+
+For these reasons, SVD is a central tool in modern inversion theory.
+
+\section{Matrix Rank}
+
+The \emph{rank} of a matrix is the number of linearly independent rows or
+columns in the matrix. It provides a measure of how much independent
+information the matrix contains.
+
+For a matrix $\mathbf{A}$,
+\begin{equation}
+    \mathrm{rank}(\mathbf{A}) = \text{number of linearly independent rows}
+    = \text{number of linearly independent columns}.
+\end{equation}
+
+Some important consequences:
+\begin{itemize}
+    \item If $\mathbf{A}$ is an $n \times n$ matrix and
+    $\mathrm{rank}(\mathbf{A}) = n$, then $\mathbf{A}$ is full rank and
+    invertible.
+    \item If $\mathrm{rank}(\mathbf{A}) < n$, then $\mathbf{A}$ is singular and
+    does not have an inverse.
+    \item The rank determines the number of independent equations in a system
+    $\mathbf{A}\vb{x} = \vb{b}$.
+\end{itemize}
+
+Geometrically, the rank tells us the dimension of the space spanned by the
+matrix columns:
+\begin{itemize}
+    \item Rank 1: all columns lie along a line.
+    \item Rank 2: columns span a plane.
+    \item Rank 3: columns span a volume (in $\mathbb{R}^3$).
+\end{itemize}
+
+In practice, rank is determined by performing row reduction to bring the matrix
+into row echelon form. The number of non-zero rows (or pivots) is the rank.
+
+Rank is particularly important in geophysical inversion problems:
+\begin{itemize}
+    \item A rank-deficient system indicates redundancy or insufficient data.
+    \item It may lead to non-unique solutions.
+    \item Regularization methods are often used to handle such cases.
+\end{itemize}

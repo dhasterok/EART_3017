@@ -1,0 +1,269 @@
+\documentclass[final,a4paper,12pt]{article}
+\usepackage{notes}
+
+\newcommand{\half}{\tfrac{1}{2}}
+
+\title{Problem Set: Numerical Methods --- Key}
+\author{Geophysics 3A}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+
+%--------------------------------------------------
+\item \textbf{Governing equation}
+
+The steady-state heat conduction equation with spatially variable thermal
+conductivity and internal heat production is:
+
+\begin{equation}
+\nabla \cdot (k \nabla T) + A = 0
+\end{equation}
+
+In two dimensions $(x,z)$:
+
+\begin{equation}
+\frac{\partial}{\partial x} \left( k \frac{\partial T}{\partial x} \right)
++
+\frac{\partial}{\partial z} \left( k \frac{\partial T}{\partial z} \right)
++ A = 0
+\end{equation}
+
+%--------------------------------------------------
+\item \textbf{Boundary conditions}
+
+\begin{enumerate}
+
+\item \textbf{Top and bottom}
+
+Surface:
+\begin{equation}
+T(x,0) = T_s
+\end{equation}
+
+Basal boundary:
+\begin{equation}
+T(x,z_b(x)) = T_b(x)
+\end{equation}
+
+\item \textbf{Side boundaries (insulating)}
+
+Zero heat flux:
+\begin{equation}
+\frac{\partial T}{\partial x} = 0
+\end{equation}
+
+Finite difference form:
+\begin{equation}
+T_{i,1} = T_{i,2}, \quad
+T_{i,N} = T_{i,N-1}
+\end{equation}
+
+\end{enumerate}
+
+%--------------------------------------------------
+\item \textbf{Finite difference equation}
+
+Using fluxes across cell faces:
+
+\begin{align}
+&\frac{1}{\Delta x^2}
+\left[
+k_{i+\half,j}(T_{i+1,j} - T_{i,j})
+-
+k_{i-\half,j}(T_{i,j} - T_{i-1,j})
+\right] \\
++ &\frac{1}{\Delta z^2}
+\left[
+k_{i,j+\half}(T_{i,j+1} - T_{i,j})
+-
+k_{i,j-\half}(T_{i,j} - T_{i,j-1})
+\right]
++ A_{i,j} = 0
+\end{align}
+
+Rearranged:
+
+\begin{equation}
+T_{i,j} =
+\frac{
+k_{i+\half,j}T_{i+1,j}/\Delta x^2 +
+k_{i-\half,j}T_{i-1,j}/\Delta x^2 +
+k_{i,j+\half}T_{i,j+1}/\Delta z^2 +
+k_{i,j-\half}T_{i,j-1}/\Delta z^2
++ A_{i,j}
+}{
+k_{i+\half,j}/\Delta x^2 +
+k_{i-\half,j}/\Delta x^2 +
+k_{i,j+\half}/\Delta z^2 +
+k_{i,j-\half}/\Delta z^2
+}
+\end{equation}
+
+%--------------------------------------------------
+\item \textbf{Heat production at nodes}
+
+\begin{enumerate}
+
+\item General expression:
+
+\begin{equation}
+A_{i,j} = \frac{1}{4} \left(
+A_{i-\half,j-\half} +
+A_{i+\half,j-\half} +
+A_{i-\half,j+\half} +
+A_{i+\half,j+\half}
+\right)
+\end{equation}
+
+\item If $A = A(z)$ only:
+
+All four surrounding cells have values depending only on depth:
+
+\begin{equation}
+A_{i,j} = \frac{1}{2} (A_{i-\half} + A_{i+\half})
+\end{equation}
+
+If the node depth coincides with the midpoint:
+
+\begin{equation}
+A_{i,j} \approx A(z_i)
+\end{equation}
+
+\end{enumerate}
+
+%--------------------------------------------------
+\item \textbf{Thermal conductivity in four directions}
+
+Conductivities at interfaces:
+
+\begin{align}
+k_{i+\half,j} &= \frac{1}{2}\left(
+k_{i+\half,j-\half} + k_{i+\half,j+\half}
+\right) \\
+k_{i-\half,j} &= \frac{1}{2}\left(
+k_{i-\half,j-\half} + k_{i-\half,j+\half}
+\right) \\
+k_{i,j+\half} &= \frac{1}{2}\left(
+k_{i-\half,j+\half} + k_{i+\half,j+\half}
+\right) \\
+k_{i,j-\half} &= \frac{1}{2}\left(
+k_{i-\half,j-\half} + k_{i+\half,j-\half}
+\right)
+\end{align}
+
+%--------------------------------------------------
+\item \textbf{Porosity-controlled properties}
+
+\begin{enumerate}
+
+\item Thermal conductivity:
+
+\begin{equation}
+k = \left( \frac{1-\phi}{k_m} + \frac{\phi}{k_w} \right)^{-1}
+\end{equation}
+
+\item Heat production:
+
+\begin{equation}
+A = A_0 (1 - \phi)
+\end{equation}
+
+\item \textbf{Qualitative behaviour}
+
+\begin{itemize}
+\item Porosity decreases with depth
+\item Conductivity increases with depth (less fluid, more solid matrix)
+\item Heat production increases with depth (more radioactive solid material)
+\end{itemize}
+
+\end{enumerate}
+
+%--------------------------------------------------
+\item \textbf{Surface heat flow}
+
+Heat flow given by Fourier's law:
+
+\begin{equation}
+q = -k \frac{\partial T}{\partial z}
+\end{equation}
+
+Finite difference approximation:
+
+\begin{equation}
+q_j \approx -k_{1,j} \frac{T_{2,j} - T_{1,j}}{\Delta z}
+\end{equation}
+
+%--------------------------------------------------
+\item \textbf{Conceptual question}
+
+Although $k$ and $A$ vary only with depth, the geometry of the system
+(sediment thickness) varies laterally.
+
+This creates lateral temperature gradients, which cause heat to flow
+horizontally as well as vertically.
+
+Therefore, the system is two-dimensional because:
+\begin{itemize}
+\item boundary geometry varies in $x$
+\item isotherms deform around basement topography
+\item heat is redistributed laterally
+\end{itemize}
+
+\textbf{Key point:} Geometry, not material properties, drives the 2-D behaviour.
+
+%--------------------------------------------------
+\item \textbf{Sketching exercise}
+
+\textbf{1-D case:}
+\begin{itemize}
+\item Flat sediment layer
+\item Horizontal isotherms
+\item Vertical heat flow
+\end{itemize}
+
+\textbf{2-D case:}
+\begin{itemize}
+\item Variable sediment thickness
+\item Isotherms bend upward over highs
+\item Heat flow diverges over highs and converges in basins
+\end{itemize}
+
+%--------------------------------------------------
+\item \textbf{Model comparison}
+
+\begin{itemize}
+\item 1-D model provides smooth, averaged behaviour
+\item 2-D model captures local variations due to bathymetry
+\item 2-D model fits short-wavelength variability better
+\item Both models may miss some systematic trends
+\end{itemize}
+
+%--------------------------------------------------
+\item \textbf{3-D effects}
+
+\begin{itemize}
+\item 2-D ridge: heat deflection occurs in one horizontal direction
+\item Seamount (3-D): heat spreads radially
+\item 3-D spreading reduces peak anomalies
+\end{itemize}
+
+Including 3-D effects can improve the model but will not fully remove misfit.
+
+%--------------------------------------------------
+\item \textbf{Improving the model}
+
+Possible improvements:
+
+\begin{itemize}
+\item Include hydrothermal circulation
+\item Allow lateral variation in material properties
+\item Improve boundary conditions (e.g.\ basal temperature structure)
+\item Use fully 3-D geometry
+\end{itemize}
+
+\end{enumerate}
+
+\end{document}

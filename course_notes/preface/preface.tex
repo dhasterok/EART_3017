@@ -1,0 +1,154 @@
+\chapter*{Preface}
+\phantomsection
+\addcontentsline{toc}{chapter}{Preface}
+
+\epigraph{ ``In physical science a first essential step in the direction of learning any subject is to find principles of numerical reckoning and practicable methods for measuring some quality connected with it.  I often say that when you can measure what you are speaking about, and express it in numbers, you know something about it; but when you cannot measure, when you cannot express it in numbers, your knowledge is meagre and unsatisfactory kind; it may be the beginning of knowledge, but you have scarcely, in your thoughts, advanced to the stage of science, whatever the matter may be.''}
+{{\normalfont ---\ William Thompson (Lord Kelvin)}}
+
+
+\section*{Purpose of These Notes}
+
+This text is written for a set of upper-level undergraduate, intermediate to advanced geophysics courses.  It covers a wide range of topics, but is centered around three key equations that are common to many geophysical fields: the potential field, diffusion, and wave equations.  There are several recurring themes drawn from the mathematics of these equations that is returned to over and over again as a device to deepen understanding of the similiarities and differences between geophysical techniques.
+
+Chapters are written to support multiple passes: a first pass focused on concepts and physical meaning, later passes focused on mathematics and implementation.  Text boxes contain mathematical definitions or technical details that can be skipped on a first reading if the concepts are already familiar.  Worked examples illustrate how apply the techniques.
+
+The text is not meant as an exhaustive reference or a numerical analysis text.  The text is supported with recorded lectures that support and extend the concepts in this book.  In class workshops take these concepts and focus on building mathematical intuition and familiarity with properties of Earth Materials and how they vary with lithology. Practical (laboratory) sessions dive further into the mathematics and applications of these techniques computationally.
+
+\section*{How We Use Mathematics in Geophysics}
+Like physics, geophysics is a heavily mathematical subject.  Don't panic!  Equations are beautiful.  Yes at times they can cumbersome or complex to derive, but in general the solutions are quite simple and elegant.  Equations on their own do not necessarily tell us much more than the relationship between parameters.  But by knowing the underlying assumptions and understanding the physical meaning of parameters, we can deduce quite a bit about the physical processes operating within the Earth---all by learning to read a humble mathematical statement.
+
+Why derive equations?  While we can measure the relationship between a physical parameter (or several) and an observable, it is often difficult to determine the full extent of the relationship without a proper theoretical basis.  To develop this theoretical basis, we begin with one or more physical principles and apply various assumptions, constraints, boundary conditions, and initial conditions to derive a solution which can be used to model recorded data.  This mathematical journey a derivation.  Once we arrive at our derived solution, we will dissect its meaning by examining its behavior at its extremes in time and/or space.  We can also use the equation to estimate characteristics of the solutions shape, symmetry, and spatial and/or temporal scales.  The derivations that we will pursue in this book arise from simplified cases (often one-dimensional) that illustrate the most basic and essential physical concepts that can often be extended to larger and more complex problems.
+
+Why not start with the solution?  Plugging in numbers is something ``so easy even a caveman can do it.''  One of a geophysicists most valuable skills is their physical intuition.  Unfortunately very few of us are born with innate physical intuition, but it is something that can be gained with practice.  Practice that requires following, studying, dissecting, and performing derivations and their solutions.  While you will not be asked to do many derivations as part of this book, you will be presented with a number of them throughout this book and asked to understand various aspects of their setup, there relation to real world processes, and the implications of their solutions.
+
+\ntextbox{Learning in lectures}{
+    It took me a number of years before I properly learned how to learn in lectures (about my 3rd year of undergrad).  The key to learning in a lecture, particularly one with mathematical derivations, is not to write down every word and every step.  Anything that is just rearranging an equation can be easily repeated without writing every step and should not be written down.  Look for the tricks and identify those (e.g.\ a change of coordinates, applying an identity or approximation).  Listen for the key points, be discriminating, think about the concepts as they are presented, and try to forecast the next step.
+
+    We often discuss simplifications of real world processes.  Sometimes they work very well, sometimes less so.  Follow the setup of the problem as it often gives hints for the situations in which it applies.  When do you think it will be applicable?  If you can think of other possible applications bring them up for discussion.
+
+    All of the derivations I will show in class are also in the lecture notes.  Bring them to class and follow along.  Read the notes before hand if you have the time and focus on understanding the parts of the derivation you didn't follow in the notes.  Ask questions.  It is quite likely that there is more than one student with a similar question who also feels intimidated, timid, or too embarrassed to ask.  I don't consider any question to be too basic.
+}{aside}
+
+\section*{How to Read and Use the Book}
+
+These notes are structured to flow logically from topic to topic.  Derivations are also structured in a very logical way in order to ease their readability and to emphasize the important concepts. To simplify the reading for you there are some signposts that are meant to identify how much attention you should pay to a particular section of the text.  There are also a lot of equations in the text, though most are intermediate steps in derivations and not important.  Only a handful are required to memorize and a few more that you should pay careful attention to that help build intuition about a particular field.
+
+To signpost specific text, I use numbered boxes whos color indicates the purpose and examples are provided below.
+\ntextbox{Core Structure}{These text boxes are the most important to read.  They include key concepts at the start of most chapters, important derivations (though do not need to be memorized) that represent core ideas of geophysical theory.}{core}
+\ntextbox{Conventions and Alerts}{These text boxes are meant to make you stop and read.  They are used to designate conventions that may differ from other texts.  They also draw your attention to an important point that may otherwise be overlooked.}{alert}
+\ntextbox{Mathematical Tools}{These text boxes include mathematical concepts that are critical to understanding a method or result used in the main text.  You should make sure you understand these concepts.  If you are already familiar with the topic, you may skip them.}{mathtool}
+\ntextbox{Perspectives, Aides, and Philosophy}{There are times that I have included additional information or perspectives that are not critical to learning the book content, though they may help.  Sometimes they represent something you might find interesting or wish to explore further outside of class.}{aside}
+
+Not all equations serve the same purpose. Equations marked with a star (\raisebox{-0.4ex}\FiveStar),
+\begin{equation}
+    \coreeq
+    \vb{J} = \grad \phi ,
+    \label{eq:memorize}
+\end{equation}
+are core equations that you should memorize and be able to recall on cue and recognize immediately.  Equations marked with an open star (\raisebox{-0.4ex}\FiveStarOpen),
+\begin{equation}
+    \workeq
+    g_z = \tfrac{4}{3}\pi G a^3 \Delta \rho \frac{z_c}{(x^2 - z_c^2)^{-3/2}} ,
+    \label{eq:recognize}
+\end{equation}
+are important working relations that you should recognize and know how to use.  Most other equations appear only as intermediate steps in derivations and are included to show logical steps and do not require memorization or immediate familiarity and may only make sense in context.  They may appear on their own line,
+\[
+    \epsilon_{x,x} = \pdv{u_x}{x}
+    \label{eq:referenced}
+\]
+or inline, $h_2 = h_1 + \Delta\varepsilon + r$, and may or may not be numbered.  If numbered it is likely they are an intermediate step in a derivation to be referenced in the text.tract ideas are applied to real problems.
+
+\section*{Mathematical Background and Expectations}
+
+This book assumes prior exposure to calculus, linear algebra, and differential equations at an introductory level. In practice, students arrive with varying degrees of comfort across these topics, and it is common for one or more concepts to require review.
+
+Many mathematical tools are revisited when they are first needed, but they are not re-derived in full generality. For material not reviewed directly in the text, a set of mathematical appendices provides concise summaries of algebra, trigonometry, calculus (derivatives and integrals), complex numbers, vectors and vector calculus, and linear algebra. These appendices are intended as reference material rather than as replacements for prior coursework.
+
+The emphasis throughout the book is not on performing mathematical operations, but on learning to \emph{read} mathematics as a description of physical behavior. A central goal is to develop intuition for how functions behave in space and time, and how changes in parameters affect the geometry and scale of physical responses.
+
+Students are encouraged to build a mental picture of common functional forms.  For example, when an exponential decay is introduced, it should immediately suggest a characteristic length or timescale. When a prefactor multiplies a solution, it should be clear whether it controls overall magnitude, rate of change, or both. Developing this intuition allows you to anticipate how physical properties and spatial or temporal variables influence geophysical anomalies without relying solely on algebraic manipulation.
+
+To support this, a compact reference of common mathematical functions and their graphical behavior is provided, illustrating how constants control scale, curvature, and rate of change. This ability to visualize functions is essential for interpreting geophysical models, assessing plausibility, and understanding the sensitivity of observations to Earth structure.
+
+The goal is therefore not mathematical rigor for its own sake, but an ability to connect mathematical expressions to physical meaning. Mathematics in this book serves as a language for describing the Earth, not an obstacle to understanding it.
+
+\ntextbox{Reading Equations}{
+    When you look at the final equation of a derivation in the book, in class, or derived for your assessment, you need to focus on three questions to help understand it's meaning:
+    \begin{itemize}
+        \item What sets the scale?
+        \item What sets the rate of change?
+        \item What sets the geometry?
+    \end{itemize}
+    For example, an exponential decay implies a characteristic length or timescale,
+    a Gaussian implies a localized anomaly with a width set by its variance, and a
+    sinusoid implies oscillatory behavior with a well-defined wavelength.
+}{mathtool}
+
+\section*{Bookkeeping}
+
+\subsection*{Sign Conventions}
+Different scientific disciplines adopt different coordinate conventions, often for very practical reasons.  Physicists, astronomers, and engineers typically define the vertical coordinate $z$ as positive upward, away from the Earth. This reflects a worldview in which one studies systems from the outside — looking out or looking up.  Geophysicists, on the other hand, spend most of their time studying what lies beneath their feet. As a result, it is common in geophysics to define the vertical coordinate $z$ as positive downward, into the Earth. In other words, geophysicists look down while physicists look up.  There is nothing fundamentally correct or incorrect about either choice---what matters is consistency. Throughout these notes, unless stated otherwise:
+\begin{itemize}
+    \item $z$ increases downward
+    \item depth is positive
+    \item heat flow and gravity are typically treated as positive when directed upward toward the surface
+\end{itemize}
+
+When comparing results with other disciplines, textbooks, or software packages, always check the sign conventions carefully. Many apparent “errors” in geophysics reduce to a disagreement about which way is positive.
+
+\subsection*{Units}
+The International System of Units (SI) is a triumph of standardization and consistency\ldots and it was designed for laboratory experiments conducted on a workbench.
+
+Geophysics, however, studies a planet.
+
+As a result, geophysicists routinely use scaled or non-SI units that are more natural for the size, duration, and magnitude of Earth processes. Here is a partial list:
+\begin{itemize}
+    \item distances in kilometres (\si{km}) rather than metres,
+    \item times in millions of years\footnote{There is much debate about what units to use to express millions of years in geology.  Different authors opt for various conventions, m.y., \si{Myr}, etc.  We'll use two: $\si{Ma}$ to denote (past) age and age ranges; and \si{My} for model time, future time, or similar time spans.} (\si{My} or \si{Ma}) rather than seconds,
+    \item gravity in \si{mGal}\ rather than \si{m.s^{-2}},
+    \item magnetic field in \si{nT}\ rather than tesla,
+    \item heat flow in \hfu\ rather than \hfu.
+\end{itemize}
+
+These choices are not lazy or imprecise — they are pragmatic. Writing Earth-scale numbers exclusively in SI units would obscure physical meaning behind long strings of zeros and make order-of-magnitude reasoning more cumbersome.
+
+Throughout these notes: equations are written to be dimensionally consistent, regardless of unit system, and common geophysical working units are used where they improve clarity.  You are always encouraged to perform a quick check: ``Does this number make physical sense at Earth scale?''
+
+\subsection*{Notation and Conventions}
+
+Throughout this book, notation is chosen to emphasize physical meaning and to remain consistent across different geophysical applications as much as possible. The intent is not to introduce a unique or idiosyncratic notation, but to use a clear and stable set of conventions so that attention can remain focused on the physics rather than on symbols.  While certain symbols (letters, Latin or Greek) are commonly used to denote certain quantities within each subdiscipline, these are rarely standard universally.  Additionally, we use so many symbols throughout the course that there are inevitably some are used more than once to mean very different things.  To reduce confusion, a notation table is given at the start of most chapters that you can quickly use for reference.
+
+Logarithms are quite commonplace in geophysical solutions.  Most of the time, logarithms are base $e$---the natural number. Most programming languages use $\log$ for the natural logarithm so that is the convention we will follow in this book.  When we need a base-10 logarithm, the base will be explicit, $\log_{10}$.  Though I will note that we make plots we typically use $\log_{10}$ instead of $\log$.
+
+We will also frequently need exponentials.  We will sometimes use $\exp$ and $e$ for the natural number, so $\exp(x) = e^{x}$.  The use generally depends on the complexity of the argument, though $\exp$ is used more widely as it is used for $e$ in most computer languages.
+
+Scalars, vectors, and tensors are distinguished explicitly. Scalar quantities (e.g., temperature $T$, pressure $P$, density $\rho$, potential $\phi$) are written as italic symbols. Vector quantities (e.g., displacement $\vb{u}$, gravitational acceleration $\vb{g}$, heat flux $\vb{q}$, magnetic field $\vb{H}$) are denoted using bold symbols, and tensors are written in boldface with appropriate indices (e.g., stress $\bm{sigma}$, strain $\vb{e}$). This distinction is maintained consistently so that the mathematical form of an expression reflects the physical nature of the quantity it represents.
+
+Subscripts and superscripts are used systematically to indicate spatial and temporal indices (e.g., $T_{j,n}$), components (e.g., $g_z$), or reference states (e.g., $T^\circ$). Unless stated otherwise, subscripts typically refer to spatial location or vector component, while superscripts are reserved for time indices or powers. Careful attention to indices is essential for interpreting equations correctly, particularly in numerical formulations where spatial and temporal discretization are made explicit.
+
+Partial ($\pdv{}{z}$) and total derivatives ($\dv{}{z}$) follow standard conventions. Partial derivatives are used when a quantity depends on multiple independent variables, while total derivatives are used when a single independent variable is implied. These distinctions are important for understanding conservation laws and for recognizing the assumptions implicit in governing equations.
+
+\section*{Organization of the Book}
+
+The text is divided into three parts: Fundamentals of Geophysics; Geophysical Fields and Methods; and Computational and Inverse Methods.  Part I introduces physical properies and the general physics of fields.  Part II involves an investigation into the specific properties, classic solutions, and some modern approaches to geophysical fields and how they are used to study the solid Earth.  Part III provides a foundation into mathematical techniques that can be employed to process, model, and invert geophysical fields.  The techniques in Part III have broad utility across (geo)science.  
+
+The mathematical techniques in Part III are woven into the field chapters in Part II.  Because these techniques are so central to the study of modern geophysical fields, they deserve their own consideration that doesn't feel as if the methods can only be used in the one field where an example is demonstrated.  For that reason, I don't expect you to read straight through---rather I anticipate you will want to flip between parts to fully appreciate the subject.  I try to draw specific attention to these connections so that you know when this non-linear approach to reading will be beneficial.
+
+\section*{A Note on Interpretation}
+
+Models are simplified representations of reality, not exact descriptions of the Earth. Every model embodies assumptions about geometry, material properties, boundary conditions, and scales of interest. These assumptions are not flaws; they are choices that make problems tractable and interpretations possible.
+
+Throughout the book, assumptions, approximations, and limitations are discussed explicitly so that analytical and computational results can be interpreted in their proper physical context. Understanding what a model cannot tell us is as important as understanding what it can.
+
+Fourier methods are used extensively in this book as analytical tools for understanding how geophysical fields vary in space and time. By decomposing complex signals into simpler components, Fourier analysis provides insight into scale, symmetry, and attenuation, and allows many problems to be solved or interpreted in closed form. These methods play a central conceptual role, particularly in connecting physical processes to observable patterns.
+
+Finite difference methods are introduced as practical extensions of analytical solutions when geometry, boundary conditions, or material variability become too complex for closed-form treatment. In this course, they are used primarily in computer-based laboratories to explore more realistic geometries and to test physical intuition developed from analytical models. While they are not the primary focus of the topical chapters, they provide an essential bridge between idealized theory and more realistic Earth models.
+
+Inversion theory provides the framework for interpreting geophysical data in terms of subsurface structure and properties. Inverse problems rely on forward models—analytical or numerical—to link physical parameters to observations.  Because these problems are often non-unique and sensitive to noise, inversion requires careful use of constraints, regularization, and physical judgment.  The concepts developed throughout the book culminate in this perspective, where modeling and interpretation come together.
+
+The aim of this book is therefore not to provide definitive answers about the Earth, but to develop the tools and intuition needed to evaluate models critically, compare alternative explanations, and understand how physical assumptions shape geophysical interpretations.
+
+\section*{Acknowledgements}
+
+The geophysics course that this book is designed for started many years before I arrived as a lecturer in geophysics as the University of Adelaide.  It has gone through many revisions as the cohort of students has shifted over the years to varying proportions of physicists, astrophysicists, geologists, and engineers. I first started teaching geophysics with Graham Heinson in 2013 and took over full instruction of the content after a couple of years.  I quickly determined that there was too much content for a single course and so it was separated into two and now, at Adelaide University, it is now three courses (Potential Fields and Geothermics, Electromagnetics, and Seismics).  Ideas in this book come from several foundational works on geophysics Blakely, Telford et al., Grant and West, Lowrie, Fowler, Turcotte and Schubert.  However the idea of using the fundamental PDEs as a throughline came from discussions with fellow graduate students at the University of Utah in David Chapman's research group.  David was an excellent mentor and a phenomenal teacher.  His approach to teaching has heavily influenced the presentation of ideas and information in this text.  My approach is also heavily influenced by my time as an undergraduate at Caltech and the strong connection of geology to physical properties and geophysical fields comes from Don L. Anderson, who always kept at the forefront of his mind the connections between chemistry and physics of the Earth.  While I am nowhere near the calibre of scientist as these two great researchers, I hope that what I have to offer will help inspire you to gain a deeper understanding and appreciation for our wonderful planet and the tools we use to investigate it.
+

@@ -1,0 +1,304 @@
+
+% =========================================================
+% Jacobian Geometry, Pseudoinverse, Regularization, WLS, and LM
+% =========================================================
+% This file is intended to be \input{} into your main notes document.
+% It assumes your preamble includes at least:
+%   \usepackage{amsmath, amssymb, bm}
+%   \usepackage{tikz}
+%   \usetikzlibrary{arrows.meta,calc,decorations.markings,positioning}
+%   \usepackage{notes} % your custom style
+% If not already present, add those packages in your preamble.
+
+\section{Jacobian Geometry, Pseudoinverse, and Regularization}
+
+\subsection{From Nonlinear to Linearized Least Squares}
+Consider a nonlinear forward model $\mathbf{f}(\mathbf{m}) \in \mathbb{R}^m$ with data $\mathbf{d}\in\mathbb{R}^m$ and parameters $\mathbf{m}\in\mathbb{R}^n$. The Gauss--Newton linearization at $\mathbf{m}_k$ gives
+\[
+\mathbf{f}(\mathbf{m}_k+\delta\mathbf{m}) \approx \mathbf{f}(\mathbf{m}_k) + \mathbf{J}_k\,\delta\mathbf{m},
+\]
+where $\mathbf{J}_k = \left.\frac{\partial \mathbf{f}}{\partial \mathbf{m}}\right|_{\mathbf{m}_k}$ is the Jacobian. The linearized least-squares problem for the update $\delta\mathbf{m}$ is
+\[
+\min_{\delta\mathbf{m}} \; \|\mathbf{r}_k - \mathbf{J}_k \, \delta\mathbf{m}\|_2^2, \qquad \text{with} \quad \mathbf{r}_k = \mathbf{d} - \mathbf{f}(\mathbf{m}_k).
+\]
+Its normal equations are
+\[
+\mathbf{J}_k^\top \mathbf{J}_k \,\delta\mathbf{m} = \mathbf{J}_k^\top \mathbf{r}_k.
+\]
+Under full column rank, the unique least-squares update is $\delta\mathbf{m} = \mathbf{J}_k^{+}\,\mathbf{r}_k$ where $\mathbf{J}_k^{+}$ is the Moore--Penrose pseudoinverse (see \S\ref{subsec:pseudo}).
+
+\subsection{Geometric View: Column Space, Projection, and Orthogonality}
+Let $\mathcal{R}(\mathbf{J})$ denote the column space of $\mathbf{J}\in\mathbb{R}^{m\times n}$ (with $m\ge n$ typically). The least-squares solution determines the projection of the data $\mathbf{y}=\mathbf{r}_k$ onto $\mathcal{R}(\mathbf{J})$:
+\[
+\widehat{\mathbf{y}} = \mathbf{J}\,\delta\mathbf{m} \in \mathcal{R}(\mathbf{J}), \qquad
+\mathbf{r} = \mathbf{y} - \widehat{\mathbf{y}} \in \mathcal{R}(\mathbf{J})^\perp.
+\]
+Equivalently, $\mathbf{J}^\top \mathbf{r} = \mathbf{0}$, i.e., the residual is orthogonal to every column of $\mathbf{J}$.
+
+\subsubsection*{TikZ: Geometry of Least Squares in Data Space}
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=1.0,>=Latex]
+  % Axes
+  \draw[->,gray!60] (-0.3,0) -- (5.7,0);
+  \draw[->,gray!60] (0,-0.3) -- (0,4.5);
+
+  % A 2D subspace (a slanted plane segment in R^m)
+  \fill[blue!6] (0.5,0.8) -- (5.2,1.6) -- (4.6,3.8) -- (0,3.0) -- cycle;
+  \node[blue!60] at (4.9,3.2) {$\mathcal{R}(\mathbf{J})$};
+
+  % Vectors
+  \coordinate (O) at (0,0);
+  \coordinate (Y) at (4.0,4.0);
+  \draw[->,thick] (O) -- (Y) node[above right] {$\mathbf{y}$};
+
+  \coordinate (Yhat) at (3.8,2.2);
+  \draw[->,thick,blue!70] (O) -- (Yhat) node[below right=-2pt] {$\widehat{\mathbf{y}}=\mathbf{J}\,\delta\mathbf{m}$};
+
+  \draw[->,thick,red!70] (Yhat) -- (Y) node[midway,right] {$\mathbf{r}$};
+
+  % Orthogonality marker
+  \draw[red!70] ($(Yhat)!0.6!(Y)$) ++(-0.18,0.10) -- ++(0.32,-0.18);
+  \draw[red!70] ($(Yhat)!0.6!(Y)$) ++(0.10,-0.18) -- ++(-0.18,0.32);
+
+  % A couple of columns of J as directions
+  \coordinate (c1) at (1.8,1.0);
+  \coordinate (c2) at (1.2,1.8);
+  \draw[->,blue!50!black,thick] (O) -- (c1) node[below right=-1pt] {$\mathbf{j}_1$};
+  \draw[->,blue!50!black,thick] (O) -- (c2) node[above left=-1pt] {$\mathbf{j}_2$};
+
+  \node[align=left,anchor=west] at (0.2,4.3) {\footnotesize $\mathbf{r}\perp \mathcal{R}(\mathbf{J}) \iff \mathbf{J}^\top \mathbf{r}=\mathbf{0}$};
+\end{tikzpicture}
+\caption{Least-squares geometry: $\widehat{\mathbf{y}}$ is the orthogonal projection of $\mathbf{y}$ onto $\mathcal{R}(\mathbf{J})$, with residual $\mathbf{r}$ orthogonal to the column space of $\mathbf{J}$.}
+\end{figure}
+
+\subsection{Normal Equations and Conditioning}
+Expanding the objective,
+\[
+\|\mathbf{y}-\mathbf{J}\,\delta\mathbf{m}\|_2^2
+= \mathbf{y}^\top\mathbf{y} - 2\,\delta\mathbf{m}^\top \mathbf{J}^\top \mathbf{y}
++ \delta\mathbf{m}^\top (\mathbf{J}^\top \mathbf{J}) \delta\mathbf{m}.
+\]
+Setting the gradient to zero yields $\mathbf{J}^\top \mathbf{J}\,\delta\mathbf{m}=\mathbf{J}^\top \mathbf{y}$. If $\mathbf{J}$ is ill-conditioned or rank-deficient, $\mathbf{J}^\top \mathbf{J}$ is more ill-conditioned (squared condition number). This motivates SVD-based solutions and regularization.
+
+\subsection{The Pseudoinverse in Detail}\label{subsec:pseudo}
+Let the thin SVD of $\mathbf{J}\in\mathbb{R}^{m\times n}$ (rank $r$) be
+\[
+\mathbf{J} = \mathbf{U}\,\bm{\Sigma}\,\mathbf{V}^\top, \quad
+\mathbf{U}\in\mathbb{R}^{m\times r},\; \mathbf{V}\in\mathbb{R}^{n\times r},\;
+\bm{\Sigma}=\mathrm{diag}(\sigma_1,\ldots,\sigma_r),\; \sigma_1\ge\cdots\ge\sigma_r>0.
+\]
+The Moore--Penrose pseudoinverse is $\mathbf{J}^+ = \mathbf{V}\,\bm{\Sigma}^{-1}\,\mathbf{U}^\top$, and the minimum-norm least-squares solution is
+\[
+\delta\mathbf{m}^* = \mathbf{J}^+\,\mathbf{y}
+= \sum_{i=1}^r \frac{\mathbf{u}_i^\top \mathbf{y}}{\sigma_i}\,\mathbf{v}_i.
+\]
+\paragraph{Moore--Penrose conditions.} $\mathbf{J}^+$ is the unique matrix satisfying
+\[
+\mathbf{J}\mathbf{J}^+\mathbf{J}=\mathbf{J},\quad
+\mathbf{J}^+\mathbf{J}\mathbf{J}^+=\mathbf{J}^+,\quad
+(\mathbf{J}\mathbf{J}^+)^\top=\mathbf{J}\mathbf{J}^+,\quad
+(\mathbf{J}^+\mathbf{J})^\top=\mathbf{J}^+\mathbf{J}.
+\]
+\paragraph{Geometry.} $\mathbf{J}^+$ maps data to parameters via the right singular vectors, scaling by $1/\sigma_i$, and discarding any component in the left-null space of $\mathbf{J}^\top$. Small singular values amplify noise; regularization damps these directions.
+
+\subsubsection*{TikZ: SVD / Pseudoinverse Mapping Geometry}
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=1.0,>=Latex]
+  % Labels
+  \node at (0,3.6) {\small Data space $\mathbb{R}^m$};
+  \node at (8,3.6) {\small Model space $\mathbb{R}^n$};
+
+  % Ellipse in data space showing left singular vectors
+  \draw[thick,blue!60] (0,0) ellipse (2.2cm and 1.2cm);
+  \node[blue!70] at (-2.2,1.4) {$\{\mathbf{u}_i\}$};
+
+  % Basis vectors u1, u2 drawn
+  \draw[->,thick,blue!70] (0,0) -- (1.8,0.6) node[above right=-2pt] {$\mathbf{u}_1$};
+  \draw[->,thick,blue!70] (0,0) -- (-0.7,1.1) node[above left=-2pt] {$\mathbf{u}_2$};
+
+  % Data vector y
+  \coordinate (Y) at (0.8,0.9);
+  \draw[->,thick] (0,0) -- (Y) node[above right=-1pt] {$\mathbf{y}$};
+
+  % Arrow showing mapping by U^T
+  \draw[->,gray!70,thick] (2.5,0.0) -- (5.5,0.0) node[midway,below] {$\mathbf{U}^\top$};
+
+  % Middle panel: singular value scaling
+  \node at (6.9,0.9) {\small scale by $\sigma_i^{-1}$};
+  \draw[fill=gray!10,rounded corners] (5.7,-0.8) rectangle (8.0,0.8);
+  \node at (6.85,0.0) {$\bm{\Sigma}^{-1}$};
+
+  % Arrow to model space
+  \draw[->,gray!70,thick] (8.1,0.0) -- (10.9,0.0) node[midway,below] {$\mathbf{V}$};
+
+  % Model space ellipse showing right singular vectors v_i
+  \begin{scope}[shift={(8,0)}]
+    \draw[thick,green!60] (2.9,0) ellipse (2.2cm and 1.2cm);
+    \node[green!60] at (5.1,1.4) {$\{\mathbf{v}_i\}$};
+    \draw[->,thick,green!70] (2.9,0) -- (4.7,0.5) node[above right=-2pt] {$\mathbf{v}_1$};
+    \draw[->,thick,green!70] (2.9,0) -- (2.2,1.0) node[above left=-2pt] {$\mathbf{v}_2$};
+    % Solution vector delta m
+    \coordinate (M) at (3.9,0.4);
+    \draw[->,thick] (2.9,0) -- (M) node[above right=-2pt] {$\delta\mathbf{m}=\mathbf{J}^+\mathbf{y}$};
+  \end{scope}
+
+  % Notes
+  \node[align=center] at (5.2,2.6) {\footnotesize $\delta\mathbf{m}=\mathbf{V}\bm{\Sigma}^{-1}\mathbf{U}^\top\mathbf{y}$\\
+  \footnotesize small $\sigma_i \Rightarrow$ large amplification};
+\end{tikzpicture}
+\caption{Pseudoinverse via SVD: project $\mathbf{y}$ onto $\{\mathbf{u}_i\}$, scale by $1/\sigma_i$, then map into model space via $\{\mathbf{v}_i\}$.}
+\end{figure}
+
+\subsection{Regularization}\label{subsec:reg}
+When $\mathbf{J}$ is ill-conditioned or rank-deficient, we stabilize the inversion by augmenting the objective with prior information or penalties.
+
+\subsubsection{Tikhonov ($\ell_2$) Regularization}
+\paragraph{Zero-order (ridge).}
+\[
+\min_{\delta\mathbf{m}} \; \|\mathbf{y}-\mathbf{J}\delta\mathbf{m}\|_2^2 + \lambda^2 \,\|\delta\mathbf{m}\|_2^2.
+\]
+Normal equations:
+\[
+\left(\mathbf{J}^\top \mathbf{J} + \lambda^2 \mathbf{I}\right)\delta\mathbf{m} = \mathbf{J}^\top \mathbf{y}.
+\]
+SVD filter factors:
+\[
+\delta\mathbf{m}_\lambda = \sum_{i=1}^r \frac{\sigma_i}{\sigma_i^2+\lambda^2}\,(\mathbf{u}_i^\top \mathbf{y})\,\mathbf{v}_i,\qquad
+\phi_i(\lambda)=\frac{\sigma_i}{\sigma_i^2+\lambda^2}.
+\]
+Small singular directions are damped smoothly as $\sigma_i \downarrow 0$.
+
+\paragraph{General-order (with roughness operator).}
+Let $\mathbf{L}$ encode roughness (e.g., discrete gradient or Laplacian on the model):
+\[
+\min_{\delta\mathbf{m}} \; \|\mathbf{y}-\mathbf{J}\delta\mathbf{m}\|_2^2 + \lambda^2 \,\|\mathbf{L}\,\delta\mathbf{m}\|_2^2,
+\]
+with normal equations $\big(\mathbf{J}^\top \mathbf{J} + \lambda^2 \mathbf{L}^\top \mathbf{L}\big)\,\delta\mathbf{m} = \mathbf{J}^\top \mathbf{y}$. This biases solutions toward smoothness or other desired structure.
+
+\subsubsection{Levenberg--Marquardt (Damped Gauss--Newton)}
+For nonlinear problems, LM solves
+\[
+\left(\mathbf{J}^\top\mathbf{J} + \lambda^2 \mathbf{D}\right)\delta\mathbf{m} = \mathbf{J}^\top \mathbf{r},
+\]
+with $\mathbf{D}$ often chosen as $\mathrm{diag}(\mathbf{J}^\top \mathbf{J})$ (Marquardt) or $\mathbf{I}$ (Levenberg). The damping $\lambda$ is adapted: large $\lambda$ gives gradient-descent-like steps; small $\lambda$ recovers Gauss--Newton near the solution.
+
+\subsection{Weighted Least Squares (WLS) and Generalized Pseudoinverse}\label{subsec:wls}
+Assume data covariance $\mathbf{C}_d \succ 0$. The WLS objective is
+\[
+\min_{\delta\mathbf{m}}\; \|\mathbf{y}-\mathbf{J}\,\delta\mathbf{m}\|_{\mathbf{C}_d^{-1}}^2 := (\mathbf{y}-\mathbf{J}\,\delta\mathbf{m})^\top \mathbf{C}_d^{-1} (\mathbf{y}-\mathbf{J}\,\delta\mathbf{m}).
+\]
+\paragraph{Whitening.} Let $\mathbf{W}$ satisfy $\mathbf{W}^\top\mathbf{W}=\mathbf{C}_d^{-1}$ (e.g., $\mathbf{W}=\mathbf{C}_d^{-1/2}$). Define $\tilde{\mathbf{y}}=\mathbf{W}\mathbf{y}$ and $\tilde{\mathbf{J}}=\mathbf{W}\mathbf{J}$. Then
+\[
+\min_{\delta\mathbf{m}} \; \|\tilde{\mathbf{y}}-\tilde{\mathbf{J}}\,\delta\mathbf{m}\|_2^2,
+\]
+with normal equations $\tilde{\mathbf{J}}^\top\tilde{\mathbf{J}}\,\delta\mathbf{m}=\tilde{\mathbf{J}}^\top \tilde{\mathbf{y}}$, i.e.,
+\[
+(\mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{J})\,\delta\mathbf{m} = \mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{y}.
+\]
+The minimum-norm WLS solution is
+\[
+\delta\mathbf{m}_\ast = (\mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{J})^{+} \mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{y} \,=\, (\tilde{\mathbf{J}})^{+}\,\tilde{\mathbf{y}}.
+\]
+\paragraph{Weighted projector.} The fitted data are $\widehat{\mathbf{y}}=\mathbf{J}\,\delta\mathbf{m}_\ast$, and the $\mathbf{C}_d^{-1}$-orthogonal projector onto $\mathcal{R}(\mathbf{J})$ is
+\[
+\mathbf{P}_{\mathcal{R}(\mathbf{J});\,\mathbf{C}_d^{-1}} = \mathbf{J} (\mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{J})^{+} \mathbf{J}^\top \mathbf{C}_d^{-1},
+\]
+which is idempotent and self-adjoint in the $\langle\cdot,\cdot\rangle_{\mathbf{C}_d^{-1}}$ inner product.
+
+\paragraph{Minimum-\(\mathbf{C}_m^{-1}\)-norm WLS solution.} If one prefers the solution of minimal $\|\delta\mathbf{m}\|_{\mathbf{C}_m^{-1}} := (\delta\mathbf{m})^\top \mathbf{C}_m^{-1} (\delta\mathbf{m})$ among all WLS minimizers (with $\mathbf{C}_m\succ 0$), then under whitening the solution is
+\[
+\delta\mathbf{m}_\ast = \mathbf{C}_m \tilde{\mathbf{J}}^\top\,\big(\tilde{\mathbf{J}}\,\mathbf{C}_m\,\tilde{\mathbf{J}}^\top\big)^{+}\,\tilde{\mathbf{y}} \,=\, \mathbf{C}_m \mathbf{J}^\top \mathbf{W}^\top\,\big(\mathbf{W}\mathbf{J}\,\mathbf{C}_m\,\mathbf{J}^\top\mathbf{W}^\top\big)^{+}\,\mathbf{W}\mathbf{y}.
+\]
+This is the generalized (metric-weighted) pseudoinverse mapping from data to parameters under the data inner product induced by $\mathbf{C}_d^{-1}$ and the model inner product induced by $\mathbf{C}_m^{-1}$.
+
+\subsection{Gauss--Newton vs. Levenberg--Marquardt: Trust-Region View}
+Let $\mathbf{g}=\mathbf{J}^\top\mathbf{r}$ and $\mathbf{H}=\mathbf{J}^\top\mathbf{J}$. Gauss--Newton uses $\mathbf{H}\,\delta\mathbf{m}_{\text{GN}}=\mathbf{g}$, while LM uses $(\mathbf{H}+\lambda^2\mathbf{D})\,\delta\mathbf{m}_{\text{LM}}=\mathbf{g}$ with $\lambda\ge 0$ and positive definite $\mathbf{D}$.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=1.0,>=Latex]
+  % Axes in model space
+  \draw[->,gray!60] (-3.2,0) -- (3.6,0) node[below] {};
+  \draw[->,gray!60] (0,-2.6) -- (0,2.8) node[left] {};
+
+  % Trust-region circle
+  \draw[red!30,thick] (0,0) circle [radius=2.0];
+  \node[red!60] at (1.6,1.8) {\small trust region $\|\delta\mathbf{m}\|\le \Delta$};
+
+  % Gradient direction
+  \coordinate (g) at (-1.4,-0.6); % -g is descent
+  \draw[->,thick,orange!80!black] (0,0) -- ($(g)!1.1!0$) node[below left=-2pt] {$-\mathbf{g}$};
+
+  % GN step
+  \coordinate (sgn) at (2.2,0.5);
+  \draw[->,thick,blue!70] (0,0) -- (sgn) node[above right=-2pt] {$\delta\mathbf{m}_{\text{GN}}$};
+
+  % LM steps for different lambdas (interpolate between -g and s_gn)
+  \draw[->,thick,green!70!black] (0,0) -- ($(sgn)!0.65! (g)$) node[midway,below right] {\small $\lambda$ med};
+  \draw[->,thick,green!50!black,dashed] (0,0) -- ($(sgn)!0.35! (g)$) node[midway,below] {\small large $\lambda$};
+  \draw[->,thick,green!90!black,densely dotted] (0,0) -- ($(sgn)!0.85! (g)$) node[midway,above] {\small small $\lambda$};
+
+  % Elliptic contours of quadratic model
+  \draw[gray!50] (0,0) ellipse (3.0cm and 1.2cm);
+  \draw[gray!40] (0,0) ellipse (2.2cm and 0.9cm);
+  \draw[gray!30] (0,0) ellipse (1.6cm and 0.65cm);
+
+  % Labels
+  \node at (-2.3,-2.1) {\small gradient descent};
+  \node at (2.6,0.8) {\small Gauss--Newton};
+  \node at (0.1,2.5) {\small LM interpolates between them};
+\end{tikzpicture}
+\caption{LM step interpolates between gradient descent ($\lambda\to\infty$) and Gauss--Newton ($\lambda\to 0$). Trust-region interpretations adapt $\lambda$ to keep steps within a radius $\Delta$.}
+\end{figure}
+
+\subsection{TikZ: Normal vs. Regularized Normal Equations}
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[>=Latex]
+  \node[draw,rounded corners,fill=blue!5,align=center] (NE)
+    {Normal equations:\\[2pt]
+     $\mathbf{J}^\top\mathbf{J}\,\delta\mathbf{m}=\mathbf{J}^\top\mathbf{y}$};
+
+  \node[draw,rounded corners,fill=green!5,align=center,below=1.2cm of NE] (REG)
+    {Tikhonov regularization:\\[2pt]
+     $(\mathbf{J}^\top\mathbf{J}+\lambda^2\mathbf{L}^\top\mathbf{L})\,\delta\mathbf{m}=\mathbf{J}^\top\mathbf{y}$};
+
+  \draw[->,thick] (NE) -- (REG) node[midway,right] {\small stabilize / encode prior};
+\end{tikzpicture}
+\caption{Regularization augments the normal equations to improve conditioning and encode prior structure.}
+\end{figure}
+
+\subsection{Choosing \texorpdfstring{$\lambda$}{lambda}}
+Common strategies: (i) \emph{L-curve}: plot $\log \|\mathbf{y}-\mathbf{J}\delta\mathbf{m}_\lambda\|$ vs. $\log \|\mathbf{L}\delta\mathbf{m}_\lambda\|$ and pick the corner; (ii) \emph{Generalized Cross-Validation (GCV)}: minimize a predictive risk proxy (especially for $\ell_2$); (iii) \emph{Discrepancy Principle}: choose $\lambda$ so the residual norm matches the expected noise level.
+
+\subsection{Intermediate Derivations (Expanded)}
+\paragraph{Gradient and Hessian of the linearized objective.}
+\[
+\Phi(\delta\mathbf{m}) = \|\mathbf{y}-\mathbf{J}\delta\mathbf{m}\|_2^2
+= (\mathbf{y}-\mathbf{J}\delta\mathbf{m})^\top(\mathbf{y}-\mathbf{J}\delta\mathbf{m}).
+\]
+Then $\nabla \Phi = -2\,\mathbf{J}^\top (\mathbf{y}-\mathbf{J}\delta\mathbf{m}) = -2\,\mathbf{J}^\top \mathbf{y} + 2\,\mathbf{J}^\top\mathbf{J}\,\delta\mathbf{m}$ and $\nabla^2 \Phi = 2\,\mathbf{J}^\top \mathbf{J}$. Setting $\nabla\Phi=\mathbf{0}$ recovers the normal equations.
+
+\paragraph{WLS normal equations via whitening.} With $\mathbf{W}^\top\mathbf{W}=\mathbf{C}_d^{-1}$, minimizing $\|\mathbf{W}(\mathbf{y}-\mathbf{J}\delta\mathbf{m})\|_2^2$ yields $\tilde{\mathbf{J}}^\top\tilde{\mathbf{J}}\,\delta\mathbf{m}=\tilde{\mathbf{J}}^\top \tilde{\mathbf{y}}$, equivalent to $\mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{J}\,\delta\mathbf{m}=\mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{y}$.
+
+\paragraph{Projection operator relations.} The orthogonal projector (Euclidean) is $\mathbf{P}=\mathbf{J}\mathbf{J}^+$. In WLS, the $\mathbf{C}_d^{-1}$-orthogonal projector is $\mathbf{P}_{\mathbf{C}_d^{-1}}=\mathbf{J} (\mathbf{J}^\top \mathbf{C}_d^{-1} \mathbf{J})^{+} \mathbf{J}^\top \mathbf{C}_d^{-1}$, which is idempotent and self-adjoint in the weighted inner product.
+
+\paragraph{Bayesian/Tikhonov equivalence.} With Gaussian priors $\delta\mathbf{m}\sim\mathcal{N}(\mathbf{0},\mathbf{C}_m)$ and data noise $\mathcal{N}(\mathbf{0},\mathbf{C}_d)$, the MAP estimate solves $(\mathbf{J}^\top \mathbf{C}_d^{-1}\mathbf{J}+\mathbf{C}_m^{-1})\,\delta\mathbf{m}=\mathbf{J}^\top \mathbf{C}_d^{-1}\mathbf{y}$; posterior covariance is $(\mathbf{J}^\top \mathbf{C}_d^{-1}\mathbf{J}+\mathbf{C}_m^{-1})^{-1}$.
+
+\subsection{Practical Notes}
+\begin{itemize}
+  \item \textbf{Scaling}: Normalize columns of $\mathbf{J}$ and/or parameters to balance sensitivities.
+  \item \textbf{Whitening}: Prewhiten with $\mathbf{C}_d^{-1/2}$ so residuals are in standard deviation units.
+  \item \textbf{Rank-revealing factorizations}: Use SVD or QR with column pivoting to detect rank deficiency and guide TSVD or damping.
+  \item \textbf{Stopping}: relative step size $\|\delta\mathbf{m}\|/\|\mathbf{m}\|$, relative residual decrease, and/or gradient norm $\|\mathbf{J}^\top \mathbf{r}\|$.
+\end{itemize}
+
+\subsection*{References}
+\begin{itemize}
+  \item G. H. Golub and C. F. Van Loan, \emph{Matrix Computations}, 4th ed., JHU Press, 2013 (SVD, pseudoinverse, conditioning).
+  \item Å. Björck, \emph{Numerical Methods for Least Squares Problems}, SIAM, 1996 (LS, WLS, regularization, algorithms).
+  \item R. A. Horn and C. R. Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge Univ. Press, 2012 (projections, generalized inverses).
+  \item R. C. Aster, B. Borchers, and C. H. Thurber, \emph{Parameter Estimation and Inverse Problems}, 3rd ed., Elsevier, 2019 (inverse problems, Tikhonov, LM, Bayesian view).
+\end{itemize}

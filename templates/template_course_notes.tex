@@ -1,0 +1,32 @@
+\documentclass[final,oneside,12pt,a4paper,titlepage]{book}
+\usepackage[book]{aucourse}
+\usepackage[sectionbib]{chapterbib}   % per-chapter bibliography
+
+\setcounter{tocdepth}{2}
+\renewcommand{\bibname}{Further Reading}
+
+\title{Course Title\\[1em]
+    \includegraphics[width=4cm]{au-logo-dark-blue-horizontal.png}}
+\author{Derrick Hasterok}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+% ---- Part / Chapter structure -----------------------------------------------
+%\part{Part Title}
+
+\chapter{Chapter Title}
+\label{ch:label}
+
+\epigraph{Quotation text.}{--- Author}
+
+Content here.
+
+\ntextbox{Box Title}{Box content.}{core}
+
+\section{Section Title}
+
+\end{document}

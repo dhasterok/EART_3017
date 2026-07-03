@@ -1,0 +1,385 @@
+\chapter{Fourier Series}\label{ch:fourier_series}
+\section{Introduction}
+
+Fourier series arise naturally in geoscience when we seek analytical solutions to physical problems defined on finite domains and subject to boundary conditions. Many governing equations in geophysics—most notably Laplace's equation and the diffusion (heat) equation—can be solved using separation of variables, leading to solutions expressed as sums of orthogonal sine and cosine functions. In this context, the functions themselves are unknown, and the role of the Fourier series is to construct a field that simultaneously satisfies the governing differential equation and the imposed boundary conditions.
+
+Fourier series are therefore especially important in problems involving thermal conduction, electrostatics, and gravitation, where the objective is to determine temperature, potential, or field distributions within a bounded region of space. Examples include steady-state and time-dependent heat flow in the lithosphere, electric potential distributions in the Earth, and idealized gravity or magnetic potentials near interfaces. In these applications, the discrete eigenfunctions arising from the boundary conditions have direct physical meaning, and the Fourier coefficients describe how strongly each mode contributes to the total solution.
+
+Although Fourier series are less commonly applied directly to geophysical data analysis, they provide essential conceptual foundations for understanding how boundary conditions, scale, and orthogonality shape physical solutions. As such, Fourier series should be viewed not as a signal-processing tool, but as an eigenfunction method for solving partial differential equations that describe geophysical processes.
+
+Fourier series and transforms are used to
+\begin{itemize}
+    \item identify dominant wave frequencies within a signal, perhaps due to some physical process;
+    \item filter data to emphasize aspects of a signal and/or eliminate outliers;
+    \item reduce the quantity of information needed to store a signal and transmit a signal (basically how your mobile phone works);
+    \item solve certain partial differential equations;
+    \item and \ldots .
+\end{itemize}
+
+
+\section{Periodic Functions and Modes}
+
+Many physical problems in geoscience involve quantities that vary in a repeating or quasi-repeating way, either in time or in space. Such behavior is referred to as \textbf{periodic} and is central to the development of Fourier series. Before introducing the formal mathematics, it is helpful to understand what periodicity means physically and why it leads naturally to discrete modes in bounded domains.
+
+\subsection{Periodicity in Space and Time}
+
+A function is said to be periodic if it repeats after a fixed interval. In the temporal case, a function $f(t)$ is periodic with period $\tau$ if
+\[
+    f(t + \tau) = f(t),
+\]
+while in the spatial case a function $f(x)$ is periodic with wavelength $\lambda$ if
+\[
+    f(x + \lambda) = f(x).
+\]
+
+Periodic behavior arises in many geophysical contexts. Temporal periodicity is associated with repeating processes such as seismic wave motion, tidal forcing, and climatic cycles. Spatial periodicity appears in layered media, interference patterns, and idealized models of geological structure. Even when natural systems are not perfectly periodic, treating them as such over a limited domain often leads to useful approximate solutions.
+
+\subsection{Sine and Cosine as Repeating Building Blocks}
+
+Among all periodic functions, sine and cosine play a special role. They are smooth, continuous, and naturally repeating, and many physical systems governed by linear differential equations admit solutions that can be expressed as combinations of these functions. Because of this, sine and cosine functions are convenient building blocks for constructing more complicated shapes.
+
+Importantly, sine and cosine functions repeat exactly and do so without introducing sharp corners or discontinuities. This makes them well suited for representing physical fields such as temperature, potential, or displacement, which are typically smooth in space and time. By combining sine and cosine functions of different spatial scales, it is possible to approximate a wide range of physically reasonable functions.
+
+Sine and cosine functions are smooth and infinitely differentiable, which makes them well suited for representing smooth physical fields. However, when a function contains sharp discontinuities or non-differentiable interfaces, many modes are required to represent those features accurately, and oscillatory behavior may appear near the discontinuities.
+
+\subsection{Wavelength and Scale in Geological Terms}
+
+In spatial problems, the scale of variation is commonly described by the \textbf{wavelength}, which is the distance over which a function completes one full cycle. Long wavelengths correspond to slowly varying features, while short wavelengths represent rapid spatial changes.
+
+In geophysics, wavelength often has a direct physical interpretation. For example, long-wavelength variations in gravity or magnetic fields are typically associated with deeper sources, whereas short-wavelength variations tend to reflect shallow structure. Similarly, in thermal problems, long spatial scales may correspond to broad regional trends, while short scales reflect near-surface effects.
+
+Thinking in terms of wavelength therefore provides an intuitive way to connect mathematical representations to geological structure.
+
+\subsection{Allowed Wavelengths in a Bounded Domain}
+
+A crucial distinction between Fourier series and other Fourier methods is that Fourier series are used for functions defined on \emph{finite} domains. When a domain has finite extent, the possible spatial patterns that can exist within it are constrained.
+
+Consider a function defined on the interval $0 \le x \le L$. For the function to behave consistently within this domain, it must satisfy specific conditions at the boundaries. These requirements restrict which wavelengths can fit into the interval in a self-consistent way. Only wavelengths that allow an integer number of half-cycles or full cycles within the domain are permitted.
+
+As a result, the function can be represented only by a \emph{discrete set} of spatial patterns, often referred to as modes. Each mode corresponds to a particular allowed wavelength determined by the size of the domain and the boundary conditions. This discreteness is a direct physical consequence of the finite domain and does not arise from sampling or numerical approximation.
+
+Fourier series provide the mathematical framework for expressing a function as a sum of these allowed modes, forming the foundation for solving boundary-value problems in geophysics.
+
+\ntextbox{Properties of Sine and Cosine Functions}{
+    Sine and cosine functions are often treated as distinct, but they are closely related and differ only by a phase shift,
+    \begin{align*}
+        \cos \theta &= \sin\left(\theta - \frac{\pi}{2}\right), \\
+        \sin \theta &= \cos\left(\theta + \frac{\pi}{2}\right).
+    \end{align*}
+    As a result, the choice between sine and cosine is often determined by convenience or by the boundary conditions of the problem, rather than by any fundamental difference between the functions.
+
+    Cosine functions are symmetric about the origin and are therefore \textbf{even},
+    \[
+        \cos(-\theta) = \cos \theta,
+    \]
+    whereas sine functions are antisymmetric and are therefore \textbf{odd},
+    \[
+        \sin(-\theta) = -\sin \theta.
+    \]
+    These symmetry properties become important when constructing solutions that satisfy specific boundary conditions or exhibit particular spatial symmetries.
+
+    Another reason sine and cosine functions appear naturally in geophysical problems is that they retain their form under differentiation,
+    \begin{align*}
+        \dv{}{\theta} \cos \theta &= -\sin \theta, \\
+        \dv{}{\theta} \sin \theta &= \cos \theta.
+    \end{align*}
+    This property makes them especially convenient for solving differential equations governing physical processes such as heat conduction, wave propagation, and potential fields.
+
+    Sine and cosine functions are smooth and infinitely differentiable. This makes them well suited for representing smooth physical fields, but it also implies limitations. When a function contains sharp discontinuities or non-differentiable interfaces, many sine and cosine terms are required to represent the behavior accurately, and oscillatory features may appear near those interfaces. This behavior is a consequence of the smoothness of the basis functions rather than a failure of the physical model.
+
+    Additional properties of trigonometric functions are summarized in Appendix~\ref{apx:trig}.
+}{mathtool}
+
+\section{Orthogonality and Function Decomposition}
+
+\subsection{Independent Building Blocks}
+
+To represent an arbitrary function as a combination of simpler functions, we require building blocks that are both complete and independent. Independence is essential: if two basis functions are not independent, then it becomes ambiguous how much each contributes to the overall representation.
+
+\emph{Why independence?} When decomposing a function into components, we want each component to capture a distinct part of the structure of the function. If the building blocks overlap in what they represent, changes to one coefficient will affect multiple components, making interpretation difficult. For physical problems, this lack of independence obscures the meaning of individual terms and complicates both analysis and computation.
+
+Orthogonal functions provide a natural solution to this problem by ensuring that each component contributes uniquely.
+
+\subsection{Orthogonality}
+Physically, orthogonality means that the contribution of one function does not project onto another when averaged over the domain. Geometrically, it means that each function points in a distinct direction in function space. This property allows each coefficient in a series expansion to be determined independently of all others.
+
+Orthogonality is very similar for functions as it is for vectors.  For two vectors, orthogonality occurs when their dot product is zero, (i.e., $vb{x} \cdot \vb{y} = 0$).  For functions, orthogonality requires a continuous version of the dot product:
+Two functions, $f(x)$ and $g(x)$ are said to be orthogonal on the interval [a,b] if
+\[
+    \langle f, g \rangle = \int_a^{b} f(x) g(x) w(x) \dd{x} = 0,
+\]
+where $w(x)$ is a weighting function.
+
+A \emph{basis} is a set of functions when linearly combined, can represent all functions of interest in a given space.  The sines and cosines used for Fourier series are an orthogonal basis.
+
+\subsection{Why Orthogonality Determines the Coefficients}
+
+Because sine and cosine functions are orthogonal, the coefficient associated with each term in a Fourier series depends only on the overlap between the function and that specific basis function. This decoupling is what makes Fourier series practical: extracting one coefficient does not affect any others.
+
+The orthogonality of sine and cosine functions is illustrated by the following integral identities:
+\begin{align*}
+    \int_0^{2\pi} \sin n\xi \,\dd{\xi} &= 0, \\
+    \int_0^{2\pi} \cos n\xi \,\dd{\xi} &= 0, \\
+    \int_0^{2\pi} \sin m\xi \cos n\xi \,\dd{\xi} &= 0, \\
+    \int_0^{2\pi} \sin m\xi \sin n\xi \,\dd{\xi} &= \pi\, \delta_{m,n}, \\
+    \int_0^{2\pi} \cos m\xi \cos n\xi \,\dd{\xi} &= \pi\, \delta_{m,n},
+\end{align*}
+where $\delta_{m,n}$ is the Kronecker delta,
+\[
+    \delta_{m,n} =
+    \begin{cases}
+        1 & \text{if } m = n, \\
+        0 & \text{if } m \neq n.
+    \end{cases}
+\]
+
+These relationships guarantee that each Fourier coefficient measures the contribution of exactly one mode.
+
+\subsection{Energy and Variance Partitioning}
+
+An important consequence of orthogonality is that the total energy (or variance) of a function can be expressed as the sum of the energies of its individual modes. In physical terms, each mode carries an independent share of the total signal strength.
+
+This property allows us to assess which modes dominate a solution, which can often be interpreted in terms of physical scale. In geophysical applications, this idea underpins spectral methods for identifying characteristic length scales, distinguishing signal from noise, and understanding how physical processes distribute energy across scales.
+
+\section{Constructing a Fourier Series}
+
+Having established that sine and cosine functions form an orthogonal set on a finite domain, we can now use them to represent an arbitrary periodic function. The central idea of a Fourier series is that a complicated function can be built as a weighted sum of simple, repeating waves, each corresponding to an allowed mode on the domain.
+
+\subsection{Representing a Function as a Sum of Waves}
+
+Suppose we have some arbitrary function $f(\xi)$ defined on the interval $0 \le \xi \le 2\pi$. We can write this function as an infinite sum of sine and cosine functions,
+\begin{equation}
+    f(\xi) = \frac{1}{2} a_0 + \sum_{k = 1}^\infty 
+    \left( a_k \cos k \xi + b_k \sin k \xi \right),
+\end{equation}
+where $k = 1, 2, 3, \ldots$ labels the modes, each corresponding to a specific allowed wavelength on the domain.
+
+The coefficients $a_k$ and $b_k$ determine how strongly each cosine or sine mode contributes to the overall function. Because the basis functions are orthogonal, each coefficient can be determined independently by projecting $f(\xi)$ onto the corresponding basis function,
+\begin{align}
+    a_0 &= \frac{1}{\pi} \int_{0}^{2\pi} f(\xi)\, \dd{\xi}, \\
+    a_k &= \frac{1}{\pi} \int_{0}^{2\pi} f(\xi)\, \cos(k \xi)\, \dd{\xi}, \\
+    b_k &= \frac{1}{\pi} \int_{0}^{2\pi} f(\xi)\, \sin(k \xi)\, \dd{\xi}.
+\end{align}
+
+Each coefficient measures the contribution of a single mode to the total function, with no interference from the others.
+
+\subsection{Even and Odd Functions}
+
+The structure of the Fourier series simplifies considerably when the function being represented has symmetry. If $f(\xi)$ is an even function, such that
+\begin{equation}
+    f(-\xi) = f(\xi),
+\end{equation}
+then all sine terms vanish and the series contains only cosine terms. Conversely, if $f(\xi)$ is an odd function,
+\begin{equation}
+    f(-\xi) = -f(\xi),
+\end{equation}
+then all cosine terms vanish and the series contains only sine terms.
+
+These symmetry properties are often dictated by the physical problem, particularly by boundary conditions. Recognizing them early can significantly simplify both analytical work and interpretation of the resulting series.
+
+\subsection{Interpretation of the Fourier Coefficients}
+
+Each Fourier coefficient represents the strength of a particular mode. Modes with small $k$ correspond to long wavelengths and describe large-scale features of the function, while modes with large $k$ correspond to short wavelengths and capture finer structure. In geophysical problems, this distinction often has direct physical meaning.
+
+In many applications, wavelength is closely linked to the depth of the underlying sources. This relationship is particularly evident in potential field methods such as gravity and magnetics. Shallow sources produce anomalies with sharp spatial variations that require short wavelengths to represent, whereas deeper sources generate broader, smoother anomalies dominated by longer wavelengths.
+
+From the perspective of a Fourier series, this means that deep structures are primarily described by low-order modes, while the contributions of higher-order modes diminish rapidly with depth. Short-wavelength components decay more quickly with distance from the source, so the corresponding Fourier coefficients become small as depth increases. As a result, signals associated with deep structure are often well represented by a relatively small number of long-wavelength terms.
+
+This depth--wavelength relationship provides a physical basis for interpreting Fourier coefficients in geophysical data. Long-wavelength coefficients tend to reflect deeper structure, whereas short-wavelength coefficients are more sensitive to shallow features. This concept underpins many practical interpretation techniques, including regional--residual separation and spectral methods for depth estimation, and it forms the basis for upward and downward continuation methods in Chapter~\ref{ch:fourier}.
+
+An analogous interpretation applies to temporal problems, where scale is expressed in time rather than space. Low-order modes describe slowly varying, long-time behavior, while higher-order modes capture more rapid temporal variations. In diffusion-dominated processes, such as heat conduction or chemical transport, these short-time variations decay more rapidly than long-time variations. Diffusion therefore acts as a natural smoothing filter, suppressing higher-order modes and leaving only the lowest-order modes at late times.
+
+This behavior explains why many geophysical systems evolve toward smooth, slowly varying states regardless of their initial complexity. Early-time behavior may require many modes for accurate representation, whereas late-time behavior is often dominated by only a few low-order modes. Fourier series thus provide a natural framework for understanding how information at different spatial or temporal scales is retained or lost as physical processes evolve.
+
+\subsection{Truncation and Approximation}
+
+The Fourier series formally contains an infinite number of terms and, in principle, can represent the function exactly. In practice, however, only a finite number of modes can be computed or are required. A truncated Fourier series,
+\begin{equation}
+    f_N(\xi) = \frac{1}{2} a_0 + \sum_{k = 1}^{N}
+    \left( a_k \cos k \xi + b_k \sin k \xi \right),
+\end{equation}
+provides an approximation to the true function, with accuracy improving as more modes, $k \to \infty$, are included.
+
+The decision of where to truncate the series depends on the application. In physical problems, higher-order modes often describe increasingly fine-scale structure and may contribute little to the overall behavior of interest. Truncation therefore represents a controlled approximation, where the retained modes describe the dominant features of the system while smaller-scale variations are neglected.
+
+In geophysical applications, this idea underlies many practical modeling choices, where the level of detail retained is balanced against uncertainty, data resolution, and the physical scales relevant to the problem.
+
+\subsection{Complex Form of the Fourier Series (Optional)}
+
+The Fourier series can also be written using complex exponentials. While this formulation is mathematically compact, it does not introduce new physical ideas beyond those already present in the sine and cosine representation. For this reason, we will not use it as the primary form in this text, but it is briefly introduced here for completeness and for later connection to Fourier transforms.
+
+Using Euler's relation,
+\begin{equation}
+    e^{i\theta} = \cos\theta + i\sin\theta,
+\end{equation}
+a periodic function can be written as
+\begin{equation}
+    f(\xi) = \sum_{k=-\infty}^{\infty} c_k\, e^{ik\xi},
+\end{equation}
+where the coefficients $c_k$ are generally complex. The negative and positive indices correspond to waves traveling in opposite directions, and the effects of sine and cosine functions are combined into a single expression.
+
+The complex coefficients contain the same information as the real Fourier coefficients: their magnitudes reflect the contribution of each mode, while their arguments encode phase information. No physical interpretation is changed by this reformulation; it is simply a different and more compact way to write the same expansion.
+
+The complex form becomes particularly convenient when discussing Fourier transforms, discrete Fourier transforms, and numerical implementations such as the FFT.  In boundary-value problems and physical interpretation of solutions, however, the real sine and cosine representations are often more transparent.
+
+\section{Fourier Series and Boundary Conditions}
+
+Fourier series arise in physical problems not simply because sine and cosine functions are mathematically convenient, but because the geometry of the domain and the imposed boundary conditions restrict which spatial patterns are physically admissible. In boundary-value problems, the form of the solution is controlled as much by the behavior at the boundaries as by the governing differential equation itself.
+
+\subsection{How Domain Geometry Controls the Solution}
+
+When a problem is defined on a finite domain, such as a layer of fixed thickness or a bounded region of space, the solution must be compatible with the geometry of that domain. Only wavelengths that fit within the domain in a self-consistent way are allowed. This requirement leads naturally to a discrete set of spatial modes whose wavelengths are determined by the domain size.
+
+Changing the size or shape of the domain changes the set of admissible modes. In this sense, the domain geometry acts as a filter that selects which spatial scales can exist in the solution.
+
+\subsection{Boundary Conditions and Basis Functions}
+
+The choice of sine and cosine functions in Fourier series is closely tied to the behavior of solutions at the boundaries of a finite domain. Different physical problems impose different requirements at the edges of the domain, and it is often convenient to select basis functions that automatically satisfy these conditions.
+
+For example, sine functions vanish at the boundaries of the interval,
+\begin{equation}
+    \sin(0) = 0 \quad \text{and} \quad \sin(n\pi) = 0,
+\end{equation}
+making them well suited to problems where the field itself is required to be zero at the boundaries, such as fixed-temperature conditions in thermal conduction or fixed-potential conditions in electrostatics.
+
+Cosine functions, on the other hand, generally do not vanish at the boundaries,
+\begin{equation}
+    \cos(0) = 1,
+\end{equation}
+but instead have zero slope at those points. As a result, they are often convenient for problems where the gradient of the field is constrained at the boundary, such as insulated boundaries in heat flow or zero normal electric field conditions.
+
+In many physical problems, a combination of sine and cosine functions is required to represent the most general solution. The relative contribution of each reflects the physical boundary conditions imposed on the system, rather than any intrinsic preference for one function over the other.
+
+\subsection{Why Boundaries Select Specific Wavelengths}
+
+Boundary conditions do more than determine whether sine or cosine functions are used; they also restrict the wavelengths that may appear in the solution. Only wavelengths that satisfy the boundary conditions at both ends of the domain are permitted. This requirement quantizes the possible spatial scales, producing a discrete set of allowed wavelengths.
+
+From a physical perspective, these discrete wavelengths represent standing spatial patterns that are compatible with the constraints of the system. Patterns that do not match the boundary conditions cannot persist and therefore do not appear in the solution.
+
+\subsection{Physical Interpretation of Discrete Modes}
+
+Each allowed mode in a Fourier series represents a distinct spatial pattern that satisfies both the governing equation and the boundary conditions. Low-order modes correspond to long wavelengths and describe broad, smooth variations across the domain, while higher-order modes correspond to shorter wavelengths and capture finer spatial detail.
+
+Because the modes are orthogonal, each represents an independent contribution to the solution. The overall field is constructed as a superposition of these physically admissible patterns, with the Fourier coefficients determining the relative importance of each.
+
+\subsection{Examples: Thermal Boundary Conditions}
+
+The role of boundary conditions is particularly clear in thermal problems. Consider heat conduction in a layer of finite thickness:
+\begin{itemize}
+    \item If the temperature is fixed at the boundaries, the solution naturally involves sine functions that vanish at those boundaries.
+    \item If the boundaries are insulating, requiring zero heat flux, cosine functions with zero slope at the boundaries provide a natural representation.
+\end{itemize}
+
+These choices are not mathematical conveniences but direct reflections of the physics imposed at the boundaries. Once the appropriate basis functions are selected, Fourier series provide a systematic way to construct solutions that satisfy both the differential equation and the boundary conditions.
+
+Together, domain geometry and boundary conditions determine which spatial patterns are allowed, how many modes are required, and how the solution should be interpreted physically. This interplay lies at the heart of why Fourier series are so effective for solving geophysical boundary-value problems.
+
+
+\section{Fourier Series in Solving PDEs}
+
+One of the primary reasons Fourier series appear so frequently in geophysics is that they arise naturally when solving partial differential equations (PDEs) on finite domains. Many of the governing equations for geophysical processes are linear and involve spatial derivatives, making them well suited to solutions constructed from sine and cosine functions. In this section, we examine conceptually how Fourier series enter these problems and why their structure aligns so closely with the physical behavior of the system.
+
+\subsection{Separation of Variables}
+
+A common approach to solving linear PDEs is the method of separation of variables. The central idea is to assume that the solution can be written as a product of functions, each depending on a single independent variable. For example, a function of space and time may be written as
+\begin{equation}
+    u(x,t) = X(x)\,T(t).
+\end{equation}
+
+Substituting this form into a PDE often allows the problem to be separated into ordinary differential equations, one involving only space and the other involving only time. The spatial part of the solution must satisfy both the differential equation and the boundary conditions of the problem. These requirements restrict the allowable spatial functions to a discrete set of modes, which are naturally expressed as sine and cosine functions.
+
+Each allowed spatial mode is associated with a corresponding temporal behavior. The full solution is then constructed as a sum of all such modes, leading directly to a Fourier series representation.
+
+\subsection{The Heat Equation}
+
+The heat equation is a canonical example where Fourier series arise naturally. In one spatial dimension, it may be written as
+\begin{equation}
+    \frac{\partial T}{\partial t} = \kappa \frac{\partial^2 T}{\partial x^2},
+\end{equation}
+where $T(x,t)$ is temperature and $\kappa$ is the thermal diffusivity.
+
+Applying separation of variables leads to a spatial equation whose solutions are sine or cosine functions, with wavelengths determined by the size of the domain and the boundary conditions. The corresponding temporal solutions describe how the amplitude of each spatial mode evolves in time.
+
+The general solution takes the form of a Fourier series, where each term represents a spatial temperature pattern that decays exponentially with time. The decay rate depends on the wavelength of the mode: short-wavelength modes decay rapidly, while long-wavelength modes decay more slowly.
+
+\subsection{Laplace's Equation}
+
+Laplace's equation,
+\begin{equation}
+    \nabla^2 \phi = 0,
+\end{equation}
+governs many steady-state geophysical fields, including gravitational potential, electrostatic potential, and magnetic scalar potential in source-free regions.
+
+When solved on a finite domain, separation of variables again leads to discrete spatial modes described by sine and cosine functions. Unlike the heat equation, Laplace's equation contains no time dependence, so the solution represents a steady-state configuration. The Fourier series in this case describes how spatial structure is distributed across different wavelengths rather than how it evolves in time.
+
+The boundary conditions determine which modes are present and how strongly each contributes. As in the heat equation, smooth, large-scale variations are associated with low-order modes, while fine spatial structure requires higher-order modes.
+
+\subsection{Steady and Transient Solutions}
+
+The distinction between steady and transient behavior is central to understanding the physical meaning of Fourier series solutions. For Laplace's equation, the solution is entirely steady-state: all modes persist indefinitely and together describe the spatial structure of the field.
+
+For the heat equation and other diffusion-type problems, the solution is transient. Each Fourier mode evolves independently in time, typically decaying toward zero. The observed field at any time is a superposition of modes, with the relative importance of each changing as the system evolves.
+
+Early in time, many modes may be needed to represent the solution accurately. At later times, the solution becomes dominated by a small number of low-order modes.
+
+\subsection{Decay of Higher Modes and Physical Interpretation}
+
+A key physical consequence of Fourier series solutions is the preferential decay or suppression of higher-order modes. In diffusion problems, short-wavelength modes decay more rapidly because they involve larger spatial gradients. Physically, this reflects the tendency of diffusion to smooth sharp variations.
+
+In spatial problems, higher-order modes correspond to fine-scale structure that is sensitive to boundary conditions and source geometry. These modes often play a limited role in describing large-scale behavior, particularly when observations are made some distance from the sources.
+
+This systematic reduction of high-order modes provides a natural explanation for why many geophysical systems become smoother over time or with increasing distance from the source. It also reinforces the interpretation of Fourier series as a framework that organizes physical behavior by scale, laying the foundation for the spectral and filtering methods introduced in later chapters.
+
+
+\section{Geophysical Applications}
+
+Fourier series provide a natural framework for solving a wide range of geophysical problems governed by linear partial differential equations on finite domains. Their strength lies not in data analysis, but in constructing physically admissible solutions that respect both governing equations and boundary conditions. Several important geophysical applications illustrate this role.
+
+\subsection{Thermal Evolution of the Lithosphere}
+
+Fourier series are widely used to model conductive heat transport in the lithosphere. When temperature is governed by the heat equation on a finite domain, separation of variables leads directly to solutions expressed as sums of sine and cosine modes. Each mode represents a spatial temperature pattern whose amplitude evolves in time according to the physics of diffusion.
+
+This approach provides clear physical insight into lithospheric cooling. High-order modes, which describe short-wavelength thermal structure, decay rapidly, while low-order modes persist over much longer timescales. As a result, lithospheric temperature profiles become progressively smoother with age, a behavior that can be interpreted directly in terms of mode decay rather than numerical smoothing.
+
+\subsection{Electrostatics and Potential Problems}
+
+Fourier series also play a central role in solving Laplace's equation for electric, gravitational, and magnetic potentials in bounded domains. In electrostatics, fixed-potential or zero-flux boundary conditions naturally select sine or cosine basis functions, allowing analytic solutions to be constructed for idealized geometries.
+
+These solutions provide insight into how boundary geometry controls field structure and how spatial patterns are distributed across scales. Although Earth's geometry is rarely simple enough to permit exact analytic solutions, Fourier series solutions serve as valuable reference models and benchmarks for numerical methods.
+
+\subsection{Simple Gravity and Magnetic Field Models}
+
+In gravity and magnetics, Fourier series solutions arise when modeling idealized source configurations or layered structures. They help clarify how spatial scale relates to depth, how boundary conditions influence field behavior, and why long-wavelength components dominate observations made far from the sources.
+
+Such models reinforce the physical interpretation of wavelength introduced earlier: deep or laterally extensive sources are naturally associated with low-order modes, while shallow sources require higher-order modes to be represented accurately.
+
+\subsection{What Fourier Series Do Well—and What They Do Not}
+
+Fourier series are particularly effective for problems with:
+\begin{itemize}
+    \item finite domains,
+    \item well-defined boundary conditions,
+    \item smooth governing physics, and
+    \item interest focused on solving for unknown fields.
+\end{itemize}
+
+They are less well suited to problems involving irregular geometries, non-linear physics, or direct analysis of observational data. In such cases, numerical methods or Fourier transform–based techniques are typically more appropriate.
+
+Understanding these strengths and limitations helps clarify the role of Fourier series within the broader toolkit of geophysical methods.
+
+
+\section{Summary and Transition}
+
+Fourier series provide a physics-driven method for constructing solutions to geophysical boundary-value problems. When governing equations are linear and the domain is finite, sine and cosine functions arise naturally as the spatial patterns compatible with both the physics and the boundary conditions.
+
+Throughout this chapter, we have emphasized two central ideas:
+\begin{itemize}
+    \item the importance of finite domains in selecting a discrete set of allowed modes, and
+    \item the role of boundary conditions in determining which basis functions appear in the solution.
+\end{itemize}
+
+Viewed through this lens, Fourier series are not merely mathematical expansions, but structured representations of physically admissible behavior. Each mode corresponds to an independent spatial pattern, and the evolution or persistence of these modes reflects underlying physical processes such as diffusion or steady-state equilibrium.
+
+In many geophysical applications, however, the field of interest is already known through observation rather than being solved for analytically. Examples include seismograms, gravity and magnetic maps, electromagnetic time series, and climate records. In these cases, the question is not how to construct a solution that satisfies boundary conditions, but how to reorganize existing information in a way that reveals dominant scales, suppresses noise, or simplifies interpretation.
+
+This shift in perspective motivates the introduction of Fourier transforms in the next chapter. While Fourier series focus on solving for unknown fields on finite domains, Fourier transforms provide a framework for analyzing known functions by expressing them in terms of frequency or wavelength. Understanding the distinction between these two roles is essential for effective use of Fourier methods across geophysics.

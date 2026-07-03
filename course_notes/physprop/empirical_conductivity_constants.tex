@@ -1,0 +1,31 @@
+\begin{table}[htb]
+    \centering
+    \begin{threeparttable}
+    \caption{Coefficients to estimate thermal conductivity}
+    \label{tab:tc_coef}
+    \begin{tabular}{@{}lccccc@{}}
+        \toprule
+        \textbf{Mineral} & \splitcell{\textbf{Mole Fraction}\\\textbf{of End-member}} &
+        \multicolumn{4}{c}{\splitcell{\textbf{Thermal Conductivity}\\$k(P,T) = (k_0 + k_1
+        X + k_2 X^2) \big(\frac{298}{T}\big)^n (1 + P \frac{K_T'}{K_T})$\\(W m$^{-1}$K$^{-1}$)}} \\
+        {} & $X$ & $k_0$ & $k_1$ & $k_2$ & $n$ \\
+        \midrule
+        a-quartz &  & 8.79 & 0 & 0 & 1.48 \\
+        b-quartz &  & 0.993 & 0 & 0 & -1 \\
+        orthoclase &  & 1.791 & 0 & 0 & -0.27 \\
+        plagioclase & anorthite & 2.199 & -2.18 & 1.9 & -0.21 \\
+        muscovite &  & 2.8 & 0 & 0 & 1.539 \\
+        biotite &  & 2.267 & 0 & 0 & 1.539 \\
+        hornblende &  & 2.6485 & 0 & 0 & 0.5 \\
+        clinopyroxene &  & 4.25 & 0 & 0 & 0.54 \\
+        orthopyroxene &  & 3.37 & 0 & 0 & 0.3 \\
+        olivine & forsterite & 3.091 & -1.17 & 3.35 & 0.49 \\
+        spinel &  & 12 & 0 & 0 & 1.24 \\
+        garnet & pyrope & 4.966 & -7.42 & 8.45 & 0.37 \\
+        \bottomrule
+    \end{tabular}
+    \begin{tablenotes}
+        \item Values from {\citet{Hasterok&Chapman2011}} and references therein.
+    \end{tablenotes}
+    \end{threeparttable}
+\end{table}

@@ -1,0 +1,397 @@
+\documentclass[final,12pt,a4paper]{article}
+
+\usepackage{notes}
+
+\oddsidemargin 0.0in
+\textwidth 6.5in
+\topmargin 0in
+\textheight 9in
+
+\title{Oceanic Cooling Models}
+\author{Derrick Hasterok}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+There have been a large number of cooling models developed for the
+cooling of the oceanic lithosphere.  They fall into several classes and
+although numerical methods are now being employed with greater frequency
+to solve more complicated versions with $P$-$T$-$X$-dependent
+properties.  However, only the $P$-$T$-$X$-independent versions have
+been solved analytically.  This document explores the various solutions
+and briefly discusses their applicability to oceanic cooling.  All
+solutions solve the transient heat equation without sources,
+\begin{equation}
+    \pd{T}{t} = \kappa \pd[2]{T}{z},
+\end{equation}
+where $z$ is depth, $t$ is time, and $T$ is temperature.  The thermal
+diffusivity, $\kappa$, is defined by the mantle density, $\rho_{m}$,
+specific heat capacity, $C_{P}$, and thermal conductivity, $k$, by
+$\kappa = k / \rho_{m} C_{P}$.  To solve this PDE, the depth can be
+non-dimensionalized by $\eta = z / 2 \sqrt{\kappa t}$ and temperature by
+$\theta = (T - T_{0}) / (T_{m} - T_{0})$.  Thus rewriting the PDE in the
+form of an ODE,
+\begin{equation}
+    -\eta \pd{\theta}{\eta} = \frac{1}{2} \pd[2]{\theta}{\eta},
+\end{equation}
+
+Surface heat flow, $q_{0}$ for each model is computed using Fourier's Law,
+\begin{equation}
+    q_{0}(t) = k\left( \pd{T}{z} \right)_{z = 0}.
+    \label{eq-heatflow}
+\end{equation}
+The subsidence, $s$, is a little more difficult to compute (since it
+involves integration) but arises from balancing isostatic columns.  The
+density variations result from the thermal contraction the lithosphere
+and the infilling density of water above the cooler column.  Subsidence
+can be computed using
+\begin{equation}
+    s(t) = \frac{\rho_{m}}{\rho_{m} - \rho_{w}} \alpha_{V}
+        \int_{0}^{L} [ T(z,0) - T(z,t) ] dz,
+    \label{eq-subsidence}
+\end{equation}
+where $\rho_{w}$ and $\rho_{m}$ are seawater and mantle density,
+respectively.  The volumetric expansivity is given by $\alpha_{V}$, and
+the initial geotherm is $T(z,0)$.  Temperature is integrated from the
+surface down to a depth $L$ which represents the depth of compensation,
+which is infinite in some formulations.
+
+Geoid anomalies across fracture zones are an additional observable that
+has been used to test cooling models, although the data tend to have
+greater scatter than bathymetry or heat flow resulting from density
+anomalies deeper in the mantle.  The geoid height anomaly is expressed
+as,
+\begin{equation}
+    \Delta N = -\frac{2 \pi G}{g} \left[
+        \frac{(\rho_{m} - \rho_{w}) s^2}{2}
+        + \alpha_{V} \rho_{m} \int_{0}^{L} z ( T(z,0) - T(z,t) ) dz
+        \right].
+    \label{eq-geoid}
+\end{equation}
+The geoid offset across a fracture zone can be calculated as a function
+of the constant age offset, $(\Delta N_{2} - \Delta N_{1}) / (t_{2} -
+t_{1})$. 
+
+
+\section{Half-Space Cooling}
+Temperature:
+\begin{equation}
+    T(z,t) = T_{0} + (T_{m} - T_{0})\,
+        \erf\left( \frac{z}{2\sqrt{\kappa t}} \right)
+\end{equation}
+
+Heat Flow:
+\begin{equation}
+    q_{0}(t) = \frac{k (T_{m} - T_{0})}{\sqrt{\pi \kappa t}}
+\end{equation}
+
+Subsidence:
+\begin{equation}
+    s(t) = \frac{2 \rho_{m} \alpha_{V} (T_{m} - T_{0})}
+        {(\rho_{m} - \rho_{w})}\sqrt{\frac{\kappa t}{\pi}}
+\end{equation}
+
+Geoid Anomaly:
+\begin{equation}
+    \Delta N = 
+        \frac{2 \pi G \rho_{m} \alpha_{V} \kappa (T_{m} - T_{0})}{g}
+        \left[ 
+            1 + \frac{2 \rho_{m} \alpha_{V} (T_{m} - T_{0})}
+            {\pi (\rho_{m} - \rho_{w})}
+        \right] t
+\end{equation}
+
+
+\section{Plate Model}
+
+The plate model solution by \cite{McKenzie1967} was conducted for a 2-D
+plate, however, for plate velocities over $\sim$10~km/m.y. the
+temperature differences from a 1-D solution is small ($<$10-20~K) for
+time $>$1~m.y.  We'll first start with the 1-D solution.
+
+\subsection{1-D plate cooling}
+
+\begin{equation}
+    T(z,t) = T_{0} - (T_{m} - T_{0})
+    \left[\frac{z}{L} + \frac{2}{\pi}\sum_{n = 1}^{\infty}
+    \frac{1}{n} \sin\left(\frac{n \pi z}{L}\right) \exp\left(\frac{n^2
+    \pi^2 \kappa t}{L^2}\right) \right]
+\end{equation}
+This solution consists of two parts, a constant gradient term that
+represents the equilibrium solution and the Fourier series of a
+triangle.  When these two parts are combined, the result is the initial
+condition.
+
+Heat flow
+\begin{equation}
+    q_{0}(t) = \frac{k (T_{m} - T_{0})}{L}\left[ 1 + 2 \sum_{n = 1}^{\infty}
+        \exp\left( -\frac{n^2 \pi^2 \kappa t}{L^2}\right) \right]
+\end{equation}
+
+Subsidence
+\begin{equation}
+    s(t) = \frac{\rho_{m} \alpha_{V} (T_{m} - T_{0}) L}{2 (\rho_{m} - \rho_{w})}
+        \left[ 1 - \frac{8}{\pi^2} \sum_{n = 0}^{\infty} \frac{1}{(2n + 1)^2}
+        \exp\left( -\frac{(2n + 1)^2 \pi^2 \kappa t}{L^2} \right) \right]
+\end{equation}
+
+
+\subsection{2-D plate cooling}
+The PDE solved in the 2-D case adds a lateral spatial dimension
+perpendicular to the ridge axis in the direction of plate motion,
+\begin{equation}
+    \pd{T}{t} = \kappa \left( \pd[2]{T}{z} + \pd[2]{T}{x} \right),
+\end{equation}
+where is the Peclet number $R = v L /(2 \kappa)$, defining a parameter
+$\beta_{n} = (R^{2} + n^2 \pi^2)^{1/2} - R$
+
+\begin{equation}
+    T(z,t) = T_{0} - (T_{m} - T_{0})
+    \left[ \frac{z}{L} + \frac{2}{\pi}\sum_{n = 1}^{\infty}
+    \frac{1}{n} \sin \left(\frac{n \pi z}{L}\right)
+    \exp\left(-\frac{\beta_{n} x}{L}\right)\right]
+\end{equation}
+
+Heat flow
+\begin{equation}
+    q_{0}(t) = \frac{k (T_{m} - T_{0})}{L}
+        \left[ 1 + 2 \sum_{n = 1}^{\infty}
+        \exp\left( - \frac{\beta_{n} x}{L} \right)\right]
+\end{equation}
+
+Subsidence
+\begin{equation}
+    s(t) = \frac{\rho_{m} \alpha_{V} (T_{m} - T_{0}) L}{\rho_{m} - \rho_{w}}
+        \left[ 1 - \frac{8}{\pi^2} \sum_{n = 0}^{\infty} \frac{1}{(2 n + 1)^2}
+        \exp\left( -\frac{\beta_{(2n + 1)} x}{L} \right) \right]
+\end{equation}
+
+
+
+\section{Stefan's Problem}
+\subsection{Cooling of a molten mantle}
+Another class of cooling models include those based on Stefan's problem.
+Stefan's problem is commonly used in geoscience to model the cooling of
+a lava lake and was used by \cite{Parker&Oldenburg1973} to describe
+oceanic cooling.
+
+with boundary conditions $T = T_{0}$ at $z = 0$ and $T = T_{m}$ at $z =
+z_{l}(t)$ where $z_{l}(t)$ is the solidification boundary where $z_{l} = 0$
+at $t = 0$.  The solution is only valid for $0 \leq z \leq z_{l}(t)$.
+For $z > z_{l}(t)$, $T = T_{m}$.  The solution to this system is given
+by
+\begin{equation}
+    T(z,t) = T_{0} + (T_{m} - T_{0})
+        \frac{\erf\left(\frac{z}{2 \sqrt{\kappa t}}\right)}{\erf(\lambda)},
+    \label{eq-stefan}
+\end{equation}
+where $\lambda$ is a constant.  To solve this equation, the depth is
+non-dimensionalized by $z/2 \sqrt{\kappa t}$.  The definition of
+$\lambda$ is an analogous, $\lambda = z_{l}/2 \sqrt{\kappa t}$.  Since
+$\lambda$ is defined by the lower boundary can look at the heat flow
+across the solidifying front.  The heat released by solidification at
+the lower boundary must be conducted upward.  Hence the heat flowing
+away from this boundary is given by
+\begin{equation}
+    k \left( \pd{T}{z} \right)_{z = z_{l}} = \rho_{m} H_{f} \od{z_{l}}{t}.
+\end{equation}
+and by substituting the $\od{z_{l}}{t} = \lambda \sqrt{\kappa} /
+\sqrt{t}$ into the equation above the thermal gradient at the boundary
+is
+\begin{equation}
+    \left( \pd{T}{z} \right)_{z = z_{l}} =
+        \frac{\rho_{m} \sqrt{\kappa} H_{f} \lambda}{k \sqrt{t}}.
+    \label{eq-grad1}
+\end{equation}
+We can solve Eq. \ref{eq-stefan} for the the thermal gradient at the
+bottom boundary
+\begin{equation}
+    \left( \pd{T}{z} \right)_{z = z_{l}} =
+        \frac{(T_{m} - T_{0})}{\sqrt{\pi \kappa t}}
+        \frac{\exp(-\lambda^2)}{\erf(\lambda)}.
+    \label{eq-grad2}
+\end{equation}
+Substituting Eq. \ref{eq-grad1} into to Eq. \ref{eq-grad2} we find,
+\begin{equation}
+    \frac{C_{P} (T_{m} - T_{0})}{H_{f} \sqrt{\pi}} = 
+        \lambda \exp(\lambda^2)\, \erf(\lambda).
+\end{equation}
+The constant $\lambda$ can be determined by a root finding method such
+as Newton's method with starting guess, $[C_{P}(T_{m} - T_{0})/2 H_{f}
+\sqrt{\pi}]^{1/2}$.
+
+The surface heat loss can be determined by $k \left(\pd{T}{z}\right)_{z
+= 0}$,
+\begin{equation}
+    q_{0}(t) = \frac{k (T_{m} - T_{0})}
+        {2 \sqrt{\kappa t}} [\erf (\lambda)]^{-1}.
+\end{equation}
+
+The subsidence is 
+\begin{equation}
+    s(t) = \frac{\rho_{m} \alpha_{V}(T_{m} - T_{0})}{(\rho_{m} - \rho_{w})}
+        \int_0^\infty \left[
+        1 - \frac{\erf \left( \frac{z}{2\sqrt{\kappa t}} \right)}{\erf(\lambda)}
+        \right] dz,
+\end{equation}
+\begin{equation}
+    s(t) = \frac{2 \rho_{m} \alpha_{V}(T_{m} - T_{0})}{(\rho_{m} - \rho_{w})}
+        \sqrt{\frac{\kappa t}{\pi}}
+        \left[ \frac{1 - \exp(-\lambda^{2})}{\erf(\lambda)} \right]
+\end{equation}
+
+While \cite{Parker&Oldenburg1973} used a 2-D formulation of Stefan's
+problem, the differences are again only when the lithospheric age is
+younger than 0.5~m.y. or so.  A larger issue is the appropriate value
+for the heat of fusion.  \cite{Parker&Oldenburg1973} uses a value
+similar to the latent heat of crystallizing basalt 420~kJ/kg.  However,
+since the asthenosphere is only partially molten, and may not even be
+molten at older ages, the heat released from must be significantly
+smaller.
+
+
+\subsection{Constant lithospheric heat loss}
+Implicit in the development of the plate cooling model is a heat flow at the
+base of the plate initially zero and increasing through time to an asymptotic
+condition.  However, it seems unlikely that the heat loss from the mantle into
+the base of the plate would physically increase with time without a physical
+mechanism.  The {\it c}\hspace{1pt}onstant {\it h}\hspace{1pt}eat-flow {\it
+a}\hspace{1pt}ssigned {\it b}\hspace{1pt}elow the {\it l}\hspace{1pt}ithospheric
+{\it is}\hspace{1pt}otherm (CHABLIS) model, so named by \cite{Doin&Fleitout1996}
+seeks a more reasonable assumption of a constant supply of heat provided through
+mantle convection.  This class of models is to Stefan's problem as the plate
+model is to the half-space cooling method.  This derivation is corrected from
+the original version by \citet{Hasterok2013a}.
+
+The chablis model is a solution to the one-dimensional transient heat equation,
+\begin{equation}
+    \pd{T}{t} = \kappa \pd[2]{T}{z},
+    \label{eq:pde}
+\end{equation}
+initially isothermal at the mantle temperature, $T_m$, and a fixed surface
+temperature boundary condition, $T_{0}$.  The lower boundary is moving and
+defined by the isotherm at $T_m$.  Heat flow across this lower boundary is also
+fixed, $q_l$.
+
+To solve Equation~\ref{eq:pde}, the temperature and depth are
+non-dimensionalized by
+\begin{align*}
+    \theta = & \frac{T - T_{0}}{T_{m} - T_{0}} \\
+    \eta = & \frac{z}{4} \sqrt{\frac{\pi}{\kappa t}},
+\end{align*}
+respectively.  At the lower boundary, we will define the non-dimensional length
+to be
+\begin{equation}
+    \eta_l = \lambda = \frac{z_l}{4} \sqrt{\frac{\pi}{\kappa t}}.
+    \label{eq:lambda}
+\end{equation}
+Thus rewriting the partial differential equation in the form of an ordinary
+differential equation,
+\begin{equation*}
+    -\eta \pd{\theta}{\eta} = \frac{1}{2} \pd[2]{\theta}{\eta}.
+    \label{eq:ode}
+\end{equation*}
+The solution is
+\begin{equation}
+    T(z,t) = 
+    \begin{cases}
+        T_{0} + (T_{m} - T_{0})
+        {\displaystyle \frac{\erf (\eta)}{\erf (\lambda)} } &
+        \text{if $0 \leq z \leq z_{l}(t)$} \\
+        T_{m} & \text{if $z > z_{l}(t)$}
+    \end{cases}.
+    \label{eq:chablisT}
+\end{equation}
+
+At first glance, the solution is similar to the classic Stefan's problem
+\citep{Turcotte&Schubert2002}; however, the value of $\lambda$ is different for
+the case of a solidifying boundary.  To find $\lambda$ in this case, we need to
+determine $( \partial T / \partial z)_{z=z_{l}}$ from Equation~\ref{eq:chablisT}
+first.  Recall that $\partial (\erf u) / \partial u = 2 \pi^{-1/2} \exp
+(-u^2)$.  Hence the thermal gradient at the boundary is
+\begin{equation*}
+    \left( \pd{T}{z} \right)_{z=z_{l}} = 
+        \frac{(T_{m} - T_{0})}{2 \sqrt{\kappa t}}
+        \frac{1}{\exp (\lambda^2)\, \erf (\lambda)}.
+\end{equation*}
+Substituting the basal heat flow boundary condition into the result above, we
+find
+\begin{equation*}
+    \frac{k (T_{m} - T_{0})}{2 q_{l} \sqrt{\kappa t}} =
+        \exp(\lambda^2)\, \erf (\lambda).
+\end{equation*}
+The lithospheric growth is limited to an asymptotic plate thickness, $L = k
+(T_{m} - T_{0})/q_{l}$.  If we specify the $L$ rather than the $q_{l}$, then the
+solution to $\lambda$ is found by solving a transcendental equation,
+\begin{equation}
+    \frac{L}{2 \sqrt{\kappa t}} = \exp(\lambda^2)\, \erf (\lambda).
+    \label{eq:lambdasoln}
+\end{equation}
+The value of $\lambda$ can again be found using Newton's method.  Unlike the
+classical Stefan's problem, the value of $\lambda$ changes with time.
+
+The surface heat loss can be determined by Fourier's Law, 
+\begin{equation}
+    q_{0}(t) = k \left(\pd{T(t)}{z}\right)_{z = 0} =
+        \frac{k (T_{m} - T_{0})} {2 \sqrt{\kappa t}} \frac{1}{\erf (\lambda)}.
+\end{equation}
+We can simplify the result above using Equation~\ref{eq:lambdasoln},
+\begin{equation}
+    q_{0}(t) = \frac{k (T_{m} - T_{0})} {L} \exp (\lambda^2).
+\end{equation}
+The solution is only valid for $t > 0$ because there is a singularity as $t \to
+0$.
+
+At $t \to \infty$, $q_{0}$ must approach the basal heat flow, $q_{l}$.  To show
+this condition is true, 
+\begin{align*}
+    \lim_{t \to \infty} q_{0} & = \lim_{\lambda \to 0} 
+        \frac{k (T_{m} - T_{0})}{L} \exp (\lambda^2), \\
+        & = \frac{k (T_{m} - T_{0})}{L} = q_l .
+\end{align*}
+
+Subsidence represents the buoyancy resulting from the integrated thermal
+state within the plate (i.e., $0 \leq z \leq z_{l}(t)$), written
+\begin{equation}
+    s(t) = \frac{\rho_{m}}{\rho_{m} - \rho_{w}} \alpha
+        \int_{0}^{L} [ T_m - T(z,t) ]  dz .
+\end{equation}
+where $\alpha$ is the thermal expansivity.  Substituting
+Equation~\ref{eq:chablisT} and after some rearranging, we find
+\begin{equation*}
+    s(t) = \frac{\rho_{m} \alpha (T_{m} - T_{0})}{\rho_{m} - \rho_{w}}
+        \int_{0}^{z_{l}} \left[1 - 
+        \frac{\erf (\eta)}
+        {\erf (\lambda)}
+        \right] dz .
+\end{equation*}
+Next, we change coordinates of the integral by substituting the differential
+differential, $dz = 4 \sqrt{\kappa t/\pi}\, d\eta$,
+\begin{equation}
+    s(t) = \frac{4 \rho_{m} \alpha (T_{m} - T_{0})}{\rho_{m} - \rho_{w}}
+        \sqrt{\frac{\kappa t}{\pi}}
+        \int_{0}^{\lambda} \left[1 - \frac{\erf( \eta)}
+        {\erf(\lambda)}\right] d\eta .
+\end{equation}
+Knowing $\int \erf(x)\, dx = x\, \erf(x) + \exp(-x^2)/\sqrt{\pi}$,
+and after some algebra, we find
+\begin{equation*}
+    s(t) = \frac{4 \rho_{m} \alpha (T_{m} - T_{0})}{(\rho_{m} - \rho_{w})}
+        \frac{\sqrt{\kappa t}}{\pi}
+        \left[ \frac{1 - \exp(-\lambda^{2})}{\erf(\lambda)} \right] ,
+\end{equation*}
+which we can further simplify using Equation~\ref{eq:lambdasoln}.  Therefore, we
+find the subsidence for the chablis model is given by
+\begin{equation}
+    s(t) = \frac{8 \rho_{m} \alpha (T_{m} - T_{0}) \kappa t}
+        {\pi (\rho_{m} - \rho_{w}) L}
+        \left[ \exp (\lambda^{2}) - 1 \right] ,
+\end{equation}
+
+%\section{$P$-$T$-$X$-Independent versus -Dependent Models}
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{/Users/dhasterok/texmf/tex/latex/ref}
+
+\end{document}

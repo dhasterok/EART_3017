@@ -1,0 +1,53 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{notes}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics IIIA: Potential Fields \& Geothermics}
+\rhead{Week 9 Plate Cooling}
+\cfoot{\thepage}
+
+\title{Week 9 --- Activity: Plate Cooling and Fourier Series}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\vspace{1em}
+
+\section*{Purpose}
+To understand how imposing a fixed lithospheric thickness modifies transient
+cooling and why Fourier series naturally arise in plate cooling models.
+
+\section*{Concept}
+Plate models introduce a basal boundary condition at a fixed depth, representing
+the lithosphere--asthenosphere boundary.
+
+\section*{Mathematical Form}
+The temperature field can be expressed as a Fourier series:
+\[
+T(z,t) = \sum_{n=1}^{\infty} A_n
+\sin\!\left(\frac{n\pi z}{L}\right)
+\exp\!\left(-\frac{n^2 \pi^2 \kappa t}{L^2}\right).
+\]
+
+\section*{Tasks}
+\begin{enumerate}
+  \item Explain how the index $n$ relates to thermal wavelength.
+  \item Why do short-wavelength modes decay faster than long-wavelength modes?
+  \item Compare thermal evolution predicted by plate cooling and half-space cooling.
+\end{enumerate}
+
+\section*{Geological Interpretation}
+\begin{itemize}
+  \item Plate thickness limits lithospheric growth.
+  \item Explains flattening of bathymetry and heat flow for old oceanic plates.
+\end{itemize}
+
+\section*{Connection}
+Relate Fourier modes to spectral filtering concepts used previously in gravity
+and magnetic field analysis.
+
+\end{document}

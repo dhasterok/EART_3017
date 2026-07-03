@@ -1,0 +1,115 @@
+\documentclass[final,a4paper,12pt]{article}
+
+\usepackage{notes}
+\setlength\parskip{1ex}
+\setlength\parindent{0cm}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{cancel}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\newtheorem{problem}{Problem}[section]
+
+\newcommand\qeq{\stackrel{\mathclap{\normalfont\mbox{?}}}{=}}
+
+\title{Geophysics III}
+\author{Mixing Tutorial}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Most geologic materials are mixtures of either multiple minerals and/or fluids.
+However, when we make geological observations and model the fields we find that
+it is not possible to resolve these individual components.  Instead, we are
+sensitive to the `average' properties creating or modifying geophysical fields.
+Average is a bit of a dangerous word because it can indicate different things in
+different situations.  So when someone says average I want you to ask ``What
+kind?''.
+
+The typical person refers to the arithmetic mean when they use the term average.
+However, there are multiple types of averages that are mathematically defined.
+There is a mean, median and mode that you may remember from statistics.  There
+are also an aritmetric, geometric, and harmonic means.  Means can be weighted or
+unweighted.  This tutorial focuses on each of these averages and when they may
+be appropriately applied to Earth's materials.
+
+\section{Statistical average}
+There are three averages that are typically used in statistics.  The
+mathematical definition may be different for different distribution functions,
+but the most commonly used are those for Gaussian distributions.
+
+\section{Pythagorean means}
+
+Aritmetic
+\begin{align}
+    \text{unweighted:} && \bar{x} &= \frac{1}{n} \sum_{i=1}^{n} x_i \\
+    \text{weighted:} &&
+        \bar{x} &= \frac{\sum_{i=1}^{n} w_i x_i}{\sum_{i=1}^{n} w_i} \\
+\end{align}
+Use: computing effective density
+
+Geometric
+\begin{align}
+    \text{unweighted:} && \bar{x} &= \left( \prod_{i=1}^{n} x_i \right)^{1/n} \\
+    \text{weighted:} && \bar{x} &= 
+        \left( \prod_{i=1}^{n} x_i^{w_i} \right)^{1/\sum_{i=1}^{n} w_i} \\
+\end{align}
+Use: computing effective thermal conductivity for random oriented mixtures
+
+The arithmetic and geometric means are mathematically related.  Suppose we have
+a set of numbers, $x = (x_1, x_2, \ldots, x_n)$.  We can define a tranform of
+$x \mapsto y$ by $y = \log x$.  Arithmetic means
+are often appropriate when the values of something are often about the same
+order of magintude, but geometric means make a bit more sense when the range of
+a property may span orders of magnitude as the do for many types of conductivity
+(e.g., electrical and hydraulic conductivity).
+
+Harmonic
+\begin{align}
+    \text{unweighted:} && \bar{x} &= \left( \sum_{i=1}^{n} x_i^{-1} \right)^{-1} \\
+    \text{weighted:} && \bar{x} &= \left( \sum_{i=1}^{n} w_i \right)
+        \left( \sum_{i=1}^{n} w_i x_i^{-1} \right)^{-1}
+\end{align}
+Use: computing effective thermal conductivity for layered conductivity packages
+
+\section{Other common means}
+Quadratic mean (RMS)
+
+\section{Additional mixing formulae}
+\subsection{Voigt-Reuss-Hill average}
+The Voigt-Reuss-Hill average is really an average of the volume weighted
+arithmetic and harmonic means and is common for estimating the bulk or effective
+magnitude of a physical property.  The average is given by
+\begin{align}
+    \bar{\Psi} &= \frac{1}{2}(\Psi_V + \Psi_R) \\
+    &= \frac{1}{2}\left[
+    \sum_{i = 1}^n \Psi_i v_i +
+    \left( \sum_{i = 1}^n \frac{v_i}{\Psi_i} \right)^{-1}
+    \right],
+\end{align}
+where $n$ is the number of consituent minerals and $v_i$ is the volume fraction
+of the $i$-th component.
+
+\subsection{Hashin-Strikman bounds}
+The Hashin-Shtrikman bounds are commonly quoted as a mixing relation for
+electrical conductivity and occasionally seismic velocity; however, the bounds
+often over- or under-predict the conductivity, but that is what they are
+designed to do.  The bounds are
+\begin{equation}
+    \sigma_{\text{HS}}^- = \mcal{S}(\sigma_{\text{min}}) \leq \sigma \leq
+    \mcal{S}(\sigma_{\text{max}}) = \sigma_{\text{HS}}^+,
+\end{equation}
+where $\mcal{S}$ is defined as
+\begin{equation}
+    \mcal{S}(x) =
+    \Biggl( \sum_{i=1}^N \frac{\phi_i}{\sigma_i + 2x} \Biggr)^{-1} - 2x ,
+\end{equation}
+and $\phi_i$ is the volume fraction of the $i$-th component.
+
+
+
+
+\end{document}

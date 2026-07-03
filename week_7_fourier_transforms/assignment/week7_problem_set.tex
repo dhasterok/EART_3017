@@ -1,0 +1,256 @@
+\documentclass[11pt]{article}
+\usepackage{notes}        % custom package (optional)
+
+\title{Problem Set: Fourier Transforms with Potential Fields}
+\author{Geophysics 3A}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Overview}
+
+In this practical you will use Fourier transforms to analyse gravity and magnetic
+data from South Australia.  You will explore how spectral methods relate wavelength
+to source depth, how continuation filters modify potential-field data, how
+isostatic compensation can provide a physically motivated regional field, and how
+reduction to the pole corrects for the inclination of the Earth's magnetic field.
+
+Complete the accompanying Jupyter Notebook and answer the interpretation questions
+below.  Your responses should demonstrate physical understanding rather than simply
+restating computational steps.
+
+\section*{Learning Objectives}
+
+By completing this assignment, you should be able to:
+\begin{itemize}
+  \item Interpret potential-field data in both spatial and spectral domains
+  \item Explain upward and downward continuation in physical and mathematical terms
+  \item Separate regional and residual fields and critically evaluate the choices involved
+  \item Compare spectral and isostatic approaches to defining a regional gravity field
+  \item Apply reduction to the pole and understand its assumptions and limitations
+  \item Discuss how sediment thickness affects the interpretation of magnetic data
+  \item Recognise the non-uniqueness inherent in potential-field interpretation
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{One-Dimensional Profile Continuation}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Gravity and magnetic profiles extracted from the gridded data are continued
+upward and downward using a spectral filter.  The continuation filter is:
+\[
+  H(k,\, z) = e^{-2\pi |k| z}
+\]
+where $k$ is wavenumber (cycles~km$^{-1}$) and $z > 0$ is upward continuation
+height in km.
+
+\subsection*{Question 1 — Upward continuation as a low-pass filter}
+
+As you increase the continuation height, which features disappear first ---
+broad, regional anomalies or narrow, localised ones?
+What does this tell you about the relationship between anomaly wavelength and
+source depth?
+
+\subsection*{Question 2 — Residual anomalies}
+
+What geological features might the residual profile ($\text{observed} - \text{regional}$)
+represent?  Are the residuals in the gravity and magnetic profiles spatially
+correlated along your chosen profile?  What could explain agreement or
+disagreement between the two fields?
+
+\subsection*{Question 3 — Choosing a continuation height}
+
+There is no single ``correct'' continuation height for separating regional from
+residual.
+\begin{enumerate}[label=\alph*.]
+  \item What criteria might you use to make a defensible choice of continuation height?
+  \item How sensitive is your geological interpretation to that choice?
+\end{enumerate}
+
+\subsection*{Question 4 — Instability of downward continuation}
+
+Move the continuation-height slider into negative values (downward continuation).
+\begin{enumerate}[label=\alph*.]
+  \item At approximately what depth does the downward-continued field become visibly unstable?
+  \item Does instability set in at the same depth for gravity and magnetics, or does one break down sooner?
+  \item Why might they differ?
+\end{enumerate}
+
+\subsection*{Question 5 — Physical meaning of the continued field}
+
+Upward continuation produces the field that \emph{would} be observed at a higher
+elevation.  Does the continued profile look like what you would expect from a
+smoother, more distant source distribution?  Are there any features that seem
+physically unreasonable, and if so, what might cause them?
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Two-Dimensional Gravity Continuation and Isostatic Correction}
+% ─────────────────────────────────────────────────────────────────────────────
+
+The 2-D continuation filter extends the 1-D result to two spatial frequencies:
+\[
+  H(k_x, k_y,\, z) = e^{-2\pi \sqrt{k_x^2 + k_y^2}\, z}
+\]
+An isostatic correction based on Airy compensation provides an alternative,
+geologically motivated regional field.  Under Airy isostasy, topographic load
+$h$ is compensated by a crustal root of thickness
+$t_r = \rho_c\,h\,/\,(\rho_m - \rho_c)$, producing a gravity effect:
+\[
+  g_\mathrm{iso}(x,y) = 2\pi G\,\rho_c\, h(x,y)
+\]
+
+\subsection*{Question 6 — Spectral regional vs isostatic correction}
+
+Compare the spectral regional field (at your chosen continuation height) with
+the isostatic correction map.
+\begin{enumerate}[label=\alph*.]
+  \item How well do they agree spatially?
+  \item Which areas show the largest differences, and why?
+\end{enumerate}
+
+\subsection*{Question 7 — Residual comparison}
+
+At what continuation height does the spectral residual most closely resemble the
+isostatic residual?  What does this imply about the effective depth of isostatic
+compensation in South Australia?
+
+\subsection*{Question 8 — Anomalies not explained by isostasy}
+
+What geological features might explain anomalies that are present in the spectral
+residual but absent (or reduced) in the isostatic residual?
+
+\subsection*{Question 9 — Limitations of the isostatic model}
+
+What assumptions in the Airy isostasy model most strongly limit its accuracy in
+this region?  Consider both the model geometry and the physical properties used.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Reduction to the Pole}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Reduction to the pole (RTP) applies a phase correction that transforms total
+magnetic intensity (TMI) data as though the ambient field and induced
+magnetisation were both vertical.  The filter is:
+\[
+  H_\mathrm{RTP}(k_x, k_y) =
+    \frac{\bar{\Theta}^2}{\left(|\Theta|^2 + \varepsilon\right)^2},
+  \quad
+  \Theta = \sin I +
+    i\cos I\!\left(\frac{k_x \cos D + k_y \sin D}{|\mathbf{k}|}\right)
+\]
+where $I$ and $D$ are the geomagnetic inclination and declination.
+
+\subsection*{Question 10 — Effect of RTP on anomaly positions}
+
+How does reduction to the pole change the positions and shapes of the major
+magnetic anomalies in South Australia?  Are anomalies shifted northward or
+southward, and by roughly how much?
+
+\subsection*{Question 11 — Stability at low inclinations}
+
+Experiment with the inclination slider.
+\begin{enumerate}[label=\alph*.]
+  \item At what inclination do artefacts (ringing, extreme amplitudes) begin to
+        appear?
+  \item What does this tell you about the reliability of RTP near the magnetic
+        equator?
+\end{enumerate}
+
+\subsection*{Question 12 — Difference map}
+
+Examine the difference map (RTP $-$ TMI).
+\begin{enumerate}[label=\alph*.]
+  \item How does it relate to the asymmetry of individual anomalies in the TMI?
+  \item What geological information might be encoded in that difference?
+\end{enumerate}
+
+\subsection*{Question 13 — Remanent magnetisation}
+
+The RTP filter assumes purely \emph{induced} magnetisation parallel to the
+ambient field.  How would remanent magnetisation with a different direction affect
+the result?  Can you identify any anomalies in the dataset that might carry
+significant remanence?
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Sediment-Thickness Correction for RTP [\emph{Optional}]}
+% ─────────────────────────────────────────────────────────────────────────────
+
+Thick, non-magnetic sedimentary cover attenuates basement magnetic signals.
+A spectral correction attempts to undo this attenuation by multiplying the
+spectrum by $e^{+2\pi|\mathbf{k}|\,z_s}$, where $z_s$ is the sediment thickness.
+A Gaussian taper $e^{-2\pi^2|\mathbf{k}|^2\lambda^2}$ damps the resulting
+noise amplification.
+
+\subsection*{Question 14 — Where the correction matters most}
+
+Where does the sediment correction make the largest difference to the RTP result?
+Does this correspond to the areas of thickest sediment shown in the data?
+
+\subsection*{Question 15 — Role of the damping parameter}
+
+What happens when you increase the damping length $\lambda$?  What signal is
+being suppressed, and is this geologically sensible?
+
+\subsection*{Question 16 — Validity of a uniform correction}
+
+The correction here uses the mean sediment thickness across the study area.
+\begin{enumerate}[label=\alph*.]
+  \item In which parts of the study area do you expect this uniform approximation
+        to be most and least valid?
+  \item What additional information would you need to make the correction
+        spatially variable in a rigorous way?
+\end{enumerate}
+
+\subsection*{Question 17 — Analogous gravity correction}
+
+Could a similar sediment-correction approach be applied to the gravity field?
+How would it differ from the Airy isostatic correction computed in Section~2?
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Synthesis}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\subsection*{Question 18 — Wavelength and depth}
+
+How do Fourier-domain methods relate signal wavelength to source depth?  State
+the approximate relationship, identify its key assumptions, and describe one
+situation in which it would give a misleading depth estimate.
+
+\subsection*{Question 19 — Spectral vs isostatic regional field}
+
+What are the advantages and disadvantages of using spectral continuation versus
+isostatic correction to separate regional from residual gravity?  Under what
+geological conditions would you prefer one over the other?
+
+\subsection*{Question 20 — Non-uniqueness}
+
+All potential-field methods suffer from the fundamental non-uniqueness of the
+inverse problem.  Give one concrete example from this practical where two
+different assumptions produced similar-looking results.  What additional data or
+constraints could help discriminate between them?
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section*{Submission Instructions}
+% ─────────────────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+  \item Provide written answers to the questions above, either within the notebook or as a separate document as specified by your instructor.
+  \item Include screenshots/figures from your Jupyter Notebook as necessary to answer the questions.
+  \item Figures should be clearly labelled and referred to in your written answers where appropriate.
+\end{itemize}
+
+\section*{Assessment Criteria}
+
+Your work will be assessed on the basis of:
+\begin{itemize}
+  \item Physical understanding of Fourier methods and potential fields
+  \item Correct and insightful interpretation of results
+  \item Clarity and quality of written explanations
+  \item Appropriate use of figures to support interpretation
+\end{itemize}
+
+\vspace{1em}
+\noindent\textbf{End of Assignment}
+
+\end{document}

@@ -1,0 +1,98 @@
+\documentclass[final,a4paper,12pt]{article}
+\usepackage{notes}
+
+\title{Geophysics III}
+\author{Steady-State Geotherms}
+\date{}
+
+\begin{document}
+\maketitle
+%\input{../psintro}
+
+\noindent This problem set is worth a total of 20 points to the total problem set score.
+
+\begin{enumerate}
+    %\clearpage
+    \input{questions/thermal_conductivity_computation}
+
+    %clearpage
+    \input{questions/cc_geotherms}
+
+    %clearpage
+    \input{questions/radioactive}
+\end{enumerate}
+
+\appendix
+\section{Computing geotherms}\label{apx:g}
+
+The solution for the temperature at the base of the first layer,
+$T_{1}$, can then be estimated using the homogeneous solution,
+\begin{equation}
+  T_1 = T_0 + \frac{q_0}{k_1} (z_1 - z_0) -
+  \frac{A_1}{2 k_1} (z_1 - z_0)^2.
+\end{equation}
+The heat flow at the base of the first layer is equal to
+\begin{equation}
+    q_{1} = q_0 - A_1 (z_1 - z_0).
+\end{equation}
+The homogeneous solution can then be used to estimate the temperature at
+the base of the second layer using, $T_1$, as the temperature at the
+top and $q_1$ as the heat flow.  The temperature of all subsequent
+layers can be found using the same method boot-strapping down through
+the domain of interest.  
+
+Solving for the temperature at the base of the $i$-th layer,
+\begin{equation}
+  T_{i+1} = T_i + \frac{q_i}{k_{i+1}} (z_{i+1} - z_i)
+  - \frac{A_{i+1}}{2 k_{i+1}} (z_{i+1} - z_i)^2.
+\end{equation}
+It is also necessary to know the heat loss at the base of each layer in
+order to compute temperature.  Since heat flow is determined by the heat
+flowing into a layer plus the heat generated within, the heat flow at
+the bottom of each layer is given by
+\begin{equation}
+    q_{i+1} = q_i - A_{i+1} (z_{i+1} - z_i).
+\end{equation}
+This solution forms the basis of most 1-D steady-state geotherms.
+
+
+\section{Thermal isostasy}\label{apx:tis}
+It can be shown that the relative elevation difference between a region with
+geotherm $T(z)$ and a reference region $T_{\text{ref}}$ is given by
+\begin{equation}
+    \varepsilon = \alpha \int_{0}^{z_{\text{max}}} [T(z) - T_{\text{ref}}] \,dz.
+\end{equation}
+For our piecewise geotherms, we can compute an elevation within each depth
+interval by
+\begin{equation}
+    \varepsilon_i = \alpha \int_{z_i}^{z_{i+1}} [T(z) - T_{\text{ref}}] \,dz,
+\end{equation}
+and summing the individual steps
+\begin{equation}
+    \varepsilon = \sum_{i = 1}^N \varepsilon_i.
+\end{equation}
+Within each step, we can integrate difference in temperature by integrating each
+geotherm separately and taking the difference since the integral operator is
+linear,
+\begin{equation}
+    \varepsilon_i = \alpha \left[
+    \int_{z_i}^{z_{i+1}} T(z) \,dz - \int_{z_i}^{z_{i+1}} T_{\text{ref}} \,dz
+    \right].
+\end{equation}
+The integral of a single geotherm is given by
+\begin{align}
+    \int_{z_i}^{z_{i+1}} T(z) \,dz & = \int_{z_i}^{z_{i+1}}
+        \left[ T_{i} 
+        + \frac{q_i}{k_{i+1}} (z - z_i)
+        - \frac{A_{i+1}}{2 k_{i+1}} (z - z_i)^2
+        \right] \,dz, \\
+    & = T_{i} z \left.
+        + \frac{q_i}{2 k_{i+1}} (z - z_i)^2
+        - \frac{A_{i+1}}{6 k_{i+1}} (z - z_i)^3
+        \right|_{z_i}^{z_{i+1}}, \\
+    & = T_{i} (z_{i+1} - z_i) 
+        + \frac{q_i}{2 k_{i+1}} (z_{i+1} - z_i)^2
+        - \frac{A_{i+1}}{6 k_{i+1}} (z_{i+1} - z_i)^3 .
+\end{align}
+
+\end{document}

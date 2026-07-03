@@ -1,0 +1,460 @@
+\documentclass[final,a4paper,12pt]{article}
+
+\usepackage{notes}
+\setlength\parskip{1ex}
+\setlength\parindent{0cm}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{cancel}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\newtheorem{problem}{Problem}[section]
+
+\newcommand\qeq{\stackrel{\mathclap{\normalfont\mbox{?}}}{=}}
+
+\title{Geophysics III}
+\author{Algebra Tutorial}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Algebra is a set of rules and theorems that govern a broad swath of mathematics.
+While we'll employ calculus as well, much of what we do will be
+substitution and rearangement of abstract algebraic expressions.  Abstract
+algebra simply means the use of symbols to represent numbers and concepts rather
+than numbers themselves.  We'll use this absract representation so that we can
+learn about the general patterns rather than the solution for any specific case.
+And therein lies the power of abstract algebra: the ability to write a general
+expression applicable to many, perhaps infinitely many, cases.
+
+This tutorial is meant to be a reminder of basic algebraic functions,
+properties, and techniques.  If you have never had math beyond algebra, it may
+introduce a few new ideas and concepts that you weren't exposed, but are well
+within the confines of algebra.  To some this may seem trivial, but to others it
+will be a useful review.
+
+
+\section{Rearranging equations}
+\subsection{Rearranging rules}
+There are a few simple rules that you must remember when rearranging equations.
+You'll use them frequently when performing derivations.  The rules:
+\begin{enumerate}
+    \item perform the same operation to both sides of the equation;
+    \item when adding or subtracting, make sure the sum is zero since adding
+    zero doesn't change a result; and
+    \item when multiplying or dividing, make sure the product is one because
+    multiplying anything leaves the result unchanged;
+    \item when raising an exponent or taking a root, make sure the power is
+    one.
+\end{enumerate}
+
+{\it Practice:} \\
+Show $2 r (x^2 - 1) = x^2 - 2$ can be written as
+\begin{equation}
+    x^2 = \frac{2(1 - r)}{(1 - 2r)} .
+\end{equation}
+
+\subsection{Common mistakes}
+Most of the common errors occur when dealing with fractions.  Although the rules
+of dealing with fractions are quite simple, the errors seem to happen because of
+temptation; temptation to cancel terms that simplify the expression, but
+generally too much.  If you are ever unsure about a rule, TEST IT!  Put real
+numbers in and test the before and after (use simple numbers).  If the before
+and after don't give the same result, then what you did is invalid.  If it does,
+try another set and if it still works then you probably did it right.  I'll give
+a few examples of things that I commonly see but are incorrect.
+
+\begin{example}
+    Mistakes commonly occur when trying to cancel terms that show up in both the
+    numerator and denominator.  For instance,
+    \begin{equation*}
+        \frac{\cancel{z^2}}{x^2 + \cancel{z^2}} \neq \frac{1}{x^2} ,
+    \end{equation*}
+    where the $z^2$ terms cannot be canceled.  If we put in some numbers, 1 for
+    $x$ and 2 for $z$,
+    \begin{align*}
+        \frac{2^2}{1^2 + 2^2} &\neq \frac{1}{1^2} \\
+        \frac{4}{5} &\neq 1 .\\
+    \end{align*}
+    It turns out that the above expression cannot be simplified further
+    
+    We cannot this way either
+    \begin{equation*}
+        \frac{x^2 + \cancel{z^2}}{\cancel{z^2}} \neq x^2 ,
+    \end{equation*}
+    which we can test as above,
+    \begin{align*}
+        \frac{1^2 + 2^2}{2^2} &\neq 1^2 \\
+        \frac{5}{4} &\neq 1 .
+    \end{align*}
+
+    You can partially cancel the above expression,
+    \begin{align*}
+        \frac{x^2 + z^2}{z^2} &= \frac{x^2}{z^2} + \cancelto{1}{\frac{z^2}{z^2}} \\
+        &= \frac{x^2}{z^2} + 1 \\
+    \end{align*}
+    Using our inputs above you can verify that the result is $1+\frac{1}{4} =
+    \frac{5}{4}$.
+\end{example}
+
+\begin{example}
+    \begin{equation*}
+        \frac{x^2 - 2 z^2}{x^2} - \frac{x^2}{z^2} \neq \frac{-2 z^2}{x^2}
+    \end{equation*}
+\end{example}
+
+\clearpage
+
+\subsection{Rules for special functions} 
+There are a number of handy properties of logs and exponents that seem to be
+commonly forgotten, which I don't blame you for.  It is quite likely that you
+haven't used them since you learned them the first time.  Turns out, we use them
+in science quite frequently; although, if you have only ever been given
+equations you my not realize that it has been done.  These rules can be useful
+for simplifying equations or reorganizing them when performing derivations.
+
+\subsubsection{Logarithms}
+We can write a logarithm generally as
+\begin{equation*}
+    \log_{
+        \mlbox[labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]
+        {a}{base}}
+        \mlbox[]{u}{argument} .
+\end{equation*}
+Although the logarithm above is written generically, the bases used is in most
+often in physics are either 10 or $e$, the natural number.  For $\log_10$, we
+often use a shorthand $\Log$ and sometimes $\log$.  For $\log_e$, the shorthand
+$\ln$ or $\log$ are often used.  Because $\log$ is used as the shorthand for
+both bases 10 and $e$ in different texts, you will need to identify which base
+$\log$ applies.
+
+Properties of logarithms, $u, v > 0$,
+\begin{gather*}
+    \log_a a = 1 \\
+    \log_a a^n = n \\
+    \log_a u^n = n \log_a u \\
+    \log_a u v = \log_a u + \log_a v \\
+    \log_a \frac{u}{v} = \log_a u - \log_a v
+\end{gather*}
+To change base, i.e., from $a$ to $b$ (where $a, b \neq 1$),
+\begin{equation*}
+    \log_b u = \frac{\log_a u}{\log_a b}.
+\end{equation*}
+There are several key points on a logarithm that are useful to know,
+\begin{align*}
+    \Log 0 &= -\infty & \log 0 &= -\infty \\
+    \Log 1 &= 0 & \log 1 &= 0 \\
+    \Log 10 &= 1 & \log e &= 1 .
+\end{align*}
+
+
+\subsection{Exponentials}
+Hidden in the relationships above is the relationship between logarithms and
+exponentials as the inverse operations of each other, i.e.,
+\begin{align*}
+    \log_a a^n &= n \\
+    a^{\log_a n} & = n .
+\end{align*}
+Properties of exponentials,
+\begin{align*}
+    a^m a^n &= a^{m + n} \\
+    \frac{a^m}{a^n} &= a^{m - n} \\
+    (a^m)^n &= a^{mn} \\
+    a^{-n} = \frac{1}{a^{n}} \\
+    a^0 = 0 \\
+    a^1 = a .
+\end{align*}
+If $a$ and $n$ are positive, $a^{\frac{1}{n}} = \sqrt[n]{a}$ .
+
+One must be carful with negative powers when $a$ is also negative as they may
+yield a complex rather than real number (see complex number tutorial).
+
+
+\subsection{Simplifying solutions}
+We will try to write our solutions in as simple and elegant a form as possible.
+One reason to do so is that it can be easier to interpret, compute, and/or graph.
+But what one decides as an elegant representation is subject to debate.  Also,
+it may be easier for a computer to compute a less elegant representation.
+Nevertheless, we will strive to do so.  Here are a few suggestions to derive
+elegant solutions:
+\begin{itemize}
+    \item combine like terms, no use carrying around the
+    extra weight, e.g., $3x + x = 4x$ ;
+
+    \item reduce fractions, again
+    reduces extra weight, e.g., $\frac{6x^2}{64x} = \frac{3x}{32}$;
+
+    \item find least common multiples, this can help us simplify a solution,
+    e.g., $\frac{1}{x_1} + \frac{1}{x_2} = \frac{x_2 + x_1}{x_1 x_2}$ ;
+
+    \item factorize polynomials,, doing so can help us quickly identify roots
+    (zero crossings),  e.g., $\rho_1 r - \rho_2 r = (\rho_1 - \rho_2) r$ ; and
+
+    \item expand/distribute (opposite of factoring), sometimes this simplifies
+    the expression, e.g., $3z^2 - (x^2 - z^2) = 4z^2 - x^2$ ; and
+
+    \item write linear relationships in slope-intercept form---the usefulness
+    speaks for itself---or non-linear equations in a standard form, e.g.,
+    Pythagorean equation.
+\end{itemize}
+Also, for equations containing complex numbers, it is best to write in a form
+without complex numbers in the denominator, e.g., $\frac{1}{1 - i} = \frac{1}{1
+- i}\frac{1 + i}{1 + i} = \frac{1 + i}{2}$.
+
+Since some of the above suggestions for simplifying equations are contradictory,
+{\it how will you know what I'm looking for as a grader?}  The key is having all
+the correct elements so there is a fair amount of latitude to your answer so
+long as it has been simplified.
+
+
+\subsection{Practice problems}
+\begin{problem}
+    If
+    \begin{equation*}
+        \sin \theta = \frac{x}{h},
+    \end{equation*}
+    show
+    \begin{equation*}
+        \cos \theta = 1 - \frac{x^2}{h^2}.
+    \end{equation*}
+    You'll need to use the Pythagorean Theorem with respect to the sides of a
+    right triangle with one of the two remaining angles $\theta$.
+\end{problem}
+
+\begin{problem}
+    Show that
+    \begin{equation*}
+        y = 2 \left( \frac{1}{x_1^2} - \frac{1}{x_2^2} \right)^{1/2}
+    \end{equation*}
+    is equivalent to
+    \begin{equation*}
+        y = \frac{2 (x_2^2 - x_1^2)^{1/2}}{x_1 x_2} .
+    \end{equation*}
+\end{problem}
+
+\begin{problem}
+    Show that
+    \begin{equation*}
+        b = a_1^{v_1} a_2^{v_2}
+    \end{equation*}
+    is equivalent to
+    \begin{equation*}
+        \log b = v_1 \log a_1 + v_2 \log a_2 .
+    \end{equation*}
+\end{problem}
+
+
+\section{Special operators}
+\subsection{Summation, $\sum$}
+\begin{equation*}
+    \sum_{
+    \mlbox[
+        labelstyle={below of=m\themathLableNode,below of=m\themathLableNode,xshift=-1.5cm},
+        linestyle={out=90,in=270, latex-}]
+        {i}{index}
+    =\mlbox[labelstyle={below of=m\themathLableNode,below of=m\themathLableNode}]{a}{lower limit}
+    }^{\mlbox[]{N}{upper limit}}
+    \mlbox[
+        labelstyle={right of=m\themathLableNode,right of=m\themathLableNode}]
+        {x_i}{argument}
+\end{equation*}
+At times we will want to add or multiply a known, and regular set of discrete
+numbers (note this will eventually lead to calculus).  These will show up from
+time to time throughout the course.  For example, suppose we
+wanted to add the integers from 1 to 5 whose result is 15,
+\begin{equation}
+    1 + 2 + 3 + 4 + 5 = 15.
+\end{equation}
+Because mathematicians are lazy, they seek a shorthand to write this in a
+simpler way.  Rather than add up all the numbers at once, let's group these
+numbers to perform only one operation at a time, i.e.,
+\begin{equation}
+    (((\,(1) + 2) + 3) + 4) + 5.
+\end{equation}
+Working with the inner most parentheses first, we find 1; inside the next set we
+find $(1 + 2)$, which yields 3.  Continuing each step, we finally arrive at
+15.  This is the point where the simplifying notation comes in.  Because each of
+the above operations is an addition, we use the capital Greek letter sigma
+($\Sigma$) to denote the sum.  We also give the sum limits: where to start
+(above) and where to end (below).  Thus, we can write the sum as
+\begin{equation}
+    \sum_{i = 1}^5 i \quad \text{where } i = 1,2,\ldots,5,
+\end{equation}
+In this case, we perform the summation over the values of the index, $i$, from 1
+to 5, incrementing $i$ by a single value each step.
+
+The increments of the index, need not be unity, but could be anything we need
+them to be so long it is regular or defined in some ordered way.  The argument,
+also $i$ in the example above, could also be anything.
+
+We can express the arithemetic mean using the summation.  For a set of $N$
+numbers, the arithmetic mean is given as
+\begin{equation}
+    \bar{x} = \frac{x_1 + x_2 + \ldots + x_N}{N},
+\end{equation}
+or in short form,
+\begin{equation}
+    \bar{x} = \frac{1}{N}\sum_{i=1}^{N} x_i .
+\end{equation}
+Likewise, the sample standard deviation is defined as
+\begin{equation}
+    \sigma_{x} = \left[
+        \frac{1}{N-1} \sum_{i=1}^{N}(x_{i} - \bar{x})^2
+        \right]^{1/2}.
+\end{equation}
+
+{\it Practice:} \\
+Prove to yourself
+\begin{equation}
+    \sum_{i = 1}^4 i^2 = 30
+\end{equation}
+
+\subsection{Product, $\prod$}
+There is an analagous operator for multiplication, just as we used the $\Sigma$
+for summation, the capital Greek letter pi ($\Pi$) is used for the product of a
+sequence.  For example, we can write the product of $N$ numbers as
+\begin{equation}
+    \prod_{i = 1}^N x_i = x_1 \cdot x_2 \cdot x_3, \ldots, x_N .
+\end{equation}
+
+This notation arises when we use a geometric mean
+\begin{equation}
+    \bar{x}_g = \left( \prod_{i = 1}^N x_i \right)^{1/N} .
+\end{equation}
+
+{\it Practice:} \\
+Prove to yourself
+\begin{equation}
+    \prod_{i = 1}^4 i^2 = 576.
+\end{equation}
+
+
+\section{Common functions}
+There are a number of functions that are quite common
+(Figure~\ref{fig:functions}).  We will use nearly all of these functions at
+least once if not repeatedly within the course.  It is extremely important to
+know what these functions generally look like and know their attributes.  The
+attributes that are the most important to understand regard how they can be
+manipulated to fit physical models and/or data and provide insight into the
+physical processes that we use them to describe.  These attributes include their
+scale, amplitude, slope, and key points: location of asymptotes, zero crossings,
+intercepts etc.
+\begin{figure}[tbhp]
+  \centerline{
+    \includegraphics[angle=90]{common_functions.eps}
+  }
+  \caption{Common functions.}
+  \label{fig:functions}
+\end{figure}
+
+\subsection{Linear}
+A line is one of the simplest functions (and most useful) functions that we can
+use in any science.  A linear process is one in which one variable is
+proportional to another by a constant.  This constant provides the
+scale---commonly know as the slope.  Add an additional constant that accounts
+for a shift or static offset between each of the variables (the intercept).  The
+equation of a line is given by
+\begin{equation}
+    y = m x + b ,
+\end{equation}
+where $m$ is the slope and $b$ is the intercept.  Depending on our process the
+slope and/or intercept may be represented by multiple physical constants that
+combine to make a single constant.  An alternative form of the linear equation
+that is at times handy can be written,
+\begin{equation}
+    y - y_0 = m (x - x_0).
+\end{equation}
+A line also represents a first order, and the simplest, polynomial.  You will
+see lines in many places throughout geophysics.
+
+\subsection{Parabola/Quadratic}
+A parabola is a second order polynomial, written
+\begin{equation}
+    y = a_2 x^2 + a_1 x + a_0 ,
+\end{equation}
+with three constants, $a_0$, $a_1$, and $a_2$.  You'll notice that the form I
+have written in Figure~\ref{fig:functions} as
+\begin{equation}
+    y = (x - r_1)(x - r_2) ,
+\end{equation}
+where $r_1$ and $r_2$ are the roots (zero crossings) of the parabola.  While the
+equation can always be written in this form, $r_1$ and $r_2$ are only real
+valued when the equations intersect the $x$-axis.  When the parabola does not
+intersect the $x$-axis, the roots are complex numbers (we'll get to complex
+numbers later).  To find the roots of a parabola, we can use the famous
+quadratic formula,
+\begin{equation}
+    r = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} .
+\end{equation}
+You'll see a quadratic when we get to heat flow.
+
+\subsection{Hyperbola}
+A hyperbola is a conic section (as are parabolas, circles, and ellipses).  They
+are also the shape of a seismic reflection.  A hyperbola can be expressed in the
+form
+\begin{equation}
+    y = \pm a \left[1 + \frac{x^2}{b^2} \right]^{1/2} ,
+\end{equation}
+where $a$ and $b$ are constants.  A hyperbola has two asymptotes, each with a
+slope defined by the ratio of the constants, i.e., $m = \pm\frac{a}{b}$.  The
+foci are also defined by the constants, $c^2 = a^2 + b^2$.  The $y$-axis
+intercept of the ellipse is defined by the constant, $a$.
+
+\subsection{Inverse Power Laws}
+Functions which are represented by the inverse of a power,
+\begin{equation}
+    y = x^{-n} ,
+\end{equation}
+where $n$ is a positive multiple of $1/2$ are relatively common.  For instance,
+gravitational acceleration is proportional to the inverse square of the
+distance between two bodies, i.e., $\propto r^{-2}$.  As $x \to 0$,
+the function grows to infinite magnitude, and as $x \to \infty$, the function
+approaches zero.
+
+Now it is your turn. For the remainder of these, I'll let you have some practice
+writing up your own observations.  I suggest you graph these functions.  Change
+some of the constants and see how it changes the graph.  What attribute(s) did
+it affect?
+
+{\it Remember, these functions are used to describe physical processes and many of
+the key properties can be determined directly from the function and/or graph.}
+
+\subsection{Exponentals}
+Where might these be common?  What is the general form?  Are there any key
+points, asymptotes, discontinuities?
+\vspace{16ex}
+
+\subsection{Logarithm}
+\vspace{16ex}
+
+\subsection{Gaussian}
+\vspace{16ex}
+
+\subsection{Error function}
+\vspace{16ex}
+
+\subsection{Trigonometric functions}
+\subsubsection{Sine}
+\vspace{16ex}
+\subsubsection{Cosine}
+\vspace{16ex}
+\subsubsection{Tangent}
+\vspace{16ex}
+
+\subsection{Delta function}
+A delta function is expresed as
+\begin{equation}
+    y = \delta (x - x_0).
+\end{equation}
+The delta function is a special function that is always zero except when $x =
+x_0$ at which point the function is unity.  While a bit strange, these are very
+useful functions when we work with waves, but they are used in many engineering
+and physical fields.
+
+\subsection{Heaviside function}
+\vspace{16ex}
+
+\end{document}

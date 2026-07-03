@@ -1,0 +1,202 @@
+\item Rifting \\
+A simple model of rifting is illustrated in Figure~\ref{fig:rifting}.
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[]{figures/rifting.eps}
+    \caption{Temperature}
+    \label{fig:rifting}
+\end{figure}
+\begin{enumerate}
+    \item Assuming the rifting takes place instantaneously, what are the
+    initial and equilibrium geotherms (temperature as a function of depth)?
+
+    {\bf Answer:} \\
+    To write down the initial condition and equilibrium conditions we need
+    to look for a function to describe our drawing.  Since both the initial
+    equilibrium geotherms are lines we use the form $y = b + m x$ to
+    describe our line, where $y$ is the temperature and $x$ is depth.
+    Hence, we need to determine the intercept and slope for each geotherm.
+    At $z = 0$, both geotherms are $T_0$, which gives us our intercept.  The
+    slope is define by a change in temperature over a change in depth.  To
+    define the slope, we choose convenient points at the beginning and end
+    of our lines.  Hence our geotherms are given by,
+    \begin{align}
+        f(z) &=
+        \begin{cases}
+            T_0 + (T_m - T_0) \frac{z}{L(1 - \gamma)} 
+            & 0 \leq z < L(1 - \gamma) \\
+            T_m & L(1 - \gamma) \leq z \leq L
+        \end{cases} \\
+        T_E(z) & = T_0 + (T_m - T_0) \frac{z}{L}.
+    \end{align}
+    The initial condition has cases because the geotherm changes at the base
+    of the rifted lithosphere.  
+
+    \item As discussed in the practical and notes, the Fourier coefficients
+    for this type of problem are given by
+    \begin{equation}
+        a_n = \frac{2}{L} 
+        \int_0^L [f(z) - T_E(z)] \sin \left( \frac{n \pi z}{L} \right) \dd{z} .
+    \end{equation}
+    Using the geotherms determined above, what are the values of the
+    Fourier coefficients?
+
+    {\bf Answer:}\\
+    To derive the Fourier coefficients, we need to input the result from the
+    previous part into the equation above.  Because $f(z)$ has cases we will
+    need to perform a separate integration for each case (i.e. for $[0,L(1 -
+    \gamma))$ and $[L(1 - \gamma),L]$),
+    \begin{align*}
+        a_{n} &= \frac{2}{L} \Biggl\{ 
+            \int_0^{L(1 - \gamma)}
+            \Biggl[\biggl(T_0 + (T_m - T_0) \frac{z}{L(1 - \gamma)}\biggr)
+            - \biggl(T_0 + (T_m - T_0) \frac{z}{L}\biggr) \Biggr]
+            \sin \arg{z} \dd{z} \Biggr. \\
+            &+ \Biggl. \int_{L(1 - \gamma)}^L
+            \Biggl[T_m - \biggl(T_0 + (T_m - T_0) \frac{z}{L}\biggr) \Biggr]
+            \sin \arg{z} \dd{z}
+        \Biggr\} .
+    \end{align*}
+    Before performing integrating, we will simplify terms by pulling out a
+    $(T_m - T_0)$ since it appears in every term,
+    \begin{align*}
+        a_{n} &= \frac{2}{L} (T_m - T_0) \Biggl\{ 
+            \int_0^{L(1 - \gamma)}
+            \biggl(\frac{z}{L(1 - \gamma)} - \frac{z}{L}\biggr)
+            \sin \arg{z} \dd{z} \Biggr. \\
+            & + \Biggl. \int_{L(1 - \gamma)}^L
+            \biggl( 1 - \frac{z}{L} \biggr) \sin \arg{z} \dd{z} \Biggr\}
+    \end{align*}
+    A $\frac{z}{L}$ term appears within each set of integral limits.
+    Because the function is continuous across the domain boundaries we can
+    combine each part into a single integral across the combined domain,
+    \begin{align*}
+        a_{n} &= \frac{2}{L} (T_m - T_0) \Biggl\{ 
+            \frac{1}{L(1 - \gamma)} \underbrace{\int_0^{L(1 - \gamma)}
+            z \sin \arg{z} \dd{z}}_1 \Biggr.\\
+            & + \Biggl. \underbrace{\int_{L(1 - \gamma)}^L \sin \arg{z} \dd{z}}_2
+            - \frac{1}{L} \underbrace{\int_0^L z \sin \arg{z} \dd{z}}_3 \Biggr\}
+    \end{align*}
+    Now we can look up and solve each of the integrals individually.  The
+    integrals fall into one of two forms which have the solutions:
+    \begin{align*}
+        \int \sin (az) \dd{z} &= -\frac{1}{a} \cos (az) \\
+        \int z \sin (az) \dd{z} &= \frac{1}{a^2} \sin (az) - \frac{z}{a} \cos
+        (az) .
+    \end{align*}
+    Choosing $a = \frac{n \pi}{L}$ we can see how our integrals relate to
+    the general forms given above.
+    Evaluating each of the integrals,
+    \begin{align*}
+        1: && \int_0^{L(1 - \gamma)}
+          z \sin \biggl( \frac{n \pi z}{L} \biggr) \dd{z}
+          &= \frac{L^2}{n^2 \pi^2} \sin \arg{z}
+          - \frac{L}{n \pi} z \cos \arg{z}
+          \Biggl. \Biggr|_0^{L(1 - \gamma)} \\
+          && &= \frac{L^2}{n^2 \pi^2} \Biggl[ \sin \arg{L(1 - \gamma)}
+          + \sin (0) \Biggr] \\
+          && &- \frac{L}{n \pi} \Biggl[ L(1 - \gamma) \cos \arg{L(1 - \gamma)}
+          + 0 \cos (0) \Biggr] \\
+          && &= \frac{L^2}{n^2 \pi^2} \sin (n \pi (1 - \gamma))
+          - \frac{L^2}{n \pi} (1 - \gamma) \cos (n \pi (1 - \gamma)) ;\\
+        2: && \int_{L(1 - \gamma)}^L
+          \sin \arg{z} \dd{z} &= - \frac{L}{n \pi} \cos \arg{z}
+          \Biggl. \Biggr|_{L(1 - \gamma)}^{L} \\
+          && &= - \frac{L}{n \pi} \Biggl[ \cos \arg{L} - \cos \arg{L(1 -
+          \gamma)}\Biggr] \\
+          && &= - \frac{L}{n \pi} [ \cos (n \pi) - \cos (n \pi (1 - \gamma)) ] \\
+          && &= - \frac{L}{n \pi} (-1)^n + \frac{L}{n \pi} \cos (n \pi (1
+          - \gamma)) ;\\
+        3: && \int_0^L z \sin \arg{z} \dd{z}
+          &= \frac{L^2}{n^2 \pi^2} \sin \arg{z} - \frac{L}{n \pi} z \cos \arg{z}
+          \Biggl. \Biggr|_0^{L} \\
+          && &= \frac{L^2}{n^2 \pi^2} \Biggl[ \sin \arg{L} + \sin (0) \Biggr] 
+          - \frac{L}{n \pi} \Biggl[ L \cos \arg{L} + 0 \cos (0) \Biggr] \\
+          && &= \frac{L^2}{n^2 \pi^2} \sin (n \pi) - \frac{L^2}{n \pi} \cos
+          (n \pi) \\
+          && &= - \frac{L^2}{n \pi} (-1)^n .
+    \end{align*}
+    The following trigonometric relationships are helpful when evaluating
+    the integration limits:
+    \begin{align*}
+        \sin (n \pi) &= 0 & \cos (n \pi) &= (-1)^n .
+    \end{align*}
+    With the integrals evaluated, we can plug their solutions back in to
+    $a_n$,
+    \begin{align*}
+        a_{n} &= \frac{2}{L} (T_m - T_0) \Biggl\{ \Biggr.
+          \frac{1}{L(1 - \gamma)} \biggl[ \frac{L^2}{n^2 \pi^2}
+          \sin (n \pi (1 - \gamma))
+          - \frac{L^2}{n \pi} (1 - \gamma) \cos (n \pi (1 - \gamma)) \biggr] \\
+          &+ \biggl[ - \frac{L}{n \pi} (-1)^n + \frac{L}{n \pi} \cos (n \pi (1
+          - \gamma)) \biggr]
+          - \frac{1}{L} \biggl[- \frac{L^2}{n \pi} (-1)^n \biggr]
+          \Biggl. \Biggr\} \\
+        &= 2 (T_m - T_0) \Biggl\{ \Biggr.
+          \frac{1}{n^2 \pi^2 (1 - \gamma)} \sin (n \pi (1 - \gamma))
+          - \frac{1}{n \pi} \cos (n \pi (1 - \gamma)) \\
+          &- \frac{1}{n \pi} (-1)^n + \frac{1}{n \pi} \cos (n \pi (1 - \gamma))
+          + \frac{1}{n \pi} (-1)^n
+          \Biggl. \Biggr\} \\
+        &= 2 (T_m - T_0) \frac{\sin (n \pi (1 - \gamma))}{n^2 \pi^2 (1 -
+        \gamma)} .
+    \end{align*}
+    We could stop at this point since it is sufficiently simplified, or we
+    could apply a trigonometric identity,
+    \begin{equation*}
+        \sin (\alpha - \beta) = \sin \alpha \cos \beta - \cos \alpha \sin
+        \beta,
+    \end{equation*}
+    since the angle angle $n \pi (1 - \gamma)$ represents a difference.
+    Choosing $\alpha = n \pi$ and $\beta = n \pi \gamma$, we find
+    \begin{align*}
+        a_n &= 2 (T_m - T_0) 
+            \frac{\sin (n \pi) \cos (n \pi \gamma) 
+            - \cos (n \pi) \sin(n \pi \gamma) }
+            {n^2 \pi^2 (1 - \gamma)} \\
+        &= 2 (T_m - T_0) 
+            \frac{ - (-1)^n \sin(n \pi \gamma) }
+            {n^2 \pi^2 (1 - \gamma)} \\
+        &= 2 (T_m - T_0) 
+            \frac{ (-1)^{n+1} \sin(n \pi \gamma) }
+            {n^2 \pi^2 (1 - \gamma)}
+    \end{align*}
+
+
+    \item There are two timescales for this problem: one as cooling
+    progresses from the base of the rifted lithosphere to the surface; and a
+    second as cooling progresses from the base of the rifted lithosphere to
+    the base of the equilibrium lithosphere.  What are these timescales?
+
+    {\bf Answer:} \\
+    To find the timescale for cooling, we take the argument of the time dependent term of the solution,
+    \begin{equation*}
+        T(z,t) = T_E(z) + \sum_{n=1}^\infty a_n \sin \left( \frac{n \pi z}{L}
+        \right) \underbrace{\exp \left( - \frac{n^2 \pi^2}{L^2} \kappa t
+        \right)}_{t \text{-dependence}} .
+    \end{equation*}
+    Just as we have done for the half-space cooling model, we can define our time scale using the argument of this term set to some arbitrary value (we will choose 1 for simplicity),
+    \begin{equation*}
+        \frac{n^2 \pi^2}{L^2} \kappa t = 1,
+    \end{equation*}
+    We will assume $n = 1$, that's the dominant term in the sum, which gives
+    \begin{align*}
+        \frac{\pi^2}{L^2} \kappa t &= 1 \\
+        t &= \frac{L}{\pi^2 \kappa},
+    \end{align*}
+    To find our time scale for cooling from the base of the rifted
+    lithosphere, we replace $L$ with the relevant distances: 0 to $L(1 -
+    \gamma)$; and $L(1 - \gamma)$ to $L$,
+    \begin{align*}
+        \tau_{\text{upper}} &= \frac{L(1 - \gamma)}{\pi^2 \kappa} \\
+        \tau_{\text{lower}} &= \frac{\gamma L}{\pi^2 \kappa}.
+    \end{align*}
+
+    \item What happens as $\gamma \to 1$?  How does the timescale compare
+    with this compare with that estimate by plate cooling?  Show your work.
+
+    {\bf Answer:}
+    As $\gamma \to 1$, $\tau_{\text{upper}} \to 0$ whereas
+    $\tau_{\text{lower}} \to \frac{L^2}{\pi^2 \kappa}$, which is the same as
+    the plate cooling.
+\end{enumerate}

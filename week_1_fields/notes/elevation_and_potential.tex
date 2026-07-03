@@ -1,0 +1,84 @@
+\documentclass[11pt]{article}
+\usepackage{notes}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics 3A: Potential Fields \& Geothermics}
+\rhead{Week 1 Elevation and Potential}
+\cfoot{\thepage}
+
+\title{Week 6 --- Notes: Elevation and Potential Fields}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+Many physical systems can be described using scalar potential fields, where gradients in the potential drive fluxes. Examples include gravitational potential, electrical potential, and temperature in heat conduction. Elevation is also a scalar field, but its role as a potential is subtle and context-dependent. This note summarizes how elevation relates to hydraulic head, and how it can serve as a useful analogy for understanding potential fields.
+
+\section{Hydraulic Head as a Potential}
+
+In groundwater hydrology, the hydraulic head $h$ is defined as
+\begin{equation}
+h = z + \frac{p}{\rho g},
+\end{equation}
+where $z$ is elevation, $p$ is fluid pressure, $\rho$ is density, and $g$ is gravitational acceleration.
+
+Hydraulic head represents the total mechanical energy per unit weight of fluid. Flow is governed by Darcy's law,
+\begin{equation}
+\mathbf{q} = -K , \nabla h,
+\end{equation}
+where $\mathbf{q}$ is the volumetric flux and $K$ is hydraulic conductivity. Thus, hydraulic head is a true potential field: its gradient determines both the direction and magnitude of flow.
+
+In steady-state, homogeneous conditions, $h$ satisfies Laplace's equation,
+\begin{equation}
+\nabla^2 h = 0,
+\end{equation}
+which is characteristic of many physical potential fields including gravity, magnetics and heat flow.
+
+\section{Role of Elevation}
+
+Elevation $z$ is one component of hydraulic head. In the special case where pressure is constant (e.g., along a free surface exposed to atmospheric pressure),
+\begin{equation}
+h \approx z.
+\end{equation}
+In this situation, elevation alone behaves like a potential field, and flow follows topographic gradients. However, in general subsurface conditions, pressure variations are significant, and elevation alone is insufficient to describe flow.
+
+\section{Analogy with Other Potential Fields}
+
+The mathematical structure of Darcy's law is analogous to other physical transport laws:
+\begin{itemize}
+\item Heat conduction: $\mathbf{q}_T = -k \nabla T$
+\item Electrical conduction: $\mathbf{J} = -\sigma \nabla V$
+\item Gravity (force): $\mathbf{g} = -\nabla \Phi$
+\end{itemize}
+
+In each case, a flux or force is proportional to the gradient of a scalar potential. These potentials often satisfy Laplace's or Poisson's equation.
+
+\section{Elevation as an Analogy}
+
+Although elevation is not itself a physical potential (except in simplified cases), it provides an intuitive geometric analogy. A topographic surface can be visualized as a potential surface, where slopes correspond to gradients and flow paths follow steepest descent.
+
+This analogy is particularly useful in two ways:
+
+\subsection{Gravity}
+
+Gravitational potential energy near Earth's surface is approximately proportional to elevation,
+\begin{equation}
+U \approx g z.
+\end{equation}
+Thus, elevation serves as a first-order proxy for gravitational potential, especially when variations in $g$ are small.
+
+\subsection{Heat Flow}
+
+In steady-state heat conduction, temperature $T$ acts as a potential field governing heat flux. At Earth's surface, topography can sometimes serve as a proxy for boundary conditions on temperature, particularly when surface processes link elevation and climate (e.g., lapse rates in the atmosphere). In this sense, elevation provides a geometrical framework for visualizing temperature gradients and heat flow.
+
+\section{Conclusion}
+
+Hydraulic head is a true potential field that combines elevation and pressure. Elevation alone is not generally a potential, but in special cases it behaves like one. More broadly, elevation provides a useful geometric analogy for understanding potential fields, helping to visualize gradients, fluxes, and boundary conditions in systems such as groundwater flow, gravity, and heat conduction.
+
+\end{document}

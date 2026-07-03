@@ -1,0 +1,160 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{parskip}
+\usepackage{notes}
+
+\title{Week 3 -- Linear or Non-linear}
+\author{Geophysics IIIA: Potential Fields \& Geothermics}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Student Name:} \rule{0.45\linewidth}{0.4pt} \textbf{Group:} \rule{0.30\linewidth}{0.4pt}
+
+\vspace{1em}
+% ==============================================
+% Activity: Is it linear or non-linear?
+% ==============================================
+\section*{Activity: Is it linear or non-linear?}
+\textbf{Goal.} For each of the following forward relations drawn from potential fields, geothermics, and physical property relations, decide whether it is (i) linear, (ii) non-linear, or (iii) non-linear but can be linearized. If non-linear, describe how you would linearize or re-parameterize it. Justify your choice with respect to the model parameters that would be inverted.
+
+Inversion problems can be cast as \(\mathbb{A}\mathbf{m} = \mathbf{d}\) for linear problems and \(A(m) = d\) for non-linear problems.  Where \(d\) is the data and \(A\) is the operator or design (more on that below).  The difference may appear subtle, though in reality the difference is that the linear equation can be written as a linear algebra problem as the model parameters are independent and discrete.  In the non-linear formulation, the one or more model parameters are dependent upon another.  As a result they cannot be fully separated unless they can be linearized.
+
+Let's explore what \(A\), \(m\), and \(d\) are a bit more intuitively.
+The data, \(d\), are the results of an experiment.  Identifying the data are generally straightforward.  The operator and model parameters can takes a bit more getting used to.  The model parameters, \(m\), are the physical or virtual properties of the system and initially unknown.  Once you determine these properties, the forward model becomes a prediction.  The operator or design matrix, \(A\), can be thought of \emph{as the experiment itself}, and is dependent upon the geometry, conditions of the experiment, and the physics.  The model tells us what exists, the operator tells us how we observe it.
+
+When we are doing a geophysical experiment with the Earth as the medium,
+\begin{itemize}
+  \item \(\mathbf{m} \to \) the model is Earth, what it is made of and its physical properties. Changing \(\mathbf{m}\) changes the Earth.
+  \item \(\mathbf{A} \to \) how Earth talks to the instrument, how the Earth is sampled by the experiment, i.e., the rules of the experiment. Changing \(\mathbf{A}\) changes the experiment, i.e., same Earth + different experiment \(\to\) different data.
+  \item \(\mathbf{d} \to \) the data is the outcome of the experiment, what we measure
+\end{itemize}
+
+In most geophysical problems, \(\mathbf{A}\) is
+\begin{itemize}
+  \item gravity -- distances from mass elements
+  \item magnetics -- sensor postions and dip angle
+  \item heat flow -- layer thicknesses and boundary conditions
+  \item electromagnetics -- distances from conductive/resistive bodies
+  \item seismology -- ray paths or travel times
+\end{itemize}
+So the entries in \(\mathbf{A}\) are determined by:
+\begin{itemize}
+  \item positions
+  \item distances
+  \item times
+  \item physical laws
+  \item boundary conditions
+\end{itemize}
+
+Put simply, the matrix \(\mathbb{A}\) encodes the physics and geometry of how the experiment samples the model, \(\mathbf{m}\), resulting in the observations, \(\mathbf{d}\).
+
+\subsection*{Instructions (15--20 min)}
+\begin{enumerate}[label=\arabic*.,itemsep=2pt]
+  \item Work in groups of 3--4.
+  \item Identify the data and the experimental quantities.
+  \item For each equation, identify the quantity or quantities that would be treated as the \emph{model parameter(s)} in an inversion.
+  \item Classify the mapping data $\to$ model as linear or non-linear in those parameters.
+  \item If non-linear, propose a linearization (e.g., log-transform, Taylor expansion/Jacobian around $p_0$, or a change of variables) and note any loss of identifiability.
+\end{enumerate}
+
+\subsection*{Equations}
+\begin{enumerate}[label=Q\arabic*.,itemsep=6pt]
+  \item \textbf{Gravity (Bouguer slab):}
+  We'll see this equation again as it is used to model the gravity due to an infinite slab.
+  \[
+    \Delta g = 2\pi G(\rho_s - \rho_c)H
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Gravity (buried sphere):} 
+  This gravity solution is one of the simplest models for a gravity anomaly.  We will explore it further.
+  \[
+    g(r) = \tfrac{4}{3}\, \pi a^3 G\, (\rho_s - \rho_c) \, \dfrac{z}{(r^2+z^2)^{3/2}}
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Thermal conductivity $k(T,X)$:} 
+  We'll use this formulation in the problem set.  This equation is used  to estiamte thermal conductivity model for a solid solution series for a mineral.
+  \[
+    k(T,X) = (a + bX + cX^2)\,(298/T)^n
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Thermal conductivity $k(T,P)$:} 
+  This form of thermal conductivity is often used to estimate thermal conductivity for a rock.
+  \[
+    k(T,P) = \dfrac{k_0}{A + BT}\,(1 + cP)
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Isostasy (Airy):}
+  Airy isostasy is an end-member isostatic model, used to explain topographic variations due to differences in crustal thickness.
+  \[
+    \Delta t = \dfrac{\rho_c}{\rho_m - \rho_c}\,h
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Isostatic gravity correction (column):} 
+  Gravity can be corrected for a mass deficit created by variations in crustal thickness via an isostatic correction.
+  \[
+    \Delta g_{\mathrm{iso}} \approx 2\pi G(\rho_m-\rho_c)\,\Delta t - 2\pi G\,\rho_c\,h
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Magnetics (2-D infinite dike):}
+  The ocean floor records chaotic reversals in Earth's magnetic field.  The remnant magnetic field is ``frozen'' in dikes produed at the mid-ocean ridge.
+  \[
+    \Delta T(x) = C\Big[\arctan\Big(\frac{x-x_1}{z}\Big) - \arctan\Big(\frac{x-x_2}{z}\Big)\Big]
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Layered 1-D heat with sources:}
+  Geotherms can largely be explained by 1-D heat flow through a layered Earth.  We'll see this again when we start geothermics.
+  \[
+    T_i(z) = T_{i-1} + \frac{q_{i-1}}{k_i}(z_i - z_{i-1}) - \frac{A_i}{2k_i}(z_i - z_{i-1})^2
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Density--porosity mix:}
+  Sedimentary rocks include pore space (porosity) that may is filled with a fluid (air, water, brine, gas, oil, etc.).
+  \[
+    \rho_\mathit{bulk} = (1-\phi)\,\rho_\mathit{matrix} + \phi\,\rho_\mathit{fluid}
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Gardner's relation (density--velocity):}
+  Many solutions in geophysics involve trying to estimate one property from another, in this case density from seismic velocity.
+  \[
+    \rho = a\,v^b
+  \]
+  \answerbox[2cm]
+
+  \item \textbf{Gravity (discrete 2-D prisms):}
+  While we can produce analytic equations for a variety of idealized geologic bodies with simple geometries (e.g., buried spheres as above), to produce more geologically realistic bodies we can produce structures from arbitrarily-shaped polygons.
+  \[
+    g_z =
+    2G\,\Delta\rho
+    \sum_{i=1}^{N}
+    \left[
+    (x_{i+1}-x_i)\log\!\left(\frac{r_{i+1}}{r_i}\right)
+    +
+    (z_{i+1}-z_i)
+    \arctan\!\left(
+    \frac{x_i z_{i+1} - x_{i+1} z_i}
+    {x_i x_{i+1} + z_i z_{i+1}}
+    \right)
+    \right]
+  \] 
+  where
+  \[
+    r_i = \sqrt{x_i^2 + z_i^2}, 
+    \qquad
+    (x_{N+1}, z_{N+1}) = (x_1, z_1).
+  \]
+  \answerbox[2cm]
+\end{enumerate}
+
+\end{document}

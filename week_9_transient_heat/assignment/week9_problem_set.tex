@@ -1,0 +1,204 @@
+\documentclass[11pt,a4paper,final]{article}
+\usepackage{notes}
+\usepackage{pifont}
+
+\title{Geophysics 3A}
+\author{Practical: Thermal Diffusion}
+
+\begin{document}
+\maketitle
+
+\noindent This problem set is worth a total of 20 points to the total problem set score.
+\begin{enumerate}
+    \input{questions/thermal_length}
+
+    \input{questions/sed_diffusivity}
+
+    \item \label{itm:rifting} {\bf [10 pts.]} Rifting \\
+    Note: It is expected that you will complete some parts on paper and others using python with the codes provided.
+
+    The objective of this exercise is to see how diffusion occurs, for the specific example of a simple rift.  We will derive a solution and tear it apart piece by piece to see how each of the element combines to approximate a diffusive process.
+
+    Work in groups of 4 to 6 students to develop vigorous discussion.
+
+
+    \vspace{2em}
+    {\bf Step 1:} Building a model. \\
+    The first step to developing a simple thermal model is to identify the key aspects of you wish to explore mathematically.
+
+    What aspects of rifting will effect its thermal evolution?  For example, do we care about layering and variations in the properties as a result?  How do we know if they are important?  Amongst your group, discuss and make a list of several key features and processes that may affect the rift and rank (if possible) their relative importance.
+
+    Remember: the more complex a model becomes the harder it is to develop an analytic expression and the more we rely on sophisticated computer models to do the work for us.  While the world is complex, we often use these {\it analytic} models before working on the real earth to test hypotheses or estimate properties, temperatures, etc.  We also need analytic models to make sure our numerical models are performing correctly.
+
+
+    \vspace{1em}
+    {\bf Step 2:} Expressing it mathematically. \\
+    Now that we have identified several key features of a simplified geologic model
+    of a rift, how do we express them mathematically?
+
+    Start by drawing a simple model of a rift and identifying the key features (e.g.
+    surface temperature, mantle temperature).  What does the initial geotherm look
+    like? the final geotherm?  Once you have your drawing, write equations and
+    define symbols for the important features.
+
+
+    \vspace{1em}
+    {\bf Step 3:} Deriving the important features. \\
+    Hopefully you have all had a go at this based on question 4 of the problem set.
+    For many thermal problems, this one included, we can solve our PDE using the
+    method of separation of variables and a set of eigenfunctions (in this case
+    Fourier series).
+
+    The PDE for one-dimensional transient cooling is given by
+    \begin{equation}
+        \pdv{T}{t} = \kappa \pdv[2]{T}{z} ,
+    \end{equation}
+    which has a general solution for inhomogeneous boundary conditions---or in our
+    case different temperatures at the top and bottom of the model---
+    \begin{equation}
+        T(z,t) = T_{E} + \sum_{n = 1}^{\infty} a_n \sin \left(\frac{n \pi z}{L} \right)
+        \exp \left(-\frac{n^2 \pi^2}{L^2} \kappa t \right) ,
+    \end{equation}
+    where $a_n$ are the Fourier coefficients
+    \begin{equation}
+        a_n = \frac{2}{L} \int_0^{L} [f(z) - T_E(z)] \sin \left(\frac{n \pi z}{L}
+        \right) \dd{z} .
+    \end{equation}
+
+    Derive an expression for the Fourier coefficients, $a_n$, showing that they can be represented as:
+    \begin{equation}
+        a_n = 2 (T_m - T_0) 
+            \frac{ (-1)^{n+1} \sin(n \pi \gamma) } {n^2 \pi^2 (1 - \gamma)}
+    \end{equation}
+    
+    To do so you will need a
+    few things:\\
+    general integrals,
+    \begin{align}
+        \int \sin (a z) \dd{z} &=  - \frac{1}{a} \cos (a z) \\
+        \int z \sin (a z) \dd{z} &=  \frac{1}{a^2} \sin (a z) - \frac{z}{a} \cos (a z);
+    \end{align}
+    sum to product trigonometry identity,
+    \begin{equation}
+        \sin(\alpha \pm \beta) = \sin \alpha \cos \beta \pm \cos \alpha \sin \beta;
+    \end{equation}
+    and recall from lecture that
+    \begin{align}
+        \sin (n \pi) &= 0 \\
+        \cos (n \pi) &= (-1)^n .
+    \end{align}
+
+    Once you have the expression for $a_n$, insert it into $T(z,t)$ along with the
+    equilibrium geotherm to arrive at the solution for a pure shear rift.
+
+
+
+    \vspace{1em}
+    {\bf Step 4:} Computational model setup.
+    With our solution in hand, we can compute the temperatures during
+    rifting.  On a computer, run the \verb+rift_gui.py+ program. It will bring up a GUI with a set of parameters for the model on the left, computed Fourier coefficients on the right, and a series of figures in the center.
+
+    One big caveat about the program, thermal conductivity and thermal diffusivity are linked by a linear relationship over the range of common igneous rock types,
+    \[
+        \kappa \approx -31 + 26.6 k
+    \]
+    Hence when you change one property, you will see both change in the GUI. This keeps the values of both geologically reasonable.  Note the typical range for thermal diffusivity for geologic materials is between $\sim 20--\SI{70}{km^2.Ma}$, though the effective diffusivity for the whole lithosphere is $\sim \SI{32}{km^2.Ma}$.
+
+    We will return to the default values before each question below.  For the default, you should set the geometry an physical properties of the system up as:
+    \begin{enumerate}
+        \item surface temperature, $T_s = \SI{15}{^\circ C}$
+        \item mantle temperature, $T_m = \SI{1350}{^\circ C}$
+        \item lithospheric thickness, $L = \SI{125}{km}$
+        \item thermal Diffusivity, $\kappa = \SI{32}{km^{2}.Ma^{-1}}$ ($k$ will be set automatically)
+    \end{enumerate}
+
+    The default runtime should be
+    \begin{enumerate}
+        \item runtime, $t_max = \SI{250}{Ma}$
+        \item step size, $\Delta t = \SI{5}{Ma}$
+    \end{enumerate}
+
+    Set the default number of Fourier coefficients at 20 ($N$ terms).
+
+    \vspace{1em}
+    {\bf Step 5:} Exploring the solution.
+    Now that we have seen what the solution looks like, lets dissect it and discover
+    what each of the individual parts do.  The temperature for a rift again is given
+    by
+    \begin{equation}
+    T(z,t) = \underbrace{T_{E}}_\text{\ding{205}} + \sum_{n = 1}^{\infty}
+    \underbrace{a_n}_\text{\ding{202}} \underbrace{\sin \left(\frac{n \pi z}{L}
+    \right)}_\text{\ding{203}}
+    \underbrace{\exp \left(-\frac{n^2 \pi^2}{L^2} \kappa t \right)}_\text{\ding{204}} ,
+    \end{equation}
+    
+    Select the `Fourier Construction' figure tab. In the window, you will see four plots:
+    \begin{description}
+        \item[top-left:] Fourier coefficients (\ding{202}), $a_n$
+        \item[top-right:] $a_n \sin (n \pi z / L)$ (\ding{202} $\times$ \ding{203})
+        \item[bottom-left:] $\sum_{n=1}^N a_n \sin(n \pi z / L)$
+        \item[bottom-right:] $T_{E} + \sum_{n=1}^N a_n \sin (n \pi z / L)$
+    \end{description}
+
+    \noindent \emph{Questions} \\
+    Provide answers about the scenarios.
+    \begin{enumerate}
+        \item Set the number of coefficients to 1 term and 
+
+        How many sine waves fit in the model domain [0,L]?  When added to the equilibrium solution (blue line), how well does this one term fit the equilibrium solution (red line)?
+
+        \item Increase the number of terms slowly so you can see the changes.
+
+        As $N$ increases, what happens to the coefficients?  How many terms does it take to reasonably approximate the equilibrium solution?  How many before the solution is very close?
+        
+        Where is the biggest mismatch between the ideal initial temperature and the Fourier sum?  Why does it exist?  Why is it located where it is?
+
+        \item Are these results dependent on time?  Why or why not?
+    \end{enumerate}
+
+    Now let's examine the exponential term's (\ding{204}) effect on the solution.  Reset $N$ terms to 1 and select the `Temporal Decay' figure tab.
+    \noindent \emph{Questions} \\
+    Provide answers about the scenarios.
+    \begin{enumerate}
+        \item What is the shape of the function with time?
+
+        \item What does it mean that the function decreases with time?  Since this is for the $n=1$ what will it do to the wave with time?
+
+        \item Increase the value of $N$.
+
+        How does $n$ affect the rate at which the term in the sum decreases towards zero?  What values of $n$ control the solution most at long-time?
+
+    \end{enumerate}
+
+    \vspace{1em}
+    {\bf Step 6:} Rifting models.
+    Now that we have explored how the solution is constructed, lets put it all back
+    together (\ding{202} to \ding{205}) and explore the rifting model.
+    
+    \noindent \emph{Questions} \\
+    Provide answers about the scenarios. Reset to the default parameters before each test.
+    \begin{enumerate}
+        \item Navigate to the `Fourier Coefficients' tab again.  Change the value of the rift parameter slowly between 0 and 1, $\gamma$, and set $N$ terms to 10.
+
+        What happens to the Fourier coefficients?  What happens to the ability to the Fourier sum to approximate the initial condition as $\gamma$ gets close to 0 or 1?
+
+        \item Increase the value of $N$ to 20 and repeat the experiment.  How does this improve the approximation? How large an $N$ reduces makes the effect minimal?
+
+        \item Navigate to the `Full Solution' tab and quickly run experiments with varying $\gamma$ with low and high values of $N$.  Does it make a difference for the first few geotherms after $t=0$?  If so, how quickly does the numerical noise disappear?
+
+        \item How do changes in $\kappa$, $L$, and $T_m$ affect the model outputs---temperature and heat flow---evolution through time? Which parameter changes affect heat flow the greatest?  Why?
+
+        \item Now reset to the default parameters and switch to the `Heat Flow Survey' tab. This tab shows the rifting solution for a range of rift factors.  How much does rift factor affect the heat flow?
+
+        \item A heat flow of 90--120~\hfu is consistent with many continental rifts.  With a lithospheric thickness of 125~km, what rift factors does this correspond to?
+
+        \item This rift model does not include heat production.  How would this change the heat flow?  Would you need smaller or larger rift factors to obtain the same heat flow range?
+    \end{enumerate}
+
+    \vspace{1em}
+    {\bf Step 7:} Reflection.
+    Reflect on how we may exptect to use variations in heat flow at a single time to
+    estimate the extent of thinning or timing of rifting.
+\end{enumerate}
+
+\end{document}

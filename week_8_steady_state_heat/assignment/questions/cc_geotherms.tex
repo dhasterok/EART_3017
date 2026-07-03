@@ -1,0 +1,57 @@
+\item {\bf [10 pts.] Continental Geotherms} \\
+    This problem is completed with the python-based codes, \verb+ss_isostasy.py+, which you can find on the course GitHub page. Run in VSCode or python.
+
+    {\it On paper:} 
+    \begin{enumerate}
+        \item Let's start by computing a geotherm (temperature as a function of depth) roughly consistent with a craton.  We will keep it relatively simple by dividing the lithosphere into three layers: an upper crust; lower crust; and mantle lithosphere (Figure~\ref{fig:layers}).
+
+        \par\medskip
+        \begin{figure}[hbtp]
+            \centering
+            \includegraphics[]{figures/layers.eps}
+            \caption{A three layered geotherm model.}
+            \label{fig:layers}
+        \end{figure}
+        \medskip
+
+        Using the geotherm solution in Appendix~\ref{apx:g}, compute the temperature at each of the interfaces above (except the lithosphere--asthenosphere boundary).  Use $q_0 = \SI{40}{mW.m^{-2}}$ and $A_{1} = \SI{1.0}{\mu W.m^{-3}}$.  For the lithosphere--asthenosphere boundary, assume the convecting mantle temperature is 1300\degC.  This geotherm will be our reference for all future elevation computations.
+
+        Plot your result and interpolate between layers.  {\bf What should the shape of your curve be?}
+    \end{enumerate}
+
+    {\it On computer:}\\
+    Complete the rest using \verb+ss_isostasy.py+, a python calculator that will compute geotherms,
+    \begin{enumerate}
+        \item  Now, computing the reference geotherm roughly consistent with a craton, using the same layering as above (Figure~\ref{fig:layers}).  Entering the appropriate properties into the table and text boxes.
+        
+        \item What causes the kinks in the curve, especially at the Moho?
+        
+        \item Now let's examine the sensitivity of geotherms to variations in heat production.  This test will illustrate why reducing uncertainties in crustal heat production are crucial for properly estimating lithospheric temperatures.
+
+        Compute three geotherms: (1) increase upper crustal heat production by 25\%; (2) increase lower crustal heat production by 25\%; and (3) increase mantle lithospheric heat production by 25\%.  All other properties remain the same as those in Figure~\ref{fig:layers}.
+
+        {\bf Does increasing heat production increase or decrease the lithospheric temperatures?  How much does each test affect the temperature at the Moho?  How about the depth at which the adiabat is intersected?}
+
+        \item Now let's compute a family of geotherms with heat flow values of 40, 60, 80, 100~mW~m$^{-2}$.  The upper crustal heat production and surface heat flow are the only value we will vary.  To determine the heat production we will assume a partition coefficient of $P = 0.75$.  The upper crustal heat production can be computed by
+        \begin{equation}
+            A_{1} = (1 - P) \frac{q_0}{D},
+        \end{equation}
+        where $D$ is the thickness of the upper crust, 10~km.
+
+        Using your combinations of $q_0$ and $A_1$ above, compute each geotherm.  Aside from $q_0$ and $A_1$, all other inputs to the model should be the same.
+
+        \item Compute the elevations of each geotherm from the geotherm family above (the equations it uses are found in Appendix~\ref{apx:tis}).  Use the 40~mW~m$^{-2}$ geotherm as the reference.  Assume the thermal expansivity, $\alpha$, is $3 \times 10^{-5}$~\si{K^{-1}}.  Hint: you won't need to compute the elevation for the 40~mW~m$^{-2}$ geotherm since the reference elevation is defined as 0~km.  Plot the elevations as a function of surface heat flow.  To compute the total elevation, you will need to compute the individual elevation contributions for four steps, one for each lithospheric layer and one for depths below the intersection with the mantle adiabat.
+
+        {\bf How much is the elevation affected by heat flow over the range of typical continental heat flows (40 to \SI{100}{mW.m^{-2}})?}
+
+        \item Now lets see if we can estimate the heat production of the Australian provinces.  Start by computing another set of geotherms with heat flow $q_0 = \SI{80}{mW.m^{-2}}$ with $P = (0.75, 0.55, 0.45, 0.35)$.
+
+        Repeat the procedure from 3 for each new P.  Plot the new geotherm family.
+
+        \item Compute the elevation differences for geotherms with $q_0 = \SI{80}{mW.m^{-2}}$.  Use the $q_0 = 40$~mW~m$^{2}$ geotherm as the reference.
+
+        Repeat the steps used to produce the geotherm family and elevations above with the new heat production parameters.  Plot each result.
+
+        {\bf Which value of heat production is most consistent with the reference cratonic geotherm?  Could this be the explanation for our elevation anomalies?}
+
+    \end{enumerate}

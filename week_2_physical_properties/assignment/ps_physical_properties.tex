@@ -1,0 +1,197 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Preamble ----------
+\usepackage{notes}
+\usepackage{bm}
+\usepackage{siunitx}
+\usepackage{booktabs}
+\usepackage{mhchem}
+
+\title{Problem Set: Mixing Laws, Geostatistics, and Property Estimation}
+\author{Geophysics IIIA}
+\date{\today}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\geom}{\mathrm{G}}
+\newcommand{\harm}{\mathrm{H}}
+\newcommand{\arith}{\mathrm{A}}
+
+\begin{document}
+\maketitle
+
+\section*{Overview}
+This problem set cements three ideas: (i) how different mixing laws relate and how to compare them on a common (arithmetic) axis; (ii) how to derive rock physical properties from geochemical inputs and summarize uncertainty; and (iii) how to compute properties from thermodynamic quantities in a spreadsheet. You will use both pencil-and-paper derivations and lightweight coding (Jupyter + Excel).
+
+\vspace{0.5em}
+\noindent\textbf{Submission format.}
+\begin{itemize}[leftmargin=*]
+  \item Problem 1: a \emph{PDF} with your derivations + a short \emph{Jupyter notebook} (or exported HTML) for the distribution experiment.
+  \item Problem 2: a \emph{Jupyter notebook} that reads the provided CSV and produces the requested table and figure. Include the CSV you used.
+  \item Problem 3: the completed \emph{Excel workbook} with formulas visible (or a PDF printout showing formulas).
+\end{itemize}
+
+% =========================================================
+\section*{Problem 1 --- [4 pts] Mixing relations}
+Below are three common mixing laws.  These relationships are transformative, which means they are all mathematically related---to quote Obi Wan Kenobi---``from a certain point of view.''  This problem explores these relationships.
+\paragraph{Weighted arithmetic mean}
+\[
+    M_{\arith} = \sum_{i=1}^n w_i x_i.
+\]
+
+\paragraph{Weighted geometric mean}
+\[
+    M_{\geom} = \prod_{i=1}^n x_i^{\,w_i}
+\]
+
+\paragraph{Weighted harmonic mean}
+\[
+    M_{\harm} = \Big(\sum_{i=1}^n w_i \tfrac{1}{x_i}\Big)^{-1}.
+\]
+
+\subsection*{(A) Derivation}
+When all values are positive,
+\begin{enumerate}[label=\textbf{\alph*.}]
+    \item Show using logs the replationship between the geometric mean and the weighted arithmetic mean.
+    \item Show using reciprocals the relationship between the harmonic mean and the weighted arithmetic mean.
+\end{enumerate}
+
+% \[
+% \ln M_{\geom} = \sum_{i=1}^n w_i \ln x_i.
+% \]
+
+% \[
+% \frac{1}{M_{\harm}} = \sum_{i=1}^n w_i \frac{1}{x_i}.
+% \]
+\subsection*{(B) Notebook experiment: normal $\to$ geometric/ harmonic space}
+In a Jupyter notebook, draw $x \sim \mathcal N(\mu,\sigma^2)$ (truncate to $x>0$ so it is physically meaningful) and visualize how the distribution changes under:
+\begin{enumerate}[itemsep=0.1em]
+  \item log transform (geometric space): \(\ln x\), and
+  \item reciprocal transform (harmonic space): \(\tfrac{1}{x}\).
+\end{enumerate}
+
+
+% =========================================================
+\section*{Problem 2 --- [6 pts] Empirical Property Estimates}
+Many of the difficult steps have already been done, though I suggest you examine them to see how to read the data, clean it, plot and produce a summary.  Your task will be to compute a number of physical properties using empirical formulas based on chemistry, by following the steps provided for each property.
+
+To ensure that the code for the summary and plot cells run correctly, you will need to use add the following variables to the DataFrame:
+\begin{itemize}[itemsep=0.1em]
+  \item RHO (density),
+  \item Vp (P-wave velocity),
+  \item Vs (S-wave velocity),
+  \item TC (thermal conductivity),
+  \item and HP (heat production).
+\end{itemize}
+
+\subsection*{1. Load and clean}
+Input columns (lowercase): rock\_type, \ce{SiO2}, \ce{TiO2}, \ce{Al2O3}, \ce{FeO}$_{T}$, \ce{MgO}, \ce{CaO}, \ce{Na2O}, \ce{K2O}, \ce{P2O5}, \ce{U}, \ce{Th}.  Note all oxides are in wt.\%, while \ce{U} and \ce{Th} are in ppm.  \ce{Fe} is given as total ($_T$) iron.  In reality, \ce{Fe} exists at two oxidation states and can be measured as \ce{Fe2O3} and \ce{FeO}.
+
+Replace negative numeric values (except rock\_type) with NaN.
+
+\subsection*{2. Normalization (per regression)}
+For each property calculation, select its oxide subset, \(S_1\) and renormalize those oxides to 100~wt.\% for that set of calculations only.  If the original set \(S_0\) contains 9 oxides, the reduced set, \(S_1\), is normalized via
+\[
+  w_i = 100 \frac{\tilde{w}_i}{\sum_{j\in S_1} \tilde{w}_j}
+\]
+where $w_i$ is renormalized i-th oxide component in wt.\% normalized from the original i-th oxide component, $\hat{w}_i$, in the original set.  No need to add these to the DataFrame, or create a new one.
+
+\subsection*{3. Geochemical indices (temporaries)}
+To compute density, you will need to compute some geochemical indices.  Use your molecular‐weight calculator for molar amounts:
+\[
+  n_X = \frac{w_X}{\mathrm{M}_X},
+\]
+where $M_X$ is the molecular weight of the oxide, i.e., \ce{TiO2}, \ce{FeO}$_{T}$, or \ce{MgO}.
+
+A few geochemical indices are needed to estimate density, which is a little more involved than other properties.  The indices needed are:
+\begin{align*}
+  \mathrm{Fe\#} &= \frac{w_{\ce{FeO}_{T}}}{w_{\ce{FeO}_{T}} + w_{\ce{MgO}}},\\
+  \mathrm{MALI} &= w_{\ce{Na2O}} + w_{\ce{K2O}} - w_{\ce{CaO}},\\
+  \mathrm{maficity} &= n_{\ce{MgO}} + n_{\ce{FeO}} + n_{\ce{TiO2}}.
+\end{align*}
+
+\subsection*{4. Columns to create (exact names)}
+
+\paragraph{Density (kg m$^{-3}$) \(\to\ RHO\)}
+
+Now that we have all the intermediate calculations out of the way, we can calculate the density.  To compute density:
+\[
+  \mathrm{RHO} = 2531.463956 + 216.172176\,\mathrm{Fe\#}
+  + 608.428719\,\mathrm{maficity} - 9.948247\,\mathrm{MALI}.
+\]
+
+\paragraph{Seismic velocities (km s$^{-1}$) \(\to\ Vp, Vs\)}
+
+Velocity subset \(S_1 = \{\ce{SiO2},\ce{Al2O3},\ce{FeO},\ce{MgO},\ce{CaO},\ce{Na2O},\ce{K2O}\}\).
+Use the normalized \(w_j\) from \(S_1\):
+\begin{align*}
+  \mathrm{Vp} &= 6.9 - 0.011\,w_{\ce{SiO2}}
+  + 0.045\,w_{\ce{CaO}} + 0.037\,w_{\ce{MgO}}\\
+  \mathrm{Vs} &= 4.5959 - 0.0091\,w_{\ce{SiO2}}
+  - 0.0150\,w_{\ce{Al2O3}} + 0.0142\,w_{\ce{MgO}}.
+\end{align*}
+
+\paragraph{Thermal conductivity (W m$^{-1}$ K$^{-1}$) \(\to\ TC\)}
+
+Conductivity subset \(S_1 = \{\ce{SiO2},\ce{TiO2},\ce{Al2O3},\ce{FeO},\ce{MgO},\ce{CaO},\ce{Na2O},\ce{K2O}\}\).
+Let \(S = \sum_{j \in S_1} w_j\) (this will be \(=100\) if you normalized correctly):
+\begin{align*}
+  \mathrm{TC} &= \exp\!(
+  [ 1.5542\,w_{\ce{SiO2}}
+  - 6.5211\,w_{\ce{TiO2}}
+  - 0.2547\,w_{\ce{Al2O3}} \\
+  &+ 2.0660\,w_{\ce{FeO}_{T}}
+  + 0.5472\,w_{\ce{MgO}}
+  + 0.2258\,w_{\ce{CaO}} \\
+  &- 2.4017\,w_{\ce{Na2O}}
+  - 0.6721\,w_{\ce{K2O}} ] S^{-1}).
+\end{align*}
+
+
+\paragraph{Heat production (µW m$^{-3}$) \(\to\ HP\)}
+
+The first step to computing heat production is converting \ce{K2O} in wt.\% to \ce{K} in ppm.
+\[
+  \ce{K} = 10^{4} \left( \frac{2\,\mathrm{M}_{\ce{K}}}{\mathrm{M}_{\ce{K2O}}} \right) \ce{K2O}.
+\]
+With RHO [kg m$^{-3}$], \ce{U} [ppm], \ce{Th} [ppm], and \ce{K} [ppm], compute the heat production:
+\[
+  \texttt{HP} = \texttt{RHO} ( 98.29\,\ce{U}
+  + 26.18\,\ce{Th} + 0.003387\,\ce{K} )\times 10^{-6}.
+\]
+
+\subsection*{5.\; Final checklist}
+\begin{itemize}[leftmargin=*]
+  \item New columns exist: RHO, Vp, Vs, TC, and HP.
+  \item Keep original chemistry names and rock\_type, \ce{U}, \ce{Th}.
+  \item Units: RHO [kg m$^{-3}$], Vp/Vs [km s$^{-1}$], TC [W m$^{-1}$ K$^{-1}$], and HP [µW m$^{-3}$].
+\end{itemize}
+
+% =========================================================
+\section*{Problem 3 --- [10 pts] Physical properties of rocks}\label{itm:physprop}
+
+{\it Note: If you are proficient at programming, you can create a program in Python to produce the results (I actually find it significantly faster to do it this way myself).  An advantage of doing it this way is that you will be able to easily add additional minerals by simply updating the table of constants, allowing for the computation of physical properties of a greater range of rock types.  These completed programs/spreadsheets are a potential resource that you may find useful beyond this course.}
+
+Download the Excel spreadsheet template on MyLearning.  The workbook contains three sheets: Computations, which includes empirical constants and the first series of calculations; Figures, templates for producing the figures; and Significance, a place for interpreting the results.
+
+During the course of computing the required physical properties, you will need to compute additional properties and/or calculations.  The spreadsheet provided is set up to help you start your modeling and is organized in such a way to help compute the desired properties before they are needed for additional calculations.  I have provided an example calculation for thermal expansivity with respect to temperature and molar volume calculation.
+
+You will compute each property on a regularly spaced $P$--$T$ grid. $P$ is to vary from 0.1 to 1711.1~MPa in steps of 570~MPa and $T$ is to vary from 298~K to 948~K in 50~K steps (again, the spreadsheet provided is already setup).
+
+You will need to compute the physical properties at the appropriate $P$--$T$ conditions for each mineral first and then use mixing a formula to compute the effective property for the rock.
+
+Once you have set up the computations, switch to the Figures spreadsheet, assuming you didn't change where things were computed in the Computations sheet, you will find the estimated rock properties have copied into this sheet and a graph for each property has been generated.  There are four curves on each plot, corresponding to each pressure.  Before you move to interpret your results, make sure your physical properties fall within the ranges of typical rock types (given in the Figures sheet).  If your results fall outside of these bounds then you may have forgotten to convert units to the appropriate base or made a mistake in your formulation.
+
+You will need to do this for three rock types, roughly equivalent to the upper crust, lower crust and upper mantle.
+
+Provide an analysis of your work by answering the following questions on the Significance sheet.
+
+% =========================================================
+\section*{Marking guide (indicative)}
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Problem 1 (25\%)}: correct transformations; clear explanation of how/why to compare means on a common axis; notebook figures and observations.
+  \item \textbf{Problem 2 (25\%)}: correct implementation of formulas and answers to related questions about the properties.
+  \item \textbf{Problem 3 (50\%)}: correct spreadsheet formulas, unit consistency, and verification checks.
+\end{itemize}
+
+\end{document}

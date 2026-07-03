@@ -1,0 +1,46 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{notes}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+\setlist[itemize]{leftmargin=*}
+\setlist[enumerate]{leftmargin=*}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Geophysics IIIA: Potential Fields \& Geothermics}
+\rhead{Week 4 Formula Sheet}
+\cfoot{\thepage}
+
+\title{Week 4 --- Gravity: Start-from-Solution Formula Sheet}
+\author{Geophysics 3A: Potential Fields \& Geothermics}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-1em}
+
+\section*{Key Results (use as given; no derivations today)}
+\begin{itemize}
+  \item \textbf{Infinite slab (Bouguer slab):} $\displaystyle \Delta g = 2\pi G\,\Delta\rho\,t$ \quad (valid when lateral extent $\gg t$ and observation height). Units: SI. Note sign follows $\Delta\rho$. 
+  \item \textbf{2D cylinder (dike analogue):} use provided response curves and the qualitative rule: \emph{half-width $\uparrow$ with depth}; amplitude scales with $\Delta\rho$ and radius; width is insensitive to $\Delta\rho$.
+  \item \textbf{Polygonal 2D body (cross-section):} $g_z$ varies piecewise with logarithmic/atan terms; \emph{edge locations} control slope breaks and asymmetry.
+\end{itemize}
+
+\section*{Practical cues}
+\begin{itemize}
+  \item \textbf{Width--depth:} half-width/FWHM provides a depth cue (model-dependent). Combine with amplitude and geology for plausibility checks.
+  \item \textbf{Superposition:} total field is the sum of fields from all bodies; use normalized kernels, then scale by $\Delta\rho$ and size.
+  \item \textbf{Free-air gradient (for practical prep):} target magnitude $\sim 0.3086~\mathrm{mGal\,m^{-1}}$ near Earth's surface; compare your measured slope against this value (sign per course convention).
+\end{itemize}
+
+\section*{Assumptions \& Caveats}
+\begin{itemize}
+  \item 2D models imply infinite strike; density contrasts are uniform; flat measurement line; terrain effects neglected unless noted.
+  \item Non-uniqueness: different $(\Delta\rho,\,\text{depth},\,\text{size})$ combinations can fit the same profile; use geological constraints to discriminate.
+\end{itemize}
+
+\end{document}

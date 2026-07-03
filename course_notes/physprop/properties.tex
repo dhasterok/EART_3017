@@ -1,0 +1,450 @@
+\chapter{Properties of Earth Materials}\label{ch:physprop}
+
+\section{Introduction}
+To ground our theoretical exploration of many fields, it is important to remember that we are trying to learn about the physical state and composition of a real system.  The geophysical fields explored in this course do not arise directly from geology, but from the physical properties of Earth materials.  Physical properties are intrinsic material parameters---or combinations of them---that control how rocks generate, modify, or respond to geophysical fields.  In this chapter, we introduce the key material properties that govern geophysical fields and how they vary with state conditions. Later chapters return to these properties repeatedly in different physical contexts.
+
+\begin{enumerate}
+    \item Gravity \& magnetics: Density appears explicity in formulation of the gravitational potential.
+    \item Magnetics: Susceptibility is obscured somewhat by the use magnetization.
+    \item Geothermics: Thermal conductivity, density, specific heat capacity and heat production are integral to the heat equation.
+    \item Electromagnetics: Electrical conductivity/resistivity dominates EM responses and depends strongly on fluids, temperature, and connectivity.
+    \item Seismology: Seismic velocities are emergent properties controlled by elastic moduli, density, and microstructure.
+\end{enumerate}
+
+To make sense of how different properties enter geophysical equations and how they are estimated in practice, it is useful to distinguish between several broad classes of material properties.
+
+\subsection{Types of properties}
+
+Material properties encountered in geophysics fall into several broad categories: intrinsic, derived, and compositional (e.g., Table~\ref{tab:prop_summary}). Intrinsic properties, such as density, elastic moduli, heat capacity, and thermal expansivity, arise from thermodynamic and mechanical response functions and describe how materials respond to changes in pressure, temperature, or stress. Derived (or emergent) properties, such as seismic velocity or thermal diffusivity, are derived quantities formed by combining intrinsic parameters through governing equations.  Intrinsic properties describe material response; derived properties combine intrinsic parameters and often amplify ambiguity in interpretation.
+\input{physprop/prop_summary}
+
+While all properties are compositionally dependent to some degree, a third class of properties depends primarily on composition and mineralogy rather than thermodynamic derivatives. These include source terms such as radiogenic heat production, which depends on the abundance of radioactive isotopes, and coupling parameters such as magnetic susceptibility, which controls how strongly a material responds to an applied magnetic field. These properties are often weakly state dependent but can vary by orders of magnitude with composition.
+
+Most physical properties of rocks are not constant, but change as state conditions change (pressure and temperature).  Composition is an important control, as are the crystallographic structure, crystal orientation, crystal defects, porosity, and grain size.  There are several methods that one may use to estimate physical properties including by oxide composition, mineralogy, and thermodynamic modeling.  Each have their own drawbacks and advantages. As a result, the way physical properties are estimated is often as important as the properties themselves.
+
+\section{State variables and material response}
+Many physical properties of Earth materials vary as a function of state conditions: primarily pressure, temperature, volume, and composition (e.g., Figure~\ref{fig:velocity_state}).  A familiar example that makes this dependence explicit is the ideal gas law,
+\[
+    PV = nRT
+\]
+where $P$ is pressure, $V$ is volume, $T$ is temperature, $n$ is the amount of material (we will typically use $X$ for composition), and $R$ is the gas constant.
+\begin{figure}[tbh]
+    \centering
+    \includegraphics[]{physprop/figures/vp_granite_gabbro.eps} 
+    \caption{Laboratory measurements of compressional wave velocity as a function of pressure and temperature for granite and gabbro \citep{Christensen&Mooney1995}. At low pressures, open microcracks strongly reduce seismic velocity, particularly in felsic rocks. Increasing pressure closes cracks and increases velocity, while increasing temperature reduces velocity through thermal expansion and elastic softening. Compositional differences between granite and gabbro persist even at high pressure, illustrating the combined influence of pressure, temperature, composition, and near-surface crack porosity on seismic velocity.}
+    \label{fig:velocity_state}
+\end{figure}
+
+Although the ideal gas law applies strictly to gases and is not valid for solids, it provides a useful conceptual framework: it makes clear that material properties such as density cannot be treated as fixed constants, but emerge from the interaction between intrinsic material characteristics and state variables.
+
+For solids and liquids in the Earth, different constitutive relations are required, involving elastic moduli, thermal expansion, compressibility, and phase equilibria. Nevertheless, the same fundamental idea applies: changes in pressure, temperature, or composition lead to changes in physical properties, which in turn modify the geophysical fields we observe.
+
+In the sections that follow, we describe the relevant constitutive relationships appropriate for Earth materials and examine how physical properties respond to state conditions within the Earth.
+
+Many geophysical inverse problems can be viewed as attempts to infer spatial variations in state-dependent material properties from measurements of physical fields.
+
+
+\subsection{Estimating physical properties}
+In practice, physical properties of Earth materials are rarely known exactly and must be estimated using a range of complementary approaches. These approaches differ in their required inputs, assumptions, flexibility, and accuracy, and no single method is universally superior.
+
+Oxide-based models often employ simple empirical relationships between bulk chemical composition and physical properties. These models are easy to apply and computationally efficient, but they are generally the least flexible and may extrapolate poorly beyond their calibrated compositional range.
+
+Mineralogical models estimate properties from modal mineralogy and laboratory-measured mineral constants. These approaches can incorporate crystal orientation and compositional layering and may be calibrated over a range of pressure and temperature conditions. However, they require reliable estimates of mineral proportions and do not guarantee that the inferred mineral assemblage is thermodynamically stable.
+
+Thermodynamic models provide a self-consistent framework for estimating stable mineral assemblages and associated physical properties as a function of pressure, temperature, and composition. These methods are powerful but computationally intensive and generally cannot incorporate geometric effects such as porosity, cracks, or fabric without additional assumptions.
+
+The appropriate estimation strategy depends on the desired accuracy, available information, spatial scale, and physical context. Accordingly, the formulas and tables presented in this chapter should be viewed not as exact prescriptions, but as tools that must be applied with an understanding of their assumptions and limitations.
+
+The methods described here pertain primarily to igneous and metamorphic rocks in the absence of a fluid phase. Near the surface, porosity and cracks often exert additional controls on physical properties that are not easily captured in these frameworks and must be treated separately (Section~\ref{sec:porosity}).
+
+The goal of this chapter is not to prescribe a single workflow for estimating properties, but to provide the physical relationships and reference values needed to make informed choices in different geophysical contexts.  Each of the properties listed above is introduced in detail below, with emphasis on physical meaning, state dependence, and relevance to geophysical observations.
+
+
+% Density
+\section{$P$ \& $T$ effects on properties} \label{sec:prop_eq}
+The estimation of physical properties for various minerals in this section are derived from numerous laboratory experiments.  The mathematical forms are given below require lab-derived empirical constants specific to each mineral resulting from idealized end-member compositions (Table~\ref{tab:physprop}).
+\input{physprop/empirical_constants}
+
+\ntextbox{Standard Temperature and Pressure (STP)}{
+    Standard temperature and pressure (STP) is a state convention for laboratory measurements.  These may vary from study to study depending on which convention they are using.  The most commonly used standard pressure is $\SI{1}{atm} \approx \SI{0.1}{MPa}$.  Standard temperature tends be less consistent but is typically \SI{298}{K}\ (25~\degC), though is often \SI{273}{K} (\SI{0}{\degC})
+
+}{alert}\label{box:stp}
+
+\subsection{Density, $\rho$ [kg~m$^{-3}$]} \label{sec:density}
+Density is the ratio of a unit mass to a specified volume.  The density at
+298~K is determined by the formula weight per molar volume, i.e.,
+$\rho^\circ = m_\mathrm{fu} (V^\circ)^{-1}$.  However, very little of the Earth
+is at 298~K (25\degC) and atmospheric pressure (0.1~MPa). Rock density
+changes in response to the higher temperatures and pressures found internal
+to the Earth.  Therefore, in order to appropriately model density, we must,
+in many cases, account for the difference with respect to surface
+conditions.
+
+To estimate density changes with respect to temperature only,
+\begin{equation}
+    \rho(T) = \rho^{\circ} e^{-A},
+\end{equation}
+where $\rho^{\circ}$ is the density at reference temperature and pressure
+(0.1~MPa and 298~K), and $T^\circ$ is the reference temperature, and A is the
+integral of expansivity (Equation~\ref{eq:ialpha}).  The exponential form arises
+because thermal expansion represents a fractional change in volume integrated over
+temperature.  To compute the density change with pressure and temperature we can
+use the approximation
+\begin{equation}
+    \rho(T,P) = \rho(T) \left( 1 + \frac{P - P^\circ}{K_T(T,P)} \right) .
+\end{equation}
+This approximation is most applicable within the crust and uppermost mantle (see
+Bulk Modulus below).
+
+
+% Expansivity
+\subsection{Expansivity, $\alpha$ [K$^{-1}$]} \label{sec:expansivity}
+
+Expansivity also known as the coefficient of thermal expansion, represents the
+change in volume in response to changes in temperature.  Thermal expansivity plays
+a central role in buoyancy, isostasy, lithospheric stability, and thermally driven
+deformation, even though its numerical values are small.
+
+The temperature-dependent volumetric expansivity, $\alpha$,
+is estimated by
+\begin{equation}
+    \alpha(T) = a_{0} + a_{1}T + a_{2}T^{-2},
+\end{equation}
+where $a_{i}$ are empirical constants \citep{Fei1995}. The $P$- and
+$T$-dependent thermal expansion is computed by
+\begin{equation}
+    \alpha(T,P) =
+    \alpha(T)\left( \frac{\rho(P)}{\rho^\circ} \right)^{-\delta_{T}},
+\end{equation}
+where $\rho^\circ$ and $\rho(P)$ are the densities at $0$~GPa and at the
+pressure $P$, and $\delta_{T}$ is the Anderson-Gr{\"u}nison parameter.
+
+Note that in order to compute the pressure dependence of expansivity, you will
+need the isothermal bulk modulus corrected for pressure.  This would ordinarily
+require an iterative or root finding method, but we will simplify it for our
+purposes since the error introduced with our approximations are small enough for
+our purposes.
+
+To estimate several parameters, we need the integral of the thermal expansion
+with respect to temperature, i.e.,
+\begin{equation}
+    A(T) = \int_{T^\circ}^T \alpha(T) \dd{T}.
+    \label{eq:ialpha}
+\end{equation}
+Since our expression for thermal expansion is relatively simple,
+\begin{equation}
+    A = a_{0}(T - T^\circ)
+    + \frac{a_{1}}{2}(T^2 - (T^\circ)^2)
+    - a_{2}(T^{-1} - (T^\circ)^{-1}),
+\end{equation}
+where $T^\circ$ is the reference temperature, which is defined as 298~K.
+
+Likewise, the derivative of expansivity is necessary to estimates some
+parameters,
+\begin{equation}
+    \pdv{\alpha(T)}{T} = a_{1} - 2 a_{2} T^{-3} .
+\end{equation}
+
+
+% Bulk modulus
+\subsection{Bulk Modulus, $K_T$ \& $K_S$ [GPa]} \label{sec:bulk_modulus}
+The bulk modulus is the inverse of compressibility---a measure of the
+change in volume in 3-dimensions in response to a change in pressure.  The bulk
+modulus is defined in two ways depending upon the whether the volume change
+occurs at constant temperature (isothermal) or at constant entropy (isentropic).
+The isothermal bulk modulus appears most often in density and thermal calculations,
+while the isentropic bulk modulus is appropriate for seismic wave propagation.
+
+We can approximate the change in isothermal bulk modulus with respect to
+temperature as
+\begin{equation}
+    K_T(T) = K_T^\circ e^{-\delta_T A} ,
+\end{equation}
+and with pressure, we can approximate the bulk modulus as
+\begin{equation}
+    K_T(T,P) = K_T(T,P^\circ) + K_T'(P - P^\circ),
+\end{equation}
+where $P^\circ$ is atmospheric pressure.  The pressure dependence above is
+overly simplistic for higher pressures, where the Birch-Murnaghan equation of
+state is used as a more accurate approximation.
+
+The isentropic bulk modulus, $K_S$, is related to the isothermal bulk modulus,
+$K_T$, by
+\begin{equation}
+    K_S = K_T(T,P) [1 + T \gamma_{th} \alpha(T,P)].
+\end{equation}
+
+
+% Shear modulus
+\subsection{Shear Modulus, $\mu$ [GPa]} \label{sec:shear_modulus}
+The shear modulus is a measure of the resistance of a material to deform under
+shear.  The temperature response to the shear modulus is given by
+\begin{equation}
+    \mu(T) = \mu^\circ e^{-\Gamma A},
+\end{equation}
+where $\Gamma = \left( \pdv{\ln \mu}{\ln \rho} \right)_P$ (see
+Table~\ref{tab:physprop}).  Just as the bulk modulus, we can estimate the shear
+modulus with a pressure effect as
+\begin{equation}
+    \mu(T,P) = \mu(T,P^\circ) + \mu'(P - P^\circ) .
+\end{equation}
+
+% Seismic velocity
+\subsection{Seismic Velocity, $V_P$ \& $V_S$ [km~s$^{-1}$]} \label{sec:velocity}
+Seismic velocity is the speed at which sound travels through a medium.  There
+are several different types of seismic waves.  Two that we'll discuss most
+often.  The compressional wave velocity is generally referred to as $V_P$, and
+the shear wave velocity is generally written $V_S$.  Seismic velocities are
+derived quantities, dependent upon the bulk and shear moduli, and density.  Once
+these parameters have been adjusted for pressure and temperature,
+\begin{align}
+    V_P &= \left( \frac{K_S + \frac{4}{3} \mu}{\rho} \right)^{1/2} \\
+    V_S &= \left( \frac{\mu}{\rho} \right)^{1/2} .
+\end{align}
+Because seismic velocities depend on both elastic moduli and density, they encode
+multiple aspects of rock physics simultaneously, which is both their strength and a
+source of ambiguity in interpretation.
+
+
+% Specific heat capacity
+\subsection{Specific Heat Capacity, $C_P$ [J~kg$^{-1}$~K$^{-1}$]} \label{sec:heat_cap}
+Specific heat capacity is the amount of additional heat required to raise a unit
+mass one kelvin.  The specific heat capacity can be approximated as
+\begin{equation}
+    C_{P}(T,P) = c_{0} + c_{1}T^{-0.5} + c_{2}T^{-2} + c_{3}T^{-3}
+    + \frac{dC_{P}}{dP}(P - P^\circ),
+    \label{eq-cp}
+\end{equation}
+with empirically derived constants, $c_{i}$ \citep{Fei&Saxena1987}.  The change
+in specific heat capacity with respect to temperature is significantly greater
+than the change with respect to pressure.  Hence we can often ignore the
+pressure effects.  The pressure contribution is computed using the thermodynamic
+identity \citep{Osako_etal2004},
+\begin{equation}
+    \left( \pdv{C_{P}}{P} \right)_{T} =
+    - \frac{T}{\rho(T,P)}
+    \left( \alpha^2 + \pdv{\alpha}{T} \right)_{P}.
+\end{equation}
+In practice, the temperature dependence of heat capacity dominates over pressure
+effects for most crustal applications.  The bulk heat capacity of the rock matrix
+is computed as the mean heat capacity of all phases weighted by their volume
+fractions.
+
+
+% Thermal conductivity
+\subsection{Thermal Conductivity, $k$ [W~m$^{-1}$~K$^{-1}$]} \label{sec:thermal_cond}
+Thermal conductivity is the rate of heat transfer per unit length per degree and
+represents the efficiency with which heat is transferred.  There are two types
+of thermal conductivity: lattice and radiative.  Radiative conductivity is only
+relevant at high temperatures and may not be significant compared to lattice
+conductivity so we'll just focus on the latter.  The lattice conductivity for a
+given mineral is estimated by
+\begin{equation}
+    k(T,P) = k^{\circ}
+    \left( \frac{298}{T} \right)^n
+    \left( 1 + \frac{K'_{T}}{K_{T}}(P - P^\circ) \right).
+\end{equation}
+Since most minerals are solid solutions of multiple end-members, the
+conductivity estimated between two end members can often be approximated by
+\begin{equation}
+    k(T,P) = \left( k_{0} + k_{1} X + k_{2} X^{2} \right)
+    \left( \frac{298}{T} \right)^n
+    \left( 1 + \frac{K'_{T}}{K_{T}}(P - P^\circ) \right),
+\end{equation}
+Estimates of these empirical constants are given for several common minerals in Table~\ref{tab:tc_coef}
+\input{physprop/empirical_conductivity_constants}
+
+
+% Thermal diffusivity
+\subsection{Thermal Diffusivity, $k$ [mm$^{2}~s^{-1}$]} \label{sec:diffusivity}
+Thermal diffusivity is the rate at which heat is transferred.  Computing thermal
+diffusivity is relatively simple once the other properties have been estimated
+because it is a derivative quantity.  That is to say that it is determined from
+other properties, in this case
+\begin{equation}
+    \kappa = \frac{k}{\rho C_P} .
+\end{equation}
+
+Thermal diffusivity governs \emph{how fast temperature changes propagate}, whereas thermal conductivity governs \emph{how much heat is transported}.
+
+
+\section{Mixing Formulae}
+
+Most geologic materials are mixtures of either multiple minerals and/or fluids.
+However, when we make geological observations and model the fields, we find that
+it is not possible to resolve these individual phases.  Instead, we are
+sensitive to the `average' or `effective' properties creating or modifying
+geophysical fields.  Average is a bit of a dangerous word because it can
+indicate different things in different situations.  So when someone says the
+computed the average always I want you to ask, ``What kind?''
+
+The typical person refers to the arithmetic mean when they use the term average.
+However, there are multiple types of averages that are mathematically defined.
+There is a mean, median and mode that you may remember from statistics.  There
+are also an arithmetic, geometric, and harmonic means.  Means can be weighted or
+unweighted.  This section focuses on each of these averages and when they may
+be appropriately applied to Earth's materials.
+
+Mixing laws are approximations whose validity depends on geometry, connectivity,
+and scale. Different geophysical methods may be sensitive to different effective
+averages of the same material.
+
+\subsection{Pythagorean Means}
+
+Arithmetic
+\begin{align}
+    \text{unweighted:} \quad \bar{x} &= \frac{1}{n} \sum_{i=1}^{n} x_i \\
+    \coreeq
+    \text{weighted:} \quad 
+        \bar{x} &= \frac{\sum_{i=1}^{n} w_i x_i}{\sum_{i=1}^{n} w_i}
+\end{align}
+Use: computing effective density, specific heat capacity
+
+Geometric
+\begin{align}
+    \text{unweighted:} \quad \bar{x} &= \left( \prod_{i=1}^{n} x_i \right)^{1/n} \\
+    \coreeq
+    \text{weighted:} \quad \bar{x} &= 
+        \left( \prod_{i=1}^{n} x_i^{w_i} \right)^{1/\sum_{i=1}^{n} w_i}
+\end{align}
+Use: effective thermal conductivity for randomly oriented mixtures
+
+The arithmetic and geometric means are mathematically related.  Suppose we have
+a set of numbers, $x = (x_1, x_2, \ldots, x_n)$.  We can define a transform of
+$x \mapsto y$ by $y = \log x$.  Arithmetic means
+are often appropriate when the values of something are often about the same
+order of magnitude, but geometric means make a bit more sense when the range of
+a property may span orders of magnitude as the do for many types of conductivity
+(e.g., electrical and hydraulic conductivity).
+
+Harmonic
+\begin{align}
+    \text{unweighted:} \quad \bar{x} &= \left( \sum_{i=1}^{n} x_i^{-1} \right)^{-1} \\
+    \coreeq
+    \text{weighted:} \quad \bar{x} &= \left( \sum_{i=1}^{n} w_i \right)
+        \left( \sum_{i=1}^{n} w_i x_i^{-1} \right)^{-1}
+\end{align}
+
+Use: effective thermal conductivity for layered conductivity packages
+
+Root-square 
+\begin{align}
+    \text{unweighted:} \quad \bar{x} &= \frac{1}{n} \left( \sum_{i=1}^{n} \sqrt{x_i} \right)^2 \\
+    \text{weighted:} \quad
+        \bar{x} &= \left( \frac{\sum_{i=1}^{n} w_i \sqrt{x_i}}{\sum_{i=1}^{n} w_i} \right)^2
+\end{align}
+
+Use: effective thermal conductivity for random mixtures (less common)
+
+Square-root 
+\begin{align}
+    \text{unweighted:} \quad \bar{x} &= \sqrt{\frac{1}{n} \sum_{i=1}^{n} x_i^2} \\
+    \text{weighted:} \quad
+        \bar{x} &= \sqrt{ \frac{\sum_{i=1}^{n} w_i x_i^2}{\sum_{i=1}^{n} w_i} }
+\end{align}
+
+Use: Signal processing, seismic velocity averaging, weighted error norms
+
+%\section{Other common means}
+%Quadratic mean (RMS)
+
+\subsection{Mixing Bounds}
+Bounds are often more informative than a single “best” estimate when interpreting geophysical data as they bracket the likely value.
+
+\subsubsection{Voigt-Reuss-Hill average}
+Seismologists often use the Voigt (arithmetic) average as an upper bound and the Reuss (harmonic) average as a lower bound for seismic velocity.  The Voigt-Reuss-Hill average is really an average of the volume weighted arithmetic ($\Psi_V$) and harmonic ($\Psi_R$) means and is common for estimating the bulk or effective magnitude of a physical property.  The average is given by
+\begin{align}
+    \bar{\Psi} &= \frac{1}{2}(\Psi_V + \Psi_R) \\
+    &= \frac{1}{2}\left[
+    \sum_{i = 1}^n \Psi_i v_i +
+    \left( \sum_{i = 1}^n \frac{v_i}{\Psi_i} \right)^{-1}
+    \right],
+\end{align}
+where $n$ is the number of constituent minerals and $v_i$ is the volume fraction
+of the $i$-th component.
+
+Use: moduli
+
+\subsubsection{Hashin-Strikman bounds}
+The Hashin-Shtrikman bounds are commonly quoted as a mixing relation for
+electrical conductivity and occasionally seismic velocity; however, the bounds
+often over- or under-predict the conductivity, but that is what they are
+designed to do.  The bounds are
+\begin{equation}
+    \sigma_{\mathrm{HS}}^- = \mathcal{S}(\sigma_{\mathrm{min}}) \leq \sigma \leq
+    \mathcal{S}(\sigma_{\mathrm{max}}) = \sigma_{\mathrm{HS}}^+,
+\end{equation}
+where $\mathcal{S}$ is defined as
+\begin{equation}
+    \mathcal{S}(x) =
+    \Biggl( \sum_{i=1}^N \frac{\phi_i}{\sigma_i + 2x} \Biggr)^{-1} - 2x ,
+\end{equation}
+and $\phi_i$ is the volume fraction of the $i$-th component.
+
+Use: moduli, electrical conductivity
+
+
+%\section{Mass, volume, and mole fractions}
+% The properties of a rock are dependent upon the fraction of each consituent
+% mineral.  However, there are three different fractions that we can consider.
+% Modal volume (volume fraction) is most commonly reported, with mass fraction
+% less common and mole fraction basically never.  Both mass and mole fraction
+% are independent of temperature.  The bulk property estimates of rocks are
+% dependent upon the volume fraction, which is dependent upon the pressure and
+% temperature conditions.  Because volume fraction changes, we must first
+% convert to mass fraction and then convert back to volume fraction at each
+% pressure and temperature we seek to know the physical properties.  When
+% computing the properties of solid solutions, it is not the volume fraction,
+% but the mole fraction that is important for properly estimating the
+% properties.
+%
+% ???Make a figure showing the difference between volume and mass fraction (how
+% volume change might change with temperature
+
+% ???How to normalize, incomplete to total pie
+
+
+\section{Porosity, Fluids, and Cracks}\label{sec:porosity}
+
+Most rocks within the upper crust contain some amount of void space, referred to as porosity, which can strongly influence their physical properties. Porosity is particularly important in the shallow crust ($\lesssim\;\SI{10}{km}$ depth), where pressures are insufficient to completely close pore space and fractures. At greater depths, porosity generally decreases rapidly due to compaction, cementation, and crack closure, and its influence on bulk physical properties is often negligible except in unusual circumstances (e.g., high pore pressures or active deformation). Although, studies suggest $\sim2\%$ porosity can persist throughout the crust.
+
+Porosity can take two end-member forms. Pore (or intrinsic) porosity consists of approximately equant voids between grains, such as those found in sandstones or poorly consolidated sediments. Crack porosity consists of thin, often highly elongated voids such as fractures and microcracks. Although both contribute to total porosity, they affect physical properties in fundamentally different ways. Crack porosity can cause differences between predicted and field effective values, even when porosity is taken into account. 
+
+\subsection{Porosity as an additional component}
+
+At low to moderate pore porosities, and when pore space is approximately isotropic, porosity can often be treated as an additional compositional component within standard mixing relationships. In this approximation, the effective physical property of a rock is estimated by mixing the solid matrix with the pore-filling material (air, water, brine, oil, gas), weighted by the porosity. For example, bulk density can be written as
+\begin{equation}
+    \rho_{\textit{bulk}} = (1 - \phi)\rho_{\textit{solid}} + \phi \rho_{\textit{fluid}},
+\end{equation}
+and similar expressions can be applied, with appropriate mixing laws, to thermal, electrical, and elastic properties.
+\begin{figure}[tbh]
+    \centering
+    %\includegraphics[]{physprop/figures/porosity.eps}
+    \caption{Seismic velocity of oceanic igneous rocks as a function of porosity.  Porosity has a significant influence on physical properties, even at relatively low fractions.  While porosities in the crust below $\sim\SI{10}{km}$ are relatively small, typically 0.5 to 2\%, upper crustal porosity must generally be accounted for to estimate physical properties accurately.}
+    \label{fig:porosity}
+\end{figure}
+
+This treatment works best when porosity is: low, approximately uniform in shape and orientation, and not strongly connected in a way that dominates transport processes.
+
+Under these conditions, porosity behaves much like a dilute secondary phase, and its effects can often be incorporated using arithmetic, geometric, harmonic, or effective-medium mixing laws discussed in Section~\ref{sec:prop_eq}.
+
+\subsection{Crack porosity and geometric effects}
+Crack porosity behaves very differently. Even at extremely low volume fractions, cracks can exert a disproportionate influence on physical properties because they introduce strong geometric anisotropy and stress sensitivity. Thin cracks preferentially reduce elastic moduli, lower seismic velocities, enhance electrical and hydraulic conductivity, and introduce strong directional dependence. Unlike pore porosity, crack porosity cannot generally be treated as a simple volumetric mixture.
+
+Crack effects depend not only on crack volume, but also on crack shape, orientation, connectivity, and effective pressure. As a result, properties controlled by cracks often change rapidly with stress, temperature, and fluid pressure. These effects are especially important in tectonically active regions, fault zones, and fractured reservoirs, and they are field-dependent: elastic waves, electrical currents, and fluids respond to crack networks in different ways.  For this reason, quantitative treatments of crack porosity are best developed within the context of specific geophysical methods and are introduced later in the chapters on seismology and electromagnetics.
+
+\section{Anisotropy}
+Many Earth materials exhibit anisotropy, meaning that their physical properties depend on direction. Anisotropy can arise at a range of scales. At the microscopic scale, it reflects the intrinsic anisotropy of crystal structures. At the rock scale, anisotropy commonly develops from the preferred alignment of minerals during deformation or deposition, producing fabrics such as foliation, lineation, or crystallographic preferred orientation. At larger scales, anisotropy may arise from the layering of sedimentary strata, metamorphic banding, or the stacking of lithologic units with contrasting properties. An example of anisotropy is illustrated in Figure~\ref{fig:anisotropy}.
+\begin{figure}[tbh]
+    \centering
+    \includegraphics[]{physprop/figures/observed_anisotropy_angle.eps}
+    \caption{Directional dependence of thermal conductivity measured relative to fabric orientation in an anisotropic metasedimentary samples. Conductivity measured parallel to layering or mineral alignment differs systematically from measurements made perpendicular to layering. Similar directional dependence occurs for seismic velocities, electrical conductivity, and elastic moduli. Even when individual minerals are anisotropic, rocks composed of randomly oriented grains may be isotropic at the macroscopic scale, whereas layering or aligned fabrics introduce effective anisotropy.}
+    \label{fig:anisotropy}
+\end{figure}
+
+At all of these scales, anisotropy represents a deviation from the assumption of isotropy that underlies many simple mixing relations and governing equations. However, this assumption is often retained as a first approximation because it dramatically simplifies analysis and is frequently sufficient at the resolution of available data.
+
+Not all physical properties exhibit anisotropy to the same degree. Properties that involve directional transport or deformation---such as seismic velocities, elastic moduli, electrical and thermal conductivity, permeability, and thermal expansivity---commonly show measurable anisotropy. In contrast, scalar quantities that depend primarily on mass or energy storage, such as density and specific heat capacity, are generally isotropic at the scale of interest in geophysics. Recognizing which properties are likely to be anisotropic is essential for interpreting geophysical observations and for assessing the validity of simplifying assumptions in modeling and inversion.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{ref}

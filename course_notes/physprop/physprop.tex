@@ -1,0 +1,89 @@
+\newcommand{\splitcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+\begin{table}
+    \caption{Empirically derived constants used to compute physical properties
+    of rocks.}
+    \label{tab:physprop}
+    \scriptsize
+    \begin{tabular}{llcccccccccccccccccc}
+     mineral & formula unit & "gram formula weight (g/mol)" & "molar volume (cm3/mol)" & "density @298K
+    (kg/m3)" & "wt% H2O " & "expansivity aV = a0 + a1T + a2T-2 (/K)" &  &  & "specific heat
+    capacity Cp = c0 + c1T-2 + c2T-3 + c3T-0.5 (kJ/kg-K)" &  &  &  & "isothermal bulk
+    modulus (GPa)" & dKT/dP & "shear modulus (GPa)" & "dlnm/ dlnr" & dm/dP & "first
+    Grueneisen parameter" & "second Grueneisen parameter" \\
+    phase &  & gfw & V & r298 & H2O & a0 x 105 & a1 x 108 & a2 & c0 & c1 & c2 x
+    10-3 & c3 x 10-6 & KT & KT' & m & G & m' & gth & dT \\
+    a-quartz & SiO2 & 60.1 & 22.7 & 2648 & 0 & 1.417 & 9.6581 & -1.6973 & 1.7699 & -23.49 & 45.947 & -7.2006 & 37.12 & 5.99 & 44.80 & 40.1 & 0.46 & 0.7 & 8.42
+    b-quartz & SiO2 & 60.1 & 22.7 & 2530 & 0 & -0.44 & 0 & 0 & 0.9647 & -0.0004
+    & 30.546 & -0.0018 & 57.01 & 4.00 & 41.40 & 4.1 & 1.21 & 0.1 & 4.11 \\
+    orthoclase & KAlSi3O8 & 278.3 & 105.1 & 2555 & 0 & 3.4 & 0 & 0 & 1.4445 &
+    -9.5303 & -26.395 & 3.6781 & 58.30 & 4.00 & 28.10 & 4.4 & 0.80 & 0.4 & 4.44
+    \\
+    albite & NaAlSi3O8 & 262.2 & 99.0 & 2620 & 0 & 1.9801 & 1.0065 & -0.976 &
+    1.5012 & -9.2116 & -30.099 & 4.0829 & 57.76 & 4.00 & 29.78 & 13.0 & 1.21 &
+    0.6 & 4.57 \\
+    anorthite & CaAlSi2O8 & 278.2 & 105.0 & 2760 & 0 & 1.2491 & -0.0162 & 0.0161
+    & 1.5793 & -4.7252 & 0 & -1.1395 & 81.86 & 4.00 & 36.05 & 6.8 & 3.48 & 0.5 &
+    4.47 \\
+    muscovite & KAl3Si3O10(OH)2 & 398.2 & 150.4 & 2828 & 4.5 & 3.537 & 0 & 0 &
+    1.668 & -10.994 & -36.79 & 5.0614 & 49.00 & 4.00 & 29.54 & 4.5 & 1.00 & 0.5
+    & 4.52 \\
+    phlogopite & "KMg3AlSi3O10(F & OH)2" & 417.2 & 157.6 & 2788 & 4.5 & 5.8 & 0
+    & 0 & 1.4354 & -4.0508 & -61.28 & 8.995 & 49.70 & 8.59 & 22.94 & 9.1 & 0.77
+    & 0.6 & 9.14 \\
+    annite & "KFe3AlSi3O10(F & OH)2" & 511.9 & 193.3 & 3317 & 3.5 & 3.7 & 0 & 0
+    & 1.2777 & -5.661 & -42.813 & 6.9201 & 49.70 & 8.59 & 22.94 & 9.1 & 0.77 &
+    0.6 & 9.14 \\
+    hornblende & "Ca2(Mg & Fe & Al)5(Al & Si)8O22(OH)2" & 864.7 & 326.6 & 3248 &
+    2.5 & 2.075 & 1.027 & 0 & 1.6559 & -13.126 & 1.5163 & -2.6059 & 93.97 & 4.00
+    & 54.50 & 5.1 & 0.97 & 1.1 & 5.10 \\
+    diopside & CaMgSi2O6 & 216.6 & 81.8 & 3272 & 0 & 3.33 & 0 & 0 & 1.4103 &
+    -7.4109 & -33.09 & 4.2567 & 113.00 & 4.80 & 64.90 & 6.0 & 2.00 & 1.2 & 6.04
+    \\
+    hedenbergite & CaFeSi2O6 & 248.1 & 93.7 & 3651 & 0 & 2.98 & 0 & 0 & 1.3712 &
+    -10.668 & -32.729 & -0.0042 & 119.20 & 4.00 & 61.00 & 5.2 & 0.85 & 1.2 &
+    5.21 \\
+    enstatite & MgSiO3 & 200.8 & 75.8 & 3206 & 0 & 2.972 & 0.5711 & 0 & 1.6592 &
+    -11.959 & -22.616 & 2.7805 & 105.80 & 8.50 & 76.80 & 9.4 & 2.00 & 0.9 & 9.39
+    \\
+    ferrosilite & FeSiO3 & 263.9 & 99.6 & 4003 & 0 & 2.875 & 0 & 0 & 1.3204 &
+    -10.559 & -3.444 & -0.2858 & 100.17 & 4.00 & 52.00 & 5.1 & 2.00 & 1.1 & 5.05
+    \\
+    forsterite & Mg2SiO4 & 140.7 & 53.1 & 3222 & 0 & 2.854 & 1.008 & -0.3842 &
+    1.6572 & -12.804 & 0 & -1.9042 & 127.30 & 5.37 & 81.60 & 5.2 & 1.82 & 1.2 &
+    5.50 \\
+    fayalite & Fe2SiO4 & 203.8 & 77.0 & 4400 & 0 & 2.386 & 1.153 & -0.0518 &
+    1.2366 & -9.882 & 0 & -0.3052 & 136.70 & 5.16 & 51.00 & 4.7 & 0.62 & 1.1 &
+    5.40 \\
+    sp & MgAl2O4 & 142.3 & 53.7 & 3575 & 0 & 1.96 & 1.64 & 0 & 1.7197 & -14.086
+    & 0 & 0 & 196.20 & 4.00 & 107.81 & 4.2 & 0.92 & 1.3 & 6.50 \\
+    pyrope & Mg3Al2Si3O12 & 403.1 & 152.2 & 3565 & 0 & 2.311 & 0.5956 & -0.4538
+    & 1.4657 & -7.012 & -33.042 & 3.1262 & 173.81 & 5.00 & 94.00 & 4.1 & 1.50 &
+    1.3 & 5.30 \\
+    almandine & Fe3Al2Si3O12 & 497.7 & 188.0 & 4324 & 0 & 1.776 & 1.214 & -0.5071 & 1.2485 & -6.605 & -30.298 & 4.4437 & 174.10 & 6.00 & 92.10 & 5.5 & 1.60 & 1.0 & 5.52 \\
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \caption{Coefficients to estimate thermal conductivity}
+    \label{tab:tc_coef}
+    \small
+    \begin{tabular}{lccccc}
+        mineral & \splitcell{mole fraction\\of end-member} &
+        \multicolumn{3}{c}{\splitcell{thermal conductivity\\$k(P,T) = (k_0 + k_1 X + k_2 X^2) (298/T)^n (1 + P K_T'/K_T)\\(Wm$^{-1}$K${^-1}$)}} \\
+        {} & X & k0 & k1 & k2 & n \\
+        a-quartz &  & 8.79 & 0 & 0 & 1.48 \\
+        b-quartz &  & 0.993 & 0 & 0 & -1 \\
+        orthoclase &  & 1.791 & 0 & 0 & -0.27 \\
+        plagioclase & anorthite & 2.199 & -2.18 & 1.9 & -0.21 \\
+        muscovite &  & 2.8 & 0 & 0 & 1.539 \\
+        biotite &  & 2.267 & 0 & 0 & 1.539 \\
+        hornblende &  & 2.6485 & 0 & 0 & 0.5 \\
+        clinopyroxene &  & 4.25 & 0 & 0 & 0.54 \\
+        orthopyroxene &  & 3.37 & 0 & 0 & 0.3 \\
+        olivine & forsterite & 3.091 & -1.17 & 3.35 & 0.49 \\
+        spinel &  & 12 & 0 & 0 & 1.24 \\
+        garnet & pyrope & 4.966 & -7.42 & 8.45 & 0.37 \\
+    \end{tabular}
+\end{table}

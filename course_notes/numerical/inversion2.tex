@@ -1,0 +1,200 @@
+\chapter[Inversion Theory: Advanced]{Inversion Theory\\ {\LARGE Advanced}}\label{ch:inversion2}
+
+\section{Introduction}
+In the previous chapter, we developed methods for formulating and solving inverse problems conceptually. Many of these methods reduce to solving linear systems of the form
+\[
+    (\vb{J}\T \vb{J} + \lambda \vb{L}\T \vb{L}) \Delta \vb{m}
+    = \vb{J}\T \vb{r}.
+\]
+In this chapter, we focus on how to solve these systems efficiently, particularly for large-scale problems where direct methods become impractical.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Classification of matrix decomposition methods applied to inverse problems.}
+    \label{tab:decomp}
+    \begin{tabular}{@{}lcl@{}}
+        \toprule
+        \textbf{Category} & \textbf{Examples} & \textbf{Idea} \\
+        \midrule
+        Factorizations (not reduced) & LU, QR & Solve systems \\
+        Low-rank decompositions & SVD, eigen & truncate spectrum \\
+        Iterative subspace methods & CG, LSQR & build solution in Krylov space \\
+        Explicit reduced basis & REBOCC, subspace inversion & restrict model \\
+        Model reduction & POD, RBM & reduce forward model \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Linear Systems in Inversion}
+
+Inverse problems frequently reduce to solving linear systems,
+\[
+    \vb{A}\T \vb{A} \vb{m} = \vb{A}\T \vb{d},
+\]
+or, in the nonlinear case,
+\[
+    \vb{J}\T \vb{J} \Delta \vb{m} = \vb{J}\T \vb{r}.
+\]
+The properties of these systems, including conditioning and rank, strongly influence the accuracy and stability of the inversion.
+
+\section{Direct Methods}
+
+\subsection{LU Decomposition}
+
+A general linear system can be solved using LU decomposition,
+\[
+    \vb{A} = \vb{L}\vb{U},
+\]
+where $\vb{L}$ is lower triangular and $\vb{U}$ is upper triangular. This allows the solution to be computed efficiently using forward and backward substitution.
+
+\subsection{QR Decomposition}
+
+For least-squares problems, QR decomposition is often preferred,
+\[
+    \vb{A} = \vb{Q}\vb{R},
+\]
+where $\vb{Q}$ is orthogonal and $\vb{R}$ is upper triangular. The solution is obtained from
+\[
+    \vb{R} \vb{m} = \vb{Q}\T \vb{d}.
+\]
+This approach avoids forming $\vb{A}\T \vb{A}$ and improves numerical stability.
+
+\section{Singular Value Decomposition}
+
+The singular value decomposition (SVD) provides a powerful framework for analyzing inverse problems,
+\[
+    \vb{J} = \vb{U} \boldsymbol{\Sigma} \vb{V}\T,
+\]
+where $\boldsymbol{\Sigma}$ contains the singular values.
+
+\subsection{Truncated SVD}
+
+Small singular values amplify noise and lead to unstable solutions. Truncated SVD (TSVD) mitigates this by retaining only the largest singular values,
+\[
+    \vb{m}_{\text{TSVD}} = \sum_{k=1}^{p} \frac{\tilde{d}_k}{\sigma_k} \vb{v}_k,
+\]
+providing a natural form of regularization.
+
+\section{Iterative Methods}
+
+\subsection{Steepest Descent Revisited}
+
+Steepest descent provides a simple iterative solution method based on gradient information alone. While computationally efficient per iteration, convergence is often slow.
+
+\subsection{Conjugate Gradient Method}
+
+The conjugate gradient (CG) method provides a more efficient iterative approach for solving systems of the form
+\[
+    \vb{A} \vb{x} = \vb{b},
+\]
+particularly when $\vb{A}$ is symmetric and positive definite (e.g., $\vb{J}\T \vb{J}$).
+
+CG constructs a sequence of conjugate search directions, allowing the solution to be found efficiently within a low-dimensional subspace. In practice, CG often converges much more rapidly than steepest descent.
+
+\section{Reduced-Basis Methods}
+
+For large-scale problems, reduced-basis methods limit the inversion to a lower-dimensional subspace.
+
+
+\section{LU factorization}
+
+LU factorization
+\[
+    \vb{A} = \vb{L}\vb{U}
+\]
+used to solve linear systems efficiently
+
+
+\section{QR factorization}
+
+QR factorization
+\[
+    \vb{A} = \vb{Q}\vb{R}
+\]
+used for least-squares stability
+
+\section{Singular Value Decomposition (SVD)}
+
+For large-scale inverse problems, forming and solving systems involving $\vb{J}$ or $\vb{J}\T \vb{J}$ can be computationally expensive. In such cases, it is often advantageous to approximate the forward operator or Jacobian using a reduced basis.
+
+Methods such as truncated singular value decomposition (SVD) or subspace inversion represent the model or data in a smaller set of basis functions, reducing the dimensionality of the problem. These approaches effectively filter out components of the model that are poorly constrained by the data, improving computational efficiency and stability.
+
+To use SVD of the forward operator to solve for linear or linearized inverse problems,
+\[
+    \vb{J} = \vb{U} \boldsymbol{\Sigma} \vb{V}\T,
+\]
+where $\vb{U}$ and $\vb{V}$ are orthogonal matrices and $\boldsymbol{\Sigma}$ contains the singular values.
+
+Transforming the data into the singular vector basis,
+\[
+    \tilde{\vb{d}} = \vb{U}\T \vb{d},
+\]
+the solution can be written as
+\[
+    \vb{m} = \sum_{k} \frac{\tilde{d}_k}{\sigma_k} \vb{v}_k,
+\]
+where $\sigma_k$ are the singular values and $\vb{v}_k$ are the columns of $\vb{V}$.
+
+In practice, small singular values amplify noise and lead to unstable solutions. A common approach is truncated SVD (TSVD), in which only the largest singular values are retained:
+\[
+    \vb{m}_{\text{TSVD}} = \sum_{k=1}^{p} \frac{\tilde{d}_k}{\sigma_k} \vb{v}_k,
+\]
+where $p$ is chosen to balance resolution and stability.
+
+Truncated eigen-decomposition (very closely related to SVD)
+If:
+\[
+    \vb{J}\T \vb{J} = \vb{V} \boldsymbol{\Lambda} \vb{V}\T
+\]
+Then keep only largest eigenvalues:
+\[
+    \vb{m} \approx \sum_{k=1}^{p} c_k \vb{v}_k
+\]
+
+SVD methods thus provide an alternative form of regularization by filtering poorly resolved components of the model, effectively reducing the dimensionality of the problem.
+
+In electromagnetic applications, for example, reduced-basis techniques such as REBOCC exploit the structure of the forward operator to accelerate inversion.  While powerful, these reduced basis methods require additional mathematical development and are not treated in detail here.
+
+\section{Congugate Gradient (CG)}
+
+“We can't invert $\vb{J}\T \vb{J}$ explicitly anymore”
+“We need iterative solvers”
+“We work in subspaces”
+
+Krylov subspace method
+
+CG is a more efficient way to solve the same system Gauss–Newton produces.
+\[
+    (\vb{J}\T \vb{J}) \Delta \vb{m} = \vb{J}\T \vb{r}
+\]
+instead of:
+
+forming and inverting matrices
+you solve iteratively
+
+\subsection{Subspace Inversion}
+
+In subspace methods, the model update is represented as
+\[
+    \Delta \vb{m} = \vb{V}_p \boldsymbol{\alpha},
+\]
+where $\vb{V}_p$ contains a reduced set of basis vectors. This approach reduces computational cost and filters poorly resolved components.
+
+\subsection{Applications}
+
+Examples include truncated SVD and domain-specific methods such as REBOCC in electromagnetic inversion.
+
+\section{Choosing a Computational Approach}
+
+The choice of method depends on problem size, conditioning, and computational resources:
+
+\begin{itemize}
+    \item Small problems: direct methods (LU, QR)
+    \item Moderately sized problems: QR or SVD
+    \item Large-scale problems: CG or other iterative methods
+    \item Ill-conditioned problems: SVD or regularized methods
+\end{itemize}
+
+\section{Summary}
+
+Inverse problem formulations define the equations to be solved, while numerical linear algebra determines how these equations are solved in practice. For large-scale geophysical problems, the choice of computational method often determines whether an inversion is feasible at all.

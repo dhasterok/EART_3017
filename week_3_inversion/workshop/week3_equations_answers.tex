@@ -1,0 +1,46 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{parskip}
+\usepackage{notes}
+
+\title{Week 3 -- Linear or Non-linear (Answers)}
+\author{Geophysics IIIA: Potential Fields \& Geothermics}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Student Name:} \rule{0.45\linewidth}{0.4pt} \textbf{Group:} \rule{0.30\linewidth}{0.4pt}
+
+\vspace{1em}
+\subsection*{Answer key (concise)}
+\begin{enumerate}[label=A\arabic*.,itemsep=6pt]
+  \item \emph{Bilinear} in $(\Delta\rho,H)$; \emph{linear} if one is known; or reparameterize $m=\Delta\rho H$.
+  \item \emph{Non-linear} in $(R,z)$; \emph{linear} in $\Delta\rho$ (or $M$). Linearize via Jacobian about $p_0$.
+  \item \emph{Linear} in $[a,b,c]$ for fixed $n$ and known $X$; \emph{non-linear} in $n$ (block LS + GN).
+  \item \emph{Linear} in $k_0$ if $(A,B,c)$ known; \emph{non-linear} jointly. Often fix $(A,B)$.
+  \item \emph{Linear} relation between $h$ and $\Delta t$ for known densities; becomes \emph{bilinear} if densities are unknown.
+  \item \emph{Linear} (didactic column model) in the stated terms.
+  \item \emph{Linear} in amplitude $C$ (geometry fixed); \emph{non-linear} in $(x_1,x_2,z)$.
+  \item \emph{Linear} in heat production set $\{H_k\}$ for fixed $\{k_k\}$ once interface/BC constraints are applied; \emph{non-linear} if $k$ depends on $T$.
+  \item \emph{Linear} in porosity $\phi$ for known $(\rho_m,\rho_f)$.
+  \item Non-linear. Take logs: $\ln\rho = \ln a + b\,\ln v$ (linear in $[\ln a, b]$).
+  \item \emph{Linear} in $\Delta\rho_i$ (geometry fixed).
+\end{enumerate}
+
+\end{document}
+
+\subsection*{Answer key (concise)}
+\begin{enumerate}[label=A\arabic*.,itemsep=6pt]
+  \item \emph{Linear} in $\Delta\rho_i$ (geometry fixed); $\mathbf{d}=\mathbf{G}\,\mathbf{m}$ with analytic prism kernel above.
+  \item \emph{Bilinear} in $(\Delta\rho,H)$; \emph{linear} if one is known; or reparameterize $m=\Delta\rho H$.
+  \item \emph{Non-linear} in $(R,z)$; \emph{linear} in $\Delta\rho$ (or $M$). Linearize via Jacobian about $p_0$.
+  \item \emph{Linear} in $[a,b,c]$ for fixed $n$ and known $X$; \emph{non-linear} in $n$ (block LS + GN).
+  \item \emph{Linear} in $k_0$ if $(A,B,c)$ known; \emph{non-linear} jointly. Often fix $(A,B)$.
+  \item \emph{Linear} relation between $h$ and $\Delta t$ for known densities; becomes \emph{bilinear} if densities are unknown.
+  \item \emph{Linear} (didactic column model) in the stated terms.
+  \item \emph{Linear} in amplitude $C$ (geometry fixed); \emph{non-linear} in $(x_1,x_2,z)$.
+  \item \emph{Linear} in heat production set $\{H_k\}$ for fixed $\{k_k\}$ once interface/BC constraints are applied; \emph{non-linear} if $k$ depends on $T$.
+  \item \emph{Linear} in porosity $\phi$ for known $(\rho_m,\rho_f)$.
+\end{enumerate}

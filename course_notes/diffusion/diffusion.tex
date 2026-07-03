@@ -1,0 +1,437 @@
+\chapter{Diffusive Fields}\label{ch:diffusion}
+
+\section{Introduction}
+
+In the Chapter~\ref{ch:potential} we examined potential fields governed by Poisson's and Laplace's equations. These fields arise when conserved quantities are transported by gradient-driven fluxes under steady-state conditions, so that local sources are balanced by fluxes and no accumulation occurs. Gravity, magnetics, and steady-state heat conduction fall naturally into this class, and their behavior is dominated by global smoothness, scale separation, and nonuniqueness.
+
+In this chapter, we relax the steady-state assumption. When fluxes are no longer instantaneously balanced by sources and sinks, conserved quantities are allowed to accumulate locally, and the system evolves in time. The result is diffusive behavior. Importantly, diffusion does not require new physics. The same conservation laws and constitutive relations introduced earlier still apply. What changes is the inclusion of storage.
+
+Diffusion governs a wide range of geophysical processes, including transient heat flow, chemical transport, groundwater movement, electromagnetic induction, and even sediment transport.  These processes share a common mathematical structure despite their differing physical contexts. The diffusion equation describes how anomalies spread, weaken, and lose memory over time, introducing a natural time-length scale that is absent in steady-state potential fields.
+
+Steady-state solutions are not discarded in this framework; rather, they emerge as the asymptotic limit of diffusion. Understanding diffusion therefore strengthens, rather than replaces, the interpretation of potential fields, and provides the foundation for time-dependent geophysical methods explored later in the course.
+
+The goal of this chapter is to develop physical intuition for diffusive processes before focusing on specific applications. We will examine how conservation and constitutive laws combine to produce the diffusion equation, explore the physical meaning of its solutions, and highlight key differences between diffusive and steady-state behavior. These ideas will be revisited in subsequent chapters, where diffusion plays a central role in both electromagnetic and thermal problems.
+
+\section{Time-dependent Conservation and Transport}
+
+The defining distinction between steady-state potential fields and diffusive processes lies in whether conserved quantities are allowed to accumulate locally.  In Chapter~\ref{ch:potential}, we assumed steady state, so that sources and sinks were balanced by fluxes and no storage occurred. In diffusive systems, this restriction is lifted: imbalances between fluxes and sources lead to changes in storage over time.
+
+Conservation requires that any change in the amount of a quantity stored within a region be explained by a balance between what enters, what leaves, and what is created or destroyed internally. If more of the quantity flows into a region than flows out, storage increases; if more flows out than in, storage decreases. Internal sources or sinks may add to or remove from this balance.
+
+Described locally, conservation states that the rate of change of storage at a point reflects the combined effect of flux divergence and sources,
+\[
+    \pdv{\rho}{t} = -\div \vb{J} + s(\vb{x},t).
+\]
+where $\rho(\vb{x},t)$ denotes the density of the conserved quantity per unit volume. In contrast to the steady-state case, storage no longer remains constant, and its time dependence carries essential physical information. This time-dependent storage is what allows diffusive fields to evolve gradually rather than responding instantaneously. 
+
+This expression states that changes in storage at a point arise from an imbalance between flux divergence and sources. In contrast to the steady-state case, the left-hand side is now nonzero and carries essential physical information.
+
+\emph{Aside:} The steady-state case emerges naturally as a special limit of the time-dependent conservation law. Setting $\partial\rho/\partial t = 0$ recovers the steady-state conservation law introduced previously,
+\[
+    \div \vb{J} = s(\vb{x}),
+\]
+showing that steady-state fields represent a special balance condition within the more general time-dependent framework. Importantly, steady state does not imply zero flux; it implies that fluxes and sources are arranged so that storage does not change with time.
+
+In the sections that follow, we combine this time-dependent conservation law with the same constitutive relations used for potential fields to obtain the diffusion equation. The resulting dynamics introduce characteristic time and length scales that fundamentally alter how geophysical fields evolve and how they can be interpreted.
+
+\subsection{Constitutive Law for Diffusive Fluxes}
+
+The inclusion of time dependence in the conservation law does not require a new description of how fluxes respond to spatial variations. As in the steady-state case, diffusive processes are governed by a local constitutive relation that links flux to the gradient of an intensive quantity. What changes between potential fields and diffusion is not the constitutive behavior, but the allowance for storage.
+
+For many geophysical systems, flux arises in response to spatial gradients in a
+scalar field $\phi(\vb{x},t)$,
+\[
+    \vb{J} = -k \grad \phi,
+\]
+where $\vb{J}$ is the flux of the conserved quantity, $\phi$ is the driving potential, and $k$ is a transport coefficient specific to the medium. The negative sign indicates that flux proceeds from regions of high potential toward regions of low potential.
+
+This form encompasses a wide range of physical processes. In heat conduction, $\phi$ is temperature and $k$ is thermal conductivity. In chemical diffusion, $\phi$ is concentration and $k$ is the diffusivity multiplied by appropriate thermodynamic factors. In electromagnetics, $\phi$ may represent electric potential and $k$ corresponds to electrical conductivity. Despite the diversity of physical interpretations, the mathematical structure remains the same.
+
+The constitutive relation above expresses two important assumptions. First, flux is a local response to the gradient of the potential; the flux at a point depends only on conditions in its immediate neighborhood. Second, the response is linear, so that doubling the gradient doubles the flux. These assumptions are well justified for many geophysical applications and allow the governing equations to be written in a form that is both physically transparent and mathematically tractable.
+
+Because the constitutive law is unchanged from the steady-state case, diffusive behavior does not arise from a new transport mechanism. Instead, diffusion emerges from the interaction between this same gradient-driven flux and the time-dependent conservation of stored quantities. When gradients are allowed to persist in time, fluxes redistribute material, energy, or charge until balanced conditions are reached.
+
+In the next section, we combine this constitutive relation with the time-dependent conservation law to obtain the diffusion equation and examine its physical meaning.
+
+The detailed physical derivation of these relations is given in Box~\ref{box:diffusion}.
+
+\ntextbox{Physical origin of the diffusion equation}{
+    Diffusive fields arise from the same physical principles as steady-state potential
+    fields: conservation of a quantity and a local relation between flux and spatial
+    gradients. The difference is that storage is now allowed to vary in time.
+
+    \medskip
+    \noindent\textbf{Conservation with storage}\\
+    Consider a fixed control volume $V$ bounded by a surface $\partial V$. Let
+    $\rho(\vb{x},t)$ denote the density of a conserved quantity per unit volume,
+    $\vb{J}(\vb{x},t)$ the associated flux, and $s(\vb{x},t)$ a volumetric source or
+    sink. Conservation requires that the rate of change of the amount stored within $V$
+    equal the net flux across the boundary plus internal sources,
+    \[
+        \dv{}{t}\int_V \rho\,\dd{V} =
+        -\oint_{\partial V} \vb{J}\cdot\vb{n}\,\dd{S} + \int_V s\,\dd{V},
+    \]
+    where $\dd{S}$ denotes an element of surface area on the boundary of the control volume.
+    Applying the divergence theorem and noting that the control volume is arbitrary
+    yields the local conservation law,
+    \[
+        \pdv{\rho}{t} = -\div \vb{J} + s(\vb{x},t).
+    \]
+    In contrast to the steady-state case, the storage term
+    $\partial\rho/\partial t$ is now nonzero and carries essential physical
+    information.
+
+    \medskip
+    \noindent\textbf{Constitutive relation}\\
+    As with potential fields, flux is assumed to respond locally and linearly to
+    gradients in an intensive scalar quantity $\phi(\vb{x},t)$,
+    \[
+        \vb{J} = -k \grad \phi,
+    \]
+    where $k$ is a transport coefficient describing the efficiency of flux through the
+    medium. This relation expresses locality and linear response and does not depend on
+    whether the system is steady or time dependent.
+
+    \medskip
+    \noindent\textbf{Governing equation}\\
+    Substituting the constitutive relation into the conservation law gives
+    \[
+        \pdv{\rho}{t} = \div\!\left(k \grad \phi\right) + s(\vb{x},t).
+    \]
+    This equation governs time-dependent, gradient-driven transport. To proceed further, storage must be related to the potential itself, which leads directly to the diffusion equation introduced in the main text.
+}{core}\label{box:diffusion}
+
+
+\section{Derivation of the diffusion equation}
+
+Diffusive behavior emerges when a gradient-driven flux acts in concert with the time-dependent conservation of a stored quantity. No new physical assumptions are required beyond those already introduced.
+
+We begin with the local conservation law for a conserved quantity,
+\begin{equation}
+    \pdv{\rho}{t} = -\div \vb{J} + s(\vb{x},t),
+\end{equation}
+where $\rho(\vb{x},t)$ is the stored quantity per unit volume, $\vb{J}$ is the flux, and $s(\vb{x},t)$ represents sources or sinks.
+
+The constitutive relation describing diffusive transport relates flux to the gradient of a scalar potential,
+\begin{equation}
+    \vb{J} = -k \grad \phi,
+\end{equation}
+where $\phi(\vb{x},t)$ is the driving potential and $k$ is the transport coefficient.
+
+Substituting the constitutive relation into the conservation law gives
+\begin{equation}
+    \pdv{\rho}{t} = \div\!\left(k \grad \phi\right) + s(\vb{x},t).
+\end{equation}
+This equation is the general form governing time-dependent, gradient-driven transport.  To proceed, we must relate storage $\rho$ to the potential $\phi$.
+
+In many geophysical systems, changes in storage are proportional to changes in the potential,
+\[
+    \rho = c\,\phi,
+\]
+where $c$ is a storage coefficient that depends on material properties. For example, in heat conduction $c = \rho c_p$, while in chemical diffusion $c$ represents the concentration capacity of the medium.
+
+Substituting this relation and assuming $c$ is constant yields
+\begin{equation}
+    c\,\pdv{\phi}{t} = \div\!\left(k \grad \phi\right) + s.
+\end{equation}
+
+If the transport coefficient $k$ is spatially uniform, this expression simplifies to
+\begin{equation}
+    c\,\pdv{\phi}{t} = k\,\laplacian \phi + s.
+\end{equation}
+Dividing through by $c$ gives
+\begin{equation}
+    \pdv{\phi}{t} = \kappa\,\laplacian \phi + \frac{s}{c},
+    \label{eq:diffusion}
+\end{equation}
+where the diffusivity
+\begin{equation}
+    \kappa = \frac{k}{c}
+\end{equation}
+combines transport efficiency and storage into a single parameter.
+
+Equation~\ref{eq:diffusion} is known as the \emph{diffusion equation}. It describes how the potential $\phi$ evolves in time as fluxes redistribute stored quantities in response to spatial gradients, leading to three clear insights.
+\begin{enumerate}
+    \item The rate at which potential changes is proportional to the spatial curvature of the field. Regions of high curvature (strong gradients in gradients) evolve most rapidly.
+
+    \item The diffusivity constant controls the rate of evolution: higher diffusivity leads to faster redistribution and more rapid smoothing of the field.
+
+    \item When the system evolves for long \emph{enough} that $\partial \phi / \partial t \to 0$, the system reaches steady state and the diffusion equation reduces to
+    \[
+        \laplacian \phi = -\frac{s}{k},
+    \]
+    the Poisson's equation! In the absence of sources, it further reduces to Laplace's equation. Steady-state potential fields therefore represent the long-time limit of diffusion.
+\end{enumerate}
+
+The diffusion equation is a parabolic partial differential equation, in contrast to the elliptic equations governing steady-state potential fields. This change in equation type reflects a fundamental shift in behavior: diffusion introduces finite rates of evolution, characteristic time scales, and memory of prior states.
+
+
+\subsection{Physical interpretation of diffusivity}
+
+The rate at which disturbances spread is controlled by a single combined parameter.  The diffusivity $\kappa$ sets the rate at which a diffusive disturbance spreads through space. It combines two competing effects: how efficiently flux is transmitted (through $k$) and how much of the quantity can be stored locally (through the storage term).
+
+High diffusivity implies that gradients are rapidly smoothed and that disturbances propagate quickly. Low diffusivity implies slow redistribution and long-lived anomalies. For example, thermal diffusivity in rocks is small, so thermal anomalies persist over geological timescales, whereas electromagnetic diffusivity can be very large in resistive materials, allowing rapid penetration of transient fields (Table~\ref{tab:diffusivity}).
+\input{diffusion/diffusion_constant.tex}
+
+Across all diffusive systems, the characteristic length--time relation
+\[
+    \ell \sim \sqrt{\kappa t}
+\]
+governs the spatial extent of influence after time $t$. Diffusivity therefore provides a direct link between observable time dependence and subsurface length scales.
+
+\ntextbox{Units of Diffusivity}{
+    \subsection{Why diffusivity has units of area per time}
+    At first glance, the units of diffusivity, \si{m^2.s^{-1}} or equivalent, can appear counterintuitive. Diffusion occurs in three dimensions, so one might expect a volume-per-time quantity rather than an area-per-time quantity.
+
+    The key point is that diffusivity does not describe the transport of volume; it describes the rate at which spatial gradients are smoothed. In the diffusion equation,
+    \[
+        \pdv{\phi}{t} = \kappa \laplacian \phi,
+    \]
+    the time derivative has units of $\phi$ per unit time, while the Laplacian has units of $\phi$ per unit length squared. Diffusivity therefore carries the units required to balance a second spatial derivative with a first time derivative.
+
+    To put it more simply, diffusivity comes from combining transport efficiency and storage, $\kappa = k/c$. Using dimensional reasoning,
+    the transport efficiency has units
+    \[
+	    \frac{\text{(flux)}}{\text{(gradient)}} \sim \frac{(\text{quantity}/\text{area}/\text{time})}{(\text{potential}/\text{length})}
+    \]
+    and the storage has units
+	\[
+        \frac{\text{quantity}}{\text{volume} \cdot \text{potential}}.
+    \]
+    Dividing them and everything cancels to $kappa \sim \frac{L^2}{T}$
+
+    Physically, $\kappa$ sets the rate at which influence spreads laterally from a source. The square-root scaling $\ell \sim \sqrt{\kappa t}$ shows that diffusion naturally links time to a \emph{length squared}, not to a volume. Volume enters only indirectly through storage, which is already accounted for in the definition of $\kappa$.
+}{core}\label{box:diff_units}
+
+\section{Physical meaning of storage and diffusivity}
+
+The time-dependent conservation law and constitutive relation introduce three quantities that control diffusive behavior: the storage variable $\rho$, the transport coefficient $k$, and the potential $\phi$. Although these symbols appear abstract, each has a clear physical meaning that depends on the system under consideration. Understanding these meanings is essential for interpreting the diffusion equation and its solutions.
+
+\subsection{Storage: what accumulates}
+
+The quantity $\rho(\vb{x},t)$ represents the density of the conserved quantity stored per unit volume. Storage determines how strongly a system responds to imbalances between fluxes and sources. When storage is large, changes occur slowly; when storage is small, the system responds rapidly.
+
+Examples of storage include:
+\begin{itemize}
+    \item \textbf{Heat conduction}: $\rho$ represents thermal energy density, often
+    written implicitly as $\rho c_p T$. Storage reflects the ability of a material
+    to absorb heat without undergoing a large change in temperature.
+    \item \textbf{Chemical diffusion}: $\rho$ corresponds to the concentration of a
+    species. Storage reflects how much material can reside locally.
+    \item \textbf{Groundwater flow}: $\rho$ represents fluid mass stored within pore
+    space, controlled by porosity and compressibility.
+    \item \textbf{Electromagnetic diffusion}: $\rho$ is associated with stored
+    electromagnetic energy or charge density, depending on formulation.
+\end{itemize}
+
+In steady-state systems, storage does not change with time. In diffusive systems, storage evolves, providing the memory that allows the system to respond gradually rather than instantaneously.
+
+\subsection{Potential: what drives the flux}
+
+The scalar field $\phi(\vb{x},t)$ is the intensive quantity whose spatial gradients drive transport. It represents the local “level” of the system and determines the direction and magnitude of flux through its gradient.
+
+Examples include:
+\begin{itemize}
+    \item Temperature in heat conduction
+    \item Concentration in chemical diffusion
+    \item Hydraulic head in groundwater flow
+    \item Electric potential in electromagnetics
+\end{itemize}
+
+Although the physical meaning of $\phi$ varies, its mathematical role is always the same: differences in potential create gradients, and gradients produce flux.
+
+\subsection{Transport coefficient and diffusivity}
+
+The coefficient $k$ describes how efficiently the medium transmits flux in response to a gradient. It reflects material properties, connectivity, and microstructure.  High values of $k$ indicate that gradients are rapidly reduced by strong fluxes, whereas low values allow gradients to persist.
+
+In many applications, it is useful to define a \emph{diffusivity},
+\[
+    \kappa = \frac{k}{\mathrm{storage}},
+\]
+which combines transport efficiency and storage into a single parameter with units of length squared per time. Diffusivity controls how quickly disturbances spread through a system.
+
+A key and widely applicable scaling relation follows directly:
+\[
+    \ell \sim \sqrt{\kappa t},
+\]
+where $\ell$ is the characteristic distance over which a diffusive signal propagates in time $t$. This relationship highlights a central property of diffusion: spatial influence increases only with the square root of time.
+
+\subsection{Why storage and diffusivity matter for interpretation}
+
+Together, storage and diffusivity determine not only how fast a system evolves, but also how much information is preserved. Diffusive processes smooth spatial variations and progressively erase fine-scale structure. Early-time behavior is dominated by shallow or nearby features, while deeper or more distant structure emerges only at later times.
+
+This behavior contrasts sharply with potential fields, which respond instantaneously to sources and lack an intrinsic time scale. Diffusion therefore introduces causality and temporal filtering, providing both challenges and opportunities for geophysical interpretation.
+
+In the next section, we combine the time-dependent conservation law with the constitutive relation to obtain the diffusion equation and examine how these physical ideas are encoded mathematically.
+
+\section{Diffusive Behavior: Spreading, Memory \& Timescales}
+
+One of the most important and counterintuitive features of diffusive systems is how localized disturbances evolve in time. Consider an initial condition in which a conserved quantity is concentrated at a point or within a very small region.  Under diffusion, this localized excess does not propagate outward as a sharp front. Instead, it spreads smoothly, forming a Gaussian distribution whose width increases with time.
+
+The impulse response of the diffusion equation illustrates these behaviours most clearly.
+For a homogeneous medium with constant diffusivity $\kappa$ and no sources, the diffusion equation admits a fundamental solution corresponding to an initial impulse. In one spatial dimension, the solution for an initially localized disturbance takes the form
+\[
+    \phi(z,t) \propto \frac{1}{\sqrt{4\pi\kappa t}}
+    \exp\!\left(-\frac{z^2}{4\kappa t}\right).
+\]
+
+Although the exact prefactor is not important for most physical interpretations, the shape of the solution is. The potential $\phi$ is Gaussian in space at any fixed time, and the characteristic depth (or length) of the distribution increases as
+\[
+    \ell \sim \sqrt{\kappa t}.
+\]
+
+As diffusion proceeds, the system progressively loses memory of initial conditions.  Gaussian spreading reflects the cumulative effect of many small, local fluxes acting over time. At early times, diffusion primarily redistributes material, energy, or charge over short distances. As time progresses, the influence of the initial disturbance extends farther, but increasingly weakly. The peak amplitude decreases as the distribution broadens, ensuring conservation of the total amount stored.
+
+This behavior illustrates several defining features of diffusion:
+\begin{itemize}
+    \item Diffusion smooths spatial variations continuously rather than preserving
+    sharp boundaries.
+    \item The influence of a disturbance grows only as the square root of time,
+    making diffusion intrinsically slow at large distances.
+    \item Fine-scale structure is rapidly lost, while large-scale structure
+    persists longer.
+\end{itemize}
+
+A subtle but important consequence of the diffusion equation is the absence of a finite propagation front.  Unlike wave propagation, diffusion has no finite propagation front. Any disturbance has an immediate, though vanishingly small, effect everywhere. This mathematical property reflects the local nature of diffusive fluxes and the absence of inertia.
+
+\section{Physical meaning of diffusion}
+
+The diffusion equation encodes several fundamental physical behaviors that distinguish diffusive systems from both steady-state potential fields and wave phenomena. These behaviors are independent of the specific physical context and apply equally to heat, chemical concentration, groundwater flow, and electromagnetic diffusion.
+
+\subsection{Spreading and smoothing}
+
+Diffusion continuously redistributes stored quantities from regions of high potential toward regions of low potential. As with potential fields, the solution can be viewed as a superposition of spatial waves that evolve over time,
+\[
+    \text{amplitude} \propto e^{ik\xi} e^{-k^2 \kappa t},
+\]
+where $k$ is the spatial frequency, $\xi$ is a spatial coordinate, and $\kappa$ is the diffusion coefficient.
+
+Short wavelengths (large $k$) decay much more rapidly than long wavelengths. As a result, diffusion smooths and spreads structure at a rate controlled by $\kappa$: localized anomalies do not propagate as sharp features, but instead broaden and weaken over time. Spatial gradients are systematically reduced, and fine-scale structure is progressively erased.
+
+This smoothing is irreversible: once sharp features have been diffused, they cannot be reconstructed without additional information. As a result, diffusion progressively erases high-frequency spatial information while preserving only large-scale trends.
+
+\subsection{Memory loss}
+
+Because diffusion involves both transport and storage, the system retains information about past conditions only for a finite time. Early in the evolution, the field reflects details of the initial or boundary conditions. As diffusion proceeds, these details are forgotten, and the system approaches a state governed primarily by sources, sinks, and boundary conditions.
+
+In practical terms, diffusion acts as a temporal filter. Recent events leave a strong imprint, while older events become increasingly difficult to detect. This property is central to interpreting transient geophysical observations.
+
+\subsection{Finite rates but infinite speed}
+
+A mathematically subtle but important feature of diffusion is that disturbances affect the entire domain immediately: the diffusion equation permits nonzero responses at arbitrarily large distances for any $t > 0$. In this sense, diffusion has infinite propagation speed.
+
+Physically, however, the influence of a disturbance at large distances is vanishingly small at early times. Diffusion operates through local fluxes driven by gradients, and information spreads gradually. There is no sharp front, no arrival time, and no transport of energy without accompanying loss of amplitude.
+
+This behavior contrasts sharply with wave propagation, where finite speeds and distinct wavefronts carry information without immediate smoothing.
+
+\subsection{Time--length scaling}
+
+The combined effects of spreading and storage introduce a natural relationship between time and distance. For a diffusivity $\kappa$, the characteristic distance over which a diffusive signal spreads in time $t$ scales as
+\[
+    \ell \sim \sqrt{\kappa t}.
+\]
+
+This square-root scaling is one of the most important results in diffusion theory.  Doubling the distance influenced by diffusion requires four times as much time.  Consequently, diffusive processes are efficient at short distances and short times, but increasingly slow at transmitting information over large spatial scales.
+
+This scaling governs the depth sensitivity of transient heat flow, electromagnetic induction, and chemical transport, and it underlies the distinction between early-time and late-time behavior discussed in the following sections.
+
+\subsection{Why Gaussians are fundamental}
+
+The Gaussian form is not an accident or a special case. It is the natural outcome of repeated local redistribution governed by the diffusion equation, and it serves as the building block for more complicated solutions. Arbitrary initial conditions can be viewed as superpositions of localized impulses, each of which spreads Gaussianly. As a result, Gaussian smoothing underlies the behavior of all diffusive processes.
+
+Gaussian spreading explains why diffusive processes progressively erase high-frequency spatial information. Early-time observations are sensitive to near-surface or nearby structure, while deeper or more distant features emerge only after sufficient time has elapsed. This time-dependent filtering contrasts sharply with steady-state potential fields, which respond instantaneously and lack a characteristic timescale.
+
+In later chapters, this same Gaussian spreading will reappear in the context of electromagnetic diffusion and transient heat flow, where time-dependent data can be exploited to probe structure as a function of depth.
+
+\section{Canonical diffusive responses}
+
+Although the diffusion equation can be solved numerically for arbitrary geometries and boundary conditions, a small number of canonical solutions provide most of the physical intuition needed for geophysical interpretation. These solutions describe idealized situations but serve as building blocks for understanding more complex cases.
+
+\subsection{Impulse and point-source solutions}
+
+One useful idealisation is a localized impulse input.  The impulse, or point-source, solution represents the response of a diffusive system to a localized, instantaneous input. As discussed previously, this response takes the form of a Gaussian that broadens with time. Because the diffusion equation is linear, arbitrary initial conditions can be represented as superpositions of such impulses. The evolution of any diffusive system can therefore be understood as the combined Gaussian spreading of its initial state.
+
+\subsection{Step-change boundary conditions}
+
+A second common class of solutions arises arises when a boundary condition changes abruptly. For example, if the temperature at the surface is suddenly raised and held fixed, the resulting thermal perturbation diffuses downward over time. The solution in this case involves the error function, which describes how the influence of the boundary propagates into the medium.
+
+Physically, this solution emphasizes that diffusion transmits information from boundaries as well as from internal sources. The depth to which a surface disturbance has penetrated after time $t$ is again controlled by the diffusive length scale $\sqrt{\kappa t}$.
+
+\subsection{Sinusoidal forcing}
+
+Periodic or sinusoidal boundary conditions—such as seasonal variations in surface temperature or oscillatory electromagnetic fields—produce solutions in which amplitude decays exponentially with depth while phase lags increase downward.  These solutions are particularly important in geophysics because they allow depth to be inferred from frequency-dependent attenuation and phase shift.
+
+Despite their differing forms, all canonical solutions of the diffusion equation share the same underlying behavior: smoothing of spatial gradients, progressive loss of high-frequency structure, and evolution governed by the diffusivity.
+
+\section{Early-time and late-time behavior}
+
+Time dependence introduces a natural ordering to diffusive responses. The information contained in a diffusive signal depends strongly on when it is observed relative to the characteristic diffusion time scale.
+
+At early times, diffusive disturbances remain localized near their origin.  Gradients are steep, fluxes are strong, and the effects of boundaries or distant structure have not yet propagated to the observation point. As a result, early-time signals are dominated by shallow or nearby features.
+
+From a practical standpoint, early-time diffusion carries the highest spatial resolution, but the weakest signal amplitudes. This makes early-time observations both valuable and challenging: they are information-rich but sensitive to noise and modeling assumptions.
+
+At late times, diffusion has redistributed the conserved quantity over larger distances. Gradients are weaker, amplitudes are reduced, and the influence of deeper or more distant structure becomes apparent. Eventually, the system approaches steady state, and the temporal evolution slows markedly.
+
+Late-time behavior is less sensitive to fine-scale structure but more robust to noise. In the long-time limit, the diffusion equation reduces to the steady-state potential problem described in Chapter~\ref{ch:potential}.
+
+The distinction between early and late times illustrates a fundamental tradeoff in diffusive systems: resolution versus stability. Early times emphasize local detail, while late times emphasize large-scale structure. Effective interpretation therefore requires careful consideration of the time window being examined.
+
+\section{Diffusion Versus Wave Propagation}
+
+Diffusion and wave propagation represent two fundamentally different modes of transport in physical systems. Although both are described by partial differential equations, their mathematical character and physical implications are markedly distinct.
+
+The diffusion equation is parabolic, reflecting the dominance of storage and gradient-driven flux. Disturbances spread gradually, amplitudes decrease with time, and spatial detail is irreversibly smoothed. Diffusion has no finite propagation speed; any disturbance affects the entire domain immediately, but with rapidly diminishing strength at large distances.
+
+By contrast, the wave equation is hyperbolic and arises when inertia or restoring forces dominate over dissipative effects. Wave propagation involves finite speeds, sharp wavefronts, and oscillatory solutions. Energy can propagate without immediate loss of structure, allowing travel times, reflections, and resonances to be observed.
+
+These differences have profound consequences for geophysical interpretation.  Diffusive methods emphasize amplitude decay, phase lag, and temporal smoothing, whereas wave-based methods exploit arrival times, interference, and impedance contrasts. Diffusion tends to erase information as time progresses, while waves can preserve it over long distances.
+
+Together with steady-state potential fields, diffusion and wave propagation form three complementary classes of geophysical behavior:
+\begin{itemize}
+    \item Potential fields: instantaneous, global sensitivity, no intrinsic time
+    scale
+    \item Diffusive fields: time-dependent smoothing with characteristic
+    time--length scaling
+    \item Wave fields: finite-speed propagation with preserved structure
+\end{itemize}
+
+Understanding which regime applies—and when one transitions into another—is central to interpreting geophysical observations and selecting appropriate methods.
+
+\section{Diffusion in geophysical systems}
+
+Diffusion is not a specialized process confined to thermal physics or chemistry; it is one of the fundamental ways in which the Earth redistributes energy, mass, and charge. In geophysics, diffusion governs how anomalies evolve, how information is transmitted through the subsurface, and how depth sensitivity emerges from time-dependent observations.
+
+What makes diffusion particularly important is not merely its ubiquity, but its interpretational consequences. Diffusive systems smooth spatial structure, lose memory of initial conditions, and introduce intrinsic time and length scales that are absent in steady-state potential fields.
+
+Heat transport in the Earth is fundamentally diffusive. Short-term variations in surface temperature propagate downward over time, while long-term thermal structure reflects the balance between internal heat production and boundary conditions. Because thermal diffusivity is small, diffusion filters high-frequency signals rapidly, leaving only long-wavelength, long-timescale information at depth.
+
+As a result, geothermics is most sensitive to large-scale thermal structure and integrated heat budgets rather than fine-scale heterogeneity. Steady-state heat flow represents the long-time limit of thermal diffusion, while transient methods can probe shallower structure and recent thermal history.
+
+Time-varying electromagnetic fields in the Earth are governed by diffusion rather than wave propagation over most geophysical frequencies. Electrical conductivity controls the rate at which induced currents diffuse, producing characteristic amplitude decay and phase lag with time and depth.
+
+This diffusive behavior underlies methods such as transient electromagnetics and magnetotellurics, where frequency or time serves as a proxy for depth. Early-time or high-frequency signals respond to shallow structure, while late-time or low-frequency signals sample deeper regions. The square-root time--length scaling introduced earlier directly controls this depth sensitivity.
+
+Fluid flow and solute transport in the subsurface also exhibit diffusive behavior when driven by hydraulic gradients or concentration differences. Storage in pore space and compressibility introduces time dependence, while permeability and diffusivity control the rate of redistribution.
+
+In these systems, early-time responses emphasize local structure and hydraulic connectivity, while late-time behavior reflects regional flow patterns and boundary conditions. Diffusion therefore governs both the evolution of contaminant plumes and the recovery of aquifers.
+
+\subsection{What diffusion reveals—and what it hides}
+
+From an interpretational standpoint, diffusion presents both opportunities and limitations. Time dependence allows additional information to be extracted that is unavailable from steady-state observations. However, diffusion also destroys spatial detail, making inverse problems increasingly ill-posed at late times.
+
+This tradeoff mirrors that encountered with potential fields: diffusion distributes information broadly but smooths it irreversibly. Effective geophysical interpretation therefore depends on selecting appropriate time or frequency ranges to balance resolution and stability.
+
+\section{Summary and Forward Connections}
+
+Together with steady-state potential fields and wave propagation, diffusion completes the triad of fundamental field behaviors in geophysics:
+\begin{itemize}
+    \item Potential fields describe instantaneous balance without intrinsic time
+    scales.
+    \item Diffusion introduces time dependence, memory loss, and characteristic
+    depth penetration.
+    \item Wave propagation preserves structure through finite-speed transport and
+    interference.
+\end{itemize}
+
+Understanding diffusion provides the conceptual bridge between static and dynamic geophysical methods. The ideas developed in this chapter reappear throughout the course, particularly in electromagnetic methods and in the interpretation of transient signals across a wide range of geophysical applications.

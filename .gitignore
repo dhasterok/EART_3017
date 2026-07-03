@@ -109,7 +109,6 @@ saved
 *.toc
 *.log
 
-*.tex
 *.eps
 *.ps
 *.bak
@@ -117,9 +116,12 @@ saved
 *.m
 Go
 */figures/
+*.mpeg
+
+# When teaching, remove these extensions
+#*.tex
 *.ppt
 *.pptx
-*.mpeg
 
 # Virtual environments
 .venv/

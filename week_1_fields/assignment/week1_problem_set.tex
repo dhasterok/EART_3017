@@ -1,0 +1,210 @@
+\documentclass[final,a4paper,12pt]{article}
+\usepackage[assignment]{aucourse}
+
+% Header metadata
+\weeknum{1}
+\coursetitle[Geophysics 3A]{Geophysics 3A: Potential Fields \& Geothermics}
+\topic[Potential]{Elevation as a Potential Field}
+
+\begin{document}
+
+\maketitle
+
+\section*{Setup}
+Since this is the first problem set of the semester, we need to do some computer setup first.  \textit{Note: You are welcome to use your own computer, though you will want to have at least 16 GB of RAM, though 32 GB would be better for some of the more intensive calculations and large files that we will use this semester.  Personal machines may be easier to setup than the university machines.}
+
+You will need to setup a \href{https://github.com}{GitHub} account.
+
+Install Git on your machine if it is not already available on your system. VS Code usually prompts automatically at one of the later steps if it is not installed on the machine.
+
+Next open Visual Studio Code (VS Code).  It should come up with an empty interface.  Open the extensions pane by clicking the Extensions icon (four squares, one at an angle) on the sidebar.  In the search type:
+\begin{description}
+  \item [GitHub] find and install GitHub Pull Requests from GitHub
+  \item [Python] find and install Python, Pylance, Python Environments, Python Debugger all from Microsoft (I think most will install automatically when you install the python extension)
+  \item [pyqt] find and install Qt for Python by Shuang Wu
+\end{description}
+
+You are also welcome to install extensions for AI tools (CoPilot, Claude Code, etc.) if you wish.
+
+Once the extensions are all installed, Click on the Accounts icon  (stylized person) at the bottom of the sidebar.  Sign in to your GitHub account.
+
+Now if all has gone well, you should be able to click on clone git repository.  It should take you to the search bar at the top and changed the default text to say ``Provide repository URL or pick repository source''.  Type in \href{https://github.com/dhasterok/EART_3017} and hit return.  Once you have provided a location to store the repository locally, it will download the files.  \emph{Note:} if you are using a university machine, make sure you save the directory someplace where it will be saved between sessions (Cloud or \verb+U:\+ drive).  The repository should be stored in a folder called \verb+EART_3017+.
+
+\textit{Why pull GitHub rather than download? If I need to fix bugs or add files/code, I can update the GitHub repository and then you can pull down only the new and altered files without needing to download everything or it interfering with your work.}
+
+Open the \verb+EART_3017+ folder that you have just created in VS Code.  It will often ask ``Do you trust the authors of the files in this folder?'' and select ``Yes, I trust the authors.''
+
+Once the folder is opened in VS Code, you will need to download the data that we will use in this course.  It will be available on Box.  Since the link may change each year, you will need to find the shared link on \href{https://learn.adelaide.edu.au}{myLearning}.  Download all of the data and subfolders into a directory called \verb+data+.
+
+When you are done, you should have a file structure (not complete):
+
+\begin{verbatim}
+EART_3017/
+|-- course_notes/         # main geophysics textbook
+|-- data/                 # this is where your data should be saved
+|-- geology_primer/       # geology for geophysicists textbook
+|-- lecture_notes/        # notes for online videos
+|-- math_tutorials/       # if you need math refreshers
+|-- src/
+|   |-- apps/             # apps used in workshops and assignments
+|   |-- assignments/      # problem set codes
+|   |-- inversion/        # inversion libraries
+|   |-- physics/          # physics libraries
+|   `-- etc.              # other shared libraries
+|-- week_1_fields/
+|   |-- assignment/       # assignment pdf and additional files
+|   |-- notes/            # any additional notes for this week
+|   `-- workshop/         # workshop materials
+|-- week_2_physical_properties/
+|   |-- assignment/
+|   `-- etc.
+|-- requirements.txt      # package list for pip (see below)
+`-- etc.
+\end{verbatim}
+
+To run python code, we need to setup a virtual environment for python. A virtual environment keeps the course software isolated from the rest of your system and helps ensure that everyone is using compatible versions of the required Python packages. 
+
+Follow the following steps in VS Code:
+\begin{enumerate}
+  \item Type \verb-Ctrl+Shift+P- (or \verb-Cmd+Shift+P- on macOS) to open the command palette.  Type \verb+>+ to start a command and start typing `Python: Create Environment'.  The command should appear before you finish typing so you can select it.
+  \item Select venv as your preferred virtual environment.  You should see \verb+.venv+ show up as a directory in your folder.
+  \item After creating the environment, VS Code sometimes automatically selects it and sometimes doesn't.  If prompted, select the newly created \verb+.venv+ interpreter as the Python interpreter for the workspace.
+  
+  If it does not, open a terminal (\verb-Ctrl+J- to open the panel if needed) and type\\ Windows: \verb+source .venv\bin\activate+\\ macOS/Linux: \verb+source .venv/bin/activate+
+  \item Upgrade pip, in the terminal, type\\ \verb+pip install --upgrade pip+
+  \item To install the required packages into the virtual environment, type\\ \verb+pip install -r requirements.txt+
+\end{enumerate}
+
+\textit{Phew! That setup in many ways is the hard part for this week.}
+
+\section*{Overview}
+The objectives of this problem set is to gain familiarity with
+\begin{itemize}
+  \item VS Code editor,
+  \item the python environment, 
+  \item write some basic python, and
+  \item gain insights into potential and potential fields using elevation
+\end{itemize}
+
+\section*{Tasks}
+There are two major tasks as part of this problem set.
+\begin{enumerate}
+  \item The first is to complete the gradient workshop activity, which you will have done in a group in class, or will need to complete individually.
+
+  \item The second will explore gradients and Laplacians of a topographic dataset in python using the file \verb+src/assignments/week_1_elevation_problems.py+.
+\end{enumerate}
+
+\section*{Theory}
+\subsection{Gradient of Elevation}
+In the gradient workshop activity, we examined the application of spatial gradients to elevation.  The gradient is the first spatial derivative and returns directional components when applied to a scalar function like elevation, i.e.,
+\[
+  \grad{h} = \pdv{h}{x}\vu{x} + \pdv{h}{y}\vu{y}\, .
+\]
+The gradient has a magnitude and a direction since it is a vector quantity, the magnitude of elevation is called the grade or slope
+\[
+  |s| = \left[ \left( \pdv{h}{x} \right)^2 + \left( \pdv{h}{y} \right)^2 \right]^{1/2}
+\]
+and the direction or slope aspect as
+\[
+  \tan \theta = \frac{\pdv{h}{y}}{\pdv{h}{x}}\, .
+\]
+The inverse tangent is signed in order to obtain the correct direction.
+Note that this angle is a horizontal direction, not the inclination or slope angle, which is instead calculated as
+\[
+  \tan \alpha = |\grad{h}|
+\] 
+
+\subsection*{Laplacian of Elevation}
+The Laplacian is a second-order spatial derivative and it is applied to a scalar function and returns a scalar function as it is the divergence of a gradient of a function. For elevation, which is a 2-dimensional function,
+\[
+  \laplacian{h} = \div{\grad{h}} = \pdv[2]{h}{x} + \pdf[2]{h}{y}\, .
+\]
+
+In practice when we are working with gridded datasets, not continuous functions, we have to approximate the Laplacian using differences.  In one dimension, the Laplacian can be estimated by
+\[
+  \frac{\partial^2 h}{\partial x^2} \approx \frac{(h_{i+1} - 2 h_{i} + h_{i-1})}{\Delta x^2}
+\]
+where $\Delta x$ is the spacing between the points. We'll revisit this approximation in the final week of the course; it is called a finite difference approximation and is derived from Taylor series approximations of derivatives.  In two dimensions, the result is similar,
+\[
+  \nabla^2 h = \frac{\partial^2 h}{\partial x^2} + \frac{\partial^2 h}{\partial y^2} \approx \frac{(h_{i+1,j} - 2 h_{i,j} + h_{i-1,j})}{\Delta x^2} + \frac{(h_{i,j+1} - 2 h_{i,j} + h_{i,j-1})}{\Delta y^2}
+\]
+This result requires five points, the central value where the derivative is being approximated and the four values adjacent to it. We call this formula a stencil as we shift and apply it to all points on the interior of the grid.  To compute the 5-point stencil for images and grids where the pixel spacing is equal in x and y, we can simplify approximate the Laplacian as:
+\begin{equation}
+  \nabla^2 h \approx (h_{i+1,j} + h_{i-1,j} + h_{i,j+1} + h_{i,j-1}) - 4 h_{i,j}
+  \label{eq:stencil}
+\end{equation}
+We need to be a little careful at the boundaries because we don't have values across the borders.  We'll use \emph{Neumann edges} (replicate borders) so no artificial sinks/sources appear at the boundary during smoothing.
+
+\subsection*{Iterative Smoothing}
+We will explore the use of a Laplacian for smoothing an image.  Implement the \textbf{2-D five-point Laplacian} for \emph{iterative smoothing} by
+\[
+  H^{(k+1)} = H^{(k)} - \alpha\,\nabla^2 H^{(k)},
+\]
+then compare how sharp features blur as smoothing increases. This builds intuition that as observations are made by \textbf{moving farther from a source produces a smoother map}.
+
+\section*{Data}
+Use an \textbf{ETOPO2} NetCDF (e.g., variable \texttt{z}). For speed, subset a regional window (e.g., 120--160$^\circ$E, 45--5$^\circ$S).
+
+\textbf{Interpretation (200--300 words):} Explain how curvature (large $|\laplacian{h}|$) relates to features that blur first; argue why increased smoothing mimics being farther from sources; explain why the inverse (“downward continuation”) is unstable with noise.
+
+\begin{questions}
+  \question{Laplacian}
+  \begin{parts}
+    \part If the gradient represents the slope, what is the Laplacian?
+
+    \part Derivatives are considered to be noisy operations.  There are artifacts that can occur.  Can you identfy any locations any artifacts?  What may be their cause?
+
+    \part How does the Laplacian compare to the original elevation and the gradient?  Create a profile across a topographic feature, its gradient, and its Laplacian.
+  \end{parts}
+\end{questions}
+
+\medskip
+We update $H$ by $H^{k+1} = H^{k} + \alpha \nabla^2 H^{k}$. 
+
+Start with $\alpha=0.1$ and steps $K = 5,10,20,40$.
+
+\emph{Stability tip}: with unit spacing and the 5-pt stencil, $\alpha$ in $[0.05,0.2]$ is typically safe. If you see oscillations, reduce $\alpha$.
+
+Use the stencil (Equation~\ref{eq:stencil}) in the form $(N + S + E + W) - 4.0*C$, where N, S, E, W are the pixels above, below, left and right of a central pixel (C), respectively.
+
+\begin{questions}[resume]
+  \question{Iterative Smoothing}
+  \begin{parts}
+    \part Where is $|\nabla^2 h|$ largest? Why do those areas blur first under smoothing?
+
+    \part Explain in 2--3 sentences why *more smoothing* mimics being *farther* from sources.
+  \end{parts}
+
+  \question{Lineaments}
+  Now that we can produce maps of both the gradient and Laplacian of elevation, produce a map that identifies linear features on the map.  We can identify these by determining where the gradient and or Laplacian change.  Let's compare the results by identifing points of change by using:
+  \begin{itemize}
+    \item the gradient only
+    \item the Laplacian only
+    \item combined gradient and Laplacian
+  \end{itemize}
+
+  \begin{parts}
+    \part Does the identification of lineaments work better when using a single threshold criteria or both.
+
+    \part Does smoothing improve or reduce the identification of lineaments?  How does changing the smoothing affect the result?
+  \end{parts}
+\end{questions}
+
+\section*{Extension (optional)}
+On a latitude--longitude grid, east--west spacing shrinks with latitude. For uniform angular steps $\Delta\phi$ (latitude) and $\Delta\lambda$ (longitude),
+\[
+  \Delta y \approx R\,\Delta\phi,\qquad \Delta x(\phi) \approx R\cos\phi\,\Delta\lambda,
+\]
+so a physically weighted discrete Laplacian is
+\[
+  \nabla^2 h \approx \frac{h_{i+1,j}-2h_{i,j}+h_{i-1,j}}{\Delta y^{2}}
+  + \frac{h_{i,j+1}-2h_{i,j}+h_{i,j-1}}{\Delta x(\phi_i)^{2}}.
+\]
+Implement this variant with per-row $\Delta x(\phi_i)$ and scalar $\Delta y$, and re-run smoothing with a smaller $\alpha$.
+
+\section*{Submission}
+\begin{itemize}
+  \item Answer sheet
+\end{itemize}
+
+\end{document}
