@@ -1,0 +1,165 @@
+%\usetikzlibrary{decorations.pathmorphing, arrows.meta}
+%\usepackage{multicol}
+%\usepackage{pgfplots}
+
+\weeknum{5}
+\topic[Isostasy]{Isostasy: Ocean--Continent Structure \& Isostatic Gravity}
+
+\workshopstart
+
+\vspace{-0.75em}
+\noindent\textbf{Duration:} 3 hours \hfill \textbf{Setting:} Workshop room (small-group whiteboard work)
+
+\section*{Preparation}
+
+\begin{description}
+  \item[Pre-reading:]
+  \item[Lecture videos:]
+  \item[Notes:]
+\end{description}
+
+\section*{Purpose}
+
+This workshop develops a quantitative understanding of isostatic equilibrium and its gravity expression by combining column-based reasoning, ocean--continent structure, and slab gravity approximations. Airy and Pratt isostasy are treated as end-member models, with emphasis on why real Earth structure requires a mixed or layered approach involving the lithospheric mantle.
+
+\section*{Learning Outcomes}
+
+By the end of this workshop, you should be able to:
+
+\begin{itemize}
+    \item Explain isostatic equilibrium as equal lithostatic pressure (or mass per unit area) at a compensation depth.
+    \item Derive and interpret Airy and Pratt isostasy as conceptual end members.
+    \item Explain why crust-only isostatic models fail for ocean--continent systems.
+    \item Derive the Airy isostatic gravity correction using slab approximations.
+    \item Explain why gravity anomalies over high topography may be small.
+\end{itemize}
+
+\section*{Session Flow (180 min)}
+
+\timeslot{Warm-Up: Defining Isostasy}{10}
+
+Individually, write a one-sentence definition of isostatic equilibrium. These definitions are compared in pairs and then within your group, with the goal of converging on a precise statement.
+
+\smallskip
+\noindent
+\textbf{Target idea:}
+\begin{quote}
+Isostatic equilibrium requires equal lithostatic pressure (or mass per unit area) at a compensation depth beneath adjacent columns.
+\end{quote}
+
+Groups assign roles (facilitator, skeptic, recorder, assumption checker).
+
+\timeslot{Mini-Lecture: Airy, Pratt, and Mixed Isostasy}{20}
+
+A short instructor-led lecture reviews:
+
+\begin{itemize}
+    \item Airy isostasy: variable crustal thickness, uniform density
+    \item Pratt isostasy: constant thickness, lateral density variations
+    \item Why neither end member fully describes the Earth
+    \item The role of lithospheric mantle and partial compensation
+\end{itemize}
+
+This provides the conceptual framework for the two analytical activities that follow.
+
+\timelineitem{Oceanic vs Continental Columns}{40}
+
+\subsection*{Purpose}
+
+To test whether crust-only Airy isostasy can account for observed ocean--continent elevation differences, and to explore how including the lithospheric mantle resolves inconsistencies.
+
+\subsection*{Crust-Only Airy Isostasy}
+
+Each group balances an oceanic and a continental column under the assumption that compensation occurs solely through crustal thickness. You will:
+
+\begin{itemize}
+    \item Enforce equal mass per unit area above a compensation depth.
+    \item Solve for the oceanic crust density required for equilibrium.
+    \item Compare your result with realistic oceanic crust densities.
+\end{itemize}
+
+You should find that the required density is unrealistic, indicating a missing component in the model.
+
+\subsection*{Two-Layer Lithosphere Extension}
+
+The model is then extended to include a lithospheric mantle beneath both oceanic and continental crust. You will:
+
+\begin{itemize}
+    \item Rebalance the columns including mantle lithosphere thickness differences.
+    \item Estimate the density contrast between oceanic and continental lithospheric mantle.
+    \item Relate this contrast to mineralogical differences (e.g.\ garnet content).
+\end{itemize}
+
+\timeslot{Whole-Class Synthesis}{10}
+
+A brief instructor-led discussion synthesises results from Activity 1, focusing on:
+
+\begin{itemize}
+    \item Why crust-only Airy isostasy fails
+    \item Why the lithospheric mantle must be included
+    \item Where Pratt-like behaviour may arise
+\end{itemize}
+
+\timelineitem{Isostatic Gravity Correction}{40}
+
+\subsection*{Purpose}
+
+To derive the Airy isostatic gravity correction and explain why large topography does not necessarily produce large gravity anomalies.
+
+\subsection*{Airy Mass Balance}
+
+You will show that, under Airy isostasy,
+\[
+\rho_c h = (\rho_m - \rho_c)\, r ,
+\]
+and derive an expression for the crustal root thickness $r(x)$.
+
+\subsection*{Infinite Slab Gravity}
+
+Using the slab approximation,
+\[
+\Delta g = 2\pi G \rho t ,
+\]
+you will compute the gravitational effects of surface topography and of the compensating crustal root.
+
+\subsection*{Cancellation}
+
+By substitution, you will demonstrate that under perfect Airy compensation, the gravity effects of topography and root cancel exactly, and discuss what assumptions are required for this result.
+
+\timeslot{Numerical Demonstration}{25}
+
+The instructor presents a live Python demonstration illustrating:
+
+\begin{itemize}
+    \item Airy compensation with varying compensation fractions
+    \item Pratt-style lateral density variations
+    \item Resulting gravity anomalies and residuals
+\end{itemize}
+
+Interpretation of results is emphasised rather than coding details.
+
+\timeslot{Group Synthesis}{25}
+
+Each group prepares a brief summary addressing:
+
+\begin{itemize}
+    \item One reason crust-only Airy isostasy fails.
+    \item One way lithospheric mantle structure resolves this failure.
+    \item One equation linking topography, density, and gravity.
+    \item One observation that could reduce non-uniqueness in isostatic interpretation.
+\end{itemize}
+
+\timeslot{Exit Questions}{10}
+
+Individually, respond to the following:
+
+\begin{enumerate}
+    \item Identify one unrealistic assumption in either Airy or Pratt isostasy and explain why it fails.
+    \item Explain how geological or geophysical constraints (e.g.\ seismology or petrology) help resolve ambiguity in isostatic models.
+\end{enumerate}
+
+\notepage
+\notepage
+
+\subimport{activities/}{activity_ocean_continent}
+\subimport{activities/}{activity_isostatic_correction}

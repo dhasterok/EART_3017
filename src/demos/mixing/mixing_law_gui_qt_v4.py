@@ -468,6 +468,9 @@ class MainWindow(QMainWindow):
 
     def _on_grid(self, *args):
         self.H = self.sp_H.value(); self.W = self.sp_W.value()
+        # Prior run results (e.g. self.last_T) are sized to the old grid and
+        # would no longer broadcast against a freshly rebuilt field.
+        self.times = []; self.keffs = []; self.exit_rows = []; self.last_T = None
         self._refresh_prediction(); self._redraw_field()
 
     def _update_comp_visibility(self):

@@ -1,0 +1,99 @@
+\weeknum{1}
+\topic[Potential Field Intuition]{Gradients, Curvature, and Potential-Field Intuition}
+
+\workshopstart
+
+\vspace{-0.75em}
+\noindent\textbf{Duration:} 3 hours \hfill \textbf{Setting:} Workshop room
+
+\section*{Preparation}
+
+\begin{description}
+  \item[Pre-reading:] Course Notes Ch. 1, 3--4
+  \item[Lecture videos:]
+  \item[Notes:]
+\end{description}
+
+\section*{Purpose}
+
+The purpose of this workshop is to build an intuitive and practical understanding of gradients and Laplacians as tools for interpreting geophysical fields. Using familiar examples from topography, you will connect physical intuition (slope, steepness, direction, and curvature) to their mathematical descriptions (partial derivatives, gradients, and the Laplacian), and begin to see how these ideas extend to abstract potential fields used in geophysics.
+
+This workshop also introduces back-of-the-envelope (BOTE) reasoning as a core skill for estimating physical quantities, assessing plausibility, and developing quantitative intuition before applying more formal calculations or computational methods.
+
+\section*{Learning Outcomes}
+
+By the end of this workshop, you should be able to:
+\begin{itemize}
+  \item Describe the gradient of a scalar field in both intuitive (slope and direction) and mathematical (partial derivatives and vector representation) terms.
+  \item Interpret maps and surfaces by identifying regions of high gradient magnitude and explaining their physical significance.
+  \item Conceptually explain curvature (Laplacian) as changes in slope and identify where it is large or near zero in maps or surfaces.
+  \item Construct and interpret gradient vectors graphically from contour maps.
+  \item Apply simple back-of-the-envelope calculations to estimate physical quantities and justify assumptions using order-of-magnitude reasoning.
+  \item Connect the concepts of gradients and curvature to the behaviour of potential fields and their role in geophysical interpretation.
+\end{itemize}
+
+\section*{Session Flow (170 min)}
+
+\timeslot{Course introduction}{15}
+
+What the course covers, weekly rhythm, assessment structure, expectations, office hours, and where to find materials.  Download mateials while instructor goes over outline of course.
+
+\timelineitem{Tectonic Plate vs. Freight Train}{45} 
+
+Work in groups of 3--4 on the back-of-the-envelope style problem.
+
+To estimate these parameters, you will need to know/learn a few things about the structure of Earth, the physical properties of common rock types within each layer, and make assumptions (understand ranges) for required values.  You can refer to the \emph{Geology for Geophysicists} notes.  You will need to keep track of units and become comfortable with uncertainty and order-of-magnitude estimation.
+
+\timeslot{Mini-lecture and Q \& A}{20}
+
+Address questions from lecture; otherwise give a concise teaser: scalar vs vector fields, $\nabla h$ as direction of steepest increase, and $\nabla^2$ as curvature, vector field = gradient of scalar potential ($F = \nabla \phi$).
+
+\timeslot{Break}{5}
+
+\timelineitem{Sheet Model of Potential Fields}{15}
+
+Hands-on demonstration of a scalar field using a stretched sheet. Boundary heights are fixed (Dirichlet boundary conditions), while pushing up/down on the sheet introduces localized sources and sinks.
+
+Focus on how the gradient (slope) and curvature (Laplacian) respond to boundary conditions and internal forcing, and how increasing observation distance smooths the field.
+
+\timelineitem{Gradient Activity}{30}
+
+Work in groups of 3--4 on the gradient activity.
+
+\timeslot{Activity Debrief}{15}
+
+Discuss the answers to the Gradient Activity.
+
+\timeslot{Preview: Physical properties}{10}
+
+Next week, we'll examine what I like to call the \emph{geophysical fudge factors}: the physical properties of Earth materials.  These properties control how fields are generated, modified, and transmitted. Mathematically, they often appear as scale factors that determine magnitudes and ensure the units make sense---but physically, \emph{properties contain the geology}.
+
+As geophysicists, we measure fields but interpret physical properties, so it is essential to understand how these properties vary with composition and state variables such as pressure and temperature.
+
+We'll also look at how to estimate rock properties using different approaches, including deriving bulk properties from mineralogy. This approach introduces mixing models, and we'll discuss when different mixing relationships are appropriate.
+
+\section*{What to submit (Week 1 practical; total 20 points)}
+\begin{enumerate}[label=\textbf{\Alph*.}]
+  \item \textbf{Gradient worksheet (10 pts).} Submit a scan/photo/PDF of your completed sheet (arrows, notes, short answers). This will be done as a group, but submitted individually.  You may all work off the same worksheet.
+
+  \item \textbf{Programming (10 pts).} Submit your notebook or \texttt{.py} with \emph{your own} 5-point Laplacian, plus: a regional map, a $\nabla^2 h$ map with symmetric limits, and a 3--5 sentence interpretation (why $|\nabla^2 h|$ highlights sharp features and why increased distance smooths).
+\end{enumerate}
+
+\section*{Rubrics (concise)}
+\textbf{Gradient worksheet (10):} correctness of arrows (4); thoughfullness of written answers (4); accuracy of written answers (2)\\
+\textbf{Programming (10):} code correctness (2); interpretation (8: thorough and thoughtfull answers to questions).
+
+\section*{Tips}
+\begin{itemize}
+  \item Work in mixed-background groups; geologist + physicist + ...
+  \item Share your expertise freely and use each other's knowledge to fill gaps in your own.
+  \item Work colletively and constructively towards the common aims.  Value each other's opinions, feel free to respectively discuss differences of ideas. 
+  \item Keep your regional window modest for the computer exercises so computations render quickly.
+\end{itemize}
+
+\notepage
+\notepage
+
+\subimport{activities/}{activity_plate_vs_train}
+\subimport{activities/}{activity_sheet}
+\subimport{activities/}{activity_gradient}

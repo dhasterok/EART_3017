@@ -1,96 +1,10 @@
 \documentclass[11pt,a4paper]{article}
-\usepackage[workshop]{aucourse}
+\usepackage[workshop, standalone]{aucourse}
+\usepackage{import}
 \usepackage{multicol}
 
-\weeknum{2}
-\topic[Physical Properties]{Physical Properties, Mixing Laws, and Asking the Right Questions}
+\newcommand\LMS{MyLearning}
 
 \begin{document}
-\maketitle
-\vspace{-0.75em}
-\noindent\textbf{Duration:} 3 hours \hfill \textbf{Setting:} Workshop room
-
-\section*{Preparation}
-
-Pre-reading: Course Notes Ch. 2
-
-Lecture videos:
-
-Notes: 
-
-\section*{Purpose}
-
-This workshop develops intuition for how physical properties (density $\rho$, thermal conductivity $k$, thermal diffusivity $\kappa$, bulk modulus $K_T$, shear modulus $\mu$, seismic velocities $V_P, V_S$, magnetic susceptibility $\chi$, and heat production $A$) depend on state variables (pressure $P$, temperature $T$, composition, porosity/cracks), and how geometry and fabric determine appropriate mixing relations (arithmetic, geometric, harmonic; Voigt--Reuss--Hill). Students practice cross-disciplinary collaboration and formulate the key questions a practicing geophysicist must ask a geologist before modeling or surveying.
-
-\section*{Learning Outcomes}
-\begin{itemize}
-  \item Select and justify mixing laws based on rock fabric (random granular, layered/foliated, fractured) and target property (bulk vs. transport vs. elastic).
-  \item Reason about how $P$--$T$--composition/porosity shift properties and create anisotropy.
-  \item Identify which properties most strongly influence gravity, magnetic, and conductive heat-flow interpretations.
-  \item Elicit geological information via well-posed questions to constrain non-uniqueness.
-\end{itemize}
-
-\textit{Reference concepts are aligned with the Week 2 notes on physical properties and mixing relationships.}
-
-\section*{Roles and Grouping}
-Create mixed groups (4--5 students each) with both geology and physics/engineering backgrounds. Rotate roles: \emph{Facilitator}, \emph{Unit/Assumption Checker}, \emph{Recorder}, \emph{Skeptic}.
-
-\section*{Session Flow (170 min)}
-
-\timeslot{What does geophysics see?}{10}
-
-Much like our senses, Different fields are sensitive to different things.  
-
-\timeslot{Mini-lecture and Q\&A}{20}
-\begin{itemize}
-  \item Bulk-additive vs. pathway-limited vs. elastic-interaction properties.
-  \item Mixing relations: arithmetic (parallel), harmonic (series), geometric (random granular), Voigt--Reuss--Hill (elastic bounds).
-  \item Scale-dependent anisotropy (micro/meso/macro fabrics).
-\end{itemize}
-
-\timeslot{Live Demonstration --- ``Crowd Conductivity''}{15}
-
-\textbf{Aim:} Intuitively illustrate why different mixing laws arise and how anisotropy appears.
-\begin{enumerate}
-  \item \textbf{Random scattering} (students distributed irregularly): volunteer transits across room. Multiple semi-obstructed pathways $\Rightarrow$ geometric-like effective behavior.
-  \item \textbf{Parallel corridors} (lanes aligned with motion): fastest transit $\Rightarrow$ arithmetic mean (parallel pathways).
-  \item \textbf{Series barriers} (rows perpendicular to motion): slowest transit $\Rightarrow$ harmonic mean (series resistances).
-  \item \textbf{Anisotropy}: compare transit parallel vs. perpendicular to fabric.
-\end{enumerate}
-\textit{Optional: time a handful of transits and note distribution shape differences.}
-
-\timeslot{Simulation Walkthrough}{20}
-
-Builds on crowd conductivity with computation.  We'll examine a pre-built Python visualization of transit times through three media (random, parallel, series) and the resulting histogram shapes. Relate to effective properties and mixing choices.
-
-\timelineitem{Photo-Based Anisotropy \\ \small(\textit{micro--meso--macro classification})}{30}
-Distribute a set of photos (thin section, hand sample/outcrop close-up, outcrop/aerial). For each image, groups identify: geometry (random granular/layered/foliated/fractured), appropriate mixing law for density, conductivity, and moduli, whether the material is isotropic at that scale, and how conclusions change with scale.
-
-\timelineitem{Scenario Rotations (rich, real-world cases)}{60}
-Each group tackles two scenarios (\~20 min each: 12 min discussion, 5 min notes, 3 min question drafting). Use the dedicated scenario handouts. Outcomes must include: (i) property/mixing-law decisions and (ii) 2--3 \emph{questions to ask the geologist} before committing to a model/survey.
-
-\timeslot{Scenario Debrief}{15}
-
-\timeslot{Q \& A}{10}
-
-Discussion of any new or unresolved questions.
-
-\timeslot{Preview: Inversion}{10}
-
-In geophysics, we typically measure fields and infer the underlying physical properties. In this course, however, we mostly focus on the \emph{forward problem}: computing fields from a known distribution of properties.
-
-In practice, we usually face the opposite challenge: the \emph{inverse problem}.
-Inverse problems are difficult for several reasons:
-\begin{itemize}
-  \item they are often \emph{underdetermined}, with fewer observations than unknowns;
-  \item \emph{non-unique}, meaning different models can produce the same data; and
-  \item \emph{unstable}, where small changes in the model can produce large changes in the predicted field.
-\end{itemize}
-In addition, many geophysical relationships are non-linear, which adds further complexity.
-
-Next week, we'll begin looking at how inversion methods address these challenges.
-
-\input{activity_photo_mixing}
-\input{activity_scenarios}
-
+\input{week2_timeline}
 \end{document}

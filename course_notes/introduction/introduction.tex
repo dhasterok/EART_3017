@@ -31,7 +31,15 @@ Fields can also relate to material properties (e.g., density, magnetization, sei
 
 Something else that will arise from time to time will be {\it field lines}, which are sometimes refered to as {\it flow lines} depending upon the application. Field lines represent the direction a partical would travel going in the direction of highest magnitude, force, or potential to lowest.  We draw field lines with arrows and they may be open (the ends do not meet) or closed (the ends join).  Although, depending upon the convention, we sometimes draw the arrows in the opposite direction.
 
-In contrast, {\it isolines} trace out a continuous set of points at constant potential, force, or magnitude and are orthogonal ($\perp$) to the field lines at all times.  A common example is contour lines on a topographic map which trace lines of constant elevation.  A rain drop falling on topography would head in the direction of the flow lines.  We can define also define an isosurface or equipotential surface that defines a surface of constant magnitude and can be open like a sheet or closed like a balloon (enclosing a region of space).
+In contrast, {\it isolines} trace out a continuous set of points at constant scalar potential, force, or magnitude and are orthogonal ($\perp$) to the field lines at all times.  A common example is contour lines on a topographic map which trace lines of constant elevation.  A rain drop falling on topography would head in the direction of the flow lines.  We can define also define an isosurface or equipotential surface that defines a surface of constant magnitude and can be open like a sheet or closed like a balloon (enclosing a region of space).
+
+\ntextbox{Relationship between a potential and its vector field}{
+    Let's do a simple thought experiment to demonstrate the relationship between scalar potential and its related vector field.  Imagine that you are standing on the side of a hill.  Elevation represents the potential, $\phi(x,y)$ of that hill.  The gradient, $\grad{\phi}$, points directly uphill.  A contour line is an equipotential and walking along the contour changes your position, but not your elevation.  The path you walk can be expressed by a direction for each small change in position, $\dd{\vb{r}}$.
+
+    Since your elevation does not change, $\dd{\phi} = \grad{\phi} \cdot \dd{\vb{r}} = 0$, so your direction of travel is perpendicular to the gradient.  As the gradient of a scalar potential results in a vector field, we write: $\vb{F} = -\grad{\phi}$, hence $\vb{F} \cdot \dd{\vb{r} = 0}$ for any $\dd{\vb{r}}$ orthogonal to the equipotential surface.
+
+    \emph{Note:} $\vb{F} = -\grad{\phi}$ is a constitutive relationship (conservation law).  We'll see similar equations quite often and will discuss them in more depth in Chapter~\ref{ch:potential}.
+}{aside}
 
 \subsection{Continuity and Differentiability}
 

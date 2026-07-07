@@ -1,0 +1,349 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{aucourse}[2026/06/24 Adelaide University Course Templates]
+
+% ---- Options ---------------------------------------------------------------
+\newif\if@aucourse@book    \@aucourse@bookfalse
+\newif\if@aucourse@wshop   \@aucourse@wshopfalse
+\newif\if@aucourse@assign  \@aucourse@assignfalse
+\newif\if@aucourse@test    \@aucourse@testfalse
+\newif\if@aucourse@tut     \@aucourse@tutfalse
+\newif\if@aucourse@key     \@aucourse@keyfalse
+
+% ---- Workshop output mode --------------------------------------------------
+\newif\if@aucourse@booklet
+\@aucourse@bookletfalse
+
+\newif\if@aucourse@standalone
+\@aucourse@standalonetrue
+
+\DeclareOption{book}      {\@aucourse@booktrue}
+\DeclareOption{workshop}  {\@aucourse@wshoptrue}
+\DeclareOption{booklet}{
+    \@aucourse@booklettrue
+    \@aucourse@standalonefalse
+}
+\DeclareOption{standalone}{
+    \@aucourse@standalonetrue
+    \@aucourse@bookletfalse
+}
+\DeclareOption{assignment}{\@aucourse@assigntrue}
+\DeclareOption{test}      {\@aucourse@testtrue}
+\DeclareOption{tutorial}  {\@aucourse@tuttrue}
+\DeclareOption{key}       {\@aucourse@keytrue}
+\ProcessOptions\relax
+
+% ---- Base package ----------------------------------------------------------
+\RequirePackage{notes}
+
+% ---- Derived flags ---------------------------------------------------------
+\newif\if@aucourse@fancyhdr \@aucourse@fancyhdrfalse
+\if@aucourse@wshop  \@aucourse@fancyhdrtrue\fi
+\if@aucourse@assign \@aucourse@fancyhdrtrue\fi
+\if@aucourse@tut    \@aucourse@fancyhdrtrue\fi
+
+\newif\if@aucourse@hasq \@aucourse@hasqfalse
+\if@aucourse@assign \@aucourse@hasqtrue\fi
+\if@aucourse@test   \@aucourse@hasqtrue\fi
+\if@aucourse@wshop  \@aucourse@hasqtrue\fi
+
+% ---- Extra packages --------------------------------------------------------
+%\RequirePackage[hidelinks]{hyperref}
+
+\if@aucourse@fancyhdr\RequirePackage{fancyhdr}\fi
+\if@aucourse@book\else
+  \RequirePackage{titling}
+  \setlength{\droptitle}{-3em}
+\fi
+
+% ---- Metadata defaults -----------------------------------------------------
+\def\@coursetitle@long{Geophysics 3A: Potential Fields \& Geothermics}
+\def\@coursetitle@short{Geophysics 3A}
+\def\@topic@long{}
+\def\@topic@short{}
+\def\@weeknum{}
+\def\@unitnum{1}
+% Logo is resolved from the texmf tree by default; override with \logofile{}
+% if you need a specific path (e.g., a local copy).
+\def\@logofile{au-logo-dark-blue-horizontal.png}
+
+% ---- Metadata commands -----------------------------------------------------
+
+% \coursetitle[short]{long}
+%   long  — used in the auto-constructed title block (\maketitle)
+%   short — used in page headers (defaults to long if omitted)
+\newcommand\coursetitle[2][]{%
+  \def\@coursetitle@long{#2}%
+  \def\@aucourse@tmp{#1}%
+  \ifx\@aucourse@tmp\@empty
+    \def\@coursetitle@short{#2}%
+  \else
+    \def\@coursetitle@short{#1}%
+  \fi
+}
+
+% \topic[short]{long}
+%   long  — used in the auto-constructed title block
+%   short — used in page headers (defaults to long if omitted)
+\newcommand\topic[2][]{%
+  \def\@topic@long{#2}%
+  \def\@aucourse@tmp{#1}%
+  \ifx\@aucourse@tmp\@empty
+    \def\@topic@short{#2}%
+  \else
+    \def\@topic@short{#1}%
+  \fi
+}
+
+\newcommand\weeknum[1]{\def\@weeknum{#1}}
+\newcommand\unitnum[1]{\def\@unitnum{#1}}
+
+% \logofile{filename-or-path} — override the default logo.
+\newcommand\logofile[1]{\def\@logofile{#1}}
+
+% ---- Auto-title construction (article types only) --------------------------
+%
+% \maketitle is patched so that title, author, and date are derived
+% automatically from the metadata commands above.  Calling \title{},
+% \author{}, or \date{} explicitly in the preamble sets a flag that prevents
+% the corresponding auto-value from being applied.
+%
+\if@aucourse@book\else
+
+  \newif\if@aucourse@usertitle  \@aucourse@usertitlefalse
+  \newif\if@aucourse@userauthor \@aucourse@userauthorfalse
+  \newif\if@aucourse@userdate   \@aucourse@userdatefalse
+
+  % Wrap the standard commands to detect user overrides.
+  \let\aucourse@orig@title\title
+  \renewcommand\title[1]{\@aucourse@usertitletrue\aucourse@orig@title{#1}}
+  \let\aucourse@orig@author\author
+  \renewcommand\author[1]{\@aucourse@userauthortrue\aucourse@orig@author{#1}}
+  \let\aucourse@orig@date\date
+  \renewcommand\date[1]{\@aucourse@userdatetrue\aucourse@orig@date{#1}}
+
+  % Per-type auto values — evaluated lazily at \maketitle time.
+  \if@aucourse@wshop
+    \def\@aucourse@autotitle{%
+      \ifx\@weeknum\@empty \@topic@long
+      \else Week \@weeknum\ --\ Workshop\\\@topic@long\fi
+      \\[1em]\includegraphics[width=3cm]{\@logofile}}
+    \def\@aucourse@autoauthor{\@coursetitle@long}
+    \def\@aucourse@autodate{\today}
+  \fi
+  \if@aucourse@assign
+    \def\@aucourse@autotitle{%
+      Problem Set \@weeknum:\\[1em]\@topic@long\\[1em]\includegraphics[width=3cm]{\@logofile}}
+    \def\@aucourse@autoauthor{\@coursetitle@long}
+    \def\@aucourse@autodate{\the\year}
+  \fi
+  \if@aucourse@test
+    \if@aucourse@key
+      \def\@aucourse@autotitle{%
+        Unit \@unitnum\ Test ---\ Key\\[1em]%
+        \includegraphics[width=3cm]{\@logofile}}
+    \else
+      \def\@aucourse@autotitle{%
+        Unit \@unitnum\ Test\\[1em]\includegraphics[width=3cm]{\@logofile}}
+    \fi
+    \def\@aucourse@autoauthor{\@coursetitle@long}
+    \def\@aucourse@autodate{\today}
+  \fi
+  \if@aucourse@tut
+    \def\@aucourse@autotitle{%
+      \@topic@long\\[1em]\includegraphics[width=3cm]{\@logofile}}
+    \def\@aucourse@autoauthor{\@coursetitle@short}
+    \def\@aucourse@autodate{}
+  \fi
+
+  % Fallback when no document-type option is given.
+  \providecommand\@aucourse@autotitle{\@topic@long}
+  \providecommand\@aucourse@autoauthor{\@coursetitle@short}
+  \providecommand\@aucourse@autodate{}
+
+  % Patch \maketitle to inject computed values (unless user overrode them).
+  \let\aucourse@orig@maketitle\maketitle
+  \renewcommand\maketitle{%
+    \if@aucourse@usertitle \else
+      \aucourse@orig@title{\@aucourse@autotitle}%
+    \fi
+    \if@aucourse@userauthor \else
+      \aucourse@orig@author{\@aucourse@autoauthor}%
+    \fi
+    \if@aucourse@userdate \else
+      \aucourse@orig@date{\@aucourse@autodate}%
+    \fi
+    \aucourse@orig@maketitle
+  }
+\fi
+
+% ---- fancyhdr (workshop, assignment, tutorial) -----------------------------
+%
+% Short forms of \coursetitle and \topic appear in the running header.
+% The first page receives plain style automatically (via \maketitle's
+% built-in \thispagestyle{plain}).
+%
+\if@aucourse@fancyhdr
+  \AtBeginDocument{%
+    \pagestyle{fancy}%
+    \fancyhf{}%
+    \lhead{\@coursetitle@short}%
+    \ifx\@weeknum\@empty
+      \rhead{\@topic@short}%
+    \else
+      \rhead{Week \@weeknum\ ---\ \@topic@short}%
+    \fi
+    \cfoot{\thepage}%
+  }
+\fi
+
+% ---- Test page numbering ---------------------------------------------------
+\if@aucourse@test
+  \AtBeginDocument{%
+    \pagestyle{plain}%
+    \if@aucourse@key
+      \renewcommand\thepage{{\color{BrickRed}Key}--\arabic{page}}%
+    \else
+      \renewcommand\thepage{\@unitnum--\arabic{page}}%
+    \fi
+  }
+\fi
+
+% ---- Answer key colour command ---------------------------------------------
+\if@aucourse@key
+  \providecommand\ans{\color{BrickRed}}
+\fi
+
+% ---- Question environments (assignment + test) -----------------------------
+%
+% \begin{questions}
+%   \question[pts]{title}   body
+%   \begin{parts}
+%     \part sub-question
+%   \end{parts}
+% \end{questions}
+%
+% Splitting around code blocks:
+%   \begin{questions}[resume]  and  \begin{parts}[resume]
+%
+\if@aucourse@hasq
+  \newcounter{totalpts}
+  \newlist{questions}{enumerate}{1}
+  \setlist[questions]{%
+    label={\bf Question \arabic{*}.},%
+    itemsep=3em, topsep=0pt, parsep=\parskip, leftmargin=*%
+  }
+  \newcommand{\question}[2][]{%
+    \item
+    \def\@aucourse@pts{#1}%
+    \ifx\@aucourse@pts\@empty\else
+      {\bf [#1~pts]}\ \addtocounter{totalpts}{#1}%
+    \fi
+    #2\\%
+  }
+  \newcommand\showtotal{\arabic{totalpts}}
+
+  \newlist{parts}{enumerate}{1}
+  \setlist[parts]{label=(\alph*), topsep=0.5em, itemsep=1em, leftmargin=*}
+  \AtBeginEnvironment{parts}{\let\part\item}
+\fi
+
+% ---- Tutorial theorem environments -----------------------------------------
+\if@aucourse@tut
+  \newtheorem{example}{Example}[section]
+  \newtheorem{problem}{Problem}[section]
+\fi
+
+% ---- Workshop timeline and activity environments ----------------------------
+%
+% Timeline (in the main overview section):
+%   \timeslot{title}{minutes}      — unlabelled item (warm-up, break, wrap-up)
+%   \timelineitem{title}{minutes}  — lettered item (A, B, C, ...)
+%   \setstarttime{N}               — manually advance the clock to N minutes
+%
+% Activity sheets (each starts on a new page, numbered 1, 2, 3, ...):
+%   \begin{activity}{Title} ... \end{activity}
+%
+\if@aucourse@wshop
+  \newcommand{\workshopentry}{%
+    \ifx\@weeknum\@empty
+      \@topic@long
+    \else
+      Week \@weeknum\ ---\ \@topic@long
+    \fi
+  }
+
+  % Workshop heading
+  \newcommand{\workshopstart}{%
+    \if@aucourse@booklet
+      \clearpage
+      \phantomsection
+      \pdfbookmark[1]
+        {\workshopentry}
+        {week-\@weeknum}
+      \part*{{\LARGE \workshopentry}}
+      \addcontentsline{toc}{part}{\workshopentry}
+      \vspace{0.5em}
+      \setcounter{wshoptime}{0}
+      \setcounter{wshopitem}{0}
+      \setcounter{wshopact}{0}	
+    \else
+      \maketitle
+    \fi
+  }
+
+  \newcounter{wshoptime}   % accumulated minutes
+  \newcounter{wshopitem}   % A, B, C, ... for labelled timeline items
+  \newcounter{wshopact}    % 1, 2, 3, ... for activity sheets
+
+  % Manually set the running clock (e.g. after a break not in the timeline).
+  \newcommand{\setstarttime}[1]{\setcounter{wshoptime}{#1}}
+
+  % \timeslot{title}{minutes} — unlabelled entry (warm-up, wrap-up, break)
+  \newcommand{\timeslot}[2]{%
+    \edef\@wshop@start{\arabic{wshoptime}}%
+    \addtocounter{wshoptime}{#2}%
+    \subsection*{\@wshop@start--\arabic{wshoptime}\,min:\enspace #1}%
+  }
+
+  % \timelineitem{title}{minutes} — lettered entry (A, B, C, ...)
+  \newcommand{\timelineitem}[2]{%
+    \stepcounter{wshopitem}%
+    \edef\@wshop@start{\arabic{wshoptime}}%
+    \addtocounter{wshoptime}{#2}%
+    \subsection*{%
+      \@wshop@start--\arabic{wshoptime}\,min:\enspace
+      Activity~\@weeknum.\Alph{wshopitem}:~#1%
+    }%
+  }
+
+  
+  % \notepage - blank page for workshop notes
+  \newcommand{\notepage}{
+    \clearpage
+    \section*{Workshop Notes}
+    \vfill
+  }
+
+  % activity environment — alphabetically labelled activity sheet on a fresh page.
+  % The right header is updated to show the activity name for all pages
+  % within the environment, then restored to the standard workshop header.
+  \newenvironment{activity}[1]{%
+    \clearpage
+    \stepcounter{wshopact}%
+    %\rhead{Activity~\@weeknum.\Alph{wshopact}:~#1}% %replaced by line below
+    \rhead{Activity~\@weeknum.\Alph{wshopact}}%
+    \begin{center}
+      {\LARGE\bfseries Activity~\@weeknum.\Alph{wshopact}\\[0.4em]#1}%
+    \end{center}%
+    \vspace{1.5em}\noindent
+  }{%
+    \rhead{%
+      \ifx\@weeknum\@empty
+        \@topic@short
+      \else
+        Week~\@weeknum\ ---\ \@topic@short
+      \fi
+    }%
+  }
+
+\fi

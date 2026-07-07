@@ -32,3 +32,5 @@ tqdm>=4.64
 
 # Testing
 pytest>=7.0
+
+lame-core @ git+https://github.com/dhasterok/lame-core.git
