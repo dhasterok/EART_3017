@@ -1,0 +1,291 @@
+% notes.sty -- personal style file
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{notes}[2026/02/26 v1.0 Personal notes package (DH)]
+
+% ---------- Page Layout ----------
+% Margins (20 mm all sides)
+\RequirePackage[margin=2cm]{geometry}
+%\setlength{\footskip}{6mm}
+%\setlength{\parindent}{0pt}
+\pagestyle{plain}
+
+% ---------- Fonts ----------
+% pdfLaTeX path (fourier + helvet + lmtt)
+\RequirePackage[T1]{fontenc}
+\RequirePackage[tracking]{microtype}
+
+% Main: Fourier (Utopia-like) + math
+\RequirePackage{fourier} % math & rm
+% Sans: Helvetia (slightly scaled down)
+\RequirePackage[scaled=0.875]{helvet} % ss
+% Mono: Latin Modern Typewriter
+%\renewcommand{\ttdefault}{lmtt} %tt
+
+% Slight extra leading
+\linespread{1.025}              % Fourier leads a little more leading
+
+% ---------- Extra paragraph space ----------
+\RequirePackage{parskip}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5\baselineskip}
+
+% ---------- Lists ----------
+\RequirePackage{enumitem}
+
+\setlist{
+  itemsep=0pt,  % space between items (your target)
+  parsep=0pt,                 % no extra paragraph spacing inside items
+  topsep=0.25\baselineskip,                 % no extra space before/after list
+  partopsep=0pt               % no extra space at paragraph boundaries
+}
+
+% ---------- Math packages ----------
+\RequirePackage{amsmath,amssymb,amsfonts,amsbsy,amsthm,bm}
+\RequirePackage{mathtools}
+\RequirePackage{physics}
+\RequirePackage{mhchem}
+
+% ---------- Graphics / Figures ----------
+\RequirePackage{graphicx,sidecap}
+\RequirePackage[margin=12mm]{caption}
+\RequirePackage{afterpage}
+\RequirePackage{placeins} % \FloatBarrier
+
+% ---------- Tables ----------
+\RequirePackage{tabularx}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\usepackage{threeparttable}
+
+\RequirePackage{booktabs}
+
+\RequirePackage{array}
+\RequirePackage{ragged2e}
+
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash\hyphenpenalty=10000\exhyphenpenalty=10000\relax}p{#1}}
+
+
+
+% ---------- Framed / Spacing ----------
+\RequirePackage{setspace,framed}
+
+% ---------- Answer boxes ----------
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins,breakable,theorems}
+
+\tcbset{
+	ntextbox base/.style={
+		enhanced,
+		breakable,
+		pad at break*=0.8em,
+		boxrule=0.5pt,
+		fonttitle=\bfseries,
+		left=1.0em, right=1.0em, top=0.8em, bottom=0.8em,
+		before upper={\parskip=0.8em},
+	}
+}
+
+% produce a basic text box, styled for Adelaide Uni.
+\newcommand{\textbox}[2]{
+    \begin{tcolorbox}[
+        enhanced,
+        breakable,
+        pad at break*=1mm,
+        colback=aublue!2,
+        colframe=aublue,
+        title={#1},
+        boxrule=0.5pt,
+        fonttitle=\bfseries,
+        left=1.0em, right=1.0em, top=0.8em, bottom=0.8em,
+        before upper={\parskip=0.8em}
+        ]
+        #2
+    \end{tcolorbox}
+}
+
+\newtcolorbox[auto counter, number within=chapter]{ntextboxenv}[2]{
+	ntextbox base,
+	colback=#2!5,
+	colframe=#2,
+	title={Box~\thetcbcounter:\;#1},
+	title after break={Box~\thetcbcounter:\; continued.},
+	borderline={0pt}{0pt}{#2},
+	segmentation style={solid, #2},
+}
+\newcommand{\ntextbox}[3]{\begin{ntextboxenv}{#1}{#3}#2\end{ntextboxenv}}
+
+% produce a answer box with white background and black frame
+\newcommand{\answerbox}[1][4cm]{
+\begin{tcolorbox}[
+    width=\linewidth,
+    height=#1,
+    colback=white,
+    colframe=black,
+    boxrule=0.5pt
+]
+\vspace*{\fill}
+\end{tcolorbox}
+}
+
+% ---------- Colors / Hyperlinks ----------
+\RequirePackage[dvipsnames]{xcolor}
+\definecolor{aublue}{RGB}{19,15,77} % AU blue
+\definecolor{auviolet}{RGB}{127,108,246} % AU violet
+\colorlet{core}{aublue}
+\definecolor{mathtool}{RGB}{110,87,35}
+\definecolor{alert}{RGB}{109,42,19}
+\definecolor{aside}{RGB}{7,74,50}
+\RequirePackage{hyperref}
+\hypersetup{
+    bookmarksnumbered=true,
+    pdfstartview=FitV,
+    colorlinks=true,
+    citecolor=OliveGreen,
+    linkcolor=BrickRed,
+    urlcolor=Blue
+}
+
+% Equation importance markers appended to equation numbers
+\RequirePackage{bbding}
+% Define equation “importance flags”
+\newcommand{\coreeq}{\llap{\raisebox{-0.4ex}\FiveStar\quad}}
+\newcommand{\workeq}{\llap{\raisebox{-0.4ex}\FiveStarOpen\quad}}
+
+% ---------- Bibliography ----------
+\RequirePackage[numbers,sort&compress]{natbib}
+\renewcommand{\refname}{\hfil Further Reading:\hfil}
+\setlength{\bibsep}{0.0pt}
+
+% ---------- Handy math macros ----------
+%\renewcommand\d[2][]{\ensuremath{\,d\!{#2}^{#1}}}
+%\newcommand{\od}[3][]{
+%   \ensuremath{
+%        \frac{d^{#1}\! #2}{d\! #3^{#1}}
+%    }
+%}
+%\newcommand{\pd}[3][]{
+%    \ensuremath{
+%        \frac{\partial^{#1} #2}{\partial #3^{#1}}
+%    }
+%}
+
+% Vector calculus
+%\renewcommand\div{\ensuremath{\nabla \cdot}}
+%\renewcommand\grad{\ensuremath{\nabla}}
+%\renewcommand\curl{\ensuremath{\nabla \times}}
+%\renewcommand\laplacian{\ensuremath{\nabla^2}}
+
+% Operators
+\DeclareMathOperator{\Log}{Log}
+
+%\DeclareMathOperator{\real}{\mathrm{Re}}
+%\DeclareMathOperator{\imag}{\mathrm{Im}}
+%\DeclareMathOperator{\erf}{erf}
+\DeclareMathOperator{\erfc}{erfc}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Fop}{F}
+
+% Misc
+\renewcommand\deg{\ensuremath{^\circ}}
+\newcommand\earth{\ensuremath{\bigoplus}}
+\newcommand\ft[1]{\ensuremath{\mathcal{F}[ #1 ]}}
+\newcommand\cint[1]{\ensuremath{\oint_{#1}}}
+\newcommand\fint[2]{\ensuremath{\int_{#1}^{#2}}}
+\newcommand\mrm[1]{\ensuremath{\mathrm{#1}}}
+
+% Vectors / matricies
+\newcommand\vect[1]{\ensuremath{\mathbf{\boldsymbol{#1}}}}
+\newcommand\uvect[1]{\ensuremath{\mathbf{\boldsymbol{\hat{#1}}}}}
+\newcommand\mat[1]{\ensuremath{\bm{#1}}}
+\newcommand\matr[1]{\ensuremath{\bm{\mathrm{#1}}}}
+\newcommand\T{\ensuremath{\!^\mathsf{T}\!}}
+\newcommand\mcal[1]{\ensuremath{\mathcal{#1}}}
+%\newcommand\norm[1]{\ensuremath{\left\|{#1}\right\|}}
+%\newcommand\abs[1]{\ensuremath{\left|{#1}\right|}}
+
+% ---------- TikZ labeled math boxes ----------
+% Creates the ability to add boxes and labels on parts of equations
+\RequirePackage{tikz}
+\usetikzlibrary{calc,shapes.geometric,arrows,positioning}
+\newif\ifclipme\clipmetrue
+\tikzset{
+    labelstyle/.style={LabelStyle/.append style={#1}},
+    linestyle/.style={LineStyle/.append style={#1}}
+}
+\tikzset{
+    LabelStyle/.initial={},
+    LineStyle/.initial={}
+}
+\newcommand{\brokenarrow}[5][0.2]{%
+    % #1 = half-length of break slashes (optional, default 0.2)
+    % #2 = x1 (start)
+    % #3 = y1 (start)
+    % #4 = x2 (end)
+    % #5 = y2 (end)
+
+    \def\slashlen{#1}
+    \def\xstart{#2}
+    \def\ystart{#3}
+    \def\xend{#4}
+    \def\yend{#5}
+
+    % Compute break at 75% along the line
+    \pgfmathsetmacro\xbreak{\xstart + 0.75*(\xend-\xstart)}
+    \pgfmathsetmacro\ybreak{\ystart + 0.75*(\yend-\ystart)}
+
+    % Draw top segment
+    \draw[<-] (\xstart,\ystart) -- (\xbreak, \ybreak+0.1);
+
+    % Draw bottom segment
+    \draw[->] (\xbreak, \ybreak-0.1) -- (\xend, \yend);
+
+    % Draw break slashes
+    \draw[] (\xbreak-\slashlen, \ybreak) -- (\xbreak-0.05, \ybreak);
+    \draw[] (\xbreak+0.05, \ybreak) -- (\xbreak+\slashlen, \ybreak);
+}
+
+\newcommand{\mathWithDescription}[4][]{{%
+    \tikzset{#1}%
+    \tikz[baseline]{
+        \node[draw=red,rounded corners,anchor=base] (m#4) {$\displaystyle#2$};
+        \ifclipme\begin{pgfinterruptboundingbox}\fi
+            \node[above of=m#4,font=\strut, LabelStyle] (l#4) {#3};
+            \draw[-,red, LineStyle] (l#4) to (m#4);
+        \ifclipme\end{pgfinterruptboundingbox}\fi
+    }%
+}}
+\newcommand{\mathWithDescriptionStarred}[3][]{{%
+    \clipmefalse%
+    \mathWithDescription[#1]{#2}{#3}{\themathLableNode}%
+}}
+
+\newcounter{mathLableNode}
+\newcommand{\mlbox}[3][]{%
+   \stepcounter{mathLableNode}%
+   \mathWithDescription[#1]{#2}{#3}{\themathLableNode}%
+   \vphantom{\mathWithDescriptionStarred[#1]{#2}{#3}{\themathLableNode}}%
+}
+% end adding boxes and labels
+
+% ---------- Quotes ----------
+\RequirePackage{epigraph}
+\RequirePackage{etoolbox}
+\setlength\epigraphwidth{8cm}
+\setlength\epigraphrule{0pt}
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\itshape\@epitext{#1}}{}{}
+\makeatother
+
+% ---------- Landscape ----------
+\RequirePackage{pdflscape}
+
+% ---------- Units ----------
+\RequirePackage{siunitx}
+\sisetup{inter-unit-product = \;, number-unit-product = \ }
+\newcommand{\du}{\si{kg.m^{-3}}}
+\newcommand{\hfu}{\si{mW.m^{-2}}}
+\newcommand{\hpu}{\si{\mu W.m^{-3}}}
+\newcommand{\tcu}{\si{W.m^{-1}.K^{-1}}}
+\newcommand\degC{\si{^\circ C}}
+
+\newcommand{\Dpp}{D\textquotedbl{}}
