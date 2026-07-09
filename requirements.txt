@@ -10,6 +10,10 @@ cmcrameri>=0.7
 
 # GUI
 PyQt6>=6.4
+PyQt6-WebEngine>=6.4
+
+# Interactive visualisation
+plotly>=5.18
 
 # Geospatial
 geopandas>=0.12

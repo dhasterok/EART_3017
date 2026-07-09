@@ -1,0 +1,71 @@
+\begin{activity}{Testing Linearity}
+
+\section*{Purpose}
+
+Linear functions can be solved in a single inversion step using linear least squares.  This method is simpler, faster, and less computationally expensive, so when possible a linear function is preferred.  In this activity, you'll learn to determine whether a function is linear or non-linear.
+
+\section*{Learning Objectives}
+
+By the end of this activity you should be able to:
+\begin{itemize}
+    \item describe the two conditions for linearity, and
+    \item be able to rigorously demonstrate whether a function is linear or non-linear using these tests.
+\end{itemize}
+
+\section*{Conditions for Linearity}
+
+There are two conditions that must be met for a fuction to be linear: homogeneity,
+\[
+    f(\alpha m_1) = \alpha f(m_1) \, ,
+\]
+and additivity
+\[
+    f(m_1 + m_2) = f(m_1) + f(m_2) \, .
+\]
+
+\emph{Note:} something that may take some getting used to is that our tests for linearity are with respect to model parameters that we are trying to estimate via inversion, not the experimental conditions or observation position, which is how we otherwise normally think of functions.
+
+\ntextbox{Example of a linear function}{
+For instance, $y=ax+b$ is linear with respect to the model parameters
+$\vb{m}=(a,b)$. For homogeneity,
+\begin{align*}
+    y(\alpha \vb{m})
+        &= (\alpha a)x + (\alpha b) \\
+        &= \alpha(ax+b) \\
+        &= \alpha y(\vb{m}) \, .
+\end{align*}
+For additivity, where $\vb{m}_1=(a_1,b_1)$ and $\vb{m}_2=(a_2,b_2)$,
+\begin{align*}
+    y(\vb{m}_1+\vb{m}_2)
+        &= (a_1+a_2)x + (b_1+b_2) \\
+        &= (a_1x+b_1) + (a_2x+b_2) \\
+        &= y(\vb{m}_1) + y(\vb{m}_2) \, .
+\end{align*}
+
+Since both homogeneity and additivity are satisfied, the function is linear.
+}{mathtool}
+
+\begin{questions}
+    \question{Linear function}
+    Show that
+    \[
+        k(\ce{SiO2}) = a (\ce{SiO2})^2 + b (\ce{SiO2}) + c
+    \]
+    is linear with respect to the model parameters, $\vb{m} = (a,b,c)$.
+    \answerbox[30em]
+
+    \question{Non-linear function}
+    Show that 
+    \[
+        k(T) = k_0 \left( \frac{298}{T} \right)^n
+    \]
+    is non-linear with respect to the model parameters, $\vb{m} = (k_0,n)$.
+    \answerbox[30em]
+
+    \question{Why is the first equation easier to invert than the second?}
+    \answerbox
+    
+\end{questions}
+
+
+\end{activity}

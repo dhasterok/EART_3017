@@ -9,7 +9,7 @@
 \section*{Preparation}
 
 \begin{description}
-  \item[Pre-reading:]
+  \item[Pre-reading: Course Notes Ch. 13]
   \item[Lecture videos:]
   \item[Notes:]
 \end{description}
@@ -29,14 +29,27 @@ This workshop introduces the structure of inverse problems in potential-field ge
   \item Explain parameter trade-offs and resolution limitations inherent to the buried-sphere problem.
 \end{itemize}
 
-\textit{Reference concepts align with Week 3 notes on forward/inverse modelling, misfit structure, and non-linear least squares.}
-
 % ----------------------------------------------------------
-\section*{Roles and Grouping}
-Create mixed groups (4--5 students). Recommended roles: \emph{Facilitator}, \emph{Analyst}, \emph{Recorder}, \emph{Skeptic}, \emph{Reporter}. Rotate roles between major activities.
+\section*{Session Flow (170 min)}
 
-% ----------------------------------------------------------
-\section*{Session Flow (180 min)}
+Create mixed groups (4--5 students). 
+
+\timeslot{Warm-up}{10}
+
+What can you learn from a shadow?
+\begin{itemize}
+  \item What can you determine directly from the shadow?
+  \item What can you estimate only if additional assumptions are made?
+  \item What information cannot be determined uniquely?
+  \item What prior knowledge are you using when deciding what the object might be?
+\end{itemize}
+
+How does this relate to inversion?
+\begin{itemize}
+  \item A shadow does not uniquely determine the object that created it.
+  \item Likewise, a gravity anomaly does not uniquely determine the density distribution that produced it.
+  \item The challenge of inversion is deciding which of many acceptable models is most reasonable.
+\end{itemize}
 
 \timeslot{Mini-lecture --- Forward vs Inverse, Misfit, Weighting, Challenges}{30}
 \begin{itemize}
@@ -45,6 +58,10 @@ Create mixed groups (4--5 students). Recommended roles: \emph{Facilitator}, \emp
   \item Role of $W_d$ (noise) and $W_m$ (model constraints); damping $\lambda$.
   \item Challenges: non-linearity (Jacobian needed), non-uniqueness (multiple $m$ give similar $g(m)$), ill-conditioning.
 \end{itemize}
+
+\timelineitem{Testing Linearity}{20}
+
+Two conditions must be met for linearity.  Let's expore how to rigorously test for linearity before we work on other functions.
 
 \timelineitem{Linear or Non-linear?}{30}
 Using the equation handout:
@@ -56,17 +73,19 @@ Using the equation handout:
 
 \setstarttime{70} % 10 min transition/break between activities
 
-\timeslot{Non-uniqueness (Jigsaw)}{20}
-Curves-only reasoning:
-\begin{itemize}
-  \item Scenario A: gravity profiles --- two distinct geometric models can reproduce similar anomalies.
-  \item Scenario B: magnetic dike profiles --- width/depth/magnetization trade-offs.
-  \item For \emph{each} curve: propose at least two plausible geologic/geometric models.
-  \item List discriminating data (station density, gradients, susceptibility/remanence, multi-component data, mapping).
-  \item Deliverable: 1-paragraph argument explaining which model to pursue first and what data to collect next.
-\end{itemize}
+% \timeslot{Non-uniqueness}{20}
+% Curves-only reasoning:
+% \begin{itemize}
+%   \item Scenario A: gravity profiles --- two distinct geometric models can reproduce similar anomalies.
+%   \item Scenario B: magnetic dike profiles --- width/depth/magnetization trade-offs.
+%   \item For \emph{each} curve: propose at least two plausible geologic/geometric models.
+%   \item List discriminating data (station density, gradients, susceptibility/remanence, multi-component data, mapping).
+%   \item Deliverable: 1-paragraph argument explaining which model to pursue first and what data to collect next.
+% \end{itemize}
 
-\timeslot{Buried Sphere --- Introduction}{10}
+\timelineitem{Buried Sphere --- Background}{15}
+
+We're going to look at the gravity anomaly from a buried sphere.  The forward problem is non-linear with respect to the model parameters, requiring a non-linear inverse solution.  This activity is broken into two parts: a look at the formulation, and an investigation using a simple program.
 \begin{itemize}
   \item App overview: Data \& Model view; Misfit view; controls for acquisition, noise, synthetic model.
   \item Construct a true model \& generate data (freeze a single noise realization).
@@ -82,25 +101,42 @@ Curves-only reasoning:
     amplitude $\propto R^3\Delta\rho$, width controlled by depth $z$.
 \end{enumerate}
 
-\timeslot{Buried Sphere --- Investigation}{35}
-\begin{itemize}
-  \item \textbf{Grid search:} Explore pairwise misfit slices and 3-D misfit surface. Identify local vs global minima.
-  \item \textbf{Inversion path:} Run Gauss--Newton with different $\lambda$; examine step length and stability.
-  \item \textbf{Effect of noise:} Increase $\sigma$; observe widening misfit basins and parameter uncertainty.
-  \item Discuss links to curvature, conditioning, and resolution.
-\end{itemize}
+\timeslot{Buried Sphere --- Investigation}{45}
 
-\timeslot{Buried Sphere --- Non-uniqueness}{15}
-\begin{itemize}
-  \item Demonstrate parameter trade-offs (e.g.\ $R^3\Delta\rho$) and resolution ellipses.
-  \item Compare inversion results with misfit contours; highlight underdetermined directions.
-\end{itemize}
+With the use of \verb+buried_sphere_gui.py+, we will examine a number of aspects of inversion, including
+\begin{description}
+  \item [Grid search:] Explore pairwise misfit slices and 3-D misfit surface. Identify local vs global minima.
+  \item [Inversion path:] Run Gauss--Newton with different $\lambda$; examine step length and stability.
+  \item [Effect of noise:] Increase $\sigma$; observe widening misfit basins and parameter uncertainty.
+  \item [Non-uniqueness:] Demonstrate parameter trade-offs (e.g.\ $a^3\, \Delta\rho$) and resolution ellipses.
+  \item [Role of Noise:] Look at how noise affects results.
+\end{description}
 
-\timeslot{Wrap-up}{10}
+\timeslot{Debrief}{10}
+
 \begin{itemize}
   \item Key takeaways: forward/inverse distinctions, misfit and weighting, non-linearity, non-uniqueness, damping.
   \item Open Q\&A; preview of next week's material.
 \end{itemize}
+
+\timeslot{Preview: Gravity Theory}{10}
+
+This week we treated gravity primarily as data to be inverted. Next
+week we will begin developing gravity theory itself.
+
+We will derive the gravity field from Newton's law of universal
+gravitation and examine how mass distributions create gravity
+anomalies. We will see how simple geological bodies such as spheres,
+cylinders, slabs, and contacts produce characteristic gravity
+signatures.
+
+Along the way, we will connect the mathematical concepts introduced in
+Week 1—gradients, curvature, and potential fields—to one of the most
+important geophysical methods.
+
+By the end of next week, you will be able to predict how changes in
+density, geometry, and observation distance affect the gravity field
+and begin interpreting gravity anomalies in geological terms.
 
 % ----------------------------------------------------------
 \section*{Materials}
@@ -130,4 +166,6 @@ Curves-only reasoning:
 \notepage
 \notepage
 
+\subimport{activities/}{activity_linear_test}
 \subimport{activities/}{activity_linearity}
+\subimport{activities/}{activity_buried_sphere}

@@ -26,7 +26,7 @@ import matplotlib.colors as mcolors
 import matplotlib
 
 # ── path setup ────────────────────────────────────────────────────────────────
-_COURSE = Path(__file__).resolve().parent.parent.parent   # new_version/
+_COURSE = Path(__file__).resolve().parent.parent.parent.parent   # project root
 if str(_COURSE) not in sys.path:
     sys.path.insert(0, str(_COURSE))
 

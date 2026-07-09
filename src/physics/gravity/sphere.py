@@ -42,6 +42,26 @@ def jacobian_r(r: np.ndarray, p: np.ndarray) -> np.ndarray:
     return np.column_stack([dg_dz, dg_dR, dg_ddrho])
 
 
+def forward_sphere_r_2p(r: np.ndarray, p: np.ndarray) -> np.ndarray:
+    """2-parameter forward: p = [z, M] where M = 4π/3·R³·Δρ (excess mass, kg)."""
+    z, M = p
+    rr2 = r*r + z*z
+    return G_CONST * M * z / rr2**1.5
+
+
+def forward_profile_2p(x: np.ndarray, p: np.ndarray) -> np.ndarray:
+    return forward_sphere_r_2p(np.abs(x), p)
+
+
+def jacobian_r_2p(r: np.ndarray, p: np.ndarray) -> np.ndarray:
+    """Jacobian of forward_sphere_r_2p w.r.t. [z, M]."""
+    z, M = p
+    rr2 = r*r + z*z
+    dg_dz = G_CONST * M * (r*r - 2.0*z*z) / rr2**2.5
+    dg_dM = G_CONST * z / rr2**1.5
+    return np.column_stack([dg_dz, dg_dM])
+
+
 def add_noise(g: np.ndarray, sigma: float, rng: np.random.Generator|None=None) -> np.ndarray:
     rng = np.random.default_rng() if rng is None else rng
     return g + rng.normal(0.0, sigma, size=g.shape)

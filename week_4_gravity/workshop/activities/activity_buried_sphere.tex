@@ -1,29 +1,79 @@
-\begin{activity}{Buried Sphere Width--Depth}
+\begin{activity}{Buried Sphere --- Width to Depth}
 
-Given:
+The gravity anomaly due to a buried sphere is given by:
 \[
-  g_z(x) = \frac{4\pi G}{3}\Delta\rho\, a^3
-          \frac{z_c}{(x^2+z_c^2)^{3/2}}.
+  g_z(x) = \tfrac{4}{3}\pi a^3 G\, \Delta\rho 
+  \frac{z_c}{(x^2+z_c^2)^{3/2}}\, ,
 \]
+where $a$ is the radius of the sphere, $\Delta rho$ is its density anomaly, and $z_c$ is the depth to the center of the sphere.  The coordinate $x$ is the position along the profile at Earth's surface.
+
+Last week, we saw this relationship leads to non-uniqueness because $a^3 \Delta \rho$ are inseperable.  Now, however, we want to show that one can produce a simple relationship between the depth of the buried sphere and the width of its anomaly, independent of the the mass.  Such a relationship is useful for estimating the depth to structures that produce peaks in the gravity field.  Such a relationship is useful for producing back of the envelope estimates in the field or from a map before any formal modeling is done.  Such relationships are the prelude concepts that lead to wavelength filtering that we will see in Week 7.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=2.0]
+    % parameter
+    \def\z{1.0}
+
+    % axes
+    \draw[->] (-3,0) -- (3.2,0) node[right] {$x$};
+    \draw[->] (0,-0.1) -- (0,1.3) node[above] {$g(x)$};
+
+    % function
+    \draw[thick,black]
+        plot[domain=-3:3,samples=200]
+        (\x,{1/((\x*\x+\z*\z)^1.5)});
+
+    % half-width indicator
+    \draw[dashed] (-0.77,0.5) -- (-0.77,-0.1);
+    \draw[dashed] ( 0.77,0.5) -- ( 0.77,-0.1);
+
+    \draw[<->] (-0.77,0.5) -- (0.77,0.5);
+
+    % labels
+    \node[below] at (-0.77,-0.2) {$-x_{1/2}$};
+    \node[below] at ( 0.77,-0.2) {$x_{1/2}$};
+
+    \node[above] at (0.1,0.5) {$w$};
+
+    \node[right] at (0,1.1) {$g(0)$};
+    \node[right] at (0.77,0.6) {$g(x_{1/2})$};
+  \end{tikzpicture}
+  \caption{Gravity anomaly due to a buried sphere.}
+  \label{fig:gravity_sphere}
+\end{figure}
 
 \subsection*{Tasks}
-\begin{enumerate}
-  \item Show that $g_z(0)$ is proportional to $\Delta\rho\,a^3/z_c^2$.
-  \item Solve for $x_{1/2}$ such that $g_z(x_{1/2}) = \frac{1}{2}g_z(0)$.
-  \item Derive:
+To develop the depth to width relationship:
+\begin{questions}
+  \question{Peak Anomaly}
+  Show that $g_z(0)$ is proportional to $\Delta\rho\,a^3/z_c^2$.
+  \answerbox
+
+  \question{Width to Depth Relationship}
+  Show that the depth
   \[
-    z_c \approx 0.65 w
+    z_c \approx 0.65\, w
   \]
-  where \(w\) is the full-width half-maximum.  Hint: this is on the right track,
+  where \(w\) is the full-width half-maximum.
+  
+  To do so, solve for $x_{1/2}$ starting from $g_z(x_{1/2}) = \tfrac{1}{2} g_z(0)$.  Hint: this is on the right track,
   \[
     \frac{z_c}{x_{1/2}} = (2^{2/3} - 1)^{-1/2}.
   \]
-  \item Explain:  
-        \begin{itemize}
-          \item Why depth affects width but density contrast does not.  
-          \item How the radius and density contrast result create non-uniqueness for inversion and how we ensure uniqueness.
-          \item Why a shallow lenticular body could mimic a deep sphere's anomaly.
-        \end{itemize}
-\end{enumerate}
+  \answerbox[320pt]
+
+  \question{Interpretation}
+    \begin{enumerate}[label=\alph*]
+      \item Why does depth affect width but density contrast does not?  
+      \answerbox{36pt}
+
+      \item How do the radius and density contrast result create non-uniqueness for inversion and how we ensure uniqueness?
+      \answerbox{36pt}
+
+      \item Why does a shallow lenticular body (e.g., laccolith or lopolith) could mimic a deep sphere's anomaly?
+      \answerbox{36pt}
+    \end{enumerate}
+\end{questions}
 
 \end{activity}
