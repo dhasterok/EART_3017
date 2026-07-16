@@ -37,7 +37,7 @@ E_lith    = 70.0e9      # Pa  (Young's modulus, typical lithosphere)
 nu_lith   = 0.25        # Poisson's ratio
 mGal      = 1e5         # 1 m/s² = 1e5 mGal
 
-# ── Colours ───────────────────────────────────────────────────────────────────
+# ── colors ───────────────────────────────────────────────────────────────────
 C_MANTLE = '#7B3F00'
 C_WATER  = '#4A90D9'
 C_SEALVL = '#2171B5'

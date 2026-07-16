@@ -1,6 +1,6 @@
 """
 Reconstruct gravity values from an RGB-encoded gravity map using
-monotonic, non-linear inversion of the colour ramp via isotonic
+monotonic, non-linear inversion of the color ramp via isotonic
 regression on HSV hue, with explicit handling of the red–white
 saturation tail.
 
@@ -169,7 +169,7 @@ axs[0, 0].set_ylabel("Gravity (mGal)")
 axs[0, 0].set_title("Hue vs Gravity")
 
 # ------------------------------------------------------------
-# (2) Hue vs Gravity, coloured by Saturation
+# (2) Hue vs Gravity, colored by Saturation
 # ------------------------------------------------------------
 sc = axs[0, 1].scatter(
     H, g_obs,
@@ -180,7 +180,7 @@ sc = axs[0, 1].scatter(
 )
 axs[0, 1].set_xlabel("Hue (0–1)")
 axs[0, 1].set_ylabel("Gravity (mGal)")
-axs[0, 1].set_title("Hue vs Gravity (colour = Saturation)")
+axs[0, 1].set_title("Hue vs Gravity (color = Saturation)")
 cbar = fig.colorbar(sc, ax=axs[0, 1])
 cbar.set_label("Saturation")
 

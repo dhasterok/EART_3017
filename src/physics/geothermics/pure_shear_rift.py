@@ -109,7 +109,7 @@ def heat_flow(t, gamma, kappa, Ts, Tm, L, k=2.5, N=20):
 
         q = k ΔT / L × (1 + 2 Σₙ nπ âₙ exp(−n²π²κt/L²))
 
-    where âₙ = (-1)^(n+1) sin(nπγ) / (n²π²(1-γ))  (normalised; no 2ΔT factor).
+    where âₙ = (-1)^(n+1) sin(nπγ) / (n²π²(1-γ))  (normalized; no 2ΔT factor).
     With L in km and k in W m⁻¹ K⁻¹, the product k ΔT / L gives mW m⁻² directly.
 
     Parameters
@@ -131,7 +131,7 @@ def heat_flow(t, gamma, kappa, Ts, Tm, L, k=2.5, N=20):
     n = np.arange(1, N + 1, dtype=float)
     dT = Tm - Ts
 
-    # Normalised Fourier coefficients (rift.m convention, without 2*dT)
+    # Normalized Fourier coefficients (rift.m convention, without 2*dT)
     an_hat = ((-1) ** (n + 1) * np.sin(n * np.pi * gamma)
               / (n ** 2 * np.pi ** 2 * (1.0 - gamma)))
     tterm = np.exp(np.outer(-n ** 2 * np.pi ** 2 * kappa / L ** 2, t))  # (N, nt)

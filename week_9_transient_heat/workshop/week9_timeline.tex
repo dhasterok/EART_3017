@@ -27,9 +27,26 @@ Students will:
   \item Use Fourier series to conceptualize thermal evolution.
 \end{itemize}
 
-\section*{Session Flow (180 min)}
+\section*{Session Flow (\timelinelength\ min)}
 
-\timelineitem{Thermal Diffusivity, Thermal Length, and Timescales}{45}
+{\color{red}
+\timeline[slot]{Warm-up --- How long does it take to cook a roast?}{10}
+
+Ask students: \emph{Why does a larger roast take longer to cook in the oven even at the same temperature? What does this tell us about heat moving through rock?} Elicit the idea that the time for heat to penetrate scales with the \emph{square} of the distance. Connect to the diffusion equation and introduce thermal diffusivity $\kappa$ as the quantity that controls this scaling.
+}
+
+{\color{red}
+\timeline[slot]{Mini-lecture --- The diffusion equation and thermal diffusivity}{15}
+
+\begin{itemize}
+  \item The heat (diffusion) equation: $\partial T/\partial t = \kappa\, \nabla^2 T$.
+  \item Thermal diffusivity $\kappa = k/(\rho c_p)$: what controls it, typical values for crustal rocks.
+  \item Scaling argument: thermal length $z \sim \sqrt{\kappa t}$; thermal timescale $t \sim z^2/\kappa$.
+  \item Key difference from steady state: temperature \emph{evolves} in time.
+\end{itemize}
+}
+
+\timeline[item]{Thermal Diffusivity, Thermal Length, and Timescales}{45}
 \begin{itemize}
   \item Review $\kappa = k / (\rho c_p)$.
   \item Emphasize modest variation in crustal rocks.
@@ -39,36 +56,49 @@ Students will:
   \item Depth--resolution tradeoffs.
 \end{itemize}
 
-\timelineitem{Thermal vs Chemical Diffusion}{30}
+\timeline[item]{Thermal vs Chemical Diffusion}{30}
 \begin{itemize}
   \item Both obey $\sqrt{Dt}$ scaling.
   \item Chemical diffusion often multi-component.
   \item Zoning persistence vs thermal smoothing.
 \end{itemize}
 
-\timeslot{Break}{10}
+\timeline[slot]{Break}{10}
 
-\timelineitem{Half-Space Cooling}{35}
+\timeline[item]{Half-Space Cooling}{35}
 \begin{itemize}
   \item Assumptions and boundary conditions.
   \item Growth of thermal boundary layer.
   \item Oceanic lithosphere as a thermal clock.
 \end{itemize}
 
-\timelineitem{Plate Cooling and Fourier Series}{30}
+\timeline[item]{Plate Cooling and Fourier Series}{30}
 \begin{itemize}
   \item Fixed plate thickness as boundary condition.
   \item Fourier series as superposition of thermal modes.
   \item Mode decay times and geological interpretation.
 \end{itemize}
 
-\timelineitem{Stefan Problems in Geology}{30}
+\timeline[item]{Stefan Problems in Geology}{30}
 \begin{itemize}
   \item Latent heat as effective heat capacity.
   \item Cooling times of dikes vs sills.
   \item When analytic solutions break down.
 \end{itemize}
 
+{\color{red}
+\timeline[slot]{Wrap-up}{10}
+
+Bring the session together. Ask: \emph{What single quantity controls how fast heat moves through rock, and what are its typical values?} Revisit the timescale scaling $t \sim z^2/\kappa$ and ask students to give one geological example from each activity where this scaling is evident. Highlight the progression from the simple half-space to the plate model to the Stefan problem as increasing physical realism.
+}
+
+{\color{red}
+\timeline[slot]{Preview: Finite Differences}{10}
+
+Analytic solutions to the diffusion equation require simplifying assumptions: constant properties, simple geometries, and idealized boundary conditions. Real geological systems violate these. Next week we develop finite difference methods, which replace the differential equation with a local energy balance that can be applied to arbitrarily complex geometries and boundary conditions. You will first derive the finite difference equations from first principles and then solve the heat equation yourself by hand---becoming the computer.
+}
+
+\workshopend
 \notepage
 \notepage
 

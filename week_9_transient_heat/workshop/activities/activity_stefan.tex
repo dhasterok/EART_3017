@@ -3,6 +3,18 @@
 \section*{Purpose}
 To apply transient heat flow concepts to the crystallization and cooling of magma bodies within the crust.
 
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Describe the Stefan problem physically: a moving solidification front with latent heat release.
+  \item Explain how latent heat slows the cooling of a magma body relative to a non-melting analogue.
+  \item Compare expected cooling timescales for geometrically different intrusions (thin dike vs.\ thick sill) using diffusion scaling.
+  \item Identify geological situations (magma convection, episodic recharge, mush zones) where analytic Stefan solutions are insufficient.
+\end{itemize}
+}
+
 \section*{Physical Problem}
 A magma body emplaced into cooler host rock cools conductively while releasing
 latent heat at the solidification front.
@@ -13,9 +25,12 @@ The solid--liquid boundary migrates with time, making this a Stefan problem.
 \section*{Tasks}
 \begin{enumerate}
   \item Explain how latent heat affects the cooling rate of a magma body.
+  \answerbox[3cm]
   \item Compare expected cooling timescales for a narrow dike and a thick sill.
+  \answerbox[3cm]
   \item Identify geological situations in which analytic Stefan solutions are
   likely to fail.
+  \answerbox[3cm]
 \end{enumerate}
 
 \section*{Geological Extensions}
@@ -24,9 +39,19 @@ The solid--liquid boundary migrates with time, making this a Stefan problem.
   \item Episodic recharge of magma.
   \item Crystal-rich mush zones.
 \end{itemize}
+For one of the above, explain how it violates the assumptions of the Stefan problem.
+\answerbox[3cm]
 
-\section*{Key Insight}
-Geometry and diffusivity often dominate cooling timescales more strongly than
-radiogenic heat production.
+{\color{red}
+\section*{Key Ideas}
+
+Geometry and diffusivity often dominate cooling timescales more strongly than radiogenic heat production.
+
+\textbf{Latent heat acts as an effective heat capacity.} When magma crystallises, it releases latent heat that must be conducted away before further cooling can occur. This delays solidification and can be parameterised as an increased effective heat capacity in the latent heat zone.
+
+\textbf{Cooling timescale scales with the square of the shortest dimension.} A thin dike ($d \sim 1$~m) solidifies in days; a thick sill ($d \sim 1$~km) takes thousands of years. Both follow the same $t \sim d^2/\kappa$ scaling, demonstrating that geometry (not composition) is the primary control on cooling time for conductive cooling.
+
+\textbf{Analytic solutions fail when physics becomes more complex.} Magma convection, episodic recharge, crystal mush rheology, and multi-component melting all violate the assumptions of the Stefan problem. Numerical methods are required when these effects are important --- connecting directly to the finite difference methods introduced in Week~10.
+}
 
 \end{activity}

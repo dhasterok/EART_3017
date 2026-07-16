@@ -1,0 +1,141 @@
+\begin{activity}{Numerical Demonstration: Isostatic Gravity Along a Cross Section}
+
+\section*{Purpose}
+
+In this demonstration, the instructor will use \texttt{isostasy\_gui.py} to
+build a lithospheric cross section along a chosen topographic profile,
+compute its gravity response under varying degrees of compensation and
+layered lithospheric structure, and compare the predicted gravity to
+observations. The purpose is to see the single-column reasoning from
+Activities 5.A and 5.B applied continuously along a real profile, and to
+meet the one genuinely new idea of the session: that compensation is not
+all-or-nothing.
+
+\section*{Learning Outcomes}
+
+By the end of this demonstration, you should be able to:
+\begin{itemize}
+    \item Explain how the column-by-column mass balance from Activity 5.A extends to a continuous topographic profile.
+    \item Describe what the degree of compensation $C$ represents, and predict how changing it should affect the amplitude of the predicted gravity anomaly.
+    \item Explain how the choice of layered lithospheric structure (crust only vs.\ crust + mantle lithosphere) affects the gravity prediction for the same topography.
+    \item Use misfit between predicted and observed gravity to reason about how well (and where) a profile is locally compensated.
+    \item Identify what a computational model needs beyond what was required for the single-column calculations in 5.A and 5.B.
+\end{itemize}
+
+\subsection*{Background}
+
+\paragraph{From columns to a profile.} Everything in this demonstration rests
+on the same balance you used in Activity 5.A: at the depth of compensation,
+column-integrated mass must match between neighboring columns. The only
+difference here is scale --- instead of comparing two columns by hand, the
+program applies this balance (or a partial version of it, below) at every
+point along a chosen cross section, built from a loaded crustal thickness
+model rather than two fixed values.
+
+\paragraph{Degree of compensation.} So far, every problem has assumed
+\emph{full} local compensation: the root exactly satisfies the mass balance
+from 5.A. In reality, compensation is often partial, since lithospheric
+strength allows some of a load to be supported elastically rather than
+buoyantly (Activity 5.B, Extension). We describe this with a single
+parameter $C$, where
+\[
+    r(x) = C\, r_{\mathrm{Airy}}(x), \qquad 0 \le C \le 1,
+\]
+and $r_{\mathrm{Airy}}(x)$ is the fully compensated root thickness from
+Activity 5.B. $C=1$ recovers full local compensation; $C=0$ means the load
+is entirely supported elastically, with no compensating root at all.
+
+\paragraph{Gravity of a real profile.} The infinite slab formula from 5.B
+assumed topography with no lateral edges. A real profile does not, so the
+program instead sums the gravity effect of many finite blocks along the
+cross section --- the same discrete 2-D prism approach you saw in Week~3
+(Activity 3.B, Q11), not a new formula.
+
+\subsection*{App Overview}
+
+\begin{itemize}
+    \item Select two points to define a cross section across the loaded topography.
+    \item Load a crustal thickness model for the same profile.
+    \item Specify a layered lithospheric model (layer densities and thicknesses), following the same structure as Activity 5.A Part B.
+    \item Set the degree of compensation $C$ and compute the predicted gravity anomaly along the profile.
+    \item Compare the predicted gravity to observed gravity along the same profile, if loaded.
+\end{itemize}
+
+\section*{Tasks}
+
+Follow along as the instructor builds a cross section and adjusts each
+parameter in turn. Answer the questions below as you go --- they are written
+to apply to whichever profile is selected.
+
+\begin{questions}
+
+    \question{Full compensation baseline}
+    With $C=1$, does the predicted gravity anomaly broadly track or oppose
+    the topography along the profile? Explain why, referring back to what
+    you showed in Activity 5.B, Part 3.
+    \answerbox[3cm]
+
+    \question{Varying the degree of compensation}
+    As the instructor decreases $C$ from 1 toward 0, predict first, then
+    observe: does the amplitude of the predicted gravity anomaly increase or
+    decrease? Explain in terms of how much compensating root mass remains at
+    each value of $C$.
+    \answerbox[3cm]
+
+    \question{Finding the best-fit compensation}
+    If observed gravity is available for this profile, adjust $C$ to find
+    the value that best matches the predicted and observed gravity. What
+    does that value of $C$ tell you about how this section of lithosphere is
+    actually being supported?
+    \answerbox[3cm]
+
+    \question{Model dependence}
+    With $C$ held fixed, the instructor will change the assumed crustal
+    density and/or reference lithospheric thickness. How does the predicted
+    gravity change? Relate this to the "model-dependent correction" Key Idea
+    from Activity 5.B.
+    \answerbox[3cm]
+
+    \question{Adding a layer}
+    The instructor will now add or modify a mantle lithosphere layer, as in
+    Activity 5.A Part B. Does the degree of compensation needed to fit the
+    observed gravity change once this layer is included? Why might a
+    two-layer model change your interpretation compared to a crust-only
+    model?
+    \answerbox[3cm]
+
+    \question{Uniform compensation?}
+    Does a single value of $C$ fit the observed gravity equally well across
+    the whole profile, or does the fit degrade in some places (e.g.\ near a
+    sharp topographic feature or a continent--ocean boundary)? What would
+    that tell you about assuming one compensation state for an entire
+    region?
+    \answerbox[3cm]
+
+    \question{What changed, computationally}
+    Compared to the single-column, by-hand calculations in 5.A and 5.B, what
+    additional ingredients did this model need to predict gravity along a
+    real profile?
+    \answerbox[3cm]
+
+\end{questions}
+
+\section*{Key Ideas}
+
+\textbf{Compensation is a spectrum, not a switch.} Local isostatic balance
+(as in 5.A and 5.B) and fully elastic support are two ends of a continuum;
+most real topography is compensated to some intermediate degree, and that
+degree can be estimated by comparing predicted and observed gravity.
+
+\textbf{A single column-balance principle scales up without changing.} The
+same mass balance used for two columns by hand applies, unchanged, at every
+point along a continuous profile --- modelling a whole cross section is a
+matter of scale and bookkeeping, not new physics.
+
+\textbf{Fitting a model is itself an inference about the Earth.} The value
+of $C$ (and the layered structure) that best matches observed gravity is
+not just a curve-fitting exercise --- it is an estimate of how a real piece
+of lithosphere is mechanically supported, with the same model-dependence
+caveats that applied to the isostatic correction in 5.B.
+
+\end{activity}

@@ -1,12 +1,22 @@
 \begin{activity}{Sheet Model of Potential Fields}
 
-\section{Purpose}
+\section*{Purpose}
 This short activity uses a physical sheet model to develop intuition for scalar fields, gradients, and curvature. By fixing boundary values and introducing localized perturbations, you will explore how fields respond to boundary conditions and internal sources, and how these effects relate to geophysical potential fields.
 
-\section{Setup}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Explain how boundary conditions control the shape of a scalar field in the interior.
+  \item Identify regions of high gradient magnitude and strong curvature from the geometry of a surface.
+  \item Describe qualitatively why observation distance smooths short-wavelength field features.
+  \item Connect boundary conditions and localized sources to the concepts of Laplace and Poisson equations.
+\end{itemize}
+
+\section*{Setup}
 Work as a group around a stretched sheet. Some students will hold the edges, while others gently push or pull on the sheet from below or above.
 
-\section{Tasks and Prompts}
+\section*{Tasks and Prompts}
 
 \begin{questions}
     \question{Boundary conditions (Dirichlet)}
@@ -42,6 +52,7 @@ Work as a group around a stretched sheet. Some students will hold the edges, whi
         \answerbox[2cm]
     \end{parts}
 
+    \clearpage
     \question{Effect of observation distance}
     Imagine observing the sheet from farther above.
     \begin{parts}
@@ -53,7 +64,11 @@ Work as a group around a stretched sheet. Some students will hold the edges, whi
     \end{parts}
 \end{questions}
 
-\section{Key idea}
-Gradients describe how quickly and in what direction a field changes, while curvature describes how those changes themselves vary in space. In geophysical potential fields, boundary conditions and internal sources control the field, and increasing observation distance smooths short-wavelength features.
+\section*{Key Ideas}
+\textbf{Gradients and Curvature:} Gradients describe how quickly and in what direction a field changes, while curvature describes how those changes themselves vary in space. In geophysical potential fields, boundary conditions and internal sources control the field, and increasing observation distance smooths short-wavelength features.
+
+\textbf{Laplace vs.\ Poisson:} Where there are no sources or sinks, $\nabla^2\Phi = 0$ (Laplace equation) and the field is smooth with no interior extrema. Where sources are present, $\nabla^2\Phi \neq 0$ (Poisson equation) and local curvature appears.
+
+\textbf{Upward continuation:} Moving the observation point away from the sources is equivalent to low-pass filtering the field---a concept we will revisit formally with Fourier methods in Week~7.
 
 \end{activity}

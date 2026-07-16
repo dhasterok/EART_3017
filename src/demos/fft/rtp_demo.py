@@ -42,8 +42,9 @@
 from pathlib import Path
 import sys
 
-_ROOT    = Path(__file__).parent.parent.parent   # src/demos/fft/ -> project root
+_ROOT    = Path(__file__).parent.parent.parent.parent   # src/demos/fft/ -> project root
 DATAPATH = _ROOT / "data"
+FIGDIR = Path(__file__).resolve().parent / "tmp_figures"
 
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
@@ -54,10 +55,13 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as _gs
 
 from scipy.fft import fft2, ifft2, fftfreq
-from ipywidgets import interact, FloatSlider
 import cmcrameri.cm as cmc
 
 from src.physics.magnetics.reduce2pole import reduce_to_pole, pseudo_gravity
+
+from src.utils.figure_utils import figutils as fu
+fu = fu(FIGDIR)
+
 
 plt.rcParams.update({
     "figure.figsize": (10, 5),
@@ -128,10 +132,10 @@ def plot_mag_profile(ax, coords, datasets, title, direction='EW'):
     """Plot profiles through the centre of the grid."""
     mid = len(coords) // 2
     for entry in datasets:
-        label, data, colour = entry[:3]
+        label, data, color = entry[:3]
         ls = entry[3] if len(entry) > 3 else '-'
         profile = data[mid, :] if direction == 'EW' else data[:, mid]
-        ax.plot(coords / 1000, profile, color=colour, ls=ls, label=label)
+        ax.plot(coords / 1000, profile, color=color, ls=ls, label=label)
     xlabel = 'x (km)' if direction == 'EW' else 'y (km)'
     ax.set_xlabel(xlabel)
     ax.set_ylabel('Amplitude')
@@ -161,6 +165,7 @@ plot_mag_profile(axs[1], x, [('Depth', h_cone, 'C1')],
 axs[1].set_ylabel("Depth (m)")
 axs[1].invert_yaxis()
 plt.tight_layout()
+fu.savefig(fig, "rtp_cone_geometry")
 plt.show()
 
 # %% [markdown]
@@ -207,11 +212,10 @@ def magnetic_anomaly(h, inc_deg, dec_deg, depth=1000.0, chi=0.05):
 # - 2-D map view shows a clearly asymmetric anomaly with peak offset from the source.
 
 # %%
-T_raw  = magnetic_anomaly(h_cone, inc_deg=60, dec_deg=0)
+T_raw  = magnetic_anomaly(h_cone, inc_deg=60, dec_deg=15)
 T_vert = magnetic_anomaly(h_cone, inc_deg=90, dec_deg=0)
 
-def show_anomaly(inc=60, dec=0):
-    plt.close('all')
+def show_anomaly(inc=60, dec=15, savename=None):
     T_raw = magnetic_anomaly(h_cone, inc_deg=inc, dec_deg=dec)
     mid   = len(x) // 2
 
@@ -230,18 +234,16 @@ def show_anomaly(inc=60, dec=0):
     ax_prof.grid(True)
 
     plt.tight_layout()
+    if savename is not None:
+        fu.savefig(fig, savename)
     plt.show()
 
 
-interact(
-    show_anomaly,
-    inc=FloatSlider(min=5, max=90, step=5, value=60,
-                    description='Inclination (°)',
-                    style={'description_width': 'initial'}),
-    dec=FloatSlider(min=-180, max=180, step=10, value=0,
-                    description='Declination (°)',
-                    style={'description_width': 'initial'}),
-);
+# Static figure for the "set" field geometry used throughout this demo
+# (I = 60°, D = 15°, matching T_raw above) -- ipywidgets sliders don't
+# render outside a Jupyter front-end, so a fixed, representative anomaly
+# is shown instead of an interactive sweep.
+show_anomaly(inc=60, dec=15, savename="rtp_forward_anomaly")
 
 # %% [markdown]
 # ### Interpretation checkpoint
@@ -272,10 +274,8 @@ interact(
 # RTP works by undoing the phase shift caused by the inclined inducing field.
 
 # %%
-def show_fourier_view(inc=60, dec=0):
+def show_fourier_view(inc=60, dec=15, savename=None):
     """Show TMI and RTP in space and Fourier domains."""
-    plt.close('all')
-
     T     = magnetic_anomaly(h_cone, inc_deg=inc, dec_deg=dec)
     T_rtp, _ = reduce_to_pole(x, y, T, f=(inc, dec), m=(inc, dec))
 
@@ -351,6 +351,8 @@ def show_fourier_view(inc=60, dec=0):
         'Key observation: amplitude spectra are nearly identical '
         '(RTP is a phase filter, not amplitude).'
     )
+    if savename is not None:
+        fu.savefig(fig, savename)
     plt.show()
 
     fig2, axes2 = plt.subplots(1, 2, figsize=(11, 4.5), constrained_layout=True)
@@ -370,20 +372,13 @@ def show_fourier_view(inc=60, dec=0):
         'The correction varies with direction in k-space because the field '
         'inclination breaks N–S symmetry.'
     )
+    if savename is not None:
+        fu.savefig(fig2, f"{savename}_phase")
     plt.show()
 
 
-interact(
-    show_fourier_view,
-    inc=FloatSlider(min=10, max=90, step=5, value=60,
-                    description='Inclination (°)',
-                    style={'description_width': 'initial'},
-                    layout={'width': '400px'}),
-    dec=FloatSlider(min=-180, max=180, step=10, value=0,
-                    description='Declination (°)',
-                    style={'description_width': 'initial'},
-                    layout={'width': '400px'}),
-);
+# Static figure for the same set field geometry (I = 60°, D = 15°) used above.
+show_fourier_view(inc=60, dec=15, savename="rtp_fourier_view")
 
 # %% [markdown]
 # ## PART C — REDUCTION TO THE POLE
@@ -402,8 +397,7 @@ interact(
 # **Purpose:** Apply RTP to the anomaly.
 
 # %%
-def explore_rtp(inc=60, dec=0, noise=0.0):
-    plt.close('all')
+def explore_rtp(inc=60, dec=15, noise=0.0, savename=None):
     T = magnetic_anomaly(h_cone, inc_deg=inc, dec_deg=dec)
 
     if noise > 0:
@@ -438,21 +432,14 @@ def explore_rtp(inc=60, dec=0, noise=0.0):
     ax_prof.legend(fontsize=8)
     ax_prof.grid(True)
 
+    if savename is not None:
+        fu.savefig(fig, savename)
     plt.show()
 
 
-interact(
-    explore_rtp,
-    inc=FloatSlider(min=0, max=90, step=5, value=60,
-                    description='Inclination (°)',
-                    style={'description_width': 'initial'}),
-    dec=FloatSlider(min=-180, max=180, step=10, value=0,
-                    description='Declination (°)',
-                    style={'description_width': 'initial'}),
-    noise=FloatSlider(min=0.0, max=0.5, step=0.05, value=0.0,
-                      description='Noise level',
-                      style={'description_width': 'initial'}),
-);
+# Static figure for the same set field geometry (I = 60°, D = 15°) used above,
+# with no added noise.
+explore_rtp(inc=60, dec=15, noise=0.0, savename="rtp_pole_reduction")
 
 # %% [markdown]
 # ### RTP result: interpretation

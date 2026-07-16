@@ -3,6 +3,18 @@
 \section*{Purpose}
 To understand finite difference heat flow equations as direct consequences of energy conservation applied to small volumes of rock.
 
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Derive the finite difference heat equation from energy conservation applied to a discrete node.
+  \item Interpret the Laplacian finite difference stencil ($T_{i+1} - 2T_i + T_{i-1}$) as a measure of local curvature or departure from the mean of neighbours.
+  \item Explain the role of heat production $A_i$ in modifying the temperature update.
+  \item Connect the discrete finite difference equation to the continuous partial differential equation it approximates.
+\end{itemize}
+}
+
 Consider a vertical column of sediment divided into small layers. Heat flows between layers, and each layer can gain or lose energy depending on its neighbours and any internal heat production.
 
 Rather than solving a continuous equation, we will track how heat moves between
@@ -14,6 +26,7 @@ Rather than solving a continuous equation, we will track how heat moves between
     \item If a layer is hotter than the ones above and below it, does it gain or lose heat?
     \item If heat is being produced inside the layer, what happens over time?
 \end{itemize}
+\answerbox[3cm]
 
 \section*{Part B: Setting up the system}
 
@@ -21,6 +34,7 @@ Rather than solving a continuous equation, we will track how heat moves between
     \item Sketch a one-dimensional grid of nodes labeled $T_{i-1}$, $T_i$, and $T_{i+1}$.
     \item Indicate the spacing $\Delta z$.
 \end{itemize}
+\answerbox[4cm]
 
 \section*{Part C: Heat flux}
 
@@ -34,8 +48,7 @@ Heat flows according to Fourier's law:
     \item Write an expression for heat flowing \emph{into} node $i$.
     \item Write an expression for heat flowing \emph{out of} node $i$.
 \end{itemize}
-
-\bigskip
+\answerbox[4cm]
 
 \section*{Part D: Energy conservation}
 
@@ -51,6 +64,7 @@ Combine your expressions to derive:
     \kappa \frac{T_{i+1} - 2T_i + T_{i-1}}{\Delta z^2}
     + \frac{A_i}{\rho c_p}
 \end{equation}
+\answerbox[6cm]
 
 \section*{Part E: Interpretation}
 
@@ -61,10 +75,41 @@ Explain in words:
     \item What role does heat production $A_i$ play?
     \item What happens if $A_i = 0$?
 \end{itemize}
+\answerbox[4cm]
 
-\bigskip
+{\color{red}
+\section*{Key Ideas}
 
-\textbf{Key Insight} \\
 Finite difference equations are not numerical tricks—they are simply energy conservation applied locally.
+
+\textbf{Finite differences are discretised energy conservation.} The finite difference heat equation is not an approximation introduced for computational convenience — it is the exact energy balance for a discrete rock volume, with the continuous derivatives replaced by differences between neighbouring nodes. This is the same physics as the heat equation; only the representation changes.
+
+{\color{blue}
+\textbf{The Laplacian stencil measures curvature.} The term $T_{i+1} - 2T_i + T_{i-1}$ is the discrete second derivative of temperature. It is positive when a node is cooler than the average of its neighbours (it receives net heat) and negative when it is warmer (it loses heat). This is exactly how diffusion works: it smooths by removing curvature.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.1]
+  \foreach \x/\lbl in {0/{i{-}1}, 2.5/{i}, 5/{i{+}1}} {
+    \draw[fill=gray!20] (\x, 0) circle (0.4);
+    \node[font=\small] at (\x, 0) {$T_{\lbl}$};
+  }
+  \draw[thick] (0.4, 0) -- (2.1, 0);
+  \draw[thick] (2.9, 0) -- (4.6, 0);
+  \draw[<->] (0,-0.8) -- (2.5,-0.8) node[midway, below, font=\small] {$\Delta z$};
+  \draw[<->] (2.5,-0.8) -- (5,-0.8) node[midway, below, font=\small] {$\Delta z$};
+  \draw[->, thick, red]  (0.7, 0.7) -- (2.1, 0.7)
+    node[midway, above, font=\scriptsize] {$q_\text{in}\!\propto T_{i-1}\!-\!T_i$};
+  \draw[->, thick, blue] (2.9, 0.7) -- (4.3, 0.7)
+    node[midway, above, font=\scriptsize] {$q_\text{out}\!\propto T_i\!-\!T_{i+1}$};
+  \node[font=\small, align=center] at (2.5,-1.6)
+    {Net gain $\propto T_{i+1}-2T_i+T_{i-1}$: discrete curvature};
+\end{tikzpicture}
+\caption{Heat enters node $i$ from the left (red) and exits to the right (blue). The net heat gain is proportional to the curvature of the temperature profile.}
+\end{figure}
+}
+
+\textbf{The method scales to any geometry.} Unlike analytic solutions, which require special symmetries, the same finite difference update rule applies to any grid, any set of boundary conditions, and any spatially variable material properties. This generality is the key advantage of numerical methods.
+}
 
 \end{activity}

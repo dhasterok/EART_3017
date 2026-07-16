@@ -1125,7 +1125,7 @@ class MainWindow(QtWidgets.QMainWindow):
         M_true = FOUR_PI_OVER_3 * self.p_true[1]**3 * self.p_true[2]
         x_unit = f'M (×10^{ex} kg)'
 
-        # ax11: filled colour + contour of z-M misfit
+        # ax11: filled color + contour of z-M misfit
         ax = self.canvas_misfit.ax11
         im = ax.pcolormesh(Mv, zv, G, shading='auto', cmap='viridis_r')
         cb = self.canvas_misfit.figure.colorbar(im, ax=ax)

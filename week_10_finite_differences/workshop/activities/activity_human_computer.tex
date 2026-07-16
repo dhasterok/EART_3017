@@ -9,6 +9,18 @@ information from its neighbours.
 
 \emph{In this activity, you will act as the nodes in a finite difference model.}
 
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Apply the finite difference update rule by computing temperature from neighbouring values.
+  \item Predict qualitatively how an initial temperature distribution evolves under the diffusion update rule.
+  \item Explain why temperature peaks smooth out and why the system approaches a uniform (or linear) steady state.
+  \item Describe why heat transfer is a local process and how information about temperature propagates through a grid one node at a time.
+\end{itemize}
+}
+
 \ntextbox{Human Computer}{
     Before electronic computers existed, a \emph{computer} was literally a person employed to carry out calculations by hand or with mechanical calculators. Large groups of human computers were used in astronomy, navigation, ballistics, engineering, and later for the numerical solution of differential equations. By the late 19th and early 20th centuries, many of these computing groups were composed largely of women. Examples include the astronomical computers working for the \emph{Nautical Almanac} and later teams at observatories, government laboratories, and research institutions.
 
@@ -50,6 +62,7 @@ Before starting, discuss:
     \item What happens to a sharp temperature spike over time?
     \item Will the system become smoother or less smooth?
 \end{itemize}
+\answerbox[3cm]
 
 \section*{Part B: Iteration}
 
@@ -60,7 +73,24 @@ Repeat the following for several steps:
     \item Update simultaneously.
 \end{enumerate}
 
-\textbf{Record the evolution of the system.}
+\textbf{Record the evolution of the system.} (Use the table below to track temperature values at each node across three time steps.)
+
+\begin{center}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|c|*{9}{c|}}
+\hline
+\textbf{Step} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} \\
+\hline
+0 & & & & & & & & & \\
+\hline
+1 & & & & & & & & & \\
+\hline
+2 & & & & & & & & & \\
+\hline
+3 & & & & & & & & & \\
+\hline
+\end{tabular}
+\end{center}
 
 \section*{Part C: Observations}
 
@@ -70,6 +100,7 @@ Discuss:
     \item What happens to temperature peaks?
     \item How does heat move through the system?
 \end{itemize}
+\answerbox[3cm]
 
 \section*{Part D: Interpretation}
 
@@ -79,11 +110,7 @@ Discuss:
     \item What role do neighbouring nodes play?
     \item How does this relate to diffusion?
 \end{itemize}
-
-\bigskip
-
-\textbf{Key Insight} \\
-Heat flow is a local process: each point evolves based on its neighbours.
+\answerbox[4cm]
 
 \bigskip
 \hrule
@@ -135,5 +162,17 @@ T_{i+1,j} + T_{i-1,j} + T_{i,j+1} + T_{i,j-1}
     \item In what sense are you “solving the heat equation”?
     \item Why does this method require many iterations?
 \end{itemize}
+
+{\color{red}
+\section*{Key Ideas}
+
+Heat flow is a local process: each point evolves based on its neighbours.
+
+\textbf{Numerical models evolve through local interactions.} Each node only communicates with its immediate neighbours. Global behaviour (e.g., a uniform steady state) emerges from many local interactions over many time steps. There is no global solution found in one step.
+
+\textbf{Information propagates at a finite rate.} Because each update depends only on nearest neighbours, a temperature change at one end of the chain cannot instantaneously affect the other end. It must propagate node by node, step by step. This is the discrete analogue of finite diffusion speed in the continuum.
+
+\textbf{Steady state is reached when updates become zero.} The system reaches a steady state when every node's temperature equals the average of its neighbours: $T_i = (T_{i-1} + T_{i+1})/2$. This is the discrete form of $\nabla^2 T = 0$ --- the Laplace equation for heat without sources.
+}
 
 \end{activity}

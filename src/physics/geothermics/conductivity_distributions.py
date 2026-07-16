@@ -146,7 +146,7 @@ def plot_conductivity_distributions(ax=None):
         # p5–p95 horizontal line
         ax.plot([s['p5'], s['p95']], [y, y], color=color, linewidth=1.2, zorder=2)
 
-        # p25–p75 filled rectangle (solid colour, no alpha — keeps PDF vector)
+        # p25–p75 filled rectangle (solid color, no alpha — keeps PDF vector)
         rect = mpatches.FancyBboxPatch(
             (s['p25'], y - rect_half),
             s['p75'] - s['p25'],

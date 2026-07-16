@@ -582,7 +582,7 @@ class MainWindow(QMainWindow):
         ax.legend(fontsize=7, loc='upper right')
 
     def _update_exit_strip(self):
-        """Overlay a thin normalised exit-density strip on the right edge of ax_img."""
+        """Overlay a thin normalized exit-density strip on the right edge of ax_img."""
         from matplotlib.patches import Rectangle
         if hasattr(self, '_exit_patches'):
             for p in self._exit_patches:

@@ -2,66 +2,183 @@
 
 \section*{Purpose}
 
-This activity links magnetic susceptibility to mineralogy and geological processes such as alteration, metamorphism, and weathering.
+This activity links magnetic susceptibility to mineralogy and geological processes such as alteration, metamorphism, weathering, and igneous differentiation.
 
-\section*{Key Reminder}
+\section*{Learning Outcomes}
 
-Magnetic susceptibility ($\chi$) describes how strongly a material becomes magnetised:
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Measure magnetic susceptibility on a range of rock and ore samples and record observations systematically.
+  \item Relate susceptibility values to mineralogy, particularly the role of magnetite and other iron oxides.
+  \item Distinguish primary (igneous) from secondary (alteration or metamorphic) controls on rock magnetic susceptibility.
+  \item Discuss why susceptibility is not a simple proxy for bulk rock composition or metal content.
+\end{itemize}
+
+\section*{Background}
+
+Magnetic susceptibility ($\chi$) describes how strongly a material becomes magnetised in response to a field:
 \[
-\mathbf{M} = \chi \mathbf{H}
+    \mathbf{M} = \chi \mathbf{H} .
 \]
+
+Unlike density, which depends on the bulk mineralogy of a rock, susceptibility is controlled almost entirely by a trace phase. Magnetite's susceptibility is orders of magnitude higher than that of the silicate minerals that make up the bulk of most rocks, so even a few percent by volume of magnetite dominates the measured susceptibility regardless of what the rest of the rock is made of. A handful of Ni- and Co-bearing minerals can also contribute, but at typical crustal abundances their effect is negligible next to magnetite's.
+
+Because susceptibility is set by a trace phase, it is sensitive to exactly which Fe-Ti oxide is present, not simply how much iron the rock contains. Figure~\ref{fig:mag-ternary} shows the relevant Fe-Ti oxide system: magnetite and its Ti-substituted relatives at one end, hematite and ilmenite at the other. Today's samples will let you see this system in action --- the same starting rock can end up on either side of it, depending on what reaction it underwent.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[]{figures/Fe_Ti_oxides.pdf}
+  \caption{The Fe-Ti oxide system. Which side of this diagram a rock's oxide phase falls on --- not its bulk iron content --- determines whether it is magnetic.}
+  \label{fig:mag-ternary}
+\end{figure}
 
 \section*{Samples and Observations}
 
-\begin{table}
+\subsection*{Station 1: Reaction Pairs}
+
+\begin{table}[h]
     \centering
-    \begin{tabular}{|c|p{2.5cm}|p{2.5cm}|c|p{3cm}|}
+    \begin{tabularx}{\textwidth}{@{}|c|X|X|c|X|@{}}
         \toprule
-        \textbf{Sample} &
-        \textbf{Rock type} &
-        \textbf{Geological context} &
-        \textbf{Susceptibility (SI)} &
-        \textbf{Notes} \\
+        \textbf{Sample} & \textbf{Rock type} & \textbf{Geological context} & \textbf{Susceptibility (SI)} & \textbf{Notes} \\
         \midrule
-        1 & & & & \\
-        2 & & & & \\
-        3 & & & & \\
-        4 & & & & \\
-        5 & & & & \\
-        6 & & & & \\
-        7 & & & & \\
-        8 & & & & \\
+        1\rule{0pt}{2em} & peridotite & & & \\
+        \midrule
+        2\rule{0pt}{2em} & serpentinite & & & \\
+        \midrule
+        3\rule{0pt}{2em} & basalt (fresh) & & & \\
+        \midrule
+        4\rule{0pt}{2em} & basalt (altered) & & & \\
+        \midrule
+        5\rule{0pt}{2em} & eclogite & & & \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
+        %6 & (granite/sedimentary protolith) & & \\
+        %7 & (metamorphosed equivalent) & & \\
 \end{table}
 
-\section*{Paired Comparisons}
+\begin{questions}
+  \question{Reaction Pairs}
+  \begin{enumerate}
+    \item Compare the peridotite and serpentinite susceptibility. How does serpentinisation lead to high magnetic susceptibility?
+    \answerbox[3cm]
 
-\subsection*{Peridotite vs Serpentinite}
-How does serpentinisation lead to high magnetic susceptibility?
+    \item Compare the fresh basalt and altered seafloor basalt. Why can alteration dramatically reduce susceptibility in mafic rocks?
+    \answerbox[3cm]
 
-\vspace{3cm}
+    \item Compare the granite or sedimentary protolith with its metamorphosed equivalent. Which minerals control susceptibility in felsic or sedimentary rocks?
+    \answerbox[3cm]
+  \end{enumerate}
 
-\subsection*{Fresh Gabbro vs Altered Basalt}
-Why can alteration dramatically reduce susceptibility in mafic rocks?
+  \question{Cross-Comparison: Two Paths to Low Susceptibility}
+  Both the altered seafloor basalt and the eclogite are weakly magnetic, but they reached that state by different geological histories. Propose one observation (mineralogical, textural, or geochemical) that could distinguish which process --- surface alteration or deep metamorphism --- produced a given low-susceptibility sample.
+  \answerbox[3cm]
 
-\vspace{3cm}
+  \question{Cross-Comparison: One Process, Two Outcomes}
+  Hydrothermal alteration acted on both the peridotite and the basalt in this activity, but with opposite magnetic consequences: serpentinisation of peridotite \emph{produces} magnetite, while seawater alteration of basalt \emph{destroys} it. Given that both are altered by broadly similar fluid-rock interaction, what property of the starting rock --- rather than the process itself --- determines whether magnetite is created or consumed?
+  \answerbox[3cm]
+\end{questions}
 
-\subsection*{Granite or Sedimentary Protolith vs Metamorphosed Equivalent}
-Which minerals control susceptibility in felsic or sedimentary rocks?
+\subsection*{Station 2: Igneous Suite}
 
-\vspace{3cm}
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{@{}|c|X|X|c|X|@{}}
+        \toprule
+        \textbf{Sample} & \textbf{Rock type} & \textbf{Predicted rank} & \textbf{Susceptibility (SI)} & \textbf{Notes} \\
+        \midrule
+        6\rule{0pt}{2em} & gabbro & & & \\
+        \midrule
+        7\rule{0pt}{2em} & diorite & & & \\
+        \midrule
+        8\rule{0pt}{2em} & granodiorite & & & \\
+        \midrule
+        9\rule{0pt}{2em} & granite 1 & & & \\
+        \midrule
+        10\rule{0pt}{2em} & granite 2 & & & \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 
-\section*{Synthesis}
+\begin{questions}[resume]
+  \question{Igneous Suite}
+  \begin{enumerate}
+    \item Before measuring, rank the igneous samples from most to least magnetic based on their appearance (color index, inferred mafic mineral content).
+    \answerbox[2cm]
 
-\begin{enumerate}
-  \item Why is susceptibility not a simple proxy for bulk composition?
-  \item Which geological processes increase susceptibility?
-  \item Which decrease it?
-\end{enumerate}
+    \item After measuring, compare your predicted ranking to the results. Does susceptibility track color index as expected? What might cause a sample to depart from the trend?
+    \answerbox[3cm]
+  \end{enumerate}
+\end{questions}
 
-\section*{Reflection}
+\subsection*{Station 3: Ore Minerals}
 
-Explain why petrology is essential for interpreting magnetic anomalies.
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{@{}|c|X|X|c|X|@{}}
+        \toprule
+        \textbf{Sample} & \textbf{Mineral} & \textbf{Predicted rank} & \textbf{Susceptibility (SI)} & \textbf{Notes} \\
+        \midrule
+        11\rule{0pt}{2em} & magnetite & & & \\
+        \midrule
+        12\rule{0pt}{2em} & galena & & & \\
+        \midrule
+        13\rule{0pt}{2em} & tin ore & & & \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{questions}[resume]
+  \question{Ore Minerals}
+  \begin{enumerate}
+    \item Before measuring, rank the four ore samples from most to least magnetic, based on their appearance and metal content.
+    \answerbox[2cm]
+
+    \item After measuring, compare your prediction to the results. Which sample most surprised you, and why?
+    \answerbox[3cm]
+
+    \item Pyrite contains iron. Why is it only weakly magnetic, if at all, despite this?
+    \answerbox[2cm]
+  \end{enumerate}
+\end{questions}
+
+\section*{Complete at the end}
+
+\begin{questions}[resume]
+  \question{Synthesis}
+  \begin{enumerate}
+    \item Why is susceptibility not a simple proxy for bulk composition or metal content?
+    \answerbox[2cm]
+
+    \item Which geological processes and settings tend to increase susceptibility, and which tend to decrease it?
+    \answerbox[2cm]
+  \end{enumerate}
+
+  \question{Reflection}
+  Explain why petrology is essential for interpreting magnetic anomalies.
+  \answerbox[3cm]
+\end{questions}
+
+\section*{Key Ideas}
+
+\textbf{Magnetite controls crustal magnetisation.} Even small amounts of magnetite (a few percent by volume) dominate the magnetic susceptibility of a rock because its susceptibility is orders of magnitude higher than that of silicate minerals. Susceptibility is therefore highly sensitive to trace magnetite abundance, not bulk composition --- and, as the ore station shows, not to metal content in general either.
+
+\textbf{Susceptibility depends on which Fe-Ti oxide is present, not how much iron the rock contains.} Serpentinisation of olivine produces magnetite as a byproduct of hydration,
+\[
+    3\,\mathrm{Fe_2SiO_4} + 2\,\mathrm{H_2O} \longrightarrow 2\,\mathrm{Fe_3O_4} + 3\,\mathrm{SiO_2} + 2\,\mathrm{H_2},
+\]
+while oxidative weathering of basalt destroys magnetite by further oxidising it,
+\[
+    4\,\mathrm{Fe_3O_4} + \mathrm{O_2} \longrightarrow 6\,\mathrm{Fe_2O_3} ,
+\]
+converting magnetite to hematite. Eclogitisation removes magnetite by a different route again --- Fe and Ti are redistributed into garnet and omphacite as the rock recrystallises under high pressure, rather than through a single hydration or oxidation reaction.
+
+\textbf{The same process can have opposite magnetic outcomes.} Neither ``alteration'' nor ``metamorphism'' has a fixed effect on susceptibility --- each can create or destroy magnetite depending on the starting rock's iron content and oxidation state, and the redox conditions of the fluid or melt involved. Predicting the outcome requires knowing the reaction geochemistry, not just naming the process.
+
+\textbf{Two very different histories can produce the same magnetic outcome.} The altered basalt and the eclogite both end up weakly magnetic despite sharing a basaltic protolith --- one lost its magnetite to near-surface oxidation, the other to deep metamorphic recrystallisation. A low susceptibility measurement alone cannot distinguish which history a sample experienced, foreshadowing the non-uniqueness problem you will meet again in Activity 6.C.
+
+\textbf{Igneous differentiation sets susceptibility before any alteration occurs.} Progressively more felsic melts crystallise progressively less Fe-Ti oxide, so susceptibility can vary systematically across an igneous suite purely as a primary crystallisation effect, with no reaction or alteration involved at all.
+
+\textbf{Petrology is essential for magnetic interpretation.} Without knowing the mineralogy and alteration history of the source rocks, it is impossible to distinguish between a mafic intrusion with high magnetite content and one that has been strongly altered. Both could produce very different magnetic anomalies despite similar bulk chemistry.
 
 \end{activity}

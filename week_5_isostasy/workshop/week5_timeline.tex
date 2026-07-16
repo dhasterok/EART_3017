@@ -1,7 +1,3 @@
-%\usetikzlibrary{decorations.pathmorphing, arrows.meta}
-%\usepackage{multicol}
-%\usepackage{pgfplots}
-
 \weeknum{5}
 \topic[Isostasy]{Isostasy: Ocean--Continent Structure \& Isostatic Gravity}
 
@@ -20,146 +16,83 @@
 
 \section*{Purpose}
 
-This workshop develops a quantitative understanding of isostatic equilibrium and its gravity expression by combining column-based reasoning, ocean--continent structure, and slab gravity approximations. Airy and Pratt isostasy are treated as end-member models, with emphasis on why real Earth structure requires a mixed or layered approach involving the lithospheric mantle.
+This workshop develops a quantitative understanding of isostatic equilibrium and its gravity expression by combining column-based reasoning, ocean--continent structure, and slab gravity approximations. Students work from a single general mass-balance principle throughout, applying it first to a crust-only ocean--continent comparison, then to a layered lithosphere, then to gravity. Airy and Pratt are introduced as named patterns within this balance, not as separate starting formulas.
 
 \section*{Learning Outcomes}
 
 By the end of this workshop, you should be able to:
 
 \begin{itemize}
-    \item Explain isostatic equilibrium as equal lithostatic pressure (or mass per unit area) at a compensation depth.
-    \item Derive and interpret Airy and Pratt isostasy as conceptual end members.
-    \item Explain why crust-only isostatic models fail for ocean--continent systems.
-    \item Derive the Airy isostatic gravity correction using slab approximations.
-    \item Explain why gravity anomalies over high topography may be small.
+    \item Explain isostatic equilibrium as equal lithostatic pressure (or mass per unit area) at a compensation depth, for columns of arbitrary structure.
+    \item Diagnose when a model result (e.g.\ an unrealistic density) indicates a missing physical component, and propose what is missing.
+    \item Recognize whether a given compensation pattern is consistent with the Airy or Pratt end-member, and explain why.
+    \item Derive the isostatic gravity correction from mass balance and the infinite slab formula, and explain why large topography does not necessarily produce large gravity anomalies.
+    \item Explain compensation as a spectrum rather than a binary state, and use misfit between predicted and observed gravity to reason about the degree of compensation.
 \end{itemize}
 
-\section*{Session Flow (180 min)}
+\section*{Session Flow (\timelinelength\ min)}
 
-\timeslot{Warm-Up: Defining Isostasy}{10}
+\timeline[slot]{Warm-Up: Icebergs}{10}
 
-Individually, write a one-sentence definition of isostatic equilibrium. These definitions are compared in pairs and then within your group, with the goal of converging on a precise statement.
+Isostasy is a state of equilibrium related to the buoyancy of the lithosphere over a geophysically fluid mantle. In this exercise, we'll examine the buoyancy of icebergs and discuss the similarity to the lithosphere that we'll be studying.
 
-\smallskip
-\noindent
-\textbf{Target idea:}
-\begin{quote}
-Isostatic equilibrium requires equal lithostatic pressure (or mass per unit area) at a compensation depth beneath adjacent columns.
-\end{quote}
-
-Groups assign roles (facilitator, skeptic, recorder, assumption checker).
-
-\timeslot{Mini-Lecture: Airy, Pratt, and Mixed Isostasy}{20}
-
-A short instructor-led lecture reviews:
+\timeline[slot]{Mini-Lecture: The General Isostatic Balance}{10}
 
 \begin{itemize}
-    \item Airy isostasy: variable crustal thickness, uniform density
-    \item Pratt isostasy: constant thickness, lateral density variations
-    \item Why neither end member fully describes the Earth
-    \item The role of lithospheric mantle and partial compensation
+    \item Isostatic equilibrium as pressure balance at a common compensation depth
+    \item Handling columns of unequal height
 \end{itemize}
 
-This provides the conceptual framework for the two analytical activities that follow.
+The full statement of this balance, and how to apply it to columns of unequal height, is given in the theory box at the start of the next activity.
 
-\timelineitem{Oceanic vs Continental Columns}{40}
+\timeline[item]{Oceanic vs.\ Continental Crust, Part 1}{30}
 
-\subsection*{Purpose}
+Each group balances an oceanic and a continental column, assuming compensation occurs solely through crustal thickness, and solves for the oceanic crust density required for equilibrium. See the activity sheet for the theory and setup.
 
-To test whether crust-only Airy isostasy can account for observed ocean--continent elevation differences, and to explore how including the lithospheric mantle resolves inconsistencies.
-
-\subsection*{Crust-Only Airy Isostasy}
-
-Each group balances an oceanic and a continental column under the assumption that compensation occurs solely through crustal thickness. You will:
+\timeline[slot]{Mini-Lecture: End-Member Terminology}{10}
 
 \begin{itemize}
-    \item Enforce equal mass per unit area above a compensation depth.
-    \item Solve for the oceanic crust density required for equilibrium.
-    \item Compare your result with realistic oceanic crust densities.
+    \item Naming the two patterns you just used: Airy (uniform density, variable thickness) and Pratt (uniform thickness, variable density)
+    \item Schematic comparison of the two patterns, and why real structure usually mixes both
 \end{itemize}
 
-You should find that the required density is unrealistic, indicating a missing component in the model.
+\timeline[item]{Oceanic vs.\ Continental Crust, Part 2}{25}
 
-\subsection*{Two-Layer Lithosphere Extension}
+The model is extended to include a lithospheric mantle beneath both columns. Groups rebalance the columns, estimate the density contrast between oceanic and continental lithospheric mantle, and relate it to mineralogy (e.g.\ garnet content). See the activity sheet.
 
-The model is then extended to include a lithospheric mantle beneath both oceanic and continental crust. You will:
+\timeline[item]{Isostatic Gravity Correction}{40}
 
-\begin{itemize}
-    \item Rebalance the columns including mantle lithosphere thickness differences.
-    \item Estimate the density contrast between oceanic and continental lithospheric mantle.
-    \item Relate this contrast to mineralogical differences (e.g.\ garnet content).
-\end{itemize}
+Working from the same balance, groups derive the compensating root thickness, apply the infinite slab formula (Week~4) to topography and root, and show that their gravity effects cancel under full compensation. See the activity sheet for the full derivation sequence.
 
-\timeslot{Whole-Class Synthesis}{10}
+\timeline[slot]{Numerical Demonstration}{30}
 
-A brief instructor-led discussion synthesises results from Activity 1, focusing on:
+The instructor builds a lithospheric cross section in \texttt{isostasy\_gui.py} and computes its gravity response under varying degrees of compensation and layered structure. Groups work through the accompanying activity sheet as the demonstration proceeds.
 
-\begin{itemize}
-    \item Why crust-only Airy isostasy fails
-    \item Why the lithospheric mantle must be included
-    \item Where Pratt-like behaviour may arise
-\end{itemize}
-
-\timelineitem{Isostatic Gravity Correction}{40}
-
-\subsection*{Purpose}
-
-To derive the Airy isostatic gravity correction and explain why large topography does not necessarily produce large gravity anomalies.
-
-\subsection*{Airy Mass Balance}
-
-You will show that, under Airy isostasy,
-\[
-\rho_c h = (\rho_m - \rho_c)\, r ,
-\]
-and derive an expression for the crustal root thickness $r(x)$.
-
-\subsection*{Infinite Slab Gravity}
-
-Using the slab approximation,
-\[
-\Delta g = 2\pi G \rho t ,
-\]
-you will compute the gravitational effects of surface topography and of the compensating crustal root.
-
-\subsection*{Cancellation}
-
-By substitution, you will demonstrate that under perfect Airy compensation, the gravity effects of topography and root cancel exactly, and discuss what assumptions are required for this result.
-
-\timeslot{Numerical Demonstration}{25}
-
-The instructor presents a live Python demonstration illustrating:
-
-\begin{itemize}
-    \item Airy compensation with varying compensation fractions
-    \item Pratt-style lateral density variations
-    \item Resulting gravity anomalies and residuals
-\end{itemize}
-
-Interpretation of results is emphasised rather than coding details.
-
-\timeslot{Group Synthesis}{25}
+\timeline[slot]{Wrap-up}{15}
 
 Each group prepares a brief summary addressing:
-
 \begin{itemize}
-    \item One reason crust-only Airy isostasy fails.
-    \item One way lithospheric mantle structure resolves this failure.
-    \item One equation linking topography, density, and gravity.
-    \item One observation that could reduce non-uniqueness in isostatic interpretation.
+    \item One case in this workshop where an unrealistic result told you something was missing from the model, and what that turned out to be.
+    \item Whether a compensation pattern you examined today was closer to Airy, Pratt, or a mix, and why.
+    \item One reason a compensated load can produce little or no gravity anomaly, and one reason a real gravity residual might not be zero.
+    \item One observation (e.g.\ seismology or petrology) that could help distinguish between isostatic models that fit the same gravity data equally well.
 \end{itemize}
 
-\timeslot{Exit Questions}{10}
+\timeline[slot]{Preview: Magnetics}{10}
 
-Individually, respond to the following:
+Next week we move from gravity to magnetics. Like gravity, magnetic methods respond to a physical property contrast---in this case, magnetic susceptibility rather than density. However, magnetics differs in important ways:
+\begin{itemize}
+    \item magnetic susceptibility is controlled by trace rather than bulk mineralogy;
+    \item rock magnetization is a vector (not a scalar);
+    \item the response depends on the direction of the regional field; and
+    \item the source contribution changes sign with polarity.
+\end{itemize}
+We will use hands-on demonstrations with magnets and rock samples to build intuition before examining how crustal structure is recorded in magnetic anomalies.
 
-\begin{enumerate}
-    \item Identify one unrealistic assumption in either Airy or Pratt isostasy and explain why it fails.
-    \item Explain how geological or geophysical constraints (e.g.\ seismology or petrology) help resolve ambiguity in isostatic models.
-\end{enumerate}
-
+\workshopend
 \notepage
 \notepage
 
 \subimport{activities/}{activity_ocean_continent}
 \subimport{activities/}{activity_isostatic_correction}
+\subimport{activities/}{activity_isostatic_demo}

@@ -21,7 +21,7 @@ from src.physics.magnetics.mag2d_model   import compute_bt     as _bt_2d
 from src.physics.magnetics.mag2d_model   import compute_bx_bz  as _bxbz_2d
 from src.physics.gravity.data_loader   import ObservedData
 
-# Colours for the two profile curves
+# colors for the two profile curves
 _GRAV_COLOR = "navy"
 _MAG_COLOR  = "#8B0000"   # dark red
 

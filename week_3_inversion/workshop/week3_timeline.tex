@@ -30,11 +30,11 @@ This workshop introduces the structure of inverse problems in potential-field ge
 \end{itemize}
 
 % ----------------------------------------------------------
-\section*{Session Flow (170 min)}
+\section*{Session Flow (\timelinelength\ min)}
 
-Create mixed groups (4--5 students). 
+Mixed groups of 4--5 with geology and physics/engineering backgrounds.  
 
-\timeslot{Warm-up}{10}
+\timeline[slot]{Warm-up}{10}
 
 What can you learn from a shadow?
 \begin{itemize}
@@ -51,7 +51,7 @@ How does this relate to inversion?
   \item The challenge of inversion is deciding which of many acceptable models is most reasonable.
 \end{itemize}
 
-\timeslot{Mini-lecture --- Forward vs Inverse, Misfit, Weighting, Challenges}{30}
+\timeline[slot]{Mini-lecture --- Forward vs Inverse, Misfit, Weighting, Challenges}{30}
 \begin{itemize}
   \item Forward vs.\ inverse models: $m \mapsto g(m)$ vs.\ $d \mapsto m$.
   \item Misfit: residual $r=d-g(m)$; weighted least squares $\Phi_d=\lVert W_d r\rVert_2^2$.
@@ -59,11 +59,11 @@ How does this relate to inversion?
   \item Challenges: non-linearity (Jacobian needed), non-uniqueness (multiple $m$ give similar $g(m)$), ill-conditioning.
 \end{itemize}
 
-\timelineitem{Testing Linearity}{20}
+\timeline[item]{Testing Linearity}{20}
 
 Two conditions must be met for linearity.  Let's expore how to rigorously test for linearity before we work on other functions.
 
-\timelineitem{Linear or Non-linear?}{30}
+\timeline[item]{Linear or Non-linear?}{30}
 Using the equation handout:
 \begin{itemize}
   \item Identify model parameters and classify each relation as \emph{linear}, \emph{non-linear}, or \emph{linearizable}.
@@ -73,7 +73,7 @@ Using the equation handout:
 
 \setstarttime{70} % 10 min transition/break between activities
 
-% \timeslot{Non-uniqueness}{20}
+% \timeline[slot]{Non-uniqueness}{20}
 % Curves-only reasoning:
 % \begin{itemize}
 %   \item Scenario A: gravity profiles --- two distinct geometric models can reproduce similar anomalies.
@@ -83,7 +83,7 @@ Using the equation handout:
 %   \item Deliverable: 1-paragraph argument explaining which model to pursue first and what data to collect next.
 % \end{itemize}
 
-\timelineitem{Buried Sphere --- Background}{15}
+\timeline[item]{Buried Sphere --- Background}{15}
 
 We're going to look at the gravity anomaly from a buried sphere.  The forward problem is non-linear with respect to the model parameters, requiring a non-linear inverse solution.  This activity is broken into two parts: a look at the formulation, and an investigation using a simple program.
 \begin{itemize}
@@ -91,17 +91,17 @@ We're going to look at the gravity anomaly from a buried sphere.  The forward pr
   \item Construct a true model \& generate data (freeze a single noise realization).
 \end{itemize}
 
-\timeslot{Buried Sphere --- Jacobian Derivatives}{20}
+\timeline[slot]{Buried Sphere --- Jacobian Derivatives}{20}
 \begin{enumerate}
   \item Students derive/confirm analytical expressions for
     $\partial g/\partial z$,
     $\partial g/\partial R$,
     $\partial g/\partial \Delta\rho$.
   \item Compare with the app's Jacobian; discuss relative sensitivities:
-    amplitude $\propto R^3\Delta\rho$, width controlled by depth $z$.
+    amplitude $\propto a^3\Delta\rho$, width controlled by depth $z$.
 \end{enumerate}
 
-\timeslot{Buried Sphere --- Investigation}{45}
+\timeline[slot]{Buried Sphere --- Investigation}{45}
 
 With the use of \verb+buried_sphere_gui.py+, we will examine a number of aspects of inversion, including
 \begin{description}
@@ -112,57 +112,33 @@ With the use of \verb+buried_sphere_gui.py+, we will examine a number of aspects
   \item [Role of Noise:] Look at how noise affects results.
 \end{description}
 
-\timeslot{Debrief}{10}
+\timeline[slot]{Wrap-up}{10}
 
-\begin{itemize}
-  \item Key takeaways: forward/inverse distinctions, misfit and weighting, non-linearity, non-uniqueness, damping.
-  \item Open Q\&A; preview of next week's material.
-\end{itemize}
+Forward models compute fields from distributions of physical properties.  Inverse problems attempt to solve for the distribution of physical properties given a set of observations of a field.
 
-\timeslot{Preview: Gravity Theory}{10}
+Inversions come with several challenges: non-linearity, non-uniqueness, instability, and underdetermined.  Non-linear functions can sometimes be linearized and if not can be solved using iterative methods.  Just as multiple objects can cast the same shadow, multiple distributions of a property can produce the same geophysical field anomaly.  Damping can help reduce instability and adding geologic constraints can reduce non-uniqueness.
 
-This week we treated gravity primarily as data to be inverted. Next
-week we will begin developing gravity theory itself.
+\timeline[slot]{Preview: Gravity Theory}{10}
 
-We will derive the gravity field from Newton's law of universal
-gravitation and examine how mass distributions create gravity
-anomalies. We will see how simple geological bodies such as spheres,
-cylinders, slabs, and contacts produce characteristic gravity
-signatures.
+This week we treated gravity primarily as data to be inverted. Next week we will begin developing gravity theory itself.
 
-Along the way, we will connect the mathematical concepts introduced in
-Week 1—gradients, curvature, and potential fields—to one of the most
-important geophysical methods.
+We will derive the gravity field from Newton's law of universal gravitation and examine how mass distributions create gravity anomalies. We will see how simple geological bodies such as spheres, cylinders, slabs, and contacts produce characteristic gravity signatures.
 
-By the end of next week, you will be able to predict how changes in
-density, geometry, and observation distance affect the gravity field
-and begin interpreting gravity anomalies in geological terms.
+Along the way, we will connect the mathematical concepts introduced in Week 1—gradients, curvature, and potential fields—to one of the most important geophysical methods.
+
+By the end of next week, you will be able to predict how changes in density, geometry, and observation distance affect the gravity field and begin interpreting gravity anomalies in geological terms.
 
 % ----------------------------------------------------------
-\section*{Materials}
-\begin{itemize}
-  \item Linear/non-linear handout or slide deck.
-  \item Activity D handouts (gravity and magnetic curves-only plots).
-  \item Buried sphere app (laptop per group).
-  \item Whiteboard or shared notepad for Jacobian derivations.
-\end{itemize}
+% \section*{References (suggested for students)}
+% \begin{thebibliography}{9}
+% \bibitem{Blakely} R. Blakely, \textit{Potential Theory in Gravity and Magnetic Applications}, Cambridge University Press, 1995.
+% \bibitem{Telford} W. M. Telford, L. P. Geldart, and R. E. Sheriff, \textit{Applied Geophysics}, 2nd ed., Cambridge University Press, 1990.
+% \bibitem{Menke} W. Menke, \textit{Geophysical Data Analysis: Discrete Inverse Theory}, 3rd ed., Academic Press, 2012.
+% \bibitem{Aster} R. C. Aster, B. Borchers, and C. H. Thurber, \textit{Parameter Estimation and Inverse Problems}, 3rd ed., Elsevier, 2019.
+% \bibitem{Tarantola} A. Tarantola, \textit{Inverse Problem Theory and Methods for Model Parameter Estimation}, SIAM, 2005.
+% \end{thebibliography}
 
-\section*{Assessment}
-\begin{itemize}
-  \item Activity notes (classification \& argumentation).
-  \item Jacobian derivation steps.
-  \item Short reflection or exit-ticket on non-linearity and non-uniqueness.
-\end{itemize}
-
-\section*{References (suggested for students)}
-\begin{thebibliography}{9}
-\bibitem{Blakely} R. Blakely, \textit{Potential Theory in Gravity and Magnetic Applications}, Cambridge University Press, 1995.
-\bibitem{Telford} W. M. Telford, L. P. Geldart, and R. E. Sheriff, \textit{Applied Geophysics}, 2nd ed., Cambridge University Press, 1990.
-\bibitem{Menke} W. Menke, \textit{Geophysical Data Analysis: Discrete Inverse Theory}, 3rd ed., Academic Press, 2012.
-\bibitem{Aster} R. C. Aster, B. Borchers, and C. H. Thurber, \textit{Parameter Estimation and Inverse Problems}, 3rd ed., Elsevier, 2019.
-\bibitem{Tarantola} A. Tarantola, \textit{Inverse Problem Theory and Methods for Model Parameter Estimation}, SIAM, 2005.
-\end{thebibliography}
-
+\workshopend
 \notepage
 \notepage
 

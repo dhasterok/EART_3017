@@ -306,7 +306,7 @@ def sample_fold_with_spectrum(dx_km=2.0):
     axs[1].plot(k_s,     amp_s/amp_s.max(),         'r:', label="Sampled spectrum")
     axs[1].set_xlim(0, 0.2)
     axs[1].set_xlabel("Wavenumber (cycles/km)")
-    axs[1].set_ylabel("Normalised amplitude")
+    axs[1].set_ylabel("Normalized amplitude")
     axs[1].set_title("Folded geology: spectral domain")
     axs[1].legend()
 
@@ -369,7 +369,7 @@ def basin_range_with_spectrum(dx_km=5.0, detrend_on=True, order=1):
     axs[1].plot(k_s,     amp_s/amp_s.max(),         'r', label="Sampled spectrum")
     axs[1].set_xlim(0, 0.2)
     axs[1].set_xlabel("Wavenumber (cycles/km)")
-    axs[1].set_ylabel("Normalised amplitude")
+    axs[1].set_ylabel("Normalized amplitude")
     axs[1].set_title("Spectral content")
     axs[1].legend()
 

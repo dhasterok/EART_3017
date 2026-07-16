@@ -4,7 +4,7 @@ polygon.py
 Base class for a closed 2-D polygon.
 
 ``Polygon`` stores the common attributes shared by any polygon regardless
-of application domain (vertices, display name, colour, visibility) and
+of application domain (vertices, display name, color, visibility) and
 provides pure geometry operations.  Application-specific subclasses should
 inherit from ``Polygon`` and add domain attributes:
 
@@ -32,7 +32,7 @@ from typing import List, Optional, Tuple
 import numpy as np
 
 
-# Default colour cycle used when no colour is supplied
+# Default color cycle used when no color is supplied
 DEFAULT_COLORS: List[str] = [
     "#4C72B0", "#DD8452", "#55A868", "#C44E52",
     "#8172B3", "#937860", "#DA8BC3", "#8C8C8C",
@@ -51,7 +51,7 @@ class Polygon:
         closed (last vertex connects back to the first).
     name     : str   — display name (defaults to ``"Polygon"``; subclasses
                         typically supply a numbered name)
-    color    : str   — hex colour string, e.g. ``"#4C72B0"``
+    color    : str   — hex color string, e.g. ``"#4C72B0"``
     visible  : bool  — whether the polygon is shown / included in models
     """
 

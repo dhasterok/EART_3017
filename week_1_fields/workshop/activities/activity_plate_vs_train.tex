@@ -1,10 +1,20 @@
 \begin{activity}{Tectonic Plate vs. Freight Train}
 
-\section{Purpose}
+\section*{Purpose}
 
 The purpose of this activity is both a warm-up and an introduction to back-of-the-envelope (BOTE) problem solving.  So called a BOTE calculation because it is one that can be done relatively simply on a small piece of scrap paper.  Such calculations often result in order-of-magnitude estimates, are a way to place rough bounds on a value, and can be used test simple hypotheses before more complex computations are required.  It is a useful skill because it can be done in the field to do simple interpretations of data or during a chat with colleagues over drinks/dinner.
 
-\section{How to do BOTE calculations}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Apply a systematic back-of-the-envelope strategy to estimate unknown physical quantities.
+  \item Use order-of-magnitude reasoning and scientific notation to simplify calculations.
+  \item Identify and justify assumptions when estimating quantities for which precise values are unavailable.
+  \item Recognise that physical intuition---not numerical precision---is the primary goal of BOTE estimates.
+\end{itemize}
+
+\section*{How to do BOTE calculations}
 
 Work backwards.  Start with the last equation you will need to solve the problem.  Write down what you know and identify what you don't.  Often you will need to do multiple calculations on the way to solving the problem.
 
@@ -99,6 +109,108 @@ So, we are missing a conversion factor of $10^{-3}$ to give our result with unit
         You can use Google for some basic geology questions, but don't ask it for numbers/quantities.
 \end{questions}
 
-\clearpage
-Use this page to complete your BOTE estimates.
+\notepage[Use this page for tectonic plate.]
+\notepage[Use this page for freight train plate.]
+
+\section*{Key Ideas}
+
+\textbf{Order-of-magnitude estimation} is a core scientific skill. The goal is not a precise answer but a defensible estimate within a factor of a few. By breaking a problem into components you \emph{can} estimate, you avoid the trap of thinking ``I don't know the answer'' when you actually know enough to constrain it.
+
+\begin{minipage}[t]{0.38\textwidth}
+%\begin{figure}[h]
+    \centering
+
+    \begin{tikzpicture}[
+            >=latex,
+            node distance=0.8cm,
+            process/.style={
+                rectangle,
+                rounded corners,
+                draw,
+                align=center,
+                minimum width=3.2cm,
+                minimum height=0.75cm,
+                font=\small
+            },
+            decision/.style={
+                diamond,
+                draw,
+                aspect=2,
+                align=center,
+                font=\small,
+                inner sep=1pt
+            },
+            baseline=(current bounding box.north)
+        ]
+
+        \node[process] (q) {Start with\\Question};
+
+        \node[process, below=of q] (target)
+        {Identify Target\\Quantity};
+
+        \node[process, below=of target] (eq)
+        {Formulate\\Equation};
+
+        \node[process, below=of eq] (inputs)
+        {Identify Required\\Quantities};
+
+        \node[decision, below=1.0cm of inputs] (unknowns)
+        {Any\\Unknowns?};
+
+        \node[process, below=1.2cm of unknowns] (compute)
+        {Compute\\Answer};
+
+        \node[process, below=of compute] (reflect)
+        {Reflect:\\Is this\\reasonable?};
+
+        % Iterate node/label
+        \node[rotate=90,font=\small]
+        (iterate) at ($(target.west)+(-1.2,-3.0)$)
+        {Iterate};
+
+        % Yes branch
+        \draw[->]
+        (unknowns.west)
+        -- ++(-1.0,0)
+        node[midway,below] {Yes}
+        |- (target.west);
+
+        % No branch
+        \draw[->]
+        (unknowns)
+        -- (compute);
+
+        \node[font=\small]
+        at ($(unknowns)!0.5!(compute)+(0.55,0)$)
+        {No};
+
+        \draw[->] (q) -- (target);
+        \draw[->] (target) -- (eq);
+        \draw[->] (eq) -- (inputs);
+        \draw[->] (inputs) -- (unknowns);
+
+        \draw[->] (unknowns) -- (compute);
+        \draw[->] (compute) -- (reflect);
+
+    \end{tikzpicture}
+%    \caption{The back-of-the-envelope decision cycle.}
+%    \label{fig:bote}
+%\end{figure}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.58\textwidth}
+
+\textbf{Back-of-the-envelope calculations work backwards} from the desired quantity. Start with the final equation, identify the required inputs, and then recursively estimate any unknown quantities until every term can be evaluated.
+
+\vspace{0.5em}
+\textbf{Estimates are built from physical reasoning.} Unknown quantities can often be constrained using geometry, scaling relationships, analogy, bounds, known properties, and dimensional analysis. The goal is not precision but a defensible order-of-magnitude estimate.
+
+\vspace{0.5em}
+\textbf{Always reflect on the result.} A calculation is not finished when the arithmetic is complete. Ask whether the answer is physically reasonable, whether the units are correct, and how sensitive the estimate is to the assumptions made.
+
+\end{minipage}
+
+
+
+
 \end{activity}

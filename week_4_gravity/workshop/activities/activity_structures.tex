@@ -32,7 +32,8 @@ By the end of this activity, you should be able to:
 
 The structural arrangement of rock units can be very complex.  As geophysicists we invert for more complex structures as necessary, but doing so is time-consuming.  We can often approximate complex structures by one or more simplified geometries.  These simplifications have benefits besides being faster.  For one, the models have closed form analytical solutions.  We can calculate a wide range of stuctures that vary in dimension, distance, or orientation rapidly giving us approximate solutions that in many cases are `good enough' given all the data uncertainties and model non-uniqueness issues.  Another advantage is that closed form solutions help build our intution in a way that inverting for cell properties do not.
 
-For each structure below, complete the table and use the \emph{upper axes} to sketch the expected gravity anomaly $g_z(x)$ (arbitrary units). The \emph{lower panel} shows a schematic cross-section ($z$ positive downward).\\
+\section*{Task}
+For each structure below, complete the table and use the \emph{upper axes} to sketch the expected gravity anomaly $g_z(x)$ (arbitrary units).  The \emph{lower panel} shows a schematic cross-section ($z$ positive downward).  Assume that structures extend into and out of the page (i.e., perpendicular to strike).\\
 
 In your groups:
 \begin{enumerate}
@@ -42,28 +43,26 @@ In your groups:
   \item One group presents each structure; whole class discusses similarities and differences.
 \end{enumerate}
 
-\subsection*{Table}
-{
-\renewcommand{\arraystretch}{1.5}
+{\small
 \begin{tabularx}{\textwidth}{@{}|c|X|X|c|@{}}
   \toprule
   & & & \textbf{Plausible Range} \\
   & \textbf{Geologic Structure(s)} & \textbf{Likely lithologies} & $\Delta\rho$ \\
   & & & (kg m$^{-3}$) \\
   \midrule
-  A. & & & \\
+  A.\rule{0pt}{2em} & & & \\
   \midrule
-  B. & & & \\
+  B.\rule{0pt}{2em} & & & \\
   \midrule
-  C. & & & \\
+  C.\rule{0pt}{2em} & & & \\
   \midrule
-  D. & & & \\
+  D.\rule{0pt}{2em} & & & \\
   \midrule
-  E. & & & \\
+  E.\rule{0pt}{2em} & & & \\
   \midrule
-  F. & & & \\
+  F.\rule{0pt}{2em} & & & \\
   \midrule
-  G. & & & \\
+  G.\rule{0pt}{2em} & & & \\
   \bottomrule
 \end{tabularx}
 }
@@ -77,7 +76,7 @@ In your groups:
 % A) Buried Sphere (3D)
 % ==========================================================
 \begin{center}
-\textbf{A) Buried Sphere (3D)}
+\textbf{A) Cylinder}
 \end{center}
 
 % --- Anomaly axes (aligned with left edge) ---
@@ -98,62 +97,80 @@ In your groups:
 \bigskip\bigskip
 
 % ==========================================================
-% B) Buried Cylinder (2D; infinite strike)
+% B) Laccolith
 % ==========================================================
 \begin{center}
-\textbf{B) Buried Cylinder (2D; infinite strike)}
+\textbf{B) Sigmoid}
 \end{center}
 
 \gax
 
 \begin{center}
 \begin{tikzpicture}[scale=0.85]
+  \draw[thick] (-5,0) -- (5,0); % surface
 
-  % surface
-  \draw[thick] (-5,0) -- (5,0);
-
-  % parameters
-  \def\xc{0}
-  \def\zc{-1.3}
-  \def\r{0.7}
-  \def\rb{0.6}
-  \def\depth{0.35} % visual "3-D" depth
-  \def\p{0.8}
-
-
-  % side walls
-  %\draw[fill=gray!50]
-  %  (\xc-\r,\zc) -- (\xc-\r-\depth,\zc-\depth)
-  %  arc (180:0:{\r} and {0.35})
-  %  -- (\xc+\r,\zc)
-  %  arc (0:180:{\r} and 0.35);
-
-  % back ellipse
-  \draw[fill=gray!30] (\xc+\depth*2,\zc+\depth/2) ellipse ({\rb*\p} and {\r*\p});
-
-  % side walls
-  \fill[gray!30] (\xc-\depth*2,\zc-\depth/2-\r) -- (\xc-\depth*2,\zc-\depth/2+\r) -- (\xc+\depth*2,\zc+\depth/2+\r*\p) -- (\xc+\depth*2,\zc+\depth/2-\r*\p) -- cycle;
-  \draw (\xc+\depth*2,\zc+\depth/2-\r*\p) -- (\xc-\depth*2,\zc-\depth/2-\r) -- (\xc-\depth*2,\zc-\depth/2+\r) -- (\xc+\depth*2,\zc+\depth/2+\r*\p);
-
-
-  % front ellipse
-  \draw[fill=gray!30] (\xc-\depth*2,\zc-\depth/2) ellipse ({\rb} and {\r});
-
-  % depth to center
-  \draw[dashed] (\xc,0) -- (\xc,\zc);% node[midway,right] {$z_0$};
-  \draw[dashed] (\xc+\depth*2,\zc+\depth/2) -- (\xc-\depth*2,\zc-\depth/2);
-
-  % label
-  %\node at (3.0,-2.6) {\small infinite strike out of page};
-
+  \draw[fill=gray!30]
+    plot[
+      domain=-3:3,
+      samples=100,
+      smooth
+    ]
+    (\x,{-(2.4-1.6*exp(-0.5*\x*\x/0.6))})
+    -- (3,-2.4)
+    -- (-3,-2.4)
+    -- cycle;
 \end{tikzpicture}
 \end{center}
+
+% \begin{center}
+% \begin{tikzpicture}[scale=0.85]
+
+%   % surface
+%   \draw[thick] (-5,0) -- (5,0);
+
+%   % parameters
+%   \def\xc{0}
+%   \def\zc{-1.3}
+%   \def\r{0.7}
+%   \def\rb{0.6}
+%   \def\depth{0.35} % visual "3-D" depth
+%   \def\p{0.8}
+
+
+%   % side walls
+%   %\draw[fill=gray!50]
+%   %  (\xc-\r,\zc) -- (\xc-\r-\depth,\zc-\depth)
+%   %  arc (180:0:{\r} and {0.35})
+%   %  -- (\xc+\r,\zc)
+%   %  arc (0:180:{\r} and 0.35);
+
+%   % back ellipse
+%   \draw[fill=gray!30] (\xc+\depth*2,\zc+\depth/2) ellipse ({\rb*\p} and {\r*\p});
+
+%   % side walls
+%   \fill[gray!30] (\xc-\depth*2,\zc-\depth/2-\r) -- (\xc-\depth*2,\zc-\depth/2+\r) -- (\xc+\depth*2,\zc+\depth/2+\r*\p) -- (\xc+\depth*2,\zc+\depth/2-\r*\p) -- cycle;
+%   \draw (\xc+\depth*2,\zc+\depth/2-\r*\p) -- (\xc-\depth*2,\zc-\depth/2-\r) -- (\xc-\depth*2,\zc-\depth/2+\r) -- (\xc+\depth*2,\zc+\depth/2+\r*\p);
+
+
+%   % front ellipse
+%   \draw[fill=gray!30] (\xc-\depth*2,\zc-\depth/2) ellipse ({\rb} and {\r});
+
+%   % depth to center
+%   \draw[dashed] (\xc,0) -- (\xc,\zc);% node[midway,right] {$z_0$};
+%   \draw[dashed] (\xc+\depth*2,\zc+\depth/2) -- (\xc-\depth*2,\zc-\depth/2);
+
+%   % label
+%   %\node at (3.0,-2.6) {\small infinite strike out of page};
+
+%\end{tikzpicture}
+%\end{center}
 
 \bigskip\bigskip
 
 % ==========================================================
 % C) Vertical Dike
 % ==========================================================
+\newpage
 \begin{center}
 \textbf{C) Vertical Slab}
 \end{center}
@@ -163,7 +180,7 @@ In your groups:
 \begin{center}
 \begin{tikzpicture}[scale=0.85]
   \draw[thick] (-5,0) -- (5,0);
-  \fill[gray!60] (-0.25,0) rectangle (0.25,-2.4);
+  \draw[fill=gray!60] (-0.25,0) rectangle (0.25,-2.4);
   %\draw[dashed] (0,0) -- (0,-2.4) node[midway,right] {depth};
   %\draw[<->] (-0.25,-2.6) -- (0.25,-2.6) node[midway,below] {width};
 \end{tikzpicture}
@@ -183,7 +200,7 @@ In your groups:
 \begin{center}
 \begin{tikzpicture}[scale=0.85]
   \draw[thick] (-5,0) -- (5,0);
-  \fill[gray!45] (-2.8,-1.2) rectangle (2.2,-1.5);
+  \draw[fill=gray!45] (-2.8,-1.2) rectangle (2.2,-1.5);
   %\draw[dashed] (0,0) -- (0,-1.2) node[midway,right] {depth to top};
   %\draw[<->] (-2.8,-1.7) -- (2.2,-1.7) node[midway,below] {extent};
   %\draw[<->] (2.5,-1.2) -- (2.5,-1.5) node[midway,right] {thickness};
@@ -206,7 +223,7 @@ In your groups:
   \draw[thick] (-5,0) -- (5,0);
   % Inclined dike, dip ~25°
   \begin{scope}[rotate=-25]
-    \fill[gray!60] (-0.2,-0.4) rectangle (0.2,-2.8);
+    \draw[fill=gray!60] (-0.2,-0.4) rectangle (0.2,-2.8);
   \end{scope}
   %\node at (2.8,-2.5) {\small dip $\sim 25^\circ$};
 \end{tikzpicture}
@@ -217,7 +234,6 @@ In your groups:
 % ==========================================================
 % F) Faulted Contact (60° dip) with equal thickness layer displaced
 % ==========================================================
-\newpage
 \begin{center}
 \textbf{F) Offset Layer}
 \end{center}
@@ -292,6 +308,7 @@ In your groups:
 % ==========================================================
 % G) Gently Sloped Basin with edge at one-third from left boundary
 % ==========================================================
+\newpage
 \begin{center}
 \textbf{G) Gently Sloped Basin (edge at one-third from left boundary)}
 \end{center}
@@ -322,5 +339,55 @@ In your groups:
   \node at (\xEdge,0.3) {\small edge};
 \end{tikzpicture}
 \end{center}
+
+\bigskip\bigskip
+
+\section*{Key Ideas}
+
+\textbf{Anomaly width reflects source depth.} Shallower bodies produce narrower, sharper anomalies; deeper bodies produce broader, smoother anomalies. This depth--wavelength relationship is a fundamental constraint on gravity interpretation.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.95]
+  % Surface line
+  \draw[thick] (-6, 3.5) -- (6, 3.5) node[right, font=\scriptsize] {surface};
+
+  % Shallow sphere
+  \draw[fill=gray!40] (-3.5, 2.3) circle (0.4);
+  \draw[dashed] (-3.5,3.5) -- (-3.5,2.3);
+  \node[font=\scriptsize, below] at (-1.5,1.9) {shallow};
+
+  % Deep sphere
+  \draw[fill=gray!40] (3.0, 1.0) circle (0.7);
+  \draw[dashed] (3.0,3.5) -- (3.0,1.0);
+  \node[font=\scriptsize, below] at (3.0,0.3) {deep};
+
+  % Anomaly curves (schematic above surface)
+  \begin{scope}[yshift=4.0cm]
+    % Narrow, peaked (shallow)
+    \draw[blue!70!black, thick] plot[domain=-5.5:-0.5, samples=50]
+      (\x, {0.8*exp(-0.5*(\x+3.5)^2/0.3)});
+    \draw[<->] (-4.3, 0.25) -- (-2.7, 0.25)
+      node[midway, above, font=\scriptsize] {narrow};
+
+    % Broad, smooth (deep)
+    \draw[red!70!black, thick] plot[domain=-0:6, samples=60]
+      (\x, {0.5*exp(-0.5*(\x-3.0)^2/1.8)});
+    \draw[<->] (1.1, 0.15) -- (4.9, 0.15)
+      node[midway, above, font=\scriptsize] {broad};
+
+    \draw[dashed, gray] (-6,0) -- (6.5,0);
+    \node[right, font=\scriptsize] at (6.5, 0) {$\Delta g=0$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Shallower bodies produce narrower, higher-amplitude anomalies; deeper bodies produce broader, lower-amplitude anomalies with the same total mass excess. Anomaly half-width $\approx$ depth to source.}
+\end{figure}
+
+\textbf{Anomaly sign reflects density contrast.} Bodies denser than their surroundings ($\Delta\rho > 0$) produce positive anomalies; bodies less dense than their surroundings produce negative anomalies.
+
+\textbf{Symmetry reveals geometry.} Symmetric anomalies suggest symmetric bodies (sphere, vertical dike); asymmetric anomalies indicate asymmetric structures (inclined plane, faulted contact). The location and sign of the steepest gradient constrain the lateral position and dip of the source edge.
+
+\textbf{Non-uniqueness is unavoidable.} Different geometries with appropriate density contrasts can produce identical surface gravity anomalies. Additional constraints (geology, seismic data, drill-hole information) are always needed to discriminate between alternative models.
+
 
 \end{activity}

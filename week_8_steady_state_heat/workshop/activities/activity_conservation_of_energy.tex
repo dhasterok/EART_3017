@@ -3,35 +3,98 @@
 \section*{Purpose}
 To understand how crustal heat production alters lithospheric temperatures even when surface heat flow is unchanged.
 
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Write and interpret the steady-state crustal energy balance relating surface heat flow, basal heat flow, and integrated heat production.
+  \item Identify which term in the steady-state geotherm equation controls the curvature of the temperature--depth profile.
+  \item Explain qualitatively how greater curvature (higher heat production) affects Moho temperature and lithospheric stability.
+  \item Argue why surface geothermal gradients alone are insufficient to determine deep crustal temperatures.
+\end{itemize}
+}
+
 \section*{Scenario}
 Two continental terranes have identical surface heat flow, $q_0$, but different
 amounts of heat supplied from the mantle at the base of the crust.
 
 \section*{Tasks}
-\begin{enumerate}
-  \item Write the steady-state energy balance for the crust:
+
+\begin{questions}
+  \question{}
+  Write the steady-state energy balance for the crust:
   \[
     q_0 = q_b + \int_0^{z_c} A(z)\,dz
   \]
+  Identify each term and its physical meaning.
+  \answerbox[3cm]
 
-  \item If Terrane A has a larger basal heat flow ($q_b$) than Terrane B, which must
-  have higher integrated crustal heat production? Explain.
+  \item If Terrane A has a larger basal heat flow ($q_b$) than Terrane B, which must have higher integrated crustal heat production? Explain.
+  \answerbox[3cm]
 
   \item Consider the steady-state geotherm:
   \[
     T(z) = T_0 + \frac{q_0}{k}z - \frac{A}{2k}z^2
   \]
   Identify which term controls curvature.
+  \answerbox[2cm]
 
   \item Without performing calculations, explain how greater curvature affects:
   \begin{itemize}
     \item temperature at the Moho,
     \item depth of intersection with the mantle adiabat.
   \end{itemize}
-\end{enumerate}
+  \answerbox[4cm]
+\end{questions}
 
-\section*{Key Insight}
+\section*{Key Ideas}
 Explain why surface gradients alone are insufficient to determine deep crustal
 temperatures.
+
+\answerbox[3cm]
+
+{\color{red}
+\section*{Key Ideas}
+
+\textbf{Surface heat flow is partitioned between basal (mantle) heat and crustal heat production.} Two regions with identical surface heat flow can have very different mantle contributions. The one with higher crustal heat production has a lower basal heat flow and consequently lower temperatures at depth.
+
+{\color{blue}
+\textbf{Heat production curves the geotherm.} The $-Az^2/2k$ term in the steady-state geotherm is a downward concavity. Higher heat production bends the geotherm more strongly, depressing deep isotherms relative to the surface gradient extrapolation. Extrapolating a borehole gradient linearly to depth is incorrect whenever heat production is significant.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  \draw[->] (0, 0) -- (5.5, 0) node[right] {$T$};
+  \draw[->] (0, 0) -- (0,-5.0) node[below] {depth $z$};
+
+  % Moho
+  \draw[dashed, gray] (0,-3.5) -- (5.5,-3.5) node[right, font=\small, gray] {Moho};
+
+  % Linear extrapolation (no HP)
+  \draw[thick, blue] (0.5, 0) -- (3.8,-3.5);
+  \node[blue, font=\small] at (4.1,-1.5) {low $A$};
+
+  % Curved geotherm (high HP)
+  \draw[thick, red, domain=0:3.5, samples=40]
+    plot ({0.5 + \x * 1.0 - \x*\x*0.18}, {-\x});
+  \node[red, font=\small] at (2.5,-2.5) {high $A$};
+
+  % Same surface gradient arrow
+  \draw[<->, thick, black] (0.55,-0.3) -- (1.1,-0.9);
+  \node[font=\scriptsize, right] at (1.1,-0.5) {same surface $dT/dz$};
+
+  % Moho temperatures
+  \fill[blue]  (3.8,-3.5) circle (2.5pt);
+  \fill[red]   ({0.5 + 3.5*1.0 - 3.5*3.5*0.18},-3.5) circle (2.5pt);
+  \draw[<->]   (3.8,-3.3) -- ({0.5 + 3.5*1.0 - 3.5*3.5*0.18},-3.3);
+  \node[font=\scriptsize, above] at (2.5,-3.25) {$\Delta T_\text{Moho}$};
+\end{tikzpicture}
+\caption{Two terranes with the same surface gradient but different heat production ($A$) have identical shallow temperatures but very different Moho temperatures. High heat production curves the geotherm, reducing deep temperatures.}
+\end{figure}
+}
+
+\textbf{Lithospheric stability depends on Moho temperature.} A terrane with high crustal heat production may reach mantle melting temperatures at relatively shallow depths, limiting lithospheric thickness. Ancient cratonic lithosphere with low heat production has lower Moho temperatures and is mechanically and thermally stable over geological timescales.
+}
 
 \end{activity}

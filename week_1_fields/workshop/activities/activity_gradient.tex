@@ -4,19 +4,34 @@
 % \theoremstyle{definition}
 % \newtheorem{example}{Example}[section]
 % \newtheorem{problem}{Problem}[section]
-\begin{activity}{Gradients Activity}
+\begin{activity}{From Elevation to Gradients}
 
 \epigraph{ ``I will never listen to ocean waves or view a beautiful sunset in quite the same way again. That is perhaps the greatest gift one can gain by delving into calculus: It is a whole new way of looking at the world, accessible only through the realm of mathematics.''}
 {{\normalfont ---\ Jennifer Ouellette}, The Calculus Diaries: How Math Can Help You Lose Weight, Win in Vegas, and Survive a Zombie Apocalypse}
 
-\section{Introduction}
-As we study geophysical theory it will become clear that in order to unlock the secrets of the physical world, we must understand the changing nature of fields.  If the fields were constant the world would be very boring indeed, for it would not contain any variations in physical properties that we could remotely sense.  Variations in physical fields help us better understand the state (temperature, pressure, and composition), structure, and/or the evolution of our wonderous planet.  One of the simplest ways to explore a field is to examine the rate of change of the field, or gradient, which is really a fancy way of saying slope.
+\section*{Purpose}
 
-In this workshop you will explore conceptually the physical meaning of a gradient using intuitive examples from elevation.  We will be able to see how the gradient depends upon the direction we consider and how a derivative can be calculated simply for a complex geometry, and how the gradient of a scalar field such as elevation results in a vector field requiring both magnitude and direction in order to describe the gradient.
+This activity develops an intuitive and mathematical understanding of gradients using familiar topographic examples. By sketching gradient vectors on contour maps and working through the underlying mathematics, you will connect the physical idea of slope to the formal definition of the gradient of a scalar field.
 
-We will start the exercise by building a conceptual understanding of the gradient before creating a more complete mathematical description.
+\section*{Learning Outcomes}
 
-\section{Mount Shasta Example}
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Draw gradient vectors on a topographic contour map, indicating both direction (up slope) and relative magnitude (arrow length).
+  \item Explain why the gradient is a vector quantity requiring both magnitude and direction.
+  \item Compute the partial derivatives $\partial h/\partial x$ and $\partial h/\partial y$ from a discrete elevation profile and combine them to find the resultant gradient vector.
+  \item Identify locations where the gradient magnitude is large or zero from the geometry of a topographic surface.
+  \item Distinguish between the gradient in the $x$-direction, the $y$-direction, and the overall maximum slope direction.
+\end{itemize}
+
+\section*{Introduction}
+Geophysical measurements are fundamentally measurements of how physical fields vary in space. If gravity, temperature, magnetic intensity, or topography were constant everywhere, there would be little information from which to infer Earth structure or composition. The spatial variation of a field often contains more information than the field value itself.
+
+One of the simplest ways to describe spatial variation is through the gradient. A gradient measures both the direction in which a field changes most rapidly and the rate at which that change occurs. Although gradients are used throughout geophysics, elevation provides a familiar and intuitive example because we can directly observe and experience slope.
+
+In this activity you will explore gradients graphically using contour maps and mathematically using partial derivatives. The goal is to build intuition that will later be applied to more abstract fields such as gravity, magnetics, and temperature.
+
+\section*{Mount Shasta Example}
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.75\textwidth]{figures/mount_shasta.pdf}
@@ -61,7 +76,7 @@ Elevation is a good place to start to think about gradients because we all intui
 %     \label{fig:ms_dxdy}
 % \end{figure}
 
-\section{The mathematics of gradients: the slopes of Mt. Shasta}
+\section*{The mathematics of gradients: the slopes of Mt. Shasta}
 
 Consider hiking a profile line over the peak of Mt. Shasta (Figure~\ref{fig:profile}, top panel).  You will start by walking up the slope of Mt.  Shasta.  The slope starts gently going up in elevation (a positive slope in Figure~\ref{fig:profile}, bottom panel), which increases as you climb in elevation.  The slope increases and reaches a maximum near the peak, then the slope starts to decrease as elevation still increases.  Once you reach the snow-capped peak there is no change in slope (i.e., slope = 0).  Then you decide to pull out your sled and quickly decend the other side (negative slope).
 \begin{figure}[htbp]
@@ -114,7 +129,7 @@ Because the components are in different directions, we cannot simply add them to
 
 From the result above, we learn that the slope is different depending upon the direction you walk (N-S) versus (E-W) which confounds the direction of the maximum slope.  You may also note that if we had walked in the opposite (negative) directions, we would have changed the sign of our slopes.  Do not fear, there is a simple mathematical solution to determine both the maximum slope and its direction.
 
-If we assume that from each point that we walked in either the +x or +y direction we can describe the local surface as a plane, the directions we walked were purposfully perpendicular to each other.  It turns out that these two directions can be used to define that plane and both the angle and magnitude of the maximum slope (magnitude) along it (Figure~\ref{fig:resultant}).  To determine the maximum slope along each individual little plane, we use the Pythagorean theorem, which you may remember from high school,
+If we assume that from each point that we walked in either the +x or +y direction we can describe the local surface as a plane, the directions we walked were purposfully perpendicular to each other.  It turns out that these two directions can be used to define that plane and both the angle and magnitude of the maximum slope (magnitude) along it.  To determine the maximum slope along each individual little plane, we use the Pythagorean theorem, which you may remember from high school,
 \begin{equation}
     \norm{s} = (s_x^2 + s_y^2)^{1/2}.
 \end{equation}
@@ -124,7 +139,7 @@ Note that because we square each slope component before adding them, we have ens
 \end{equation}
 Note that to find the appropriate angle we will have to keep track of the signs of $s_x$ and $s_y$ to ensure that $\theta$ lies in the appropriate quadrant.
 
-\section{Marble Canyon Example}
+\section*{Marble Canyon Example}
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.75\textwidth]{figures/marble_canyon.pdf}
@@ -136,6 +151,7 @@ Let's look at another topographic example at Marble Canyon in Arizona.  Marble C
 In this exercise, we will take the previous example one step further by determining the slope along each individual axis and then combine them as we might in the mathematical sense and then combine the results to obtain determine a magnitude and direction.  Again, we'll do this graphically rather than mathematically to gain further insight into how the mathematics works.  Note there is a substantial region where the topography is relatively flat (i.e., the slope is negligible).  You don't need to put any arrows in these positions so focus on regions where elevation changes.
 \FloatBarrier
 
+\clearpage
 \begin{questions}[resume]
     \question{Marble Canyon}
     \begin{figure}[htb]
@@ -174,5 +190,15 @@ In this exercise, we will take the previous example one step further by determin
 %     \caption{Gradient magnitudes (contours) and directions (arrows) of Marble Canyon.}
 %     \label{fig:ms_dxdy}
 % \end{figure}
+
+\section*{Key Ideas}
+
+\textbf{The gradient is a vector field}: it has both a magnitude (the steepness of the slope) and a direction (pointing up the steepest ascent). Two numbers --- the partial derivatives in $x$ and $y$ --- are required to fully describe the gradient at any point.
+
+\textbf{Direction matters}: the slope you measure depends on the direction you walk. The maximum slope is found by combining the two perpendicular components using the Pythagorean theorem: $|\nabla h| = \sqrt{(\partial h/\partial x)^2 + (\partial h/\partial y)^2}$.
+
+\textbf{Contour maps and gradients}: the gradient is always perpendicular to contour lines and points toward higher values. Where contours are closely spaced, the gradient magnitude is large; where they are widely spaced, the gradient is small.
+
+\textbf{From elevation to geophysics}: the same mathematical machinery --- partial derivatives, vector combination, magnitude and direction --- describes the gradient of any scalar field, including gravity, magnetic, and temperature fields.
 
 \end{activity}

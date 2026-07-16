@@ -1,0 +1,99 @@
+\begin{activity}[Demo]{Path Simulation}
+
+\section*{Purpose}
+To build intuition for how the geometric arrangement of rock components --- not just their individual properties --- determines the bulk effective property of a mixture.
+
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Predict which geometry (random, series, parallel) will produce the fastest or slowest transit, and connect this to the arithmetic, geometric, and harmonic mixing laws.
+  \item Explain why the same two minerals can yield very different effective conductivities depending on their spatial arrangement.
+  \item Read a travel-time or $k_\text{eff}$ histogram and locate the harmonic, geometric, and arithmetic mixing-law predictions relative to the simulation results.
+  \item Identify at least two ways a computer path simulator simplifies the real Earth, and assess whether those simplifications are likely to matter for a given geophysical application.
+\end{itemize}
+
+\section*{Background}
+
+When heat (or current, or fluid) moves through a mixture of two rock types A and B with conductivities $k_A$ and $k_B$ and volume fractions $f_A$ and $f_B = 1-f_A$, the effective conductivity $k_\text{eff}$ depends on \emph{how} the two phases are arranged:
+
+\begin{table}[h]
+    \centering
+    \caption{Mixing models for two component physical properties.}
+    \label{tab:mixing}
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{llll}
+        \toprule
+        \textbf{Arrangement} & \textbf{Geometry} & \textbf{Mixing law} & \textbf{$k_\text{eff}$} \\
+        \midrule
+        Layers $\parallel$ flow  & parallel & Arithmetic (Voigt) & $f_A k_A + f_B k_B$ \\
+        Layers $\perp$ flow      & series   & Harmonic (Reuss)   & $\bigl(f_A/k_A + f_B/k_B\bigr)^{-1}$ \\
+        Random granular          & random   & Geometric          & $k_A^{f_A}\, k_B^{f_B}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\noindent
+The arithmetic mean is always the \emph{largest} (fastest paths bypass barriers), the harmonic mean the \emph{smallest} (every path must cross every barrier), and the geometric mean sits in between with many similar random flow paths.
+
+Travel time through a domain of width $W$ is $t = W / k_\text{eff}$, so the geometry that maximises $k_\text{eff}$ also minimises $t$.
+
+\section*{Simulation}
+
+Your instructor will run the mixing-law path simulator on the projected screen.  For each geometry listed in the table, note the simulation settings chosen, then record the mean travel time and effective conductivity reported by the simulation once $\sim$100 trials have run.  The dashed vertical lines on the histogram mark the harmonic (H), geometric (G), and arithmetic (A) mixing-law predictions.
+
+\renewcommand{\arraystretch}{2.0}
+\begin{tabularx}{\textwidth}{@{}|l|X|X|X|@{}}
+    \toprule
+    \textbf{Geometry} & \textbf{Simulation settings} & \textbf{Mean travel time} & \textbf{$k_\text{eff}$ (sim)} \\
+    \midrule
+    Random granular   & & & \\
+    \midrule
+    Layered $\perp$ flow (series)   & & & \\
+    \midrule
+    Layered $\parallel$ flow (parallel)  & & & \\
+    \midrule
+    Random granular   & & & \\
+    \midrule
+    Layered $\perp$ flow (series)   & & & \\
+    \midrule
+    Layered $\parallel$ flow (parallel)  & & & \\
+    \bottomrule
+\end{tabularx}
+
+\begin{questions}
+    \question{Ranking Geometry}
+        Rank the three geometries from fastest (shortest travel time) to slowest.  Which mixing-law prediction does each geometry match most closely?
+        \answerbox[3cm]
+
+    \question{Comparing Mixing Laws}
+        Where does the simulation's $k_\text{eff}$ fall relative to the three dashed lines on the histogram?
+
+        Does it fall exactly on the predicted line, or does it scatter around it?  Why might there be scatter?
+        \answerbox[4cm]
+
+    \question{Effect of Contrast}
+        How does increasing the contrast between $k_A$ and $k_B$ change the \emph{spread} of the travel-time histogram?
+
+        How does it change the ratio $k_\text{arith} / k_\text{harm}$?
+        \answerbox[4cm]
+
+    \question{Realism}
+        In what ways does this simulator capture real rock behaviour?
+        \answerbox[3cm]
+
+        In what ways does it over-simplify?  List at least two assumptions the simulator makes that would not hold in a real geological setting.
+        \answerbox[3cm]
+\end{questions}
+
+\section*{Key Ideas}
+
+\textbf{Geometry sets the mixing-law bound.}  The same two minerals can give $k_\text{eff}$ values that span the full range from the harmonic to the arithmetic mean, depending solely on how they are arranged.  This is the single most important idea in mixing-law theory: composition is necessary but not sufficient to predict a bulk property.
+
+\textbf{Travel time and effective conductivity are reciprocal.} Because $t = W/k_\text{eff}$, the geometry that gives the highest $k_\text{eff}$ (parallel) also gives the shortest travel time, and the geometry that gives the lowest $k_\text{eff}$ (series) gives the longest.  The same logic applies to electrical resistivity surveys, fluid flow in porous media, and seismic wavespeed in layered crust.
+
+\textbf{Simulation results scatter around analytic predictions.} Each realization of a random field is slightly different, so individual trial times vary.  The analytic mixing laws predict the \emph{expected} value of $k_\text{eff}$ over many realizations; the histogram width reflects natural variability due to the finite, random arrangement of grains or layers.
+
+\textbf{Real rocks add complexity the simulator ignores.}  The simulator assumes isotropic, homogeneous components with sharp contacts, no fluid flow, no fractures, and steady-state conduction.  Real rocks have anisotropic minerals, gradational contacts, multi-scale heterogeneity, and pressure- and temperature-dependent properties.  Despite this, the mixing-law framework correctly identifies which geometries set the bounds on transport, which is why it remains in use across geophysics, materials science, and reservoir engineering.
+
+\end{activity}

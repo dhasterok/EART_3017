@@ -11,7 +11,7 @@
 5. Locate linear features
 6. *(Optional)* Use the **lat--lon weighted Laplacian** with per-row $\Delta x(\phi)$ and scalar $\Delta y$.
 
-> Tip: Keep regions modest so it runs fast. Use consistent colour scales across maps.
+> Tip: Keep regions modest so it runs fast. Use consistent color scales across maps.
 """
 # %% 0. Imports & plotting defaults
 import numpy as np
@@ -277,7 +277,7 @@ alpha = 0.1
 Ks    = [5, 10, 20, 40]
 Hs    = [diffuse_iter(H0, alpha=alpha, steps=K) for K in Ks]
 
-# Compare maps with identical colour limits
+# Compare maps with identical color limits
 vmin, vmax = np.percentile(H0, [1,99])
 fig, axs = plt.subplots(2, 3, figsize=(6.5, 4.5), sharex=True, sharey=True)
 

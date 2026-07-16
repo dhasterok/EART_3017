@@ -153,7 +153,7 @@ class PlotCanvas(QWidget):
         ax.plot(t, signal, color='k', lw=0.9)
 
     def update_spectrum(self, freqs, F, H, show_filter=True, log_scale=False):
-        # One-sided amplitude spectrum (normalised so sine amplitude → 1)
+        # One-sided amplitude spectrum (normalized so sine amplitude → 1)
         N   = 2 * (len(freqs) - 1)
         amp = 2.0 * np.abs(F) / N
         amp[0]  /= 2   # DC  appears once

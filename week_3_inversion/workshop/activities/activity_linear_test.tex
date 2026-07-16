@@ -4,7 +4,7 @@
 
 Linear functions can be solved in a single inversion step using linear least squares.  This method is simpler, faster, and less computationally expensive, so when possible a linear function is preferred.  In this activity, you'll learn to determine whether a function is linear or non-linear.
 
-\section*{Learning Objectives}
+\section*{Learning Outcomes}
 
 By the end of this activity you should be able to:
 \begin{itemize}
@@ -64,8 +64,13 @@ Since both homogeneity and additivity are satisfied, the function is linear.
 
     \question{Why is the first equation easier to invert than the second?}
     \answerbox
-    
+
 \end{questions}
 
+\section*{Key Ideas}
+
+\textbf{Linearity is defined with respect to the model parameters}, not the independent variable. A function can be non-linear in $x$ (e.g., a polynomial in position) but perfectly linear in the unknown coefficients $(a, b, c)$ that we wish to recover by inversion.
+
+\textbf{Linear problems can be solved in a single step} via linear least squares; non-linear problems generally require iterative methods that may converge to a local rather than global minimum. When possible, reformulating or re-parameterizing a problem to make it linear (e.g., log-transforming a power-law) is a significant practical advantage.
 
 \end{activity}

@@ -1,5 +1,21 @@
 \begin{activity}{Buried Sphere --- Width to Depth}
 
+\section*{Purpose}
+
+This activity derives and applies a simple depth-estimation rule for gravity anomalies using the buried sphere model. By working through the mathematics of the full-width at half-maximum, you will connect the observable width of an anomaly to the depth of its source, independent of the source mass --- a result that illustrates both the utility and the non-uniqueness of gravity interpretation.
+
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+\item Relate observable characteristics of a gravity anomaly to source geometry and depth.
+\item Derive a simple relationship between anomaly width and source depth from the buried sphere model.
+\item Explain why some source parameters influence anomaly amplitude whereas others influence anomaly shape.
+\item Describe sources of non-uniqueness in gravity interpretation and suggest ways to reduce them.
+\item Use simple analytical results to guide preliminary geological interpretation prior to inversion.
+\end{itemize}
+
+\section*{Introduction}
 The gravity anomaly due to a buried sphere is given by:
 \[
   g_z(x) = \tfrac{4}{3}\pi a^3 G\, \Delta\rho 
@@ -63,6 +79,7 @@ To develop the depth to width relationship:
   \]
   \answerbox[320pt]
 
+  \clearpage
   \question{Interpretation}
     \begin{enumerate}[label=\alph*]
       \item Why does depth affect width but density contrast does not?  
@@ -74,6 +91,25 @@ To develop the depth to width relationship:
       \item Why does a shallow lenticular body (e.g., laccolith or lopolith) could mimic a deep sphere's anomaly?
       \answerbox{36pt}
     \end{enumerate}
+
+  \question{When Depth-Wavelength Breaks Down}
+    Explain why sedimentary basins can give broad anomalies while being shallow features.
+    \answerbox
+
+    Postulate how sedimentary basins can then be distinguished from deep features.
+    \answerbox
+
 \end{questions}
+
+\section*{Key Ideas}
+
+\textbf{Different source parameters influence different characteristics of an anomaly.}
+Changes in density contrast primarily affect anomaly amplitude, changes in source geometry affect anomaly shape, and changes in depth affect anomaly width (or wavelength).
+
+\textbf{Not all source properties are equally well constrained.}
+Several combinations of geometry and density contrast can produce similar gravity anomalies. Understanding which parts of an anomaly are controlled by which parameters helps identify sources of non-uniqueness.
+
+\textbf{Depth and wavelength are fundamentally related.}
+Shallow sources tend to produce narrow, short-wavelength anomalies, whereas deep sources produce broader, long-wavelength anomalies. This relationship underpins many depth-estimation and filtering techniques used in potential-field geophysics.
 
 \end{activity}

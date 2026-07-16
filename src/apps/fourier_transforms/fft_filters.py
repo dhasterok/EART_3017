@@ -16,7 +16,7 @@ def _taper_shape(x, taper):
         return 0.5 * (1.0 - np.cos(np.pi * x))
     if taper == 'Hamming':
         w = 0.54 - 0.46 * np.cos(np.pi * x)
-        # normalise so it spans [0, 1]
+        # normalize so it spans [0, 1]
         return (w - 0.08) / 0.92
     if taper == 'Gaussian':
         # Logistic sigmoid — visually indistinguishable from Gaussian CDF

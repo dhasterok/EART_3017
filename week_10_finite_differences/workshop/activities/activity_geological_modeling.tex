@@ -1,23 +1,20 @@
-\documentclass[11pt,a4paper]{article}
-
-\usepackage{amsmath}
-\usepackage{geometry}
-\geometry{margin=1in}
-
-\begin{document}
-
-\begin{center}
-\Large \textbf{Activity 10.5: Building Geological Intuition with Numerical Experiments} \\[0.5em]
-\normalsize Geophysics — Numerical Heat Flow
-\end{center}
-
-\vspace{1em}
+\begin{activity}{Building Geological Intuition with Numerical Experiments}
 
 \section*{Purpose}
 To use numerical experiments to explore how thermal structure responds to
 geological complexity.
 
-\section*{Thought Experiments}
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Predict qualitatively how depth-dependent conductivity, layered heat production, time-varying basal heat flux, or a transient intrusion would change a model's temperature field.
+  \item Distinguish which geological complexities can still be handled analytically and which require a numerical approach.
+  \item Explain how a numerical model isolates physical effects that cannot be separated observationally.
+\end{itemize}
+}
+
 Consider modifying a numerical heat flow model to include:
 \begin{itemize}
   \item depth-dependent thermal conductivity,
@@ -26,20 +23,33 @@ Consider modifying a numerical heat flow model to include:
   \item transient magma intrusions.
 \end{itemize}
 
-\section*{Tasks}
-\begin{enumerate}
-  \item For each modification, predict qualitatively how the temperature field
-  would respond.
+\section*{Task 1: Qualitative predictions}
 
-  \item Identify which changes could still be modeled analytically and which
-  require numerical approaches.
+For each modification listed above, predict how the temperature field would respond compared to a uniform, steady-state reference model.
+\answerbox[8cm]
 
-  \item Discuss how numerical models allow separation of physical effects that
-  are difficult to isolate observationally.
-\end{enumerate}
+\section*{Task 2: Analytic vs numerical}
 
-\section*{Key Insight}
-Numerical modeling enables controlled experiments on Earth systems that cannot
-be performed in nature.
+Identify which of the modifications could still be handled with an analytic solution, and which require a fully numerical approach. Justify your choices.
+\answerbox[5cm]
 
-\end{document}
+\section*{Task 3: Isolating effects}
+
+Explain how a numerical model allows you to separate physical effects that are difficult to disentangle from field observations.
+
+Give one geological example where this ability is particularly valuable.
+\answerbox[5cm]
+
+{\color{red}
+\section*{Key Ideas}
+
+Numerical modelling enables controlled experiments on Earth systems that cannot be performed in nature.
+
+\textbf{Numerical models are controlled experiments.} Unlike field observations, numerical experiments allow one variable to be changed at a time while holding all others fixed. This is the only practical way to isolate the thermal effect of, for example, a single high-conductivity layer within a complex lithosphere.
+
+\textbf{Analytic solutions fail when properties vary in space or time.} The steady-state heat equation has a closed-form solution for uniform conductivity and constant heat production. Depth-dependent $k$, layered $A$, or a time-varying basal flux break these assumptions and generally require numerical integration.
+
+\textbf{Qualitative intuition guides model design.} Before running a model, predicting the sign and magnitude of an effect (will a high-conductivity layer raise or lower temperatures above it?) builds the physical intuition needed to detect numerical errors and interpret model output.
+}
+
+\end{activity}

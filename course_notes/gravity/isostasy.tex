@@ -11,6 +11,7 @@ Because isostatic balance depends on vertically integrated mass, it carries no i
 In this chapter we develop the concept of isostasy as a constraint on mass distribution, examine idealized end-member formulations, and explore how departures from equilibrium provide insight into lithospheric strength, mantle rheology, and thermal evolution.
 
 \section{Isostasy Theory}
+The pressure-balance condition developed in this section should be understood as one limit of a more general problem: how a lithosphere of finite mechanical strength supports surface loads. When lithospheric strength is negligible, that general problem reduces to the local, column-by-column balance developed below. When lithospheric strength is significant---\emph{almost always}, loads are instead partially or wholly supported by flexure rather than buoyancy alone, a case we return to later in this chapter once the strength-free limit has been fully developed.
 \begin{itemize}
   \item Definition of isostatic equilibrium as lateral pressure balance at a reference depth.
   \item Emphasis on column-integrated mass (or density--thickness products) rather than detailed vertical structure.
@@ -129,7 +130,7 @@ The simplest formulations of isostasy are local models, in which each lithospher
 
 These models should be understood as \emph{limiting cases}, not as competing or mutually exclusive mechanisms.  Airy-type behavior isolates the effects of thickness variation at fixed density, whereas Pratt-type behavior isolates the effects of lateral density variation with a common base.  In the Earth, isostatic balance generally involves simultaneous variations in both density and thickness, and real solutions may be expressed as combinations of these end-members.
 
-As a result, it is generally inappropriate to assign specific tectonic environments uniquely to one isostatic model.  The value of these end-members lies in their interpretive clarity rather than in their literal applicability.
+As a result, it is generally inappropriate to assign specific tectonic environments uniquely to one isostatic model.  The value of these end-members lies in their interpretive clarity rather than in their literal applicability.  Both end-members, and the general balance from which they derive, share the same underlying assumption of \emph{zero} lithospheric strength; Section~\ref{sec:regional_compensation} revisits this assumption directly.
 
 \ntextbox{A brief history of local isostatic models}{
 
@@ -146,9 +147,9 @@ Modern interpretations of isostasy generally involve combinations of both effect
 In the Airy end-member, lithospheric density is assumed to be laterally uniform, while thickness varies.  Differences in surface elevation are accommodated by variations in the thickness of the crust, commonly conceptualized as buoyant roots extending into the underlying mantle.
 
 Consider two crustal columns of equal density $\rho_c$, with one column thicker than the other (Figure~\ref{fig:isostasy}).  Let the thicker column extend to a deeper level through a compensating root beneath the region of higher elevation.  In this case, the difference in elevation $\Delta \varepsilon$ between the two columns may be written as
-\begin{equation*}
+\[
     \Delta \varepsilon = (h_2 - h_1)\left(1 - \frac{\rho_c}{\rho_m}\right),
-\end{equation*}
+\]
 where $\rho_m$ is the density of the underlying mantle.
 \begin{figure}[hbt]
   \centering
@@ -169,9 +170,9 @@ In this interpretation, the base of the crust is flat, and topographic relief re
 Airy later proposed the complementary thickness-variation model after reading Pratt's work \citep{Airy1855} (Figure~\ref{fig:isostasy}b).
 
 For two crustal columns of equal thickness but different densities $\rho_1$ and $\rho_2$, the resulting elevation difference may be expressed as
-\begin{equation*}
+\[
     \Delta \varepsilon = h \left(\frac{\rho_1}{\rho_2} - 1\right),
-\end{equation*}
+\]
 where $h$ is the common column thickness.
 
 Pratt-type behavior highlights the role of density variations arising from compositional differences or temperature variations.  For this reason, it provides a natural conceptual bridge to thermal isostasy, which is developed later in the chapter and revisited in the context of lithospheric cooling models (Chapter~\ref{ch:geothermics2}).
@@ -346,7 +347,7 @@ This behavior explains why isostatic residual gravity maps often resemble high-p
 
 Isostatic residual gravity anomalies are constructed by removing the gravity effect of an assumed compensating mass from the Bouguer gravity field. The method of \citet{Simpson_etal1986} provides a practical and widely adopted framework for isolating gravity signals associated with shallow crustal density variations, while explicitly acknowledging the interpretive limitations imposed by isostatic assumptions.
 
-\section{Regional compensation and lithospheric strength}
+\section{Regional compensation and lithospheric strength}\label{sec:regional_compensation}
 
 \subsection{Breakdown of local isostasy}
 Local isostatic formulations assume that each lithospheric column responds independently to loading and unloading. Essentially, local isostasy assumes that the lithosphere holds no inherent strength. This assumption is reasonable at long wavelengths and over sufficiently long time scales, but it breaks down when loads vary over short horizontal distances or when the lithosphere possesses significant mechanical strength. In such cases, topographic and tectonic loads are supported not purely by buoyant forces, but in part by lithospheric flexure.
@@ -387,7 +388,7 @@ Partial compensation models are particularly useful in gravity interpretation. I
 +
 C(k)\,\hat{g}_{\mathrm{Airy}}(k),
 \]
-where the compensation factor \(C(k)\) may vary with wavelength. This formulation provides a natural interpretive link to gravity--topography admittance and coherence analyses, which estimate the effective degree of compensation directly from observations.
+where the compensation factor \(C(k)\) may vary with wavelength. This formulation provides a natural interpretive link to gravity--topography admittance and coherence analyzes, which estimate the effective degree of compensation directly from observations.
 
 It is important to emphasize that partial compensation models are descriptive rather than predictive. They parameterize the outcome of load support but do not explain the physical mechanisms responsible for it. In practice, wavelength-dependent partial compensation arises naturally from lithospheric flexure: long-wavelength loads tend toward local compensation, while short-wavelength loads are increasingly supported elastically.
 
@@ -722,7 +723,7 @@ This temporal distinction parallels the contrast between steady-state heat flow 
 
 Departures from isostatic balance are expressed in both gravity and topography. Uncompensated or partially compensated loads produce gravity anomalies whose amplitude and wavelength differ from those expected under local isostatic assumptions. Similarly, topography that is higher or lower than predicted by isostatic models may indicate incomplete adjustment or additional supporting mechanisms.
 
-In the spectral domain, gravity--topography coherence provides a powerful diagnostic of compensation. High coherence at long wavelengths and reduced coherence at short wavelengths are consistent with regional compensation and lithospheric strength, whereas low coherence at long wavelengths may signal disequilibrium or dynamic support from mantle flow. Such analyses quantify the degree of compensation as a function of wavelength, rather than assuming a fixed isostatic model.
+In the spectral domain, gravity--topography coherence provides a powerful diagnostic of compensation. High coherence at long wavelengths and reduced coherence at short wavelengths are consistent with regional compensation and lithospheric strength, whereas low coherence at long wavelengths may signal disequilibrium or dynamic support from mantle flow. Such analyzes quantify the degree of compensation as a function of wavelength, rather than assuming a fixed isostatic model.
 
 \subsection{Observing contemporary isostatic adjustment}
 

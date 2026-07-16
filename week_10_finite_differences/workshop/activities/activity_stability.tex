@@ -8,6 +8,18 @@ In a time-stepping model, temperature is updated step-by-step. Each step uses in
 
 Think of heat as spreading gradually through the system.
 
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item State the stability condition for the explicit finite difference heat equation and identify the quantities it depends on.
+  \item Explain physically why the allowable time step is proportional to $\Delta z^2$ and inversely proportional to $\kappa$.
+  \item Describe what physically happens when the stability limit is exceeded, and why this corresponds to physically impossible behaviour.
+  \item Compare stability requirements for materials with different thermal diffusivities.
+\end{itemize}
+}
+
 \section*{Part A: Prediction}
 
 \textbf{Consider two cases:}
@@ -17,6 +29,7 @@ Think of heat as spreading gradually through the system.
 \end{itemize}
 
 What do you expect to happen in each case?
+\answerbox[3cm]
 
 \section*{Part B: Physical reasoning}
 
@@ -24,6 +37,7 @@ What do you expect to happen in each case?
 Explain why heat cannot move arbitrarily far in a single time step.
 
 What determines how quickly heat diffuses through a material?
+\answerbox[3cm]
 
 \section*{Part C: Stability condition}
 
@@ -35,7 +49,9 @@ For a one-dimensional explicit scheme:
 \textbf{Tasks:}
 \begin{itemize}
     \item Why does the allowable time step depend on $\Delta z$?
+    \answerbox[2cm]
     \item Why does it depend on thermal diffusivity $\kappa$?
+    \answerbox[2cm]
 \end{itemize}
 
 \section*{Part D: Interpretation}
@@ -44,19 +60,64 @@ For a one-dimensional explicit scheme:
 Interpret the stability condition as a limit on how fast thermal information can move between nodes.
 
 Why can heat not ``jump'' over nodes in a single time step?
+\answerbox[3cm]
 
 \section*{Part E: Geological interpretation}
 
 \textbf{Explain:}
 \begin{itemize}
     \item Why are sedimentary basins (low $\kappa$) easier to model?
+    \answerbox[2cm]
     \item Why do high-diffusivity materials require smaller time steps?
+    \answerbox[2cm]
 \end{itemize}
 
 \bigskip
 
-\textbf{Key Insight} \\
-Numerical instability occurs when the model allows heat to propagate faster
-than physically possible.
+{\color{red}
+\section*{Key Ideas}
+
+Numerical instability occurs when the model allows heat to propagate faster than physically possible.
+
+{\color{blue}
+\textbf{The stability condition is a physical causality constraint.} Heat diffuses at a rate set by $\kappa$. In a time step $\Delta t$, physical heat can travel at most $\sqrt{\kappa\,\Delta t}$. The stability condition $\Delta t < \Delta z^2/2\kappa$ ensures that this thermal length cannot exceed the node spacing $\Delta z$. Violating the condition means asking the model to move heat further in one step than the physics allows.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.05]
+  % --- Stable case ---
+  \node[font=\small\bfseries, green!50!black] at (1.5, 2.0) {Stable ($\ell_T < \Delta z$)};
+  \foreach \x in {0, 1.5, 3.0} {
+    \draw[fill=gray!20] (\x, 0) circle (0.3);
+  }
+  \draw (0.3,0) -- (1.2,0);
+  \draw (1.8,0) -- (2.7,0);
+  \draw[<->, thick, green!60!black] (0,-0.7) -- (0.9,-0.7)
+    node[midway, below, font=\scriptsize] {$\ell_T$};
+  \draw[<->] (0,-1.2) -- (1.5,-1.2)
+    node[midway, below, font=\scriptsize] {$\Delta z$};
+  \node[font=\scriptsize, green!60!black] at (1.5,-1.8) {$\ell_T < \Delta z$ \checkmark};
+
+  % --- Unstable case ---
+  \node[font=\small\bfseries, red] at (6.5, 2.0) {Unstable ($\ell_T > \Delta z$)};
+  \foreach \x in {5.0, 6.5, 8.0} {
+    \draw[fill=gray!20] (\x, 0) circle (0.3);
+  }
+  \draw[red, thick] (5.3,0) -- (6.2,0);
+  \draw[red, thick] (6.8,0) -- (7.7,0);
+  \draw[<->, thick, red] (5.0,-0.7) -- (7.1,-0.7)
+    node[midway, below, font=\scriptsize] {$\ell_T$};
+  \draw[<->] (5.0,-1.2) -- (6.5,-1.2)
+    node[midway, below, font=\scriptsize] {$\Delta z$};
+  \node[font=\scriptsize, red] at (6.5,-1.8) {$\ell_T > \Delta z$ — heat skips nodes x};
+\end{tikzpicture}
+\caption{Stability requires that the thermal length $\ell_T = \sqrt{\kappa\,\Delta t}$ does not exceed the node spacing $\Delta z$. When it does, heat is asked to propagate past neighbouring nodes in one step, which is physically impossible and causes numerical blow-up.}
+\end{figure}
+}
+
+\textbf{Finer grids require smaller time steps.} Because stability scales as $\Delta z^2$, halving the grid spacing reduces the maximum allowable time step by a factor of four. Increasing resolution is therefore expensive: the number of spatial nodes doubles \emph{and} the number of time steps quadruples to cover the same total time.
+
+\textbf{High diffusivity is more demanding numerically.} Materials with large $\kappa$ (e.g., peridotite, ice) diffuse heat quickly and require smaller time steps for numerical stability than low-diffusivity materials (e.g., clay-rich sediments). This is the reverse of the geological situation: fast-diffusing materials are easier to model geologically but harder numerically.
+}
 
 \end{activity}

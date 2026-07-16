@@ -8,11 +8,11 @@
 
 \section*{Preparation}
 
-Pre-reading: Course Notes Ch. 2
-
-Lecture videos:
-
-Notes: 
+\begin{description}
+  \item[Pre-reading:] Course Notes Ch. 2
+  \item[Lecture videos:]
+  \item[Notes:]
+\end{description}
 
 \section*{Purpose}
 
@@ -22,26 +22,26 @@ This workshop develops intuition for how physical properties (density $\rho$, th
 \begin{itemize}
   \item Select and justify mixing laws based on rock fabric (random granular, layered/foliated, fractured) and target property (bulk vs. transport vs. elastic).
   \item Reason about how $P$--$T$--composition/porosity shift properties and create anisotropy.
-  \item Identify which properties most strongly influence gravity, magnetic, and conductive heat-flow interpretations.
+  \item Identify which properties most strongly influence gravity, magnetic, and heat flow interpretations.
   \item Elicit geological information via well-posed questions to constrain non-uniqueness.
 \end{itemize}
 
-\section*{Session Flow (170 min)}
+\section*{Session Flow (\timelinelength\ min)}
 
 Create mixed groups (4--5 students each) with both geology and physics/engineering backgrounds.
 
-\timeslot{What does geophysics see?}{10}
+\timeline[slot]{Warm-up --- What does geophysics see?}{10}
 
 Much like our senses, different fields are sensitive to different things.  Are geophysical fields sensitive to individual minerals or bulk rock propoerties?  Are they sensitive to different scales?
 
-\timeslot{Mini-lecture and Q\&A}{20}
+\timeline[slot]{Mini-lecture and Q\&A}{20}
 \begin{itemize}
   \item Bulk-additive vs. pathway-limited vs. elastic-interaction properties.
   \item Mixing relations: arithmetic (parallel), harmonic (series), geometric (random granular), Voigt--Reuss--Hill (elastic bounds).
   \item Scale-dependent anisotropy (micro/meso/macro fabrics).
 \end{itemize}
 
-\timeslot{Live Demonstration --- ``Crowd Conductivity''}{15}
+\timeline[slot]{Live Demonstration --- ``Crowd Conductivity''}{15}
 
 \textbf{Aim:} Intuitively illustrate why different mixing laws arise and how anisotropy appears.
 \begin{enumerate}
@@ -52,21 +52,27 @@ Much like our senses, different fields are sensitive to different things.  Are g
 \end{enumerate}
 \textit{Optional: time a handful of transits and note distribution shape differences.}
 
-\timeslot{Simulation Walkthrough}{20}
+\timeline[slot]{Simulation Walkthrough}{15}
 
 Builds on crowd conductivity with computation.  We'll examine a pre-built Python visualization of transit times through three media (random, parallel, series) and the resulting histogram shapes. Relate to effective properties and mixing choices.
 
-\timelineitem{Photo-Based Anisotropy \\ \small(\textit{micro--meso--macro classification})}{30}
-Distribute a set of photos (thin section, hand sample/outcrop close-up, outcrop/aerial). For each image, groups identify: geometry (random granular/layered/foliated/fractured), appropriate mixing law for density, conductivity, and moduli, whether the material is isotropic at that scale, and how conclusions change with scale.
+\timeline[item]{Rock Fabric and Mixing Laws}{20}
 
-\timelineitem{Scenario Rotations (rich, real-world cases)}{60}
+Distribute a set of photos (thin section, hand sample/outcrop close-up, outcrop/aerial). For each image, groups identify: geometry (random granular/layered/foliated/fractured), appropriate mixing law for density, and conductivity, whether the material is isotropic at that scale, and how conclusions change with scale.
+
+\timeline[item]{When to Estimate Physical Properties}{45}
+
 Each group tackles two scenarios (\~20 min each: 12 min discussion, 5 min notes, 3 min question drafting). Use the dedicated scenario handouts. Outcomes must include: (i) property/mixing-law decisions and (ii) 2--3 \emph{questions to ask the geologist} before committing to a model/survey.
 
-\timeslot{Scenario Debrief}{10}
+\timeline[demo]{Path Simulation}{30}
 
-Discussion of any new or unresolved questions.
+In this computer demonstration, we'll explore how the arrangement of properties affects the path and rate of travel across a medium.  While not a true simulator of physical properties, the results will show how various geometries of multicomponent systems affect the path and travel-time.
 
-\timeslot{Preview: Inversion}{10}
+\timeline[slot]{Wrap-up}{10}
+
+\emph{What does geophysics see?} Geophysics responds to bulk physical properties, not individual minerals. The appropriate mixing law depends on the rock fabric and the property being estimated. Can you name a physical property for each of the geophysical methods introduced so far (gravity, magnetics, heat flow)?
+
+\timeline[slot]{Preview: Inversion}{10}
 
 In geophysics, we typically measure fields and infer the underlying physical properties. In this course, however, we mostly focus on the \emph{forward problem}: computing fields from a known distribution of properties.
 
@@ -81,8 +87,10 @@ In addition, many geophysical relationships are non-linear, which adds further c
 
 Next week, we'll begin looking at how inversion methods address these challenges.
 
+\workshopend
 \notepage
 \notepage
 
 \subimport{activities/}{activity_photo_mixing}
 \subimport{activities/}{activity_scenarios}
+\subimport{activities/}{demo_path_simulation}

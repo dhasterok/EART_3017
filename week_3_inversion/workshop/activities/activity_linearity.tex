@@ -1,6 +1,20 @@
 \begin{activity}{Linear or Non-linear?}
 
-\textbf{Goal.} For each of the following forward relations drawn from potential fields, geothermics, and physical property relations, decide whether it is (i) linear, (ii) non-linear, or (iii) non-linear but can be linearized. If non-linear, describe how you would linearize or re-parameterize it. Justify your choice with respect to the model parameters that would be inverted.
+\section*{Purpose}
+
+This activity builds the skill of classifying geophysical forward relations as linear, non-linear, or linearizable, using a range of equations drawn from gravity, magnetics, geothermics, and physical property estimation. Correct classification determines whether a problem can be solved in a single step or requires iterative inversion.
+
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Identify the data, model parameters, and operator in a geophysical forward relation.
+  \item Apply the homogeneity and additivity tests to determine whether a relation is linear in its model parameters.
+  \item Propose a linearization strategy (log-transform, change of variables, or Taylor expansion) for non-linear relations where one exists.
+  \item Explain the practical consequences of linearity vs.\ non-linearity for inversion.
+\end{itemize}
+
+\section{Theory}
 
 Inversion problems can be cast as \(\mathbb{A}\mathbf{m} = \mathbf{d}\) for linear problems and \(A(m) = d\) for non-linear problems.  Where \(d\) is the data and \(A\) is the operator or design (more on that below).  The difference may appear subtle, though in reality the difference is that the linear equation can be written as a linear algebra problem as the model parameters are independent and discrete.  In the non-linear formulation, the one or more model parameters are dependent upon another.  As a result they cannot be fully separated unless they can be linearized.
 
@@ -33,10 +47,51 @@ So the entries in \(\mathbf{A}\) are determined by:
 
 Put simply, the matrix \(\mathbb{A}\) encodes the physics and geometry of how the experiment samples the model, \(\mathbf{m}\), resulting in the observations, \(\mathbf{d}\).
 
-\clearpage
-\subsection*{Instructions (15--20 min)}
+\section*{Linearizing}
+
+Many non-linear equations can be transformed into a linear form. Doing so is a great advantage because it allows for the problem to be solved using linear least squares methods and the solution is obtained in one step. Before resorting to a non-linear inversion, ask whether one of the following approaches applies.
+
+\subsection*{Logarithms for power laws}
+If $y=ax^b$ take the logarithm:
+\[
+  \log y = \log a + b \log
+\]
+which is linear in $\ln x$.  Examples: Gardner's relation, many petrophysical correlations,
+empirical scaling laws.
+
+\subsection*{Logarithms for exponentials}
+If $y=ae^{\pm bx}$ then
+\[
+  \log y = \log a \pm bx
+\]
+which is linear.  Examples: radioactive decay, compaction models, and attenuation relations.
+
+\subsection*{Change of variables}
+Sometimes a product of unknowns behaves as a single parameter (i.e., are inseperable).  For example from the gravity of a buried sphere, $g \propto a^3\Delta\rho$.  Define:
+\[
+  M=a^3\Delta\rho
+\]
+then $g \propto M$, which is linear in the new parameter.  This is particularly useful for demonstrating why some parameters are not independently resolvable.
+
+\subsection*{Reciprocal transforms}
+Some rational functions become linear after taking an inverse:
+\[
+  y=\frac{1}{a+bx}
+\]
+gives
+\[
+  \frac{1}{y}=a+bx
+\]
+which is linear.
+
+{\emph Note: When transforming, as for many of the examples above, the data, model parameters and observation conditions all have to be transformed in order to achieve a linear form.  Once the least squares solution is solved, the parameters can be transformed into normal space to express the model in its original form.}
+
+\section*{Task}
+
+For each of the following forward relations drawn from potential fields, geothermics, and physical property relations, decide whether it is (i) linear, (ii) non-linear, or (iii) non-linear but can be linearized. If non-linear, describe how you would linearize or re-parameterize it. Justify your choice with respect to the model parameters that would be inverted.
+
+In your groups:
 \begin{enumerate}[label=\arabic*.,itemsep=2pt]
-  \item Work in groups of 3--4.
   \item Identify the data and the experimental quantities.
   \item For each equation
   \begin{itemize}
@@ -111,6 +166,7 @@ Put simply, the matrix \(\mathbb{A}\) encodes the physics and geometry of how th
   \]
   \answerbox[2cm]
 
+  \clearpage
   \item \textbf{Gardner's relation (density--velocity):}
   Many solutions in geophysics involve trying to estimate one property from another, in this case density from seismic velocity.
   \[
@@ -142,5 +198,78 @@ Put simply, the matrix \(\mathbb{A}\) encodes the physics and geometry of how th
   \]
   \answerbox[2cm]
 \end{enumerate}
+
+\section*{Key Ideas}
+
+\begin{minipage}[t]{0.58\textwidth}
+\textbf{The operator $\mathbf{A}$ encodes the physics and geometry of the experiment.} Changing the Earth (the model $\mathbf{m}$) changes the predictions; changing the experiment (the operator $\mathbf{A}$) also changes the predictions even if the Earth stays the same.
+
+\vspace{0.5em}
+\textbf{Many geophysical relations are non-linear but can be linearized.} Power laws become linear under a log-transform; functions with products of unknowns may become linear under a change of variables. Recognising these opportunities converts a difficult iterative problem into a tractable one.
+
+\vspace{0.5em}
+\textbf{Non-linearity has consequences for inversion}: the Jacobian must be recomputed at each iteration, convergence is not guaranteed, and the solution found may be a local rather than a global minimum. The choice of starting model matters far more for non-linear than for linear problems.
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.38\textwidth}
+    \begin{tikzpicture}[
+            >=latex,
+            node distance=1.0cm,
+            process/.style={
+                rectangle,
+                rounded corners,
+                draw,
+                align=center,
+                minimum width=2.5cm,
+                minimum height=0.8cm,
+                font=\small
+            },
+            decision/.style={
+                diamond,
+                draw,
+                aspect=2,
+                minimum width=2.5cm,
+                align=center,
+                inner sep=1pt,
+                font=\small
+            },
+            baseline=(current bounding box.north)
+        ]
+
+        \node[process] (model)
+            {Forward\\Model};
+
+        \node[decision, below=of model] (linear)
+            {Linear?};
+
+        \node[process, below=of linear] (llsq)
+            {Linear Least\\Squares};
+
+        \node[decision, below right=3.5cm and 2.5cm of linear] (linz)
+            {Can be\\Linearized?};
+
+        \node[process, below=1.3cm of llsq] (transform)
+            {Transform\\to Linear};
+
+        \node[process, below=of linz] (nonlinear)
+            {Non-linear\\Inversion};
+
+        % Main flow
+        \draw[->] (model) -- (linear);
+
+        \draw[->] (linear) -- node[left] {Yes} (llsq);
+
+        \draw[->]
+            (linear.east)
+            -| node[pos=0.25,above] {No}
+            (linz.north);
+
+        \draw[->] (linz) -- node[right] {No} (nonlinear);
+
+        \draw[->] (linz.west) -- node[midway, below] {Yes} (transform);
+
+        \draw[->] (transform) -- (llsq);
+    \end{tikzpicture}
+\end{minipage}
 
 \end{activity}

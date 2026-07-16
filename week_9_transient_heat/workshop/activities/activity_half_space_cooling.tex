@@ -4,6 +4,18 @@
 To develop physical intuition for transient cooling of the oceanic lithosphere
 using the half-space cooling model.
 
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item State the assumptions of the half-space cooling model and identify which geological settings they approximate.
+  \item Sketch temperature--depth profiles for increasing seafloor ages and identify the thermal boundary layer.
+  \item Derive or explain the $\sqrt{t}$ dependence of thermal boundary layer thickness and heat flow.
+  \item Explain the physical reason why the half-space model predicts unbounded lithospheric thickening.
+\end{itemize}
+}
+
 \section*{Model Assumptions}
 \begin{itemize}
   \item The mantle is initially at uniform temperature.
@@ -21,9 +33,14 @@ T(z,t) = T_m \,\mathrm{erf}\!\left(
 
 \section*{Tasks}
 \begin{enumerate}
-  \item Sketch temperature--depth profiles for increasing times.
+  \item Sketch temperature--depth profiles for increasing times (e.g., 10, 50, 100~Ma). Label the thermal boundary layer.
+  \answerbox[6cm]
+
   \item Identify the thermal boundary layer and describe how its thickness evolves.
+  \answerbox[2cm]
+
   \item Estimate how the depth to a given isotherm scales with seafloor age.
+  \answerbox[3cm]
 \end{enumerate}
 
 \section*{Geological Interpretation}
@@ -32,7 +49,55 @@ T(z,t) = T_m \,\mathrm{erf}\!\left(
   \item Heat flow decreases as the plate cools away from mid-ocean ridges.
 \end{itemize}
 
-\section*{Key Insight}
 Explain why the half-space cooling model predicts unbounded lithospheric thickening.
+\answerbox[3cm]
+
+{\color{red}
+\section*{Key Ideas}
+
+{\color{blue}
+\textbf{Oceanic lithosphere is a thermal boundary layer.} The lithosphere defined thermally is the region of the mantle that has cooled significantly below the ambient mantle temperature. Its thickness grows as $\ell_T \sim 2\sqrt{\kappa t}$ and is proportional to the square root of seafloor age.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % T-z profiles at increasing ages
+  \draw[->] (0, 0) -- (5.5, 0) node[right] {$T/T_m$};
+  \draw[->] (0, 0) -- (0,-5.5) node[below] {$z$ (km)};
+
+  % erf profiles at different ages
+  % Age 10 Ma: shallow TBL
+  \draw[thick, blue!40, domain=0:1.5, samples=30]
+    plot ({1.0*(1 - exp(-\x*\x*2.5))}, {-\x*30});
+  \draw[thick, blue!40] ({1.0*(1-exp(-1.5*1.5*2.5))}, -1.5*30) -- (1.0, -5.0);
+  \node[blue!60, font=\scriptsize, right] at (0.8,-0.5) {10 Ma};
+
+  % Age 50 Ma: deeper TBL
+  \draw[thick, blue!70, domain=0:3.0, samples=40]
+    plot ({1.0*(1-exp(-\x*\x*0.5))}, {-\x*13.3});
+  \node[blue!70, font=\scriptsize, right] at (0.5,-2.0) {50 Ma};
+
+  % Age 100 Ma: deeper still
+  \draw[thick, blue, domain=0:5.0, samples=50]
+    plot ({1.0*(1-exp(-\x*\x*0.25))}, {-\x*9.4});
+  \node[blue, font=\scriptsize, right] at (0.3,-3.5) {100 Ma};
+
+  % TBL depth markers
+  \draw[dashed, gray] (0,-1.2) -- (-0.5,-1.2) node[left, font=\scriptsize] {$\ell_T(10)$};
+  \draw[dashed, gray] (0,-2.7) -- (-0.5,-2.7) node[left, font=\scriptsize] {$\ell_T(50)$};
+  \draw[dashed, gray] (0,-4.0) -- (-0.5,-4.0) node[left, font=\scriptsize] {$\ell_T(100)$};
+
+  % sqrt-t annotation
+  \draw[->, thick, orange] (3.5,-1.2) -- (3.5,-4.0)
+    node[midway, right, font=\small] {$\propto\sqrt{t}$};
+\end{tikzpicture}
+\caption{Half-space cooling: the thermal boundary layer thickens as $\sqrt{t}$ (orange arrow). At 10, 50 and 100 Ma the temperature--depth profiles deepen, converging toward the mantle temperature $T_m$ at greater depth with increasing age.}
+\end{figure}
+}
+
+\textbf{Heat flow decreases as $t^{-1/2}$.} As the lithosphere thickens with age, the surface temperature gradient decreases and surface heat flow falls proportionally. This explains the systematic decrease in heat flow with increasing distance from mid-ocean ridges.
+
+\textbf{The model has no basal limit.} Because there is no imposed base to the half-space, the thermal boundary layer grows indefinitely. In reality, the observed flattening of bathymetry and heat flow for old (${>}80$~Ma) plates requires a fixed lower boundary, which is captured by the plate cooling model.
+}
 
 \end{activity}

@@ -1,0 +1,303 @@
+\begin{activity}{Nevada Case Study: Filtering for Sediments}
+
+\section*{Purpose}
+
+This demonstration extends the basic ideas of Fourier transforms developed in Demo~1 to spatial potential-field data.  The focus is on understanding how sampling, filtering, and physical assumptions control what geological information can be recovered from gravity data.
+
+The notebook progresses deliberately from:
+\begin{itemize}
+  \item synthetic geological models with known truth,
+  \item to real Complete Bouguer gravity data from Nevada,
+  \item to physically motivated removal of regional signals via isostatic correction,
+  \item and finally to spectral interpretation and inversion.
+\end{itemize}
+
+\section*{In-Class Demonstration Outline}
+
+A suggested walkthrough is:
+
+\begin{enumerate}
+  \item \textbf{Nevada Bouguer gravity:} identify basin-scale stripes.
+  \item \textbf{Isostatic correction:} remove long-wavelength crustal signal.
+  \item \textbf{Spectral peaks:} identify dominant basin wavelengths.
+  \item \textbf{Aliasing pipeline:} demonstrate failure of inversion under coarse sampling.
+\end{enumerate}
+
+
+\section*{Spatial Fourier Transform}
+
+For a uniformly sampled profile, the discrete Fourier transform gives
+\begin{equation}
+\hat{g}(k_n) = \sum_{j=0}^{N-1} g(x_j)\, e^{-i 2\pi k_n x_j},
+\end{equation}
+with discrete wavenumbers
+\begin{equation}
+k_n = \frac{n}{N\,\Delta x}.
+\end{equation}
+
+The amplitude spectrum $|\hat{g}(k)|$ shows how much power exists at each wavelength.
+For potential fields, spectra typically show a \emph{red-noise} background:
+power increases systematically toward longer wavelengths.
+
+\section*{Aliasing in the Spectral Domain}
+
+When the sampling interval increases:
+\begin{itemize}
+  \item the Nyquist wavelength moves to longer scales,
+  \item true basin-scale power migrates to incorrect longer wavelengths,
+  \item spurious spectral peaks appear that look statistically significant.
+\end{itemize}
+
+The Fourier transform faithfully represents the sampled data,
+even when that data are aliased.
+
+\section*{Airy Isostatic Gravity Correction}
+
+The long-wavelength Bouguer gravity field over Nevada is dominated by
+isostatic compensation of crustal thickness variations.
+Under Airy isostasy, surface loads are compensated by a crustal root at depth $T_0$.
+
+In the spectral domain, the gravity effect of a density interface at depth $T_0$ is
+\begin{equation}
+\hat{g}_{\text{root}}(\mathbf{k})
+=
+2\pi G\, \Delta\rho \, \hat{h}(\mathbf{k}) \, e^{-|\mathbf{k}| T_0},
+\end{equation}
+where:
+\begin{itemize}
+  \item $\Delta\rho$ is the density contrast across the Moho,
+  \item $e^{-|\mathbf{k}|T_0}$ is the upward-continuation filter.
+\end{itemize}
+
+Subtracting this predicted root contribution from the observed Bouguer gravity yields
+the \emph{isostatic residual}:
+\begin{equation}
+g_{\text{iso}} = g_{\text{Bouguer}} - g_{\text{root}}.
+\end{equation}
+
+This is a physically motivated, band-limited removal of long-wavelength power,
+not a statistical detrend.
+
+\section*{Spectral Interpretation of Nevada Gravity}
+
+After isostatic correction:
+\begin{itemize}
+  \item the mean gravity is near zero,
+  \item long-wavelength crustal signals are suppressed,
+  \item basin-scale anomalies (20--60~km) are enhanced.
+\end{itemize}
+
+Mean E--W and N--S power spectra reveal:
+\begin{itemize}
+  \item elevated E--W power at 20--40~km wavelengths,
+  \item longer characteristic wavelengths in the N--S direction,
+  \item a red-noise background consistent with potential-field theory.
+\end{itemize}
+
+\section*{Statistical Significance of Spectral Peaks}
+
+Because adjacent profiles are spatially correlated,
+the number of independent spectral estimates is smaller than the number of rows or columns.
+An effective number of degrees of freedom is estimated from the spatial autocorrelation length.
+
+After fitting and removing a power-law background,
+a chi-squared test is used to identify statistically significant spectral peaks.
+For Nevada:
+\begin{itemize}
+  \item the dominant E--W peak lies near $\lambda \approx 20$--25~km,
+  \item consistent with Basin-and-Range basin spacing.
+\end{itemize}
+
+\section*{High-Pass Filtering and Inversion}
+
+Before inverting gravity for sediment thickness,
+residual long-wavelength power must be removed.
+A raised-cosine high-pass filter is applied:
+\begin{itemize}
+  \item wavelengths $> 100$~km are blocked,
+  \item wavelengths $< 60$~km are passed,
+  \item a smooth taper prevents Gibbs ringing.
+\end{itemize}
+
+The filtered gravity is inverted using the Parker--Oldenburg method,
+which relates gravity to interface relief in the spectral domain.
+
+\section*{Impact of Aliasing on Inversion}
+
+Repeating the full processing pipeline on decimated data shows that:
+\begin{itemize}
+  \item when the Nyquist wavelength exceeds basin width,
+  \item sediment thickness maps degrade rapidly,
+  \item artefacts appear that have no geological meaning.
+\end{itemize}
+
+No inversion algorithm can recover information lost to aliasing.
+
+\section*{Sediment Thickness Inversion and Spectral Filtering}
+
+After removal of the long-wavelength isostatic signal, the remaining gravity field
+primarily reflects density variations in the shallow crust.
+In the Basin-and-Range Province, these variations are dominated by
+low-density sediment filling extensional basins over denser crystalline basement.
+We now describe how this signal is converted into a sediment thickness model,
+and why additional spectral filtering is required before inversion.
+
+\subsection*{Physical Meaning of the Sediment Thickness Model}
+
+The sediment thickness model $h(x,y)$ represents the vertical thickness of
+low-density basin fill that replaces higher-density basement rock.
+The relevant density contrast is
+\begin{equation}
+\Delta\rho = \rho_{\text{basement}} - \rho_{\text{sediment}},
+\end{equation}
+which is taken here to be approximately $670~\text{kg m}^{-3}$.
+
+Under this convention:
+\begin{itemize}
+  \item negative gravity anomalies correspond to thick sedimentary basins,
+  \item positive anomalies correspond to basement highs or exposed ranges.
+\end{itemize}
+
+The model treats sediment as a single layer with uniform density overlying basement.
+This is a deliberate simplification.
+Gravity is most sensitive to the largest density contrast,
+and cannot resolve fine-scale stratigraphy within the sediment column.
+The resulting sediment thickness therefore captures the dominant mass deficit
+associated with basin fill, rather than detailed internal layering.
+
+\subsection*{Forward Gravity Model for an Interface}
+
+For an interface with mean depth $z_0$, relief $h(x,y)$, and density contrast
+$\Delta\rho$, the linearized gravity response in the Fourier domain is
+\begin{equation}
+\hat{g}(\mathbf{k})
+=
+2\pi G\,\Delta\rho \;
+e^{-|\mathbf{k}| z_0}
+\;
+\hat{h}(\mathbf{k}),
+\end{equation}
+where $\mathbf{k}$ is the horizontal wavenumber vector and
+$e^{-|\mathbf{k}| z_0}$ is the upward-continuation kernel.
+
+This expression highlights two fundamental properties of gravity data:
+\begin{itemize}
+  \item short wavelengths decay rapidly with depth,
+  \item gravity observations are inherently band-limited by source depth.
+\end{itemize}
+
+\subsection*{Instability of Direct Inversion}
+
+Formally inverting the linear relation gives
+\begin{equation}
+\hat{h}(\mathbf{k})
+=
+\frac{\hat{g}(\mathbf{k})}
+{2\pi G\,\Delta\rho}
+\;
+e^{|\mathbf{k}| z_0}.
+\end{equation}
+
+The exponential factor $e^{|\mathbf{k}| z_0}$ amplifies high-wavenumber components.
+As a result:
+\begin{itemize}
+  \item noise,
+  \item discretization error,
+  \item aliasing from inadequate sampling,
+\end{itemize}
+are dramatically magnified.
+This makes naive downward continuation unstable and physically meaningless.
+
+\subsection*{The Parker--Oldenburg Method}
+
+The Parker--Oldenburg method (Parker, 1973; Oldenburg, 1974) addresses this instability
+by treating the gravity--interface relationship as weakly nonlinear
+and solving iteratively in the spectral domain.
+
+In practice, the method:
+\begin{enumerate}
+  \item starts with an initial guess for the interface relief $h(x,y)$,
+  \item forward-calculates the gravity anomaly,
+  \item compares predicted and observed gravity,
+  \item updates the interface estimate,
+  \item iterates until convergence.
+\end{enumerate}
+
+Each iteration uses fast Fourier transforms, with computational cost
+$O(N\log N)$, making the method efficient even for large grids.
+The result is a stable estimate of interface relief, provided the input gravity
+is appropriately filtered.
+
+\subsection*{Why High-Pass Filtering Is Required}
+
+Even after isostatic correction, the gravity field may still contain
+long-wavelength signals arising from:
+\begin{itemize}
+  \item imperfect isostatic compensation,
+  \item lithospheric flexure,
+  \item deeper crustal or mantle density variations.
+\end{itemize}
+
+If these wavelengths are left in the data,
+the inversion will interpret them as extremely thick sediment layers,
+producing unphysical basin depths.
+
+High-pass filtering therefore encodes a geological prior:
+\begin{quote}
+sediment thickness varies on wavelengths comparable to basin widths,
+not on lithospheric scales.
+\end{quote}
+
+\subsection*{Raised-Cosine High-Pass Filter}
+
+A sharp spectral cutoff produces Gibbs ringing in the spatial domain,
+manifesting as oscillations and spurious basin edges.
+To avoid this, a smooth raised-cosine (Hann) filter is applied:
+\begin{equation}
+H(k) =
+\begin{cases}
+0, & k \le k_{\text{lo}}, \\
+\frac{1}{2}
+\left[
+1 - \cos\!\left(
+\pi \frac{k - k_{\text{lo}}}{k_{\text{hi}} - k_{\text{lo}}}
+\right)
+\right],
+& k_{\text{lo}} < k < k_{\text{hi}}, \\
+1, & k \ge k_{\text{hi}}.
+\end{cases}
+\end{equation}
+
+In this application:
+\begin{itemize}
+  \item wavelengths $> 100~\text{km}$ are fully suppressed,
+  \item wavelengths $< 60~\text{km}$ are fully passed,
+  \item intermediate wavelengths are smoothly tapered.
+\end{itemize}
+
+This filter removes residual regional power while preserving basin-scale structure,
+and ensures that the Parker--Oldenburg inversion remains stable and geologically
+plausible.
+
+\subsection*{Interpretive Context}
+
+It is important to emphasize that:
+\begin{itemize}
+  \item the inversion is not unique,
+  \item the sediment thickness model is conditional on sampling, filtering,
+        and density assumptions,
+  \item no inversion can recover wavelengths shorter than the Nyquist limit.
+\end{itemize}
+
+The success of the Parker--Oldenburg inversion in this case reflects the fact that
+sampling, isostatic correction, and spectral filtering have already constrained
+the problem to a physically interpretable band of wavelengths.
+
+\subsection*{Key Takeaway}
+
+The Parker--Oldenburg method is best understood as a physically motivated,
+regularized downward continuation.
+It produces meaningful sediment thickness estimates only when the gravity data
+have been appropriately sampled, filtered, and interpreted.
+
+\end{activity}

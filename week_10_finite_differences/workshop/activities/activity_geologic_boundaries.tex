@@ -7,6 +7,18 @@ models.
 A numerical model does not ``know'' geology—it only knows equations and boundary
 conditions.
 
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Distinguish between Dirichlet (fixed temperature) and Neumann (fixed heat flux) boundary conditions.
+  \item Match appropriate boundary conditions to geological settings (ocean floor, continental lithosphere, cooling intrusion).
+  \item Explain how changing a boundary condition changes the physical system the model represents.
+  \item Argue why inappropriate boundary conditions can produce physically misleading results even when the numerical solution is mathematically stable.
+\end{itemize}
+}
+
 \emph{Boundary conditions determine what kind of Earth your model represents.}
 
 \section*{Part A: Grounding in real systems}
@@ -20,6 +32,7 @@ Consider the following settings:
 
 \textbf{Task:}
 For each case, describe what controls the temperature at the boundaries.
+\answerbox[4cm]
 
 \section*{Part B: Types of boundary conditions}
 
@@ -31,6 +44,7 @@ Common thermal boundary conditions:
 
 \textbf{Task:}
 Match each type of boundary condition to a geological situation.
+\answerbox[3cm]
 
 \section*{Part C: Comparing assumptions}
 
@@ -41,6 +55,7 @@ Match each type of boundary condition to a geological situation.
 \end{itemize}
 
 What is fixed in each case? What is allowed to vary?
+\answerbox[3cm]
 
 \section*{Part D: Geological consequences}
 
@@ -49,20 +64,64 @@ What is fixed in each case? What is allowed to vary?
     \item oceanic lithosphere
     \item continental lithosphere
 \end{itemize}
+\answerbox[3cm]
 
 \section*{Part E: Critical thinking}
 
 \textbf{Task:}
 Explain why inappropriate boundary conditions can produce physically misleading
 results—even if the numerical solution is mathematically stable.
+\answerbox[3cm]
 
 \textbf{Reflection} \\
 If two models use the same equation but different boundary conditions, can they
 produce completely different results? Why?
+\answerbox[3cm]
 
 \bigskip
 
-\textbf{Key Insight} \\
+{\color{red}
+\section*{Key Ideas}
+
 Boundary conditions are where geological assumptions enter a numerical model.
+
+\textbf{Boundary conditions define the physical system, not just the mathematics.} Two models with identical equations but different boundary conditions represent completely different geological systems. Choosing a fixed temperature surface is equivalent to assuming an ocean floor in contact with circulating seawater; choosing a fixed heat flux is equivalent to assuming a continental surface where temperatures are free to evolve.
+
+{\color{blue}
+\textbf{Dirichlet and Neumann conditions represent different physical constraints.} A Dirichlet condition fixes the value (temperature); a Neumann condition fixes the gradient (heat flux through the surface). The oceanic upper boundary is naturally Dirichlet; the lower lithospheric boundary is often Neumann (fixed mantle heat flux into the base).
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0,
+  box/.style={draw, thick, fill=blue!8, minimum width=3.5cm, minimum height=1.0cm, align=center, font=\small},
+  bcbox/.style={draw, thick, rounded corners, minimum width=3.2cm, minimum height=0.8cm, align=center, font=\scriptsize},
+  arr/.style={->, thick}
+]
+  % --- Dirichlet ---
+  \node[font=\small\bfseries] at (2.0, 4.2) {Dirichlet (fixed $T$)};
+  \draw[fill=cyan!10, draw=cyan!60!black, thick] (0.2, 3.4) rectangle (3.8, 3.9);
+  \node[font=\scriptsize, cyan!60!black] at (2.0, 3.65) {$T = T_\text{surf}$ (fixed)};
+  \draw[fill=gray!20, thick] (0.2, 0.5) rectangle (3.8, 3.4);
+  \node[font=\small, align=center] at (2.0, 1.95) {Lithosphere\\$T(z)$ evolves freely};
+  \draw[fill=orange!15, draw=orange!70!black, thick] (0.2, 0.0) rectangle (3.8, 0.5);
+  \node[font=\scriptsize, orange!60!black] at (2.0, 0.25) {$q = q_\text{mantle}$ or $T$ fixed};
+  \node[font=\scriptsize, align=left] at (2.0,-0.5) {e.g.\ ocean floor: $T_\text{surf} = 0^\circ$C};
+
+  % --- Neumann ---
+  \node[font=\small\bfseries] at (7.5, 4.2) {Neumann (fixed $\partial T/\partial z$)};
+  \draw[fill=green!10, draw=green!60!black, thick] (5.7, 3.4) rectangle (9.3, 3.9);
+  \node[font=\scriptsize, green!60!black] at (7.5, 3.65) {$\partial T/\partial z = $ const (fixed $q$)};
+  \draw[fill=gray!20, thick] (5.7, 0.5) rectangle (9.3, 3.4);
+  \node[font=\small, align=center] at (7.5, 1.95) {Lithosphere\\$T(z)$ evolves freely};
+  \draw[fill=orange!15, draw=orange!70!black, thick] (5.7, 0.0) rectangle (9.3, 0.5);
+  \node[font=\scriptsize, orange!60!black] at (7.5, 0.25) {$q = q_\text{mantle}$ (fixed flux in)};
+  \node[font=\scriptsize, align=left] at (7.5,-0.5) {e.g.\ continental surface: $q_s$ measured};
+\end{tikzpicture}
+\caption{Dirichlet (left) fixes temperature at a boundary — appropriate where temperature is controlled externally (ocean floor). Neumann (right) fixes the heat flux gradient — appropriate where a flux is imposed but temperature is free to adjust (base of lithosphere, continental surface heat flow).}
+\end{figure}
+}
+
+\textbf{Geological understanding is required to choose appropriate boundary conditions.} A numerically stable model with inappropriate boundary conditions can produce results that look reasonable but represent geology that does not exist. Interpreting model output always requires checking that the boundary conditions faithfully represent the geological setting being modelled.
+}
 
 \end{activity}

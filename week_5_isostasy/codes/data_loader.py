@@ -275,7 +275,7 @@ class ProfileSelectorDialog(QDialog):
         self._btn_color.setCheckable(True)
         self._btn_color.setChecked(False)
         self._btn_color.setToolTip(
-            "Toggle gravity-value colouring of the station scatter plot")
+            "Toggle gravity-value coloring of the station scatter plot")
         self._btn_color.toggled.connect(self._toggle_color_by_gravity)
         swath_row.addWidget(self._btn_color)
 
@@ -321,7 +321,7 @@ class ProfileSelectorDialog(QDialog):
         ys = self._df[self._y_col].values.astype(float)
         self._gz_values = self._df[self._gz_col].values.astype(float)
 
-        # Default: single colour — fast, no colorbar
+        # Default: single color — fast, no colorbar
         self._scatter = self._ax.scatter(
             xs, ys, s=6, color='steelblue', zorder=2, picker=False)
 
@@ -333,7 +333,7 @@ class ProfileSelectorDialog(QDialog):
         self._swath_patch = None
         self._dot_artists.clear()
 
-        # Reset the colour toggle button without re-triggering the slot
+        # Reset the color toggle button without re-triggering the slot
         self._btn_color.blockSignals(True)
         self._btn_color.setChecked(False)
         self._btn_color.blockSignals(False)
@@ -350,7 +350,7 @@ class ProfileSelectorDialog(QDialog):
             self._spin_swath.setValue(5.0)
 
     def _toggle_color_by_gravity(self, checked: bool):
-        """Switch scatter between a single colour and gravity-value colouring."""
+        """Switch scatter between a single color and gravity-value coloring."""
         if self._scatter is None or self._gz_values is None:
             return
 

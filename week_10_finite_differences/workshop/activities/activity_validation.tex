@@ -1,40 +1,97 @@
-\documentclass[11pt,a4paper]{article}
-
-\usepackage{amsmath}
-\usepackage{geometry}
-\geometry{margin=1in}
-
-\begin{document}
-
-\begin{center}
-\Large \textbf{Activity 10.4: Verification Against Analytic Solutions} \\[0.5em]
-\normalsize Geophysics — Numerical Heat Flow
-\end{center}
-
-\vspace{1em}
+\begin{activity}{Verification Against Analytic Solutions}
 
 \section*{Purpose}
 To demonstrate the importance of verifying numerical models against solutions
-with known behavior.
+with known behaviour.
 
-\section*{Concept}
+{\color{red}
+\section*{Learning Outcomes}
+
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Identify analytic benchmark solutions appropriate for testing a numerical heat flow implementation.
+  \item Describe which properties of a numerical solution should be compared with the analytic result (profile shape, heat flow, temporal evolution).
+  \item Explain how grid spacing and time-step size affect numerical accuracy and distinguish accuracy from stability.
+  \item Justify why verification is essential before using a numerical model for geological prediction.
+\end{itemize}
+}
+
 Analytic solutions provide benchmarks for testing numerical implementations.
 
-\section*{Tasks}
-\begin{enumerate}
-  \item Identify an analytic solution discussed earlier in the course that can be
-  reproduced numerically.
+\section*{Task 1: Choose a benchmark}
 
-  \item Describe what aspects of the solution should be compared (e.g., temperature
-  profile shape, temporal evolution, heat flow).
+Identify one analytic solution from earlier in the course that could be reproduced with the finite difference code (e.g., linear steady-state geotherm, half-space cooling, Fourier series plate cooling).
 
-  \item Explain how grid spacing and time step affect numerical accuracy.
+Describe the solution and the conditions it requires.
+\answerbox[4cm]
 
-  \item Discuss why a numerically stable solution is not necessarily accurate.
-\end{enumerate}
+\section*{Task 2: What to compare}
+
+Describe which aspects of the solution you would compare between the analytic result and the numerical output.
+
+Consider: temperature profile shape, heat flow at the surface or base, behaviour at late times.
+\answerbox[4cm]
+
+\section*{Task 3: Grid and time-step effects}
+
+Explain how decreasing grid spacing $\Delta z$ and time step $\Delta t$ affects the accuracy of the numerical solution.
+
+What limits how small you can make these in practice?
+\answerbox[4cm]
+
+\section*{Task 4: Stable but wrong}
+
+Explain why a numerically \emph{stable} solution is not necessarily \emph{accurate}.
+
+Give an example of a stable but inaccurate result.
+\answerbox[3cm]
 
 \section*{Reflection}
-Why is verification especially important when modeling complex geological
-systems?
 
-\end{document}
+Why is verification especially important when modelling complex geological
+systems where no field observation can directly confirm the model output?
+\answerbox[4cm]
+
+{\color{red}
+\section*{Key Ideas}
+
+\textbf{Verification is not the same as validation.} Verification checks that the code correctly solves the equations as written (by comparing to an analytic solution). Validation checks that the equations represent the real system. Both are necessary, and a model can pass verification while still being physically wrong.
+
+\textbf{Convergence with decreasing grid size is the key accuracy test.} If the numerical solution approaches the analytic solution as $\Delta z \to 0$ and $\Delta t \to 0$, the scheme is convergent. The rate at which it converges (first or second order) indicates how quickly errors decrease with refinement.
+
+{\color{blue}
+\textbf{Stability and accuracy are independent properties.} A scheme is stable if errors do not grow unboundedly; it is accurate if the truncation error is small. Choosing $\Delta t$ just below the stability limit keeps the solution stable but may leave large truncation errors. Choosing $\Delta t \ll \Delta z^2/2\kappa$ is more accurate but computationally expensive.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0,
+  quadrant/.style={draw, thick, minimum width=3.0cm, minimum height=1.6cm, align=center, font=\small}
+]
+  % Quadrant grid
+  \draw[thick] (0,0) -- (6,0) -- (6,4) -- (0,4) -- cycle;
+  \draw[thick] (3,0) -- (3,4);
+  \draw[thick] (0,2) -- (6,2);
+
+  % Axis labels
+  \node[font=\small\bfseries, rotate=90] at (-0.6, 2) {Accurate};
+  \node[font=\small\bfseries, rotate=90] at (-0.6, 0.8) {Inaccurate (large $\Delta t$)};
+  \node[font=\small\bfseries] at (1.5, 4.3) {Unstable};
+  \node[font=\small\bfseries] at (4.5, 4.3) {Stable};
+
+  % Quadrant labels + colors
+  \fill[red!15]   (0,2) rectangle (3,4);
+  \fill[red!15]   (0,0) rectangle (3,2);
+  \fill[orange!20](3,2) rectangle (6,4);
+  \fill[green!20] (3,0) rectangle (6,2);
+
+  \node[align=center, font=\scriptsize] at (1.5, 3.0) {Accurate\\but unstable\\(blow-up)};
+  \node[align=center, font=\scriptsize] at (4.5, 3.0) {Accurate \&\\stable \checkmark\\(small $\Delta t$, $\Delta z$)};
+  \node[align=center, font=\scriptsize] at (1.5, 1.0) {Inaccurate\\and unstable\\(avoid)};
+  \node[align=center, font=\scriptsize] at (4.5, 1.0) {Stable but\\inaccurate\\ (large $\Delta t$)};
+\end{tikzpicture}
+\caption{Stability and accuracy are independent. The target is the upper-right quadrant: stable \emph{and} accurate. Stability alone (lower-right) is not sufficient for reliable geological prediction.}
+\end{figure}
+}
+}
+
+\end{activity}
