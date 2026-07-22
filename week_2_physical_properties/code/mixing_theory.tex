@@ -31,7 +31,7 @@ With just these three levers, we can anticipate whether the bulk (effective) beh
 Geology is gloriously complex. Rocks record overlapping thermal, chemical, mechanical, and fluid histories across scales that range from the crystal lattice to the lithosphere. As geophysicists, we build \emph{simplified models} to make this complexity scientifically accessible. A model is not the Earth—it is a deliberately constrained representation that isolates the dominant processes, keeps the mathematics or computation tractable, and yields predictions we can test against observations.
 
 \paragraph{Abstraction with purpose.}
-Most geophysical questions do not require every microscopic detail of mineral chemistry or every fold and fault to be represented explicitly. Instead, we identify the \emph{controlling factors} for a given phenomenon. For thermal transport, geometry (parallel vs.\ series), property contrasts, and continuity/leakiness of layers typically dominate the outcome far more than sub--pixel textures. By abstracting to these controls, we transform an intractable natural system into a \emph{well-posed} problem with clear assumptions, known limitations, and falsifiable predictions.
+Most geophysical questions do not require every microscopic detail of mineral chemistry or every fold and fault to be represented explicitly. Instead, we identify the \emph{controlling factors} for a given phenomenon. For thermal transport, geometry (parallel vs.\ perpendicular to layers), property contrasts, and continuity/leakiness of layers typically dominate the outcome far more than sub--pixel textures. By abstracting to these controls, we transform an intractable natural system into a \emph{well-posed} problem with clear assumptions, known limitations, and falsifiable predictions.
 
 \paragraph{From field complexity to tractable building blocks.}
 In practice, we map complex terrains onto simple, interpretable building blocks: layered media, granular mixtures, or anisotropic fabrics with a small number of parameters (thickness, contact sharpness, continuity, meander, and statistical variability of properties). These building blocks are not crude approximations; they are the \emph{minimal hypotheses} that carry the physics. They let us compute effective properties, anticipate end-member behaviors (arithmetic, geometric, harmonic mixing), and understand which observations will be most diagnostic in the field or lab.
@@ -45,15 +45,15 @@ Simplified models sharpen scientific reasoning. They:
   \item expose which variables actually control the outcome (and which do not);
   \item provide closed-form or computationally cheap predictions for fast iteration;
   \item make uncertainty transparent by linking each assumption to a measurable effect; and
-  \item create a common language across geology and geophysics (e.g., “sharp, continuous series layers will drive harmonic behavior across bedding”).
+  \item create a common language across geology and geophysics (e.g., sharp, flow perpendicular to layering will drive harmonic behavior).
 \end{itemize}
 This disciplined simplification is not a retreat from reality; it is our most reliable path \emph{toward} it. By confronting data with models that are only as complex as necessary—and no more—we accelerate understanding, guide new measurements, and build confidence that when we do add complexity, it is justified, testable, and explanatory rather than decorative.
 
 \vspace{0.25em}
 \begin{tcolorbox}[colback=blue!1!white,colframe=blue!40!black,title=The one-sentence rule]
-Parallel (lanes $\parallel$ flow) $\Rightarrow$ \textbf{arithmetic} (fastest);\\
+Parallel to layering $\Rightarrow$ \textbf{arithmetic} (fastest);\\
 Random granular $\Rightarrow$ \textbf{geometric} (middle);\\
-Series (layers $\perp$ flow) $\Rightarrow$ \textbf{harmonic} (slowest).
+Perpendicular to layering $\Rightarrow$ \textbf{harmonic} (slowest).
 \end{tcolorbox}
 
 \medskip
@@ -70,7 +70,7 @@ We synthesize a spatial conductivity field $k(x,y)$ with controls that match geo
 
 \paragraph{Components and fractions.} For two components $A,B$ (or three $A,B,C$), choose area fractions $f_A, f_B$ ($+f_C$) with $f_A+f_B(+f_C)=1$.
 
-\paragraph{Layer counts and thickness.} For series--oriented layering (layers $\perp$ transport), specify integers $(N_A,N_B)$ (and optionally $N_C$). Draw raw thicknesses for each set,
+\paragraph{Layer counts and thickness.} For perpendicular flow to layering, specify integers $(N_A,N_B)$ (and optionally $N_C$). Draw raw thicknesses for each set,
 \[
     t_i \sim
     \begin{cases}
@@ -102,7 +102,7 @@ Sharp contacts are recovered with $w_{\text{int}}=0$ (i.e., indicator becomes bi
 \]
 and normalize to $\overline{k}=1$ for fair comparisons across geometries.
 
-\paragraph{Parallel orientation.} Lanes $\parallel$ transport are obtained by rotating the constructed series field by $90^\circ$ (or by swapping $x$/$y$ roles during construction).
+\paragraph{Parallel orientation.} Lanes $\parallel$ transport are obtained by rotating the constructed bedding field by $90^\circ$ (or by swapping $x$/$y$ roles during construction).
 
 \bigskip
 
@@ -113,7 +113,7 @@ Define a \emph{per--cell cost} $c=1/k$ so higher $k$ means lower cost. On the 4-
 \]
 \paragraph{What it captures.} The \textbf{best available corridor} through the medium. It is very fast, highlights how geometry steers transport, and correctly orders mixing scenarios in most cases:
 \[
-    \text{parallel (arithmetic) fastest} \;<\; \text{random granular (geometric)} \;<\; \text{series (harmonic) slowest}.
+    \text{parallel (arithmetic) fastest} \;<\; \text{random granular (geometric)} \;<\; \text{perpendicular (harmonic) slowest}.
 \]
 \paragraph{What it does \emph{not} capture.} Diffusion is a \emph{field} phenomenon: flux spreads through \emph{all} cells. Dijkstra avoids low--$k$ regions entirely and returns a \emph{single} route (a geodesic in a resistance metric), thus providing a lower bound on traversal time and an upper bias on effective $k$.
 
@@ -144,15 +144,15 @@ with insulating or periodic conditions on the top/bottom as desired. A discrete 
 where $\partial\Omega_R$ is the right edge. Transient diffusion solves $\partial_t T=\nabla\!\cdot(k\nabla T)$ for time--dependent phenomena or first--passage statistics.
 
 \section{Mixing Laws and Geometry}
-For \emph{series} layers (layers $\perp$ transport), with layer thicknesses $t_i$ and within--layer conductivities $k_i$,
+For perpendicular flow, with layer thicknesses $t_i$ and within--layer conductivities $k_i$,
 \[
-    \frac{1}{k_{\text{eff}}^{\text{series}}} \;=\; \sum_i \frac{t_i}{H}\,\frac{1}{k_i}.
+    \frac{1}{k_{\perp}} \;=\; \sum_i \frac{t_i}{H}\,\frac{1}{k_i}.
 \]
 For \emph{parallel} lanes (lanes $\parallel$ transport), with lane widths $w_i$,
 \[
-    k_{\text{eff}}^{\text{parallel}} \;=\; \sum_i \frac{w_i}{W}\,k_i.
+    k_{\parallel} \;=\; \sum_i \frac{w_i}{W}\,k_i.
 \]
-For \emph{random granular} mixtures with lognormal variability, $k_{\text{eff}}$ often trends toward the \emph{geometric mean} at the representative elementary volume. Diffuse contacts shift series behavior toward geometric; leaky layers (continuity $<1$) also move harmonic toward geometric.
+For \emph{random granular} mixtures with lognormal variability, $k_{\text{eff}}$ often trends toward the \emph{geometric mean} at the representative elementary volume. Diffuse contacts shift perpendicular behavior toward geometric; leaky layers (continuity $<1$) also move harmonic toward geometric.
 
 \section{Comparing the Three Numerical Surrogates}
 \begin{center}
@@ -186,7 +186,7 @@ Given component means/variances (often lognormal) and layer proportions:
   \item If component $C$ \emph{attaches} to $A$ (or $B$), estimate an in--layer geometric blend
   $\ln \tilde{k}_A = (1-\theta_A)\ln k_A + \theta_A \ln k_C$ (and similarly for $B$),
   where $\theta_A \approx f_C^{A}/f_A$ is the fraction of $C$ placed within $A$ layers.
-  \item Use \textbf{harmonic} across series layers or \textbf{arithmetic} across parallel lanes to estimate $k_{\text{eff}}$.
+  \item Use \textbf{harmonic} for perpendicular flow across layers or \textbf{arithmetic} across for flow parallel to layers to estimate $k_{\text{eff}}$.
   \item Convert to a traversal time proxy, $t_{\text{pred}} \approx \tau\,W/k_{\text{eff}}$,
   with optional tortuosity $\tau\ge1$ to account for 4--neighbor detours.
 \end{enumerate}
@@ -194,13 +194,13 @@ Given component means/variances (often lognormal) and layer proportions:
 \subsection*{What to expect}
 \begin{itemize}
   \item \textbf{Parallel (arithmetic)} is the \emph{fastest}. Adding diffuse interfaces within lanes has little impact on macroscopic arithmetic averaging.
-  \item \textbf{Series (harmonic)} is the \emph{slowest} if layers are continuous and contacts are sharp. Diffuse contacts ($w_{\text{int}}>0$) and leaks ($p_{\text{cont}}<1$) move behavior toward geometric.
+  \item \textbf{Perpendicular (harmonic)} is the \emph{slowest} if layers are continuous and contacts are sharp. Diffuse contacts ($w_{\text{int}}>0$) and leaks ($p_{\text{cont}}<1$) move behavior toward geometric.
   \item \textbf{Random granular} trends to the \emph{geometric} mean at the REV scale; path surrogates (Dijkstra / random walks) will sit between arithmetic and harmonic, typically near geometric unless contrast is low.
 \end{itemize}
 
 \section{Practical Implementation Notes (for the GUI)}
 \begin{itemize}
-  \item \textbf{Series/Parallel via rotation:} Build series--oriented layers once, then rotate by $90^\circ$ to obtain parallel lanes with identical parameter semantics.
+  \item \textbf{Perpendicular/Parallel via rotation:} Build perpendicular--oriented layers once, then rotate by $90^\circ$ to obtain parallel lanes with identical parameter semantics.
   \item \textbf{Start/Exit policy:} For path models, use a \emph{uniform random start} on the left and a \emph{free exit} on the right to avoid center bias.
   \item \textbf{Edge--stable colorbar:} Create the colorbar axes once and update its mappable (prevents creeping axes during animation).
   \item \textbf{Animation points:} When drawing a moving marker with Matplotlib, pass 1--element sequences to \verb|set_data| (e.g., \verb|[x],[y]|).
@@ -208,8 +208,8 @@ Given component means/variances (often lognormal) and layer proportions:
 
 \section*{Takeaways for Students}
 \begin{enumerate}
-  \item \textbf{Geometry governs transport}: parallel (arithmetic) $<$ granular (geometric) $<$ series (harmonic).
-  \item \textbf{Interfaces matter}: sharp, continuous barriers drive harmonic limits; diffuse or leaky contacts weaken series behavior.
+  \item \textbf{Geometry governs transport}: parallel (arithmetic) $<$ granular (geometric) $<$ perpendicular (harmonic).
+  \item \textbf{Interfaces matter}: sharp, continuous barriers drive harmonic limits; diffuse or leaky contacts weaken perpendicular behavior.
   \item \textbf{Surrogates vs.\ physics}: Dijkstra highlights dominant corridors; directed random walks emulate diffusion with bias; PDE solutions yield the full field.
 \end{enumerate}
 
@@ -221,7 +221,7 @@ Given component means/variances (often lognormal) and layer proportions:
 We build a conductivity map $k(x,y)$ that looks and behaves like rock fabrics.
 
 \subsection*{Components and thickness}
-Choose two or three components (e.g., A = quartz--feldspar, B = mica-rich, C = mafic). Pick area fractions $f_A, f_B, f_C$ with $f_A+f_B(+f_C)=1$. For layers $\perp$ flow (series geometry), set minimum counts $N_A\!\ge\!1$, $N_B\!\ge\!2$ (and $N_C$ if C has its \emph{own} layers). More layers $\Rightarrow$ thinner beds.
+Choose two or three components (e.g., A = quartz--feldspar, B = mica-rich, C = mafic). Pick area fractions $f_A, f_B, f_C$ with $f_A+f_B(+f_C)=1$. For layers $\perp$ flow (perpendicular geometry), set minimum counts $N_A\!\ge\!1$, $N_B\!\ge\!2$ (and $N_C$ if C has its \emph{own} layers). More layers $\Rightarrow$ thinner beds.
 
 \subsection*{Sharp vs.\ diffuse contacts (error-function edge)}
 A \emph{sharp} contact is a clean boundary; a \emph{diffuse} contact is a transitional zone. We parameterize contact half-width $w_{\text{int}}$ (pixels). At each point we compute a soft weight
@@ -231,7 +231,7 @@ A \emph{sharp} contact is a clean boundary; a \emph{diffuse} contact is a transi
 where $d$ is signed distance to the nearest interface (positive on the A side). $w_{\text{int}}=0$ gives sharp contacts; larger $w_{\text{int}}$ smears the contact and moves behavior toward \emph{geometric} mixing locally.
 
 \subsection*{Continuity and leaks}
-We assign a \emph{continuity probability} $p_{\text{cont}}$. If a layer is \emph{non-continuous} ($1-p_{\text{cont}}$), we insert small gap segments with mean length $L_{\text{gap}}$. These \emph{leaks} let some flow slip around barriers, shifting \emph{series} behavior toward \emph{geometric}.
+We assign a \emph{continuity probability} $p_{\text{cont}}$. If a layer is \emph{non-continuous} ($1-p_{\text{cont}}$), we insert small gap segments with mean length $L_{\text{gap}}$. These \emph{leaks} let some flow slip around barriers, shifting \emph{perpendicular} behavior toward \emph{geometric}.
 
 \subsection*{Meander (undulating layers)}
 To look geological without breaking continuity, each interface centerline $y_i(x)$ can \emph{meander}:
@@ -259,7 +259,7 @@ Finally, we normalize $\overline{k}=1$ so different geometries compare fairly.
 \textbf{Anisotropy} = bulk properties depend on direction. In our context:
 \begin{itemize}[leftmargin=*]
 \item \emph{Parallel lanes} (e.g., permeable streaks along bedding): very easy flow along lanes, poor connectivity across $\Rightarrow$ \textbf{arithmetic} along the lanes.
-\item \emph{Series layers} (barriers perpendicular to flow): must cross low-$k$ layers in series $\Rightarrow$ \textbf{harmonic} across the stack.
+\item \emph{Perpendicular layers} (barriers perpendicular to flow): must cross low-$k$ layers in perpendicular $\Rightarrow$ \textbf{harmonic} across the stack.
 \item \emph{Granular / equant} fabrics (no strong orientation): effective at REV tends toward the \textbf{geometric} mean.
 \end{itemize}
 
@@ -267,7 +267,7 @@ Finally, we normalize $\overline{k}=1$ so different geometries compare fairly.
 \begin{itemize}[leftmargin=*]
 \item \textbf{Sharp \& continuous layers}: maximize anisotropy (strong harmonic across, strong arithmetic along).
 \item \textbf{Diffuse contacts ($w_{\text{int}}>0$)}: soften anisotropy because transitions act like local micro-mixes $\Rightarrow$ push toward geometric.
-\item \textbf{Leaky layers ($p_{\text{cont}}<1$)}: provide shortcuts around barriers $\Rightarrow$ again push series behavior toward geometric.
+\item \textbf{Leaky layers ($p_{\text{cont}}<1$)}: provide shortcuts around barriers $\Rightarrow$ again push harmonic behavior toward geometric.
 \end{itemize}
 
 \subsection*{Practical geological reads}
@@ -282,7 +282,7 @@ Finally, we normalize $\overline{k}=1$ so different geometries compare fairly.
 \subsection*{(1) Dijkstra: shortest--time path}
 We treat each cell's \emph{cost} as $1/k$ and find the \emph{minimum-sum} route left$\to$right on the 4-neighbor grid. It identifies the \textbf{best corridor}. This is not diffusion (it ignores parallel flow), but it cleanly demonstrates how geometry controls the dominant route:
 \[
-t_{\text{parallel}} < t_{\text{granular}} < t_{\text{series}}.
+t_{\text{parallel}} < t_{\text{granular}} < t_{\text{perpendicular}}.
 \]
 
 \subsection*{(2) Directed random walk: mid-fidelity diffusion}
@@ -293,7 +293,7 @@ Solve $\nabla\!\cdot(k\nabla T)=0$ with $T=T_L$ on the left and $T=T_R$ on the r
 
 \subsection*{How these relate to mixing laws}
 \begin{itemize}[leftmargin=*]
-\item \textbf{Series (layers $\perp$ flow)}: $k_{\text{eff}}^{-1} = \sum_i (t_i/H)\,k_i^{-1}$ (\emph{harmonic}). Diffuse/ leaky layers move toward \emph{geometric}.
+\item \textbf{Perpendicular (layers $\perp$ flow)}: $k_{\text{eff}}^{-1} = \sum_i (t_i/H)\,k_i^{-1}$ (\emph{harmonic}). Diffuse/ leaky layers move toward \emph{geometric}.
 \item \textbf{Parallel (lanes $\parallel$ flow)}: $k_{\text{eff}} = \sum_i (w_i/W)\,k_i$ (\emph{arithmetic}).
 \item \textbf{Granular}: effective $k$ at REV is near a \emph{geometric} mean for lognormal contrasts.
 \end{itemize}
@@ -302,8 +302,8 @@ Solve $\nabla\!\cdot(k\nabla T)=0$ with $T=T_L$ on the left and $T=T_R$ on the r
 \section{How to tune the model (step-by-step, geologist's checklist)}
 \subsection*{A. Start with the fabric you see}
 \begin{enumerate}[leftmargin=*]
-\item \textbf{Choose geometry:} Series (layers $\perp$ flow), Parallel (lanes $\parallel$ flow), or Random (granular).\\
-\emph{Sedimentary/foliated strata $\to$ Series; channelized/lineated fabrics $\to$ Parallel; massive equant $\to$ Random.}
+\item \textbf{Choose geometry:} Perpendicular to layer flow, Parallel to layer flow, or Random (granular).\\
+\emph{Sedimentary/foliated strata $\to$ Perpendicular; channelized/lineated fabrics $\to$ Parallel; massive equant $\to$ Random.}
 \item \textbf{Set component fractions} ($f_A,f_B(,f_C)$) from mapped proportions or modal estimates.
 \item \textbf{Pick layer counts:} $N_A\!\ge\!1$, $N_B\!\ge\!2$ (and $N_C$ if C has its own layers).\\
 \emph{More layers $\Rightarrow$ thinner beds; thick--thin experiments show the harmonic limit clearly.}
@@ -332,7 +332,7 @@ Solve $\nabla\!\cdot(k\nabla T)=0$ with $T=T_L$ on the left and $T=T_R$ on the r
 \begin{enumerate}[leftmargin=*]
 \item \textbf{Within-layer blend}: if C attaches to A or B, estimate an in-layer geometric blend
 $\ln \tilde{k}_A=(1-\theta_A)\ln k_A+\theta_A \ln k_C$ with $\theta_A\approx f_C^{A}/f_A$ (similar for B).
-\item \textbf{Across-layer mix}: use \emph{harmonic} for series or \emph{arithmetic} for parallel to estimate $k_{\text{eff}}$.
+\item \textbf{Across-layer mix}: use \emph{harmonic} for perpendicular or \emph{arithmetic} for parallel to estimate $k_{\text{eff}}$.
 \item \textbf{Traversal time proxy:} $t_{\text{pred}}\approx \tau\,W/k_{\text{eff}}$ where $\tau\!\ge\!1$ is a \emph{tortuosity} factor (accounts for small detours in the pixel grid).\\
 \emph{In clean layers, $\tau\!\approx\!1.0$--1.1; in meandering/leaky cases, $\tau\!\approx\!1.1$--1.3.}
 \end{enumerate}
@@ -366,7 +366,7 @@ Solve $\nabla\!\cdot(k\nabla T)=0$; get $T$ and $\bm q$ everywhere. &
 %=====================================================================
 \section*{Takeaways to emphasize in class}
 \begin{enumerate}[leftmargin=*]
-\item \textbf{Geometry governs}: Parallel $<$ Granular $<$ Series for traversal time.
+\item \textbf{Geometry governs}: Parallel $<$ Granular $<$ Perpendicular for traversal time.
 \item \textbf{Contacts \& leaks matter}: Sharp \& continuous layers force harmonic behavior; diffuse or leaky boundaries relax toward geometric.
 \item \textbf{Surrogate choice}: Dijkstra shows the corridor; random walks show distributed diffusion; PDE is the truth model.
 \end{enumerate}

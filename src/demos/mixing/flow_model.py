@@ -299,7 +299,7 @@ def predicted_keff(geom, fracs, mus, sigs):
     mean_lnk = mus
     if geom == 'parallel':
         keff = float(np.sum(fracs * means))
-    elif geom == 'series':
+    elif geom == 'perpendicular':
         keff = 1.0 / float(np.sum(fracs * inv_means))
     else:
         keff = float(np.exp(np.sum(fracs * mean_lnk)))

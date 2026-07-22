@@ -12,8 +12,8 @@ Solver modes (selectable at run time):
 
 Geometry modes:
   • Random granular  — spatially correlated lognormal k(x,y)
-  • Series           — layers ⟂ flow (built directly)
-  • Parallel         — lanes ∥ flow (series rotated 90°)
+  • Perpendicular    — layers ⟂ flow (built directly)
+  • Parallel         — lanes ∥ flow (perpendicular rotated 90°)
 
 Run:  python mixing_law_gui_qt_v4.py
 """
@@ -199,9 +199,9 @@ class MainWindow(QMainWindow):
 
         # ---- Page 1: Geometry ----
         p_geom = QWidget(); gv = QFormLayout(p_geom)
-        self.cb_geom = QComboBox(); self.cb_geom.addItems(['random','parallel','series'])
+        self.cb_geom = QComboBox(); self.cb_geom.addItems(['random','parallel','perpendicular'])
         self.cb_geom.currentTextChanged.connect(self._on_geom)
-        self.cb_geom.setToolTip("Choose overall fabric: Random (granular), Parallel (lanes ∥ flow), Series (layers ⟂ flow)")
+        self.cb_geom.setToolTip("Choose overall fabric: Random (granular), Parallel (lanes ∥ flow), Perpendicular (layers ⟂ flow)")
         gv.addRow("Geometry:", self.cb_geom)
 
         self.le_seed = QLineEdit(str(self.seed))
@@ -502,7 +502,7 @@ class MainWindow(QMainWindow):
             k_raw, comp_img = geometry.build_random_field(self.H, self.W, fr, mus, sigs, self.corr_len, self.sigma_ln_noise)
         else:
             if self.ncomp == 2:
-                k_series, comp_img = geometry.build_two_component_layers(
+                k_perp, comp_img = geometry.build_two_component_layers(
                     self.H, self.W,
                     f_A=self.f_A, N_A=self.N_A, N_B=self.N_A,
                     CV_thick=self.CV_thick, dist_thick=self.dist_thick,
@@ -513,7 +513,7 @@ class MainWindow(QMainWindow):
                 )
             else:
                 f_B = max(0.0, 1.0 - self.f_A - fr[2])
-                k_series, comp_img = geometry.build_layers_ABC_affinity(
+                k_perp, comp_img = geometry.build_layers_ABC_affinity(
                     self.H, self.W,
                     fA=self.f_A, fB=f_B, fC=fr[2], N_A=self.N_A, N_B=self.N_A,
                     CV_thick=self.CV_thick, dist_thick=self.dist_thick,
@@ -524,12 +524,12 @@ class MainWindow(QMainWindow):
                     sigma_ln_noise=self.sigma_ln_noise, rng=rng,
                 )
             if self.geom == 'parallel':
-                k_series = np.rot90(k_series)
+                k_perp = np.rot90(k_perp)
                 comp_img = np.rot90(comp_img)
-            k_raw = k_series
+            k_raw = k_perp
 
         k = k_raw
-        geom_pred = 'parallel' if self.geom=='parallel' else ('series' if self.geom=='series' else 'random')
+        geom_pred = 'parallel' if self.geom=='parallel' else ('perpendicular' if self.geom=='perpendicular' else 'random')
         keff = fm.predicted_keff(geom_pred, fr, mus, sigs)
         t_pred = self.W / max(1e-9, keff)
 

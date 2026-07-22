@@ -113,7 +113,8 @@
 }
 \newcommand{\ntextbox}[3]{\begin{ntextboxenv}{#1}{#3}#2\end{ntextboxenv}}
 
-% produce a answer box with white background and black frame
+% Produce a answer box with white background and black frame.
+% First (optional) argument is the height of the box.
 \newcommand{\answerbox}[1][4cm]{
 \begin{tcolorbox}[
     width=\linewidth,
@@ -124,6 +125,18 @@
 ]
 \vspace*{\fill}
 \end{tcolorbox}
+}
+
+% produce an answerbox inline for a small field.  First (optional) argument is the width of the box.
+\newcommand{\numberbox}[1][2cm]{%
+  \tcbox[
+    on line,
+    nobeforeafter,
+    colback=white,
+    colframe=black,
+    boxrule=0.5pt,
+    boxsep=0pt
+  ]{\makebox[#1]{\rule{0pt}{2.5ex}}}%
 }
 
 % ---------- Colors / Hyperlinks ----------

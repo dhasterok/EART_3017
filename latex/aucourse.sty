@@ -55,6 +55,8 @@
   \setlength{\droptitle}{-3em}
 \fi
 
+\RequirePackage{tabularray}
+
 % ---- Metadata defaults -----------------------------------------------------
 \def\@coursetitle@long{Geophysics 3A: Potential Fields \& Geothermics}
 \def\@coursetitle@short{Geophysics 3A}
@@ -256,9 +258,10 @@
 % ---- Workshop timeline and activity environments ----------------------------
 %
 % Timeline (in the main overview section):
-%   \timeslot{title}{minutes}      — unlabelled item (warm-up, break, wrap-up)
-%   \timelineitem{title}{minutes}  — lettered item (A, B, C, ...)
-%   \setstarttime{N}               — manually advance the clock to N minutes
+%   \timeline[slot]{title}{minutes}  — unlabelled entry (warm-up, break, wrap-up)
+%   \timeline[item]{title}{minutes}  — lettered activity entry (A, B, C, ...)
+%   \timeline[demo]{title}{minutes}  — shared lettered with activity entry (A, B, C, ...)
+%   \setstarttime{N}                 — manually advance the clock to N minutes
 %
 % Activity sheets (each starts on a new page, numbered 1, 2, 3, ...):
 %   \begin{activity}{Title} ... \end{activity}
@@ -298,42 +301,57 @@
   % Manually set the running clock (e.g. after a break not in the timeline).
   \newcommand{\setstarttime}[1]{\setcounter{wshoptime}{#1}}
 
-  % \timeslot{title}{minutes} — unlabelled entry (warm-up, wrap-up, break)
-  \newcommand{\timeslot}[2]{%
-    \edef\@wshop@start{\arabic{wshoptime}}%
-    \addtocounter{wshoptime}{#2}%
-    \subsection*{\@wshop@start--\arabic{wshoptime}\,min:\enspace #1}%
+  % \timelinelength — total session minutes, resolved on the second LaTeX pass.
+  % Reads the value written to the .aux file by \workshopend.
+  % Shows ?? on the first pass (before the .aux entry exists).
+  \newcommand{\timelinelength}{%
+    \@ifundefined{r@wshoplen@\@weeknum}{??}{\ref{wshoplen@\@weeknum}}%
   }
 
-  % \timelineitem{title}{minutes} — lettered entry (A, B, C, ...)
-  \newcommand{\timelineitem}[2]{%
-    \stepcounter{wshopitem}%
+  % \workshopend — call after the last \timeslot / \timelineitem in the session.
+  % Writes the accumulated wshoptime counter to the .aux file so that
+  % \timelinelength can read it back on the next pass.
+  \newcommand{\workshopend}{%
+    \protected@write\@auxout{}{%
+      \string\newlabel{wshoplen@\@weeknum}{{\arabic{wshoptime}}{\thepage}}%
+    }%
+  }
+
+  % \timeline[type]{title}{minutes}
+  %   type = 'slot' (default) — unlabelled entry (warm-up, break, wrap-up)
+  %   type = 'item'           — lettered activity entry (A, B, C, ...)
+  \newcommand{\timeline}[3][slot]{%
+    \def\@tl@slot{slot}\def\@tl@demo{demo}\def\@tl@type{#1}%
+    \ifx\@tl@type\@tl@slot\else\stepcounter{wshopitem}\fi
     \edef\@wshop@start{\arabic{wshoptime}}%
-    \addtocounter{wshoptime}{#2}%
+    \addtocounter{wshoptime}{#3}%
     \subsection*{%
       \@wshop@start--\arabic{wshoptime}\,min:\enspace
-      Activity~\@weeknum.\Alph{wshopitem}:~#1%
+      \ifx\@tl@type\@tl@slot\else
+        \ifx\@tl@type\@tl@demo Demo~\@weeknum.\Alph{wshopitem}:~\else Activity~\@weeknum.\Alph{wshopitem}:~\fi
+      \fi
+      #2%
     }%
   }
 
   
   % \notepage - blank page for workshop notes
-  \newcommand{\notepage}{
+  \newcommand{\notepage}[1][Workshop Notes]{
     \clearpage
-    \section*{Workshop Notes}
-    \vfill
+    \section*{#1}
+    \vspace*{\fill}
+    \clearpage
   }
 
   % activity environment — alphabetically labelled activity sheet on a fresh page.
   % The right header is updated to show the activity name for all pages
   % within the environment, then restored to the standard workshop header.
-  \newenvironment{activity}[1]{%
+  \newenvironment{activity}[2][Activity]{%
     \clearpage
     \stepcounter{wshopact}%
-    %\rhead{Activity~\@weeknum.\Alph{wshopact}:~#1}% %replaced by line below
-    \rhead{Activity~\@weeknum.\Alph{wshopact}}%
+    \rhead{#1~\@weeknum.\Alph{wshopact}}%
     \begin{center}
-      {\LARGE\bfseries Activity~\@weeknum.\Alph{wshopact}\\[0.4em]#1}%
+      {\LARGE\bfseries #1~\@weeknum.\Alph{wshopact}\\[0.4em]#2}%
     \end{center}%
     \vspace{1.5em}\noindent
   }{%

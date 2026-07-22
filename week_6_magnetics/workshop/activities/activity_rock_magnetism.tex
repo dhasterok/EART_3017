@@ -38,21 +38,21 @@ Because susceptibility is set by a trace phase, it is sensitive to exactly which
 
 \begin{table}[h]
     \centering
-    \begin{tabularx}{\textwidth}{@{}|c|X|X|c|X|@{}}
-        \toprule
+    \begin{tblr}{
+      colspec = {ccX[c]cX[c]},
+      row{2-6} = {ht=2.5em},
+      hline{1,2,7} = {solid},
+      hline{3-6} = {dashed},
+      vline{1,2,6} = {solid},
+      vline{3-5} = {dashed}
+    }
         \textbf{Sample} & \textbf{Rock type} & \textbf{Geological context} & \textbf{Susceptibility (SI)} & \textbf{Notes} \\
-        \midrule
-        1\rule{0pt}{2em} & peridotite & & & \\
-        \midrule
-        2\rule{0pt}{2em} & serpentinite & & & \\
-        \midrule
-        3\rule{0pt}{2em} & basalt (fresh) & & & \\
-        \midrule
-        4\rule{0pt}{2em} & basalt (altered) & & & \\
-        \midrule
-        5\rule{0pt}{2em} & eclogite & & & \\
-        \bottomrule
-    \end{tabularx}
+        1 & peridotite & & & \\
+        2 & serpentinite & & & \\
+        3 & basalt (fresh) & & & \\
+        4 & basalt (altered) & & & \\
+        5 & eclogite & & & \\
+    \end{tblr}
         %6 & (granite/sedimentary protolith) & & \\
         %7 & (metamorphosed equivalent) & & \\
 \end{table}
@@ -83,21 +83,21 @@ Because susceptibility is set by a trace phase, it is sensitive to exactly which
 
 \begin{table}[h]
     \centering
-    \begin{tabularx}{\textwidth}{@{}|c|X|X|c|X|@{}}
-        \toprule
+    \begin{tblr}{
+      colspec = {ccX[c]cX[c]},
+      row{2-6} = {ht=2.5em},
+      hline{1,2,7} = {solid},
+      hline{3-6} = {dashed},
+      vline{1,2,6} = {solid},
+      vline{3-5} = {dashed}
+    }
         \textbf{Sample} & \textbf{Rock type} & \textbf{Predicted rank} & \textbf{Susceptibility (SI)} & \textbf{Notes} \\
-        \midrule
-        6\rule{0pt}{2em} & gabbro & & & \\
-        \midrule
-        7\rule{0pt}{2em} & diorite & & & \\
-        \midrule
-        8\rule{0pt}{2em} & granodiorite & & & \\
-        \midrule
-        9\rule{0pt}{2em} & granite 1 & & & \\
-        \midrule
-        10\rule{0pt}{2em} & granite 2 & & & \\
-        \bottomrule
-    \end{tabularx}
+        6 & gabbro & & & \\
+        7 & diorite & & & \\
+        8 & granodiorite & & & \\
+        9 & granite 1 & & & \\
+        10 & granite 2 & & & \\
+    \end{tblr}
 \end{table}
 
 \begin{questions}[resume]
@@ -115,17 +115,19 @@ Because susceptibility is set by a trace phase, it is sensitive to exactly which
 
 \begin{table}[h]
     \centering
-    \begin{tabularx}{\textwidth}{@{}|c|X|X|c|X|@{}}
-        \toprule
+    \begin{tblr}{
+      colspec = {ccX[c]cX[c]},
+      row{2-4} = {ht=2.5em},
+      hline{1,2,5} = {solid},
+      hline{3-4} = {dashed},
+      vline{1,2,6} = {solid},
+      vline{3-5} = {dashed}
+    }
         \textbf{Sample} & \textbf{Mineral} & \textbf{Predicted rank} & \textbf{Susceptibility (SI)} & \textbf{Notes} \\
-        \midrule
-        11\rule{0pt}{2em} & magnetite & & & \\
-        \midrule
-        12\rule{0pt}{2em} & galena & & & \\
-        \midrule
-        13\rule{0pt}{2em} & tin ore & & & \\
-        \bottomrule
-    \end{tabularx}
+        11 & magnetite & & & \\
+        12 & galena & & & \\
+        13 & tin ore & & & \\
+    \end{tblr}
 \end{table}
 
 \begin{questions}[resume]

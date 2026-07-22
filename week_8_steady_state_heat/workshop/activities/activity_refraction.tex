@@ -1,132 +1,136 @@
-\begin{activity}{Thermal Refraction by Insulating Sediments}
+\begin{activity}{Thermal Refraction}
 
 \section*{Purpose}
-To build intuition for how low-conductivity surface layers redistribute
-temperature gradients without changing the total heat flow.
+To build intuition for how low-conductivity surface layers redistribute temperature gradients without changing the total heat flow.
 
-{\color{red}
 \section*{Learning Outcomes}
 
 By the end of this activity, you should be able to:
 \begin{itemize}
-  \item Apply Fourier's law to explain why the temperature gradient is steeper in low-conductivity material at constant heat flow.
+  \item Apply Fourier's law to explain why the temperature gradient differs between regions with constant heat flow.
   \item Sketch temperature--depth profiles for a layered crust and identify where isotherms are compressed or stretched.
   \item Predict which crustal section reaches higher interface temperatures and explain why.
-  \item Discuss the implications of sedimentary basins for geothermal gradient measurements and geothermal energy potential.
+  \item Discuss how varying conductivity affects geothermal energy potential.
 \end{itemize}
-}
 
 \section*{Geological Context}
-Consider two continental regions with identical basal heat flow from the mantle:
-\begin{itemize}
+Consider two continental regions with identical basal heat flow (Figure~\ref{fig:ivs}):
+\begin{description}
   \item Region A: crystalline crust exposed at the surface.
   \item Region B: crystalline crust overlain by a thick sedimentary basin.
-\end{itemize}
-\begin{figure}
+\end{description}
+\begin{figure}[h]
   \centering
   \includegraphics[]{figures/ig_vs_sed.pdf}
-  \caption{Two continental terranes: (a) igneous crust, (b) sedimentary basin over igneous crust.}
+  \caption{Two continental regions: (a) igneous crust, (b) sedimentary basin over igneous crust. Both regions have the same basal heat flow.}
   \label{fig:ivs}
 \end{figure}
 
-The sediments are dominated by shales and porous clastic rocks with lower
-thermal conductivity than basement rock.
-
-\section*{Assumptions}
+The sediments are dominated by shales and porous clastic rocks with lower thermal conductivity than basement rock.  We will make the following assumptions:
 \begin{itemize}
-  \item Steady-state heat flow.
-  \item No internal heat production in sediments.
-  \item Heat flow is vertical and laterally uniform.
+  \item no internal heat production,
+  \item steady-state heat flow, and
+  \item heat flow is vertical and laterally uniform.
 \end{itemize}
 
 \section*{Tasks}
-\begin{enumerate}
-  \item Using Fourier's law,
+\begin{questions}
+  \question{Reasoning}
+  What is the relationship between the surface heat flow of regions A and B?  What principle did you use to make this determination?
+  \answerbox[2cm]
+
+  Using Fourier's law,
   \[
     q = -k \frac{dT}{dz},
   \]
-  explain qualitatively how the temperature gradient differs between
-  sediments and basement.
+  explain qualitatively how the temperature gradient differs between the sedimentary basin and the igneous basement?
   \answerbox[3cm]
 
-  \item Sketch temperature versus depth for both regions on the same axes.
-  Clearly label:
+  \question{Sketch}
+  Sketch temperature versus depth for both regions on the same axes.  Clearly label:
   \begin{itemize}
     \item sediment thickness,
     \item basement,
     \item relative steepness of gradients.
   \end{itemize}
-  \answerbox[6cm]
 
-  \item Indicate where isotherms are compressed and where they are stretched.
-  \answerbox[3cm]
+  \begin{center}
+  \begin{tikzpicture}
+    % Dimensions (3:5 aspect ratio)
+    \def\W{5}
+    \def\H{7}
 
-  \item Which region would exhibit a higher temperature at the sediment--basement
-  interface? Explain why.
-  \answerbox[3cm]
-\end{enumerate}
+    % Axes
+    \draw[->, thick] (0,0) -- (\W,0) node[right] {$T$};
+    \draw[->, thick] (0,0) -- (0,-\H) node[below] {$z$};
+  \end{tikzpicture}
+  \end{center}
 
-\section*{Discussion}
-\begin{itemize}
-  \item How does the presence of sediments affect measured geothermal gradients?
-  \answerbox[2cm]
-  \item Which region would you expect to have higher geothermal potential?
-  \answerbox[2cm]
-  \item Why might sedimentary basins be favorable geothermal targets?
-  \answerbox[2cm]
-\end{itemize}
+  \question{Explanation \& Discussion}
 
-{\color{red}
+  \begin{enumerate}[label=\roman*]
+    \item Which region would exhibit a higher temperature at the sediment--basement interface? Explain why.
+    \answerbox[3cm]
+
+    \item How does the presence of sediments affect measured geothermal gradients?
+    \answerbox[2cm]
+
+    \item Which region would you expect to have higher geothermal potential? Why?
+    \answerbox[2cm]
+  \end{enumerate}
+
+  \question{Extension}
+  If these two regions were adjacent to each other, how would heat flow and temperature vary in 2D?
+
+  Start by drawing the heat flow lines, then the isotherms and finally the variation in surface heat flow on the axes provided.
+
+  \medskip
+
+  \begin{center}
+  \begin{tikzpicture}[scale=0.85]
+
+    \def\zb{-2}; % bottom of layer
+    \def\base{-5} % base of model
+    \def\w{6} % width
+    \def\alen{0.5} % arrow length
+
+    \pgfmathsetmacro{\z}{\base - \alen};
+
+    % axes
+    \draw[thin,->] (-\w,1) -- (-\w,5) node[above] {$q(x)$};
+    \node[left] at (-\w,3) {$q_b$};
+    \draw[thin,->] (-\w,3) -- (\w,3) node[left] {$x$};
+    \draw[dashed,thin,gray!50] (0,1) -- (0,5);
+
+
+    % Basin
+    \path[fill=gray!30,draw=none]
+        (0,0) -- (\w,0) -- (\w,\zb) -- (1,\zb) -- cycle;
+
+    \draw[thin] (0,0) -- (1,\zb) -- (\w,\zb);
+
+    % Surface
+    \draw[thick] (-\w,0) -- (\w,0);
+
+    % Base
+    \draw[thick] (-\w,\base) -- (\w,\base);
+    \foreach \x in {-5,-3,-1,1,3,5}
+      \draw[->] (\x,\z) -- (\x,\base);
+
+    % Label
+    \node[below] at (-3,\z) {$q_b$};
+    \node[below] at (3,\z) {$q_b$};
+  \end{tikzpicture}
+  \end{center}
+
+\end{questions}
+
 \section*{Key Ideas}
 
-{\color{blue}
-\textbf{Heat flow is conserved; temperature gradient is not.} At steady state in a laterally uniform column without heat production, the heat flow $q$ is constant with depth. Because $q = -k\,dT/dz$, a low-conductivity layer must have a steeper gradient to carry the same heat flux. This is thermal refraction.
+\textbf{A conductivity contrast redistributes the gradient, not the flux.} Whenever $q$ must stay constant across a boundary but $k$ changes, $dT/dz=-q/k$ forces the gradient to change instead. This effect is thermal refraction, and it applies at any conductivity contrast, not only a sediment-over-basement boundary -- the same reasoning will reappear for layered media, tilted strata, and mixed lithologies.
 
-\begin{figure}[h]
-\centering
-\begin{tikzpicture}[scale=1.0]
-  % Axes
-  \draw[->] (0, 0) -- (6.5, 0) node[right] {$T$};
-  \draw[->] (0, 0) -- (0,-5.5) node[below] {depth $z$};
+\textbf{A conductivity contrast redistributes the gradient, not the flux.} Whenever $q$ must stay constant across a boundary but $k$ changes, $dT/dz=-q/k$ forces the gradient to change instead. This is thermal refraction, and it applies at any conductivity contrast, not only a sediment-over-basement boundary -- the same reasoning will reappear for layered media, tilted strata, and mixed lithologies.
 
-  % Layer boundary
-  \draw[dashed, gray, thick] (0,-2.2) -- (6.5,-2.2);
-  \node[right, font=\small, gray] at (6.5,-2.2) {sediment base};
-
-  % Region A (no sediment): single gradient through basement
-  \draw[thick, blue] (0.3, 0) -- (3.2,-5.0);
-  \node[blue, font=\small] at (1.8, -5.3) {A: no sediment};
-
-  % Region B (with sediment): steep in sediment, gentle in basement
-  \draw[thick, red] (0.3, 0) -- (2.3,-2.2);   % steep in sediment
-  \draw[thick, red] (2.3,-2.2) -- (3.5,-5.0); % gentle in basement
-  \node[red, font=\small] at (3.5, -5.3) {B: with sediment};
-
-  % Slope annotations
-  \draw[<->, red, dashed] (0.8, -0.5) -- (2.0,-2.0);
-  \node[red, font=\scriptsize, right] at (1.5,-1.0) {steep: low $k_\text{sed}$};
-  \draw[<->, red, dashed] (2.5,-2.5) -- (3.2,-4.5);
-  \node[red, font=\scriptsize, right] at (3.0,-3.5) {gentle: high $k_\text{bsmt}$};
-
-  % Heat flow arrows (constant q)
-  \foreach \y in {-0.5,-1.2,-1.9,-2.9,-3.9,-4.7} {
-    \draw[->, orange, thick] (-0.6,\y) -- (-0.6,\y-0.5);
-  }
-  \node[orange, font=\scriptsize, left] at (-0.6,-2.5) {$q$ const.};
-
-  % Interface temperature labels
-  \fill[blue]  (3.2,-2.2) circle (2pt);
-  \fill[red]   (2.3,-2.2) circle (2pt);
-  \draw[<->] (3.25,-2.0) -- (2.35,-2.0);
-  \node[font=\scriptsize, above] at (2.8,-1.9) {$\Delta T_\text{interface}$};
-\end{tikzpicture}
-\caption{Thermal refraction: constant heat flow (orange arrows) produces a steeper gradient in low-conductivity sediments (red, Region B) than in basement (blue, Region A). The sediment--basement interface in Region B is hotter than the equivalent depth in Region A.}
-\end{figure}
-}
-
-\textbf{Low-conductivity sediments act as thermal insulators.} Isotherms are compressed (elevated) within and beneath low-conductivity sediments. The same basal heat flow produces higher temperatures at the sediment--basement interface when a sedimentary layer is present.
-
-\textbf{Geothermal gradients measured in sedimentary basins need correction.} A borehole geothermal gradient measured in shale does not represent the gradient in the underlying crystalline basement. Applying Fourier's law to correct for conductivity contrasts is essential before comparing heat flow across different lithological settings.
-}
+\textbf{A measured gradient reflects local conductivity, not the deeper structure.} The same heat flow can correspond to very different gradients depending on what you're measuring through, so gradients from different settings are not directly comparable without calculation of heat flow.  A gradient measured near the surface is only converted to a true heat flow once you know the conductivity at the depth it was measured. 
 
 \end{activity}

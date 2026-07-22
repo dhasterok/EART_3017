@@ -82,7 +82,7 @@ def build_two_component_layers(
     sigma_ln_noise=0.0,
     rng=None
 ):
-    """Series-oriented layering (layers ⟂ flow). Parallel achieved by rotation."""
+    """Perpendicular-oriented layering (layers ⟂ flow). Parallel achieved by rotation."""
     if rng is None:
         rng = np.random.default_rng()
     f_B = 1.0 - f_A

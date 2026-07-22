@@ -8,7 +8,7 @@ This activity develops visual intuition for how rock texture and fabric determin
 
 By the end of this activity, you should be able to:
 \begin{itemize}
-  \item Identify the fabric or geometry of a rock from a photograph and classify it as random granular, layered parallel, or layered in series.
+  \item Identify the fabric or geometry of a rock from a photograph and classify it as random granular or layered. 
   \item Select the appropriate mixing law (arithmetic, geometric, or harmonic) for density and thermal conductivity given a rock's geometry.
   \item Determine whether a material is isotropic or anisotropic at a given scale of observation.
 \end{itemize}
@@ -86,50 +86,39 @@ For each photo fill in your responses that:
 % RESPONSE GRID
 % ---------------------------------------------------------------
 {\small
-\begin{tabularx}{\textwidth}{@{}|c|Y|Y|Y|Y|Y|@{}}
-  \toprule
-  & & \textbf{Scale} & \multicolumn{2}{c|}{\textbf{Mixing Law}} & \\
-  & & & \multicolumn{2}{c|}{(\textbf{A})rithmetic, (\textbf{G})eometric, (\textbf{H})armonic} & \\
+\begin{tblr}{
+  colspec = {@{}cX[c]X[c]X[c]X[c]X[c]@{}},
+  row{5-19} = {ht=2.5em},
+  hline{1,4,20} = {solid},
+  hline{5-19} = {dashed},
+  vline{1,7} = {solid},
+  vline{2-6} = {dashed}
+}
+  & & \textbf{Scale} & \SetCell[c=2]{c}{\textbf{Mixing Law}} & \\
+  & & & \SetCell[c=2]{c}{(\textbf{A})rithmetic, (\textbf{G})eometric, (\textbf{H})armonic} & \\
   \textbf{Photo} &
   \textbf{Description} &
   \textbf{Micro / Macro / Meso} &
   \textbf{Density} &
   \textbf{Thermal Conductivity} &
   \textbf{(I)sotropic / (A)nisotropic} \\
-  \midrule
-  \textbf{Example} & uniform porous sandstone & Meso & A & G & I \\
-  \midrule
-  \textbf{\#1}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#2}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#3}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#4}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#5}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#6}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#7}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#8}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#9}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#10}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#11}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#12}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#13}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#14}\rule{0pt}{2em} & & & & & \\
-  \midrule
-  \textbf{\#15}\rule{0pt}{2em} & & & & & \\
-  \bottomrule
-\end{tabularx}
+  \textbf{Ex.} & uniform porous sandstone & Meso & A & G & I \\
+  1. & & & & & \\
+  2. & & & & & \\
+  3. & & & & & \\
+  4. & & & & & \\
+  5. & & & & & \\
+  6. & & & & & \\
+  7. & & & & & \\
+  8. & & & & & \\
+  9. & & & & & \\
+  10. & & & & & \\
+  11. & & & & & \\
+  12. & & & & & \\
+  13. & & & & & \\
+  14. & & & & & \\
+  15. & & & & & \\
+\end{tblr}
 }
 
 \bigskip
@@ -174,7 +163,7 @@ For pathway sensitive properties,
   \begin{tikzpicture}
     \path[use as bounding box] (-1,-2) rectangle (4,5);
     % Title
-    \node[font=\bfseries] at (1.5,4.5) {Layered Parallel};
+    \node[font=\bfseries] at (1.5,4.5) {Parallel Flow};
 
     % Figure
     \fill[gray!60] (0,1.2) rectangle (3,1.6);
@@ -201,7 +190,7 @@ For pathway sensitive properties,
   \begin{tikzpicture}
     \path[use as bounding box] (-1,-2) rectangle (4,5);
     % Title
-    \node[font=\bfseries] at (1.5,4.5) {Layered Series};
+    \node[font=\bfseries] at (1.5,4.5) {Perpendicular Flow};
 
     % Figure
     \fill[gray!60] (0,1.2) rectangle (3,1.7);
@@ -215,7 +204,7 @@ For pathway sensitive properties,
 
     % Description
     \node[align=center] at (1.5,-0.2)
-        {Bottlenecks\\in series};
+        {Bottlenecks\\when perpendicular};
 
     % Mean
     \node[font=\bfseries] at (1.5,-1.2)

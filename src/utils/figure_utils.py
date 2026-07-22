@@ -4,7 +4,7 @@ class figutils:
     """Utility functions for figures."""
 
     def __init__(self, figdir: Path = Path("tmp")):
-        self._FIGDIR = figdir
+        self.FIGDIR = figdir
 
     def savefig(self, fig, name):
         """Save a figure into FIGDIR as both PDF (for LaTeX) and PNG (for quick

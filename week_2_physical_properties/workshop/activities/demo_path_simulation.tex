@@ -7,7 +7,7 @@ To build intuition for how the geometric arrangement of rock components --- not 
 
 By the end of this activity, you should be able to:
 \begin{itemize}
-  \item Predict which geometry (random, series, parallel) will produce the fastest or slowest transit, and connect this to the arithmetic, geometric, and harmonic mixing laws.
+  \item Predict which geometry (random, perpendicular, parallel) will produce the fastest or slowest transit, and connect this to the arithmetic, geometric, and harmonic mixing laws.
   \item Explain why the same two minerals can yield very different effective conductivities depending on their spatial arrangement.
   \item Read a travel-time or $k_\text{eff}$ histogram and locate the harmonic, geometric, and arithmetic mixing-law predictions relative to the simulation results.
   \item Identify at least two ways a computer path simulator simplifies the real Earth, and assess whether those simplifications are likely to matter for a given geophysical application.
@@ -27,7 +27,7 @@ When heat (or current, or fluid) moves through a mixture of two rock types A and
         \textbf{Arrangement} & \textbf{Geometry} & \textbf{Mixing law} & \textbf{$k_\text{eff}$} \\
         \midrule
         Layers $\parallel$ flow  & parallel & Arithmetic (Voigt) & $f_A k_A + f_B k_B$ \\
-        Layers $\perp$ flow      & series   & Harmonic (Reuss)   & $\bigl(f_A/k_A + f_B/k_B\bigr)^{-1}$ \\
+        Layers $\perp$ flow      & perpendicular   & Harmonic (Reuss)   & $\bigl(f_A/k_A + f_B/k_B\bigr)^{-1}$ \\
         Random granular          & random   & Geometric          & $k_A^{f_A}\, k_B^{f_B}$ \\
         \bottomrule
     \end{tabular}
@@ -49,15 +49,15 @@ Your instructor will run the mixing-law path simulator on the projected screen. 
     \midrule
     Random granular   & & & \\
     \midrule
-    Layered $\perp$ flow (series)   & & & \\
+    Layered $\perp$ flow   & & & \\
     \midrule
-    Layered $\parallel$ flow (parallel)  & & & \\
+    Layered $\parallel$ flow  & & & \\
     \midrule
     Random granular   & & & \\
     \midrule
-    Layered $\perp$ flow (series)   & & & \\
+    Layered $\perp$ flow   & & & \\
     \midrule
-    Layered $\parallel$ flow (parallel)  & & & \\
+    Layered $\parallel$ flow  & & & \\
     \bottomrule
 \end{tabularx}
 
@@ -90,7 +90,7 @@ Your instructor will run the mixing-law path simulator on the projected screen. 
 
 \textbf{Geometry sets the mixing-law bound.}  The same two minerals can give $k_\text{eff}$ values that span the full range from the harmonic to the arithmetic mean, depending solely on how they are arranged.  This is the single most important idea in mixing-law theory: composition is necessary but not sufficient to predict a bulk property.
 
-\textbf{Travel time and effective conductivity are reciprocal.} Because $t = W/k_\text{eff}$, the geometry that gives the highest $k_\text{eff}$ (parallel) also gives the shortest travel time, and the geometry that gives the lowest $k_\text{eff}$ (series) gives the longest.  The same logic applies to electrical resistivity surveys, fluid flow in porous media, and seismic wavespeed in layered crust.
+\textbf{Travel time and effective conductivity are reciprocal.} Because $t = W/k_\text{eff}$, the geometry that gives the highest $k_\text{eff}$ (parallel) also gives the shortest travel time, and the geometry that gives the lowest $k_\text{eff}$ (perpendicular) gives the longest.  The same logic applies to electrical resistivity surveys, fluid flow in porous media, and seismic wavespeed in layered crust.
 
 \textbf{Simulation results scatter around analytic predictions.} Each realization of a random field is slightly different, so individual trial times vary.  The analytic mixing laws predict the \emph{expected} value of $k_\text{eff}$ over many realizations; the histogram width reflects natural variability due to the finite, random arrangement of grains or layers.
 
