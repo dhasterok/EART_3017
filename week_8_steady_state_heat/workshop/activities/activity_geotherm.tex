@@ -13,239 +13,261 @@ By the end of this activity, you should be able to:
 \end{itemize}
 
 \section*{Geological Context}
-Two equations govern a 1-D steady-state geotherm. Conservation of energy, with no lateral heat flow and no time-dependence:
+\begin{figure}[h]
+  \centering
+  \includegraphics[]{figures/thermal_layers}
+  \caption{Layered Earth model for 1-D geotherms assuming constant physical property layers (or sublayers).}
+  \label{fig:layers}
+\end{figure}
+Assuming a layered Earth within which the properties thermal conductivity and heat production are constant (Figure~\ref{fig:layres}), we can write the above expressions as
 \[
-  \frac{dq}{dz} = -A(z) \qquad\Longrightarrow\qquad q(z) = q_0 - \int_0^z A(z')\,dz'.
-\]
-Fourier's law, relating the local gradient to the local heat flow and conductivity:
-\[
-  \frac{dT}{dz} = \frac{q(z)}{k(z)} \qquad\Longrightarrow\qquad T(z) = T_0 + \int_0^z \frac{q(z')}{k(z')}\,dz'.
-\]
-Notice that the first equation involves only $A(z)$ and $q_0$ -- not $k$ or $T$. The second equation needs $q(z)$, which means it cannot be started until the first is finished. That ordering is not a computational convenience; it is a real physical fact about which quantities depend on which.
-
-Assuming a layered Earth within which the properties thermal conductivity and heat production are constant, we can write these as
-\[
-  q_{i+1} = q_i - A_{i+1} (z_{i+1} - z_i)\, ,
+  q_{i} = q_i-1 - A_{i} (z_{i} - z_{i-1}) \quad \text{where $x \in [1\ldots N]$} ,
+  \label{eq:heat_flow}
 \]
 and
 \[
-  T_{i+1} = T_i 
-  + \frac{q_i}{k_i+1} (z_{i+1} - z_i) 
-  - \frac{A_i+1}{2 k_i+1} (z_{i+1} - z_i)^2 \, ,
+  T_{i} = T_{i-1} 
+  + \frac{q_{i-1}}{k_i} (z_i - z_{i-1}) 
+  - \frac{A_i}{2 k_i} (z_i - z_{i-1})^2 \, ,
+  \label{eq:temperature}
 \]
-where $i$ denotes the layer.  Note that temperature and heat flow are determined at the top and bottom of and the physical properties are defined within each layer.
+where $i$ denotes the layer and $N$ the total number of layers.  We can further simplify the calculations by defining $\Delta z_i = z_i - z_{i-1}$.  Note that temperature and heat flow are determined at the top and bottom of and the physical properties are defined within each layer.
 
-Deep enough, a conductive geotherm will meet the \textbf{mantle adiabat}, which can be approximated as $T = 1300 + 0.3 z$ ($z$ in km, $T$ in $^\circ$C). The temperature profile mantle material follows once convection, not conduction, controls how heat moves. The depth of that crossing marks the base of the thermal lithosphere.
+Notice that the first equation involves only $A(z)$ and $q_0$ -- not $k$ or $T$. The second equation needs $q(z)$, which means it cannot be started until the first is finished. That ordering is not a computational convenience; it is a real physical fact about which quantities depend on which.
+
+Eventually, a conductive geotherm should meet the \textbf{mantle adiabat}, which can be approximated as $T = 1300 + 0.3 z$ ($z$ in km, $T$ in $^\circ$C). The adiabatic temperature profile is the temperature path mantle material follows during convection, which controls how heat moves. The depth these two temperature paths cross marks the base of the thermal lithosphere.
 
 \section*{Tasks}
 \begin{questions}
 
-\question{The Recipe}
+  \question{The Recipe}
 
-\begin{enumerate}[label=(\alph*)]
-  \item From the two equations above, list everything you need to know before you can compute a geotherm.
-  \answerbox[2cm]
+  \begin{enumerate}[label=(\alph*)]
+    \item From the two equations above, list everything you need to know before you can compute a geotherm.
+    \answerbox[2cm]
 
-  \item Which of those quantities does $q(z)$ actually depend on? Which does $T(z)$ depend on that $q(z)$ does not?
-  \answerbox[2cm]
-\end{enumerate}
+    \item Which of those quantities does $q(z)$ actually depend on? Which does $T(z)$ depend on that $q(z)$ does not?
+    \answerbox[2cm]
+  \end{enumerate}
 
-\question{Stage 1: Building $q(z)$}
+  \question{Stage 1: Building $q(z)$}
+  Our crustal column has the layers below, with surface boundary conditions: $q_0 = \SI{60}{mW.m^{-2}}$ and $T_0 = \SI{15}{\circ C}$. 
 
-A crustal column has the layers below. Take $q_0=60$~mW/m$^2$ and $T_0=0^\circ$C.
-
-\begin{center}
-  \begin{tabular}{lccc}
-    \toprule
-    Layer & Depth range (km) & $k$ (W\,m$^{-1}$K$^{-1}$) & $A$ ($\mu$W\,m$^{-3}$) \\
-    \midrule
-    upper crust        & 0--15  & 3.0 & 1.5 \\
-    lower crust         & 15--40 & 2.1 & 0.2 \\
-    mantle lithosphere  & 40+    & 3.5 & 0.02 \\
-    \bottomrule
-  \end{tabular}
-\end{center}
-
-Complete the table below. At each step, $q(z) = q(z_\text{prev}) - A\cdot\Delta z$, using the $A$ of whichever layer that step falls in. The first step is worked for you.
-
-\begin{center}
-  \begin{tblr}{
-    colspec = {clcX[c]X[c]},
-    row{5-9} = {ht=2.5em},
-    hline{1,3,10} = {solid},
-    hline{4-9} = {dashed},
-    vline{1,4,6} = {solid},
-    vline{5} = {dashed}
-  }
-    $z$ & Layer & $\Delta z$ & $A\cdot\Delta z$ & $q(z)$ \\
-    \si{km} & & \si{km} & \si{mW.m^{-2}} & \si{mW.m^{-2}} \\
-    0   & --           & --  & --   & 60.0 \\
-    5   & upper crust  & 5   & 7.5  & 52.5 \\
-    10  & upper crust  & 5   &      & \\
-    15  & upper crust  & 5   &      & \\
-    40  & lower crust  & 25  &      & \\
-    80  & upper mantle & 20  &      & \\
-    100 & upper mantle & 20  &      & \\
-  \end{tblr}
-\end{center}
-
-\question{Stage 2: Building $T(z)$}
-
-Now use your completed $q(z)$ column. Within each step, $q$ varies linearly, so the exact temperature rise across that step is the \emph{average} of $q$ at the two ends, divided by $k$, times $\Delta z$: $\Delta T = \dfrac{q(z_\text{prev})+q(z)}{2\,k}\,\Delta z$. The first step is worked for you.
-
-\begin{center}
-  \begin{tblr}{
-    colspec = {clccX[c]X[c]},
-    row{5-9} = {ht=2.5em},
-    hline{1,3,10} = {solid},
-    vline{4-9} = {dashed},
-    vline{1,5,7} = {solid},
-    vline{2,3,6} = {dashed}
-  }
-    $z$ & $q(z)$ & $k$ & $\Delta z$ & $\Delta T$ & $T(z)$ \\
-    \si{km} &  \si{mW.m^{-2}} & \si{W.m^{-1}.K^{-1}}  & \si{km} & \si{K} & \si{^\circ C} \\
-    0   & 60.0 & --  & --  & --    & 15.0 \\
-    5   & 52.5 & 3.0 & 5   & 93.75 & 108.75 \\
-    10  &      & 3.0 & 5   &       & \\
-    15  &      & 3.0 & 5   &       & \\
-    40  &      & 2.1 & 25  &       & \\
-    80  &      & 2.1 & 20  &       & \\
-    100 &      & 2.1 & 20  &       & \\
-  \end{tblr}
-\end{center}
-
-Your $z=35$ result is the Moho temperature.
-
-\textbf{Given, since it would take too many additional steps to compute by hand:} continuing this same method through the mantle lithosphere, the geotherm meets the adiabat at $z\approx116$~km, $T\approx1335^\circ$C. Because $A$ is so small there, the mantle segment is very close to a straight line.
-
-\question{Plotting the Geotherm}
-
-Plot your Stage 2 results along with the table below and draw a curve through the dots. Also plot the mantle adiabat $T = 1300 + 0.3 z$ (two points are enough --- it's a straight line).
-
-\begin{center}
-  \begin{tabular}{clcc}
-    \toprule
-    $z_i$ & Layer & $q(z_i)$ & $T(z_i)$ \\
-    \si{km} & & \si{mW.m^{-2}} & \si{^\circ C} \\
-    \midrule
-    20  & lower crust         & 36.5 & 347 \\
-    25  & lower crust         & 35.5 & 433 \\
-    30  & lower crust         & 34.5 & 516 \\
-    35  & lower crust         & 33.5 & 597 \\
-    50  & mantle lithosphere  & 32.3 & 768 \\
-    60  & mantle lithosphere  & 32.1 & 860 \\
-    70  & mantle lithosphere  & 31.9 & 951 \\
-    90  & mantle lithosphere  & 31.5 & 1133 \\
-    100 & mantle lithosphere  & 31.3 & 1222 \\
-    110 & mantle lithosphere  & 31.1 & 1311 \\
-    \bottomrule
-  \end{tabular}
-\end{center}
-
-\begin{center}
-\begin{tikzpicture}[x=0.85cm, y=-0.75cm]
-  \draw[gray!25, very thin, xstep=0.4, ystep=-0.5] (0,13) grid (14,0);
-  \draw[gray!55, thin, xstep=2, ystep=-2] (0,13) grid (14,0);
-  \draw[thick,->] (0,0) -- (14.3,0) node[right] {$T$ ($^\circ$C)};
-  \draw[thick,dashed] (0,1.5) -- (14.3,1.5) node[right] {U/L crust};
-  \draw[thick,dashed] (0,4) -- (14.3,4) node[right] {Moho};
-  \draw[thick,->] (0,0) -- (0,13.6) node[below] {$z$ (km)};
-  \foreach \t/\tlab in {0/0,2/200,4/400,6/600,8/800,10/1000,12/1200,14/1400}
-    \node[above, font=\scriptsize] at (\t,0) {\tlab};
-  \foreach \zz/\zlab in {0/0,2/20,4/40,6/60,8/80,10/100,12/120}
-    \node[left, font=\scriptsize] at (0,\zz) {\zlab};
-\end{tikzpicture}
-\end{center}
-
-\begin{enumerate}[label=(\alph*)]
-  \item Where is curvature most visible on your plot -- and where is the curve closest to a straight line? Does that match which layers have the largest $A$?
-  \answerbox[2.5cm]
-
-  \item What does the depth where your geotherm meets the adiabat physically represent?
-  \answerbox[2cm]
-\end{enumerate}
-
-\question{Changing $k$}
-
-Recompute \emph{only} $T(z)$ (not $q(z)$ -- nothing about it has changed) at $z=5,10,15$, using $k_1'=1.5$~W\,m$^{-1}$K$^{-1}$ for the upper crust instead of 3.0.
-
-\begin{center}
-  \begin{tblr}{
-    colspec = {cX[c]ccX[c]},
-    row{4-6} = {ht=2.5em},
-    hline{1,3,Z} = {solid},
-    hline{4-6} = {dashed},
-    vline{1,2,6} = {solid},
-    vline{3-5} = {solid},
-  }
-    $z$ & $q(z)$ & $k_1'$ & $\Delta z$ & $T(z)$ \\
-    \si{km} & \si{mW.m^{-1}} & \si{W.m^{-1}.K^{-1}} & \si{km} & \si{^\circ C} \\
-    0  & 60.0 & --  & --  & 15.0 \\
-    5  &      & 1.5 & 5   & \\
-    10 &      & 1.5 & 5   & \\
-    15 &      & 1.5 & 5   & \\
-  \end{tblr}
-\end{center}
-
-\question{Changing $A$}
-
-Now recompute \emph{both} $q(z)$ and $T(z)$ at $z=5,10,15$, using $A_1'=3.0\ \mu$W\,m$^{-3}$ for the upper crust instead of 1.5 (keep $k_1=3.0$).
-
-\begin{center}
-  \begin{tblr}{
-    colspec = {ccccccc},
-    row{4-6} = {ht=2.5em},
-    hline{1,3,7} = {solid},
-    hline{4-6} = {dashed},
-    vline{1,4,8} = {solid},
-    vline{5-7} = {dashed}
-  }
-    $z$ & Layer & $\Delta z$ & $A\cdot\Delta z$ & $q(z)$ & $k$ & $T(z)$ \\
-    \si{km} & & \si{km} & \si{mW.m^{-2}} & \si{mW.m^{-2}} & \si{W.m^{-1}.K^{-1}} & \si{^\circ C} \\
-    0  & --          & -- & --  & 60.0 & --  & 0.0 \\
-    5  & Upper crust & 5  &     &      & 3.0 & \\
-    10 & Upper crust & 5  &     &      & 3.0 & \\
-    15 & Upper crust & 5  &     &      & 3.0 & \\
-  \end{tblr}
-\end{center}
-
-\question{Contemplate, Then Check}
-
-\begin{enumerate}[label=(\alph*)]
-  \item If the $k$ change in Question 5 persisted through the whole column, would you expect the Moho temperature and the lithosphere thickness (adiabat-crossing depth) to increase or decrease relative to the base case? Explain your reasoning before looking below.
-  \answerbox[2.5cm]
-
-  \item Now do the same for the $A$ change in Question 6 -- predict the direction \emph{before} checking.
-  \answerbox[2.5cm]
-
-  \item \textbf{Reveal:} continuing each perturbation through the full column gives:
   \begin{center}
-  \begin{tabular}{lcc}
-    \toprule
-     & Moho temperature ($^\circ$C) & Adiabat crossing (km) \\
-    \midrule
-    Base case                 & 582 & 116 \\
-    $k_1'=1.5$ (halved)       & 826 & 88  \\
-    $A_1'=3.0$ (doubled)      & 311 & never, within any plausible depth \\
-    \bottomrule
-  \end{tabular}
+    \begin{tabular}{lccc}
+      \toprule
+      Layer & Depth range & $k_i$ & $A_i$ \\
+      & \si{km} & \si{W.m^{-1}.K^{-1}} & \si{\mu W.m^{-3}} \\
+      \midrule
+      upper crust  & 0--15  & 3.0 & 1.5 \\
+      lower crust  & 15--40 & 2.1 & 0.2 \\
+      upper mantle & 40+    & 3.5 & 0.02 \\
+      \bottomrule
+    \end{tabular}
   \end{center}
-  Was your prediction for the $A$ case right? If not, what does doubling $A_1$ actually do to $q(z)$ everywhere below 15~km, and why does that matter more than the extra heat generated in the upper 15~km itself? And now that you've seen a geotherm that never reaches the adiabat at all -- what would that actually mean, physically, if it were real?
+
+  Complete the table below. At each step, using equation~\ref{eq:heat_flow} and $A_i$ of whichever layer that step falls in. The first step is worked for you.
+
+  \begin{center}
+    \begin{tblr}{
+      colspec = {clcX[c]X[c]},
+      row{5-9} = {ht=2.5em},
+      hline{1,3,10} = {solid},
+      hline{4-9} = {dashed},
+      vline{1,4,6} = {solid},
+      vline{5} = {dashed}
+    }
+      $z_i$ & Layer & $\Delta z_i$ & $A\cdot\Delta z_i$ & $q_i$ \\
+      \si{km} & & \si{km} & \si{mW.m^{-2}} & \si{mW.m^{-2}} \\
+      0   & --           & --  & --   & 60.0 \\
+      5   & upper crust  & 5   & 7.5  & 52.5 \\
+      10  & upper crust  & 5   &      & \\
+      15  & upper crust  & 5   &      & \\
+      40  & lower crust  & 25  &      & \\
+      80  & upper mantle & 20  &      & \\
+      100 & upper mantle & 20  &      & \\
+    \end{tblr}
+  \end{center}
+
+  \question{Stage 2: Building $T(z)$}
+  Now use your completed $q(z)$ column to estimate temperatures using Equation~\ref{eq:temperature}.  The first step is worked for you.
+
+  \begin{center}
+    \begin{tblr}{
+      colspec = {ccccX[c]X[c]},
+      row{5-9} = {ht=2.5em},
+      hline{1,3,10} = {solid},
+      vline{4-9} = {dashed},
+      vline{1,5,7} = {solid},
+      vline{2,3,6} = {dashed}
+    }
+      $z_i$ & $\Delta z_i$ & $k_i$ & $A_i$ & $q_i$ & $T_i$ \\
+      \si{km} & \si{km} & \si{W.m^{-1}.K^{-1}} & \si{K} & \si{mW.m^{-2}} & \si{^\circ C} \\
+      0   & --  & --  & --   & 60.0 & 15.0 \\
+      5   & 5   & 3.0 & 1.5  & 52.5 & 108.75 \\
+      10  & 5   & 3.0 & 1.5  &      & \\
+      15  & 5   & 3.0 & 1.5  &      & \\
+      40  & 25  & 2.1 & 0.2  &      & \\
+      80  & 20  & 2.1 & 0.02 &      & \\
+      100 & 20  & 2.1 & 0.02 &      & \\
+    \end{tblr}
+  \end{center}
+
+  Your temperature result at \SI{40}{km} depth is the Moho temperature.
+
+  \question{Plotting the Geotherm}
+  Plot your Stage 1 \& 2 results along with the table below which fills in some of the gaps.  Draw a curve through the dots. Also plot the mantle adiabat $T = 1300 + 0.3 z$ (two points are enough since it's a straight line). A more realistic adiabat is slightly more complex, but not by much.
+
+  \begin{center}
+    \begin{tabular}{clcc}
+      \toprule
+      $z_i$ & Layer & $q(z_i)$ & $T(z_i)$ \\
+      \si{km} & & \si{mW.m^{-2}} & \si{^\circ C} \\
+      \midrule
+      20  & lower crust         & 36.5 & 347 \\
+      25  & lower crust         & 35.5 & 433 \\
+      30  & lower crust         & 34.5 & 516 \\
+      35  & lower crust         & 33.5 & 597 \\
+      50  & mantle lithosphere  & 32.3 & 768 \\
+      60  & mantle lithosphere  & 32.1 & 860 \\
+      70  & mantle lithosphere  & 31.9 & 951 \\
+      90  & mantle lithosphere  & 31.5 & 1133 \\
+      100 & mantle lithosphere  & 31.3 & 1222 \\
+      110 & mantle lithosphere  & 31.1 & 1311 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+
+  \begin{figure}[h]
+      \centering
+      \begin{tikzpicture}[x=0.85cm, y=-0.75cm]
+        \draw[gray!25, very thin, xstep=0.5, ystep=-0.5] (0,13) grid (6,0);
+        \draw[gray!55, thin, xstep=1, ystep=-2] (0,13) grid (6,0);
+        \draw[thick,->] (0,0) -- (6.15,0) node[right] {$q$ (mW\, m$^{-2}$)};
+        \draw[thick,dashed] (0,1.5) -- (6.15,1.5) node[right] {U/L crust};
+        \draw[thick,dashed] (0,4) -- (6.15,4) node[right] {Moho};
+        \draw[thick,->] (0,0) -- (0,13.6) node[below] {$z$ (km)};
+        \foreach \q/\qlab in {0/0,1/10,2/20,3/30,4/40,5/50,6/60}
+          \node[above, font=\scriptsize] at (\q,0) {\qlab};
+        \foreach \zz/\zlab in {0/0,2/20,4/40,6/60,8/80,10/100,12/120}
+          \node[left, font=\scriptsize] at (0,\zz) {\zlab};
+      \end{tikzpicture}
+      \hfill
+      \begin{tikzpicture}[x=0.85cm, y=-0.75cm]
+        \draw[gray!25, very thin, xstep=0.25, ystep=-0.5] (0,13) grid (7,0);
+        \draw[gray!55, thin, xstep=2, ystep=-2] (0,13) grid (7,0);
+        \draw[thick,->] (0,0) -- (7.15,0) node[right] {$T$ ($^\circ$C)};
+        \draw[thick,dashed] (0,1.5) -- (7.15,1.5) node[right] {U/L crust};
+        \draw[thick,dashed] (0,4) -- (7.15,4) node[right] {Moho};
+        \draw[thick,->] (0,0) -- (0,13.6) node[below] {$z$ (km)};
+        \foreach \t/\tlab in {0/0,1/200,2/400,3/600,4/800,5/1000,6/1200,7/1400}
+          \node[above, font=\scriptsize] at (\t,0) {\tlab};
+        \foreach \zz/\zlab in {0/0,2/20,4/40,6/60,8/80,10/100,12/120}
+          \node[left, font=\scriptsize] at (0,\zz) {\zlab};
+      \end{tikzpicture}
+    \caption{Axes for plotting heat flow and geotherms.}
+    \label{fig:gtherm-ax}
+  \end{figure}
+
+  \begin{enumerate}[label=(\alph*)]
+    \item How does heat flow change between the crustal layers when heat production is constant within the layer?
+    \answerbox[2cm]
+
+    \item Where is the temperature curvature most visible on your plot -- and where is the curve closest to a straight line? Does that match which layers have the largest $A$?
+    \answerbox[2.5cm]
+
+    \item What does the depth where your geotherm meets the adiabat physically represent?
+    \answerbox[2cm]
+  \end{enumerate}
+
+  \question{Changing $k$}
+  Recompute \emph{only} $T(z)$ (not $q(z)$ as $A(z)$ has not changed) using $k_1'=\SI{1.5}{W.m^{-1}.K^{-1}}$ for the upper crust instead of 3.0.  Plot the result on the same axes above.
+
+  \begin{center}
+    \begin{tblr}{
+      colspec = {ccccX[c]X[c]},
+      row{5-9} = {ht=2.5em},
+      hline{1,3,10} = {solid},
+      vline{4-9} = {dashed},
+      vline{1,5,7} = {solid},
+      vline{2,3,6} = {dashed}
+    }
+      $z_i$ & $\Delta z_i$ & $q_i$ & $k_i$ & $A_i$ & $T_i$ \\
+      \si{km} & \si{km} & \si{W.m^{-1}.K^{-1}} & \si{K} & \si{mW.m^{-2}} & \si{^\circ C} \\
+      0   & --  & --  & --   & 60.0 & 15.0 \\
+      5   & 5   & 1.5 & 1.5  &      & \\
+      10  & 5   & 1.5 & 1.5  &      & \\
+      15  & 5   & 1.5 & 1.5  &      & \\
+      40  & 25  & 2.1 & 0.2  &      & \\
+      80  & 20  & 2.1 & 0.02 &      & \\
+      100 & 20  & 2.1 & 0.02 &      & \\
+    \end{tblr}
+  \end{center}
+
+  How does a decrease in thermal conductivity affect the geotherm?  What would happen if you were to increase it instead?
   \answerbox[3cm]
-\end{enumerate}
+
+  \question{Changing $A$}
+  Now recompute \emph{both} $q(z)$ and $T(z)$ using $A_1' = \SI{3.0}{\mu W.m^{-3}}$ for the upper crust instead of 1.5 (keep $k_1=3.0$).  Plot the result on the same axes above (label the models).
+
+  \begin{center}
+    \begin{tblr}{
+      colspec = {ccccX[c]X[c]},
+      row{5-9} = {ht=2.5em},
+      hline{1,3,10} = {solid},
+      vline{4-9} = {dashed},
+      vline{1,5,7} = {solid},
+      vline{2,3,6} = {dashed}
+    }
+      $z_i$ & $\Delta z_i$ & $q_i$ & $k_i$ & $A_i$ & $T_i$ \\
+      \si{km} & \si{km} & \si{W.m^{-2}.K^{-1}}  & \si{km} & \si{K} & \si{mW.m^{-3}} & \si{^\circ C} \\
+      0   & --  & --  & --   & 60.0 & 15.0 \\
+      5   & 5   & 3.0 & 3.0  &      & \\
+      10  & 5   & 3.0 & 3.0  &      & \\
+      15  & 5   & 3.0 & 3.0  &      & \\
+      40  & 25  & 2.1 & 0.2  &      & \\
+      80  & 20  & 2.1 & 0.02 &      & \\
+      100 & 20  & 2.1 & 0.02 &      & \\
+    \end{tblr}
+  \end{center}
+
+  How does a decrease in thermal conductivity affect the geotherm?  What would happen if you were to increase it instead?
+  \answerbox[3cm]
+
+  \question{Contemplate, Then Check}
+  \begin{enumerate}[label=(\alph*)]
+    \item If the $k$ change in Question 5 persisted through the whole column, would you expect the Moho temperature and the lithosphere thickness (adiabat-crossing depth) to increase or decrease relative to the base case? Explain your reasoning before looking below.
+    \answerbox[2.5cm]
+
+    \item Now do the same for the $A$ change in Question 6 -- predict the direction \emph{before} checking.
+    \answerbox[2.5cm]
+
+    \item \textbf{Reveal:} continuing each perturbation through the full column gives:
+    \begin{center}
+    \begin{tabular}{lcc}
+      \toprule
+      & Moho temperature ($^\circ$C) & Adiabat crossing (km) \\
+      \midrule
+      Base case                 & 675 & 113 \\
+      $k_1'=1.5$ (halved)       & 919 & 84  \\
+      $A_1'=3.0$ (doubled)      & 351 & never, within any plausible depth \\
+      \bottomrule
+    \end{tabular}
+    \end{center}
+    Was your prediction for the $A$ case right? If not, what does doubling $A_1$ actually do to $q(z)$ everywhere below 15~km, and why does that matter more than the extra heat generated in the upper 15~km itself? And now that you've seen a geotherm that never reaches the adiabat at all -- what would that actually mean, physically, if it were real?
+    \answerbox[3cm]
+  \end{enumerate}
 
 \end{questions}
 
 \section*{Key Ideas}
 
-\textbf{$q(z)$ and $T(z)$ depend on different things, and in a specific order.} $q(z)$ is fixed entirely by $A(z)$ and $q_0$ -- conductivity and temperature never enter into it. $T(z)$ needs $q(z)$ as an input, so it cannot be built first. Doing every layer's $q$ before starting on any layer's $T$ is not just tidier bookkeeping; it reflects a genuine one-way dependency.
+\textbf{$q(z)$ and $T(z)$ depend on different things, in a strict order.} $q(z)$ comes from $A(z)$ and $q_0$ alone; $T(z)$ needs $q(z)$ as an input. That one-way dependency is why the recipe works layer by layer instead of all at once.
 
-\textbf{Where a geotherm meets the mantle adiabat marks the base of the thermal lithosphere.} Below that depth, material follows the adiabat because it convects; above it, conduction controls the temperature profile.
+\textbf{Where a geotherm crosses the mantle adiabat marks the base of the thermal lithosphere.} Below that depth, material convects and follows the adiabat; above it, conduction sets the temperature.
 
-\textbf{Conductivity changes the gradient without changing $q(z)$; heat production changes both.} A conductivity change reshapes $T(z)$ but leaves $q(z)$ untouched. A heat-production change reshapes $q(z)$ itself -- and because $T(z)$ is built from $q(z)$, its effects propagate to every layer below, not just the one where $A$ changed.
+\textbf{Whether more heat production makes a column hotter or colder depends on which boundary condition is fixed.} Hold surface heat flow $q_0$ fixed, and near-surface heat production can \emph{lower} temperatures at depth; hold the deep heat flow fixed instead, and the same change raises them. The direction of the effect isn't a fixed property of $A$ -- it follows from what you're allowed to hold constant.
 
-\textbf{A geotherm that never reaches the adiabat is telling you something is wrong with the inputs, not that convection has stopped.} You saw this directly in Question 7: doubling $A_1$ alone was enough to push the crossing beyond any depth the model should be trusted at. If heat production genuinely stayed that high all the way down in the real Earth, the honest reading is not "no convection, cold interior" as a stable outcome -- it's that $A(z)$ cannot actually behave that way at depth, because the mantle demonstrably does convect almost everywhere. The model breaking is the useful result.
-
-\textbf{Whether more heat production means a hotter or colder interior depends entirely on which boundary condition is fixed.} With $q_0$ fixed -- what you actually measure at surface -- concentrating heat production near the surface lets that heat escape quickly, without needing to warm the material beneath it much at all; burying the same heat production deeper means it has to slowly work its way up through everything above it, warming the interior as it goes. (This is a spatial statement about a steady-state solution, not a claim about anything happening over time -- but it is easy to accidentally hear it as one, so it is worth restating carefully.) Hold the \emph{basal} heat flow fixed instead, and adding crustal heat production genuinely adds heat on top of an unchanged supply -- temperatures rise. Same physics, opposite-sounding conclusion, depending only on which end of the profile you treat as given. This is a real source of confusion even among practising geophysicists -- and it is the reason a region like South Australia can show active-tectonic-like heat flow (90+ mW/m$^2$) despite a thick lithosphere more typical of stable, early Proterozoic terranes elsewhere: not young, active tectonics, but unusually high crustal radiogenic heat production riding on an otherwise unremarkable deep thermal state.
+\textbf{A geotherm that never reaches the convecting adiabat is telling you something is wrong with the inputs.} Generally such a result points to too high a heat production or too low a heat flow.  Likewise, if we compute temperatures that would suggest widespread melting in the mid to lower crust, unless we are in a magmatic arc, it is probably indicates our surface heat flow is too high or heat production too low. \emph{The model breaking is the useful result.} 
 
 \end{activity}
