@@ -55,62 +55,67 @@ This means:
     \item and update your value.
 \end{itemize}
 
-\section*{Part A: Prediction}
+\begin{questions}
+    \question{Prediction}
+    Before starting, discuss:
+    \begin{itemize}
+        \item What happens to a sharp temperature spike over time?
+        \item Will the system become smoother or less smooth?
+    \end{itemize}
+    \answerbox[3cm]
 
-Before starting, discuss:
-\begin{itemize}
-    \item What happens to a sharp temperature spike over time?
-    \item Will the system become smoother or less smooth?
-\end{itemize}
-\answerbox[3cm]
+    \question{Iteration}
+    Repeat the following for several steps:
+    \begin{enumerate}
+        \item Show your value to your neighbours.
+        \item Compute your new value.
+        \item Update simultaneously.
+    \end{enumerate}
 
-\section*{Part B: Iteration}
+    \textbf{Record the evolution of the system.} (Use the table below to track temperature values at each node across three time steps.)
 
-Repeat the following for several steps:
-\begin{enumerate}
-    \item Show your value to your neighbours.
-    \item Compute your new value.
-    \item Update simultaneously.
-\end{enumerate}
+    \begin{center}
+        \begin{tblr}{
+            colspec = {c*{9}{X[c]}},
+            row{2-Z} = {ht=2.5em},
+            hline{1,2,Z} = {solid},
+            hline{3-{Z-1}} = {dashed},
+            vline{1,2,11} = {solid},
+            vline{3-10} = {dashed}
+        }
+            \diagbox{\textbf{Node}}{\textbf{Step}} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} \\
+            0 & & & & & & & & & \\
+            1 & & & & & & & & & \\
+            2 & & & & & & & & & \\
+            3 & & & & & & & & & \\
+            4 & & & & & & & & & \\
+            5 & & & & & & & & & \\
+            6 & & & & & & & & & \\
+            7 & & & & & & & & & \\
+            8 & & & & & & & & & \\
+        \end{tblr}
+    \end{center}
 
-\textbf{Record the evolution of the system.} (Use the table below to track temperature values at each node across three time steps.)
+    \question{Observations}
+    Discuss:
+    \begin{itemize}
+        \item Where do the largest changes occur?
+        \item What happens to temperature peaks?
+        \item How does heat move through the system?
+    \end{itemize}
+    \answerbox[3cm]
 
-\begin{center}
-\renewcommand{\arraystretch}{1.8}
-\begin{tabular}{|c|*{9}{c|}}
-\hline
-\textbf{Step} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} \\
-\hline
-0 & & & & & & & & & \\
-\hline
-1 & & & & & & & & & \\
-\hline
-2 & & & & & & & & & \\
-\hline
-3 & & & & & & & & & \\
-\hline
-\end{tabular}
-\end{center}
+    \question{Interpretation}
 
-\section*{Part C: Observations}
+    \textbf{Explain in words:}
+    \begin{itemize}
+        \item Why does the system become smoother over time?
+        \item What role do neighbouring nodes play?
+        \item How does this relate to diffusion?
+    \end{itemize}
+    \answerbox[4cm]
 
-Discuss:
-\begin{itemize}
-    \item Where do the largest changes occur?
-    \item What happens to temperature peaks?
-    \item How does heat move through the system?
-\end{itemize}
-\answerbox[3cm]
-
-\section*{Part D: Interpretation}
-
-\textbf{Explain in words:}
-\begin{itemize}
-    \item Why does the system become smoother over time?
-    \item What role do neighbouring nodes play?
-    \item How does this relate to diffusion?
-\end{itemize}
-\answerbox[4cm]
+\end{questions}
 
 \bigskip
 \hrule
@@ -143,11 +148,12 @@ Arrange students in a grid.
 
 \textbf{Update rule:}
 \begin{equation}
-T_{i,j}^{\text{new}} =
-\frac{
-T_{i+1,j} + T_{i-1,j} + T_{i,j+1} + T_{i,j-1}
-}{4}
+    T_{i,j}^{\text{new}} =
+    \frac{
+    T_{i+1,j} + T_{i-1,j} + T_{i,j+1} + T_{i,j-1}
+    }{4}
 \end{equation}
+
 
 \textbf{Tasks:}
 \begin{itemize}
@@ -163,7 +169,21 @@ T_{i+1,j} + T_{i-1,j} + T_{i,j+1} + T_{i,j-1}
     \item Why does this method require many iterations?
 \end{itemize}
 
-{\color{red}
+
+\section*{Demo}
+
+There is a simple python GUI, \verb+finitediff_gui.py+, that you can use to explore calculations similar to the ones we just did in this exercise.  The implementation solves the Poisson equation:
+\[
+    \laplacian \T = - \frac{A}{k}
+\]
+using the discrete equation
+\[
+    T_i^{n+1} = 
+    \frac{k_{i-1}T_{i-1}^n+k_{i+1}T_{i+1}^n} {k_{i-1}+k_{i+1}} 
+    + \frac{A_i}{k_i}
+\]
+
+
 \section*{Key Ideas}
 
 Heat flow is a local process: each point evolves based on its neighbours.
@@ -173,6 +193,5 @@ Heat flow is a local process: each point evolves based on its neighbours.
 \textbf{Information propagates at a finite rate.} Because each update depends only on nearest neighbours, a temperature change at one end of the chain cannot instantaneously affect the other end. It must propagate node by node, step by step. This is the discrete analogue of finite diffusion speed in the continuum.
 
 \textbf{Steady state is reached when updates become zero.} The system reaches a steady state when every node's temperature equals the average of its neighbours: $T_i = (T_{i-1} + T_{i+1})/2$. This is the discrete form of $\nabla^2 T = 0$ --- the Laplace equation for heat without sources.
-}
 
 \end{activity}
