@@ -29,13 +29,47 @@ Students will:
 
 \section*{Session Flow (\timelinelength\ min)}
 
-{\color{red}
-\timeline[slot]{Warm-up --- How long does it take to cook a roast?}{10}
+% {\color{red}
+% \timeline[slot]{Warm-up --- How long does it take to cook a roast?}{10}
 
-Ask students: \emph{Why does a larger roast take longer to cook in the oven even at the same temperature? What does this tell us about heat moving through rock?} Elicit the idea that the time for heat to penetrate scales with the \emph{square} of the distance. Connect to the diffusion equation and introduce thermal diffusivity $\kappa$ as the quantity that controls this scaling.
-}
+% Ask students: \emph{Why does a larger roast take longer to cook in the oven even at the same temperature? What does this tell us about heat moving through rock?} Elicit the idea that the time for heat to penetrate scales with the \emph{square} of the distance. Connect to the diffusion equation and introduce thermal diffusivity $\kappa$ as the quantity that controls this scaling.
+% }
 
-{\color{red}
+\timeline{Warm-up: Wedge vs.\ Orogen}{10}
+
+Both accretionary wedges and orogens form at convergent margins, but they experience very different thermal histories. Before we build a detailed model for one of them later today, predict how surface heat flow evolves over the life of each.
+
+\subsection*{Accretionary wedge}
+Sediment and crust are continuously scraped off a subducting oceanic plate and stacked at the trench. The wedge is built from material that has spent little time near the surface -- it arrives cold, wet, and is rapidly buried by whatever is scraped off next.
+
+\begin{itemize}
+  \item While subduction is active, is heat flow through the wedge likely to be higher or lower than a stable craton? What is actually supplying heat to this material, and what is working against it staying warm?
+  \item Once subduction stops -- no more cold material arriving, no more rapid burial -- what happens to heat flow? Does it recover to the same level as before subduction started, or could it overshoot?
+\end{itemize}
+
+\subsection*{Orogen}
+Continental collision thickens the crust -- doubling it is not unusual. The thickened crust contains more total radiogenic material than before, buried deeper than it used to be.
+
+\begin{itemize}
+  \item Right after thickening, is the crust hotter or colder than it will eventually become? (Think about how long it takes buried heat production to actually raise temperatures at depth -- you'll compute this properly in Activity 9.A.)
+  \item Once the orogen has had a long time to adjust, how does its eventual heat flow compare to a stable craton -- higher, lower, or about the same?
+\end{itemize}
+
+\subsection*{Sketch both}
+On the axes below, sketch your predicted heat flow through time for \emph{both} settings, on the same plot. The dashed line marks typical cratonic heat flow, for reference.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm, y=1cm]
+  \draw[thick,->] (0,0) -- (9.5,0) node[right] {time};
+  \draw[thick,->] (0,0) -- (0,6.5) node[above] {heat flow};
+  \draw[dashed, gray] (0,2) -- (9,2);
+  \node[gray, right, font=\scriptsize] at (9,2) {craton};
+\end{tikzpicture}
+\end{center}
+
+\noindent\textit{We will not resolve the wedge case in detail today -- keep your prediction in mind as a point of contrast. The orogen case is exactly what Activity 9.B (Collisional Thermal Evolution) works through properly, including why the answer to the first orogen question is more surprising than it looks.}
+
+
 \timeline[slot]{Mini-lecture --- The diffusion equation and thermal diffusivity}{15}
 
 \begin{itemize}
@@ -44,7 +78,6 @@ Ask students: \emph{Why does a larger roast take longer to cook in the oven even
   \item Scaling argument: thermal length $z \sim \sqrt{\kappa t}$; thermal timescale $t \sim z^2/\kappa$.
   \item Key difference from steady state: temperature \emph{evolves} in time.
 \end{itemize}
-}
 
 \timeline[item]{Thermal Diffusivity, Thermal Length, and Timescales}{45}
 \begin{itemize}
@@ -102,8 +135,6 @@ Analytic solutions to the diffusion equation require simplifying assumptions: co
 \notepage
 \notepage
 
+\subimport{activities/}{activity_collisions}
 \subimport{activities/}{activity_thermal_timescales}
-\subimport{activities/}{activity_diffusion}
-\subimport{activities/}{activity_half_space_cooling}
-\subimport{activities/}{activity_plate_cooling}
-\subimport{activities/}{activity_stefan}
+\subimport{activities/}{activity_oceanic_cooling}
