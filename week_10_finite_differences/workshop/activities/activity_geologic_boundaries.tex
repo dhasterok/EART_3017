@@ -12,7 +12,7 @@ conditions.
 
 By the end of this activity, you should be able to:
 \begin{itemize}
-  \item Distinguish between Dirichlet (fixed temperature) and Neumann (fixed heat flux) boundary conditions.
+  \item Distinguish between Dirichlet (fixed value) and Neumann (fixed flux) boundary conditions.
   \item Match appropriate boundary conditions to geological settings (ocean floor, continental lithosphere, cooling intrusion).
   \item Explain how changing a boundary condition changes the physical system the model represents.
   \item Argue why inappropriate boundary conditions can produce physically misleading results even when the numerical solution is mathematically stable.
@@ -21,13 +21,209 @@ By the end of this activity, you should be able to:
 
 \emph{Boundary conditions determine what kind of Earth your model represents.}
 
+\subsection*{Boundary Conditions}
+
+A partial differential equation (PDE) describes how a field varies \emph{inside} a domain. To obtain a unique solution, we must also specify how the domain interacts with its surroundings. This additional information is supplied through \textbf{boundary conditions}.
+
+Consider a potential variable $u(\mathbf{x})$ defined within a domain $\Omega$ bounded by $\partial \Omega$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+
+\fill[gray!20]
+  (0,0) ..
+  controls (1.5,1.2) and (3,1.0) ..
+  (3.5,0) ..
+  controls (4,-1.2) and (2.5,-2.0) ..
+  (1,-1.7) ..
+  controls (-0.5,-1.2) and (-1.0,-0.5) ..
+  cycle;
+
+\draw[thick]
+  (0,0) ..
+  controls (1.5,1.2) and (3,1.0) ..
+  (3.5,0) ..
+  controls (4,-1.2) and (2.5,-2.0) ..
+  (1,-1.7) ..
+  controls (-0.5,-1.2) and (-1.0,-0.5) ..
+  cycle;
+
+\node at (1.8,-0.5) {$\Omega$};
+
+\draw[->,thick] (4.4,0.4) -- (3.5,0.2);
+\node[right] at (4.5,0.4) {$\partial\Omega$};
+
+% outward normal
+\draw[->,thick]
+  (2.9,-1.35) -- (3.6,-1.8);
+
+\node[right] at (3.6,-1.8) {$\vu n$};
+
+\end{tikzpicture}
+\end{center}
+
+The PDE determines the behaviour of the field within $\Omega$. The boundary conditions describe what happens along $\partial \Omega$.
+
+\subsubsection*{Dirichlet Boundary Condition}
+
+\[
+u = f(\mathbf{x})
+\qquad \text{on } \partial\Omega
+\]
+
+A Dirichlet boundary condition specifies the \emph{value} of the field at the boundary.
+
+\textbf{Physical interpretation:}
+The environment outside the model imposes a known value on the boundary.
+
+% Examples:
+% \begin{itemize}
+% \item Fixed ocean-bottom temperature.
+% \item Fixed atmospheric temperature at Earth's surface.
+% \item Fixed hydraulic head in a groundwater model.
+% \item Fixed gravitational potential on a far-field boundary.
+% \end{itemize}
+
+\textbf{What is fixed?}
+\[
+\boxed{\text{Field value}}
+\]
+
+\vspace{0.5em}
+
+\subsubsection*{Neumann Boundary Condition}
+
+\[
+\frac{\partial u}{\partial \vu n}
+=
+g(\mathbf{x})
+\qquad \text{on } \partial\Omega
+\]
+
+where $n$ is the outward normal direction.
+
+For heat flow, this is often written as
+
+\[
+-k\frac{\partial T}{\partial n}=q.
+\]
+
+A Neumann boundary condition specifies the \emph{flux} crossing the boundary.
+
+\textbf{Physical interpretation:}
+Rather than fixing the field itself, we prescribe the rate at which energy, mass, fluid, or current enters or leaves the domain.
+
+Examples:
+\begin{itemize}
+\item Mantle heat flux entering the base of the lithosphere.
+\item Groundwater recharge entering an aquifer.
+\item Prescribed electrical current density in an electrical model.
+\end{itemize}
+
+\textbf{What is fixed?}
+\[
+\boxed{\text{Flux}}
+\]
+
+\vspace{0.5em}
+
+\subsubsection*{Robin Boundary Condition}
+
+\[
+a(\mathbf{x})u
++
+b(\mathbf{x})
+\frac{\partial u}{\partial \vu n}
+=
+c(\mathbf{x})
+\qquad \text{on } \partial\Omega
+\]
+
+A Robin boundary condition combines a field value and a flux condition.
+
+For example,
+
+\[
+-k\frac{\partial T}{\partial n}
+=
+h(T-T_{\mathrm{atm}})
+\]
+
+describes heat exchange between a surface and the atmosphere.
+
+\textbf{Physical interpretation:}
+The boundary interacts with an external environment. Neither the field value nor the flux is fixed independently; instead they are linked together.
+
+Examples:
+\begin{itemize}
+\item Heat exchange between rock and the atmosphere.
+\item Cooling of a magmatic intrusion by surrounding country rock.
+\item Groundwater leakage through a semi-permeable boundary.
+\end{itemize}
+
+\textbf{What is fixed?}
+\[
+\boxed{\text{A relationship between value and flux}}
+\]
+
+\vspace{0.5em}
+
+\subsubsection*{Cauchy Boundary Condition}
+
+\[
+u=f(\mathbf{x}),
+\qquad
+\frac{\partial u}{\partial \vu n}
+=
+g(\mathbf{x})
+\qquad \text{on } \partial\Omega
+\]
+
+A Cauchy boundary condition specifies both the field value and its normal derivative.
+
+\textbf{Physical interpretation:}
+The boundary is strongly constrained by observations.
+
+Examples:
+\begin{itemize}
+\item A borehole where both temperature and heat flow are measured.
+\item A boundary constrained simultaneously by observed hydraulic head and groundwater flux.
+\item Inverse problems where multiple independent observations are available along a boundary.
+\end{itemize}
+
+\textbf{What is fixed?}
+\[
+\boxed{\text{Value and flux}}
+\]
+
+\vspace{1em}
+
+\subsubsection*{Summary}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Boundary Condition & Prescribes & Physical Meaning\\
+\midrule
+Dirichlet & Field value & Known state\\
+Neumann & Flux & Known transfer rate\\
+Robin & Value + flux relation & Exchange with surroundings\\
+Cauchy & Value and flux & Strong observational constraint\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Key Idea}
+The governing equation describes the physics occurring within the model domain. Boundary conditions describe how the model interacts with the outside world. Two models can use exactly the same PDE and physical properties yet produce completely different results if different boundary conditions are chosen. Choosing boundary conditions is therefore a geological modelling decision, not merely a mathematical one.
+
 \section*{Part A: Grounding in real systems}
 
 Consider the following settings:
 \begin{itemize}
-    \item Ocean floor beneath deep water
-    \item Continental lithosphere
-    \item A hot magma body cooling in the crust
+    \item Cooling oceanic crust
+    \item Stable continental lithosphere
+    \item A cooling granite pluton
+    \item Antarctic ice sheet geothermal model
 \end{itemize}
 
 \textbf{Task:}
@@ -79,6 +275,7 @@ produce completely different results? Why?
 \answerbox[3cm]
 
 \bigskip
+
 
 {\color{red}
 \section*{Key Ideas}
