@@ -28,36 +28,50 @@ A partial differential equation (PDE) describes how a field varies \emph{inside}
 Consider a potential variable $u(\mathbf{x})$ defined within a domain $\Omega$ bounded by $\partial \Omega$.
 
 \begin{center}
+\usetikzlibrary{decorations.markings,calc}
+
 \begin{tikzpicture}[scale=1.1]
 
-\fill[gray!20]
-  (0,0) ..
-  controls (1.5,1.2) and (3,1.0) ..
-  (3.5,0) ..
-  controls (4,-1.2) and (2.5,-2.0) ..
-  (1,-1.7) ..
-  controls (-0.5,-1.2) and (-1.0,-0.5) ..
-  cycle;
+  \newcommand{\curve}{
+    (-2,-1)
+    .. controls (-0.5,-2.2) and (0.3,-2.3) ..
+    (1,-2)
+    .. controls (2.3,-1.6) and (2.6,0.7) ..
+    (2,2)
+    .. controls (1.6,2.6) and (0.6,2.1) ..
+    (0,1)
+    .. controls (-0.3,0.6) and (-2.4,0.3) ..
+    cycle
+  }
 
-\draw[thick]
-  (0,0) ..
-  controls (1.5,1.2) and (3,1.0) ..
-  (3.5,0) ..
-  controls (4,-1.2) and (2.5,-2.0) ..
-  (1,-1.7) ..
-  controls (-0.5,-1.2) and (-1.0,-0.5) ..
-  cycle;
+  \draw[
+    thick,
+    fill=gray!30,
+    postaction={
+      decorate,
+      decoration={
+        markings,
+        mark=at position 0.55 with {
+          \draw[->,thick] (0,0) -- (0,-0.8);
+          \node[right] at (0,-0.8) {$\vu n$};
+        },
+        mark=at position 0.75 with {
+          \draw[<-,thin] (0,0) .. controls (0,-0.25) and (0.2,-0.25) .. (0.2,-1.0)
+          \node[right] at (0.2,-1.0) {$\partial\Omega$};
+        }
+      }
+  }
+  ] \curve;
 
-\node at (1.8,-0.5) {$\Omega$};
+\node at (0,0) {$\Omega$};
 
-\draw[->,thick] (4.4,0.4) -- (3.5,0.2);
-\node[right] at (4.5,0.4) {$\partial\Omega$};
+%\draw[<-,thin] (3.5,0.1) .. controls (3.8,0.1) and (3.8,0.5) .. (4.4,0.5) node[right] {$\partial\Omega$};
 
-% outward normal
-\draw[->,thick]
-  (2.9,-1.35) -- (3.6,-1.8);
+% normal
+%\draw[->,thick]
+%  let \p1 = ($ (Q) - (P) $), \n1 = {atan2(\y1,\x1)} in
+%  (P) -- ++(\n1+90:0.5cm) node {$\vu{n}$};
 
-\node[right] at (3.6,-1.8) {$\vu n$};
 
 \end{tikzpicture}
 \end{center}

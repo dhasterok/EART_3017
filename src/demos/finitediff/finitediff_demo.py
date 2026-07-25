@@ -22,6 +22,8 @@ from PyQt6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QSpinBox,
+    QDoubleSpinBox,
+    QComboBox,
     QPushButton,
     QCheckBox,
     QTableWidget,
@@ -136,11 +138,24 @@ class HeatEquationGUI(QMainWindow):
     animation_A : numpy.ndarray or None
         Source/sink term from the most recent run, kept around so the
         animation can keep annotating sources and sinks each frame.
+    bc_mode : str
+        Which end, if any, uses a specified-flux (Neumann) condition
+        instead of a fixed value (Dirichlet): one of ``"dirichlet"``
+        (both ends fixed, the default), ``"neumann_top"``, or
+        ``"neumann_bottom"``. Only one end at a time can be Neumann --
+        both ends being Neumann simultaneously is ill-posed for this
+        equation (the steady solution would only be fixed up to an
+        additive constant). Flux values use the standard geophysics
+        convention :math:`q = +k\\, dT/dz` (heat loss reported as
+        positive): positive flux is upward, so it cools the top
+        boundary and warms the bottom boundary.
     """
 
     def __init__(self):
 
         super().__init__()
+
+        self.bc_mode = "dirichlet"
 
         self.setWindowTitle("Student Node Solver")
 
@@ -180,6 +195,33 @@ class HeatEquationGUI(QMainWindow):
 
         controls_layout.addWidget(self.uniform_k_checkbox)
 
+        controls_layout.addWidget(QLabel("Boundary:"))
+
+        self.bc_mode_combo = QComboBox()
+        self.bc_mode_combo.addItem("Dirichlet (both ends)", "dirichlet")
+        self.bc_mode_combo.addItem("Neumann at top (flux q₀)", "neumann_top")
+        self.bc_mode_combo.addItem("Neumann at bottom (flux q)", "neumann_bottom")
+        self.bc_mode_combo.setToolTip(
+            "Choose a specified-flux (Neumann) condition for one end "
+            "instead of a fixed value (Dirichlet). Sign convention "
+            "matches standard geophysics usage (q = +k dT/dz, heat "
+            "loss reported as positive): positive flux is upward -- "
+            "heat loss at the top, heat gain at the bottom."
+        )
+        controls_layout.addWidget(self.bc_mode_combo)
+
+        self.flux_label = QLabel("Flux q:")
+        self.flux_label.setVisible(False)
+        controls_layout.addWidget(self.flux_label)
+
+        self.flux_spin = QDoubleSpinBox()
+        self.flux_spin.setRange(-1e6, 1e6)
+        self.flux_spin.setDecimals(4)
+        self.flux_spin.setSingleStep(0.1)
+        self.flux_spin.setValue(0.0)
+        self.flux_spin.setVisible(False)
+        controls_layout.addWidget(self.flux_spin)
+
         self.table = QTableWidget()
         left_layout.addWidget(self.table)
 
@@ -201,6 +243,16 @@ class HeatEquationGUI(QMainWindow):
             )
         )
         left_layout.addWidget(self.equation_label)
+
+        self.bc_equation_caption = QLabel()
+        self.bc_equation_caption.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.bc_equation_caption.setVisible(False)
+        left_layout.addWidget(self.bc_equation_caption)
+
+        self.bc_equation_label = QLabel()
+        self.bc_equation_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.bc_equation_label.setVisible(False)
+        left_layout.addWidget(self.bc_equation_label)
 
         self.animate_checkbox = QCheckBox("Animate")
         self.animate_checkbox.setChecked(True)
@@ -235,11 +287,13 @@ class HeatEquationGUI(QMainWindow):
         self.node_spin.valueChanged.connect(self.build_table)
         self.iter_spin.valueChanged.connect(self.build_table)
         self.uniform_k_checkbox.toggled.connect(self.update_conductivity_mode)
+        self.bc_mode_combo.currentIndexChanged.connect(self.on_bc_mode_changed)
 
         self.run_button.clicked.connect(self.run_model)
         self.clear_button.clicked.connect(self.clear_results)
 
         self.build_table()
+        self.update_bc_equation_label()
 
         self.table.itemChanged.connect(self.sync_uniform_k)
 
@@ -264,8 +318,9 @@ class HeatEquationGUI(QMainWindow):
         Called whenever the node or iteration spin boxes change. Existing
         per-node inputs (columns 0-2) are preserved; only missing cells
         are filled with defaults. The first and last rows' ``f(T)``
-        values are always reset to the default boundary conditions
-        (0 and 100) since a changed node count shifts which row is last.
+        values are then reset via `apply_boundary_defaults`, which
+        accounts for whichever end (if any) is currently a Neumann
+        boundary.
         """
 
         n_nodes = self.node_spin.value()
@@ -298,10 +353,7 @@ class HeatEquationGUI(QMainWindow):
             if not self.table.item(row, 2):
                 self.table.setItem(row, 2, QTableWidgetItem("100"))
 
-        # default boundary conditions
-
-        self.table.item(0, 2).setText("0")
-        self.table.item(n_nodes - 1, 2).setText("100")
+        self.apply_boundary_defaults()
 
         self.table.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Stretch
@@ -310,6 +362,114 @@ class HeatEquationGUI(QMainWindow):
         self.update_conductivity_mode()
 
         self.table.blockSignals(False)
+
+    # --------------------------------------------------
+
+    def apply_boundary_defaults(self):
+        """
+        Set each boundary row's ``f(T)`` cell for the current `bc_mode`.
+
+        An end held at Dirichlet gets its usual fixed-value default (0
+        at the top, 100 at the bottom) and stays editable. An end set
+        to Neumann instead has its cell replaced with ``"n/a"`` and
+        made read-only, since that row's value now comes from the flux
+        spin box, not the table.
+
+        Every row's ``f(T)`` cell is first reset to editable before the
+        boundary-specific overrides are applied. This repairs a row
+        that was previously a Neumann boundary (and so left read-only
+        with ``"n/a"``) but has since stopped being one, either because
+        `bc_mode` changed or because the node count changed which row
+        is first/last.
+        """
+
+        n_nodes = self.table.rowCount()
+        mode = self.bc_mode
+
+        for row in range(n_nodes):
+            item = self.table.item(row, 2)
+            if item is not None:
+                item.setFlags(item.flags() | Qt.ItemFlag.ItemIsEditable)
+
+        top_item = self.table.item(0, 2)
+        if mode == "neumann_top":
+            top_item.setText("n/a")
+            top_item.setFlags(top_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+        else:
+            top_item.setText("0")
+
+        bottom_item = self.table.item(n_nodes - 1, 2)
+        if mode == "neumann_bottom":
+            bottom_item.setText("n/a")
+            bottom_item.setFlags(bottom_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+        else:
+            bottom_item.setText("100")
+
+    def on_bc_mode_changed(self):
+        """
+        Handle a change of the boundary-condition combo box.
+
+        Connected to ``bc_mode_combo.currentIndexChanged``. Shows or
+        hides the flux input, re-applies the boundary defaults for the
+        newly selected mode, and clears any results computed under the
+        previous mode/equation.
+        """
+
+        self.timer.stop()
+        self.bc_mode = self.bc_mode_combo.currentData()
+
+        is_neumann = self.bc_mode != "dirichlet"
+        self.flux_label.setVisible(is_neumann)
+        self.flux_spin.setVisible(is_neumann)
+
+        if self.bc_mode == "neumann_top":
+            self.flux_label.setText("Flux q₀ (top):")
+        elif self.bc_mode == "neumann_bottom":
+            self.flux_label.setText("Flux q (bottom):")
+
+        self.table.blockSignals(True)
+        self.apply_boundary_defaults()
+        self.table.blockSignals(False)
+
+        self.clear_results()
+        self.update_bc_equation_label()
+
+    def update_bc_equation_label(self):
+        """
+        Show or hide the boundary-condition equation to match `bc_mode`.
+
+        Hidden entirely when both ends are Dirichlet, since the plain
+        fixed-value boundary needs no extra explanation beyond the
+        interior-node equation already shown.
+        """
+
+        mode = self.bc_mode
+        is_neumann = mode != "dirichlet"
+
+        self.bc_equation_caption.setVisible(is_neumann)
+        self.bc_equation_label.setVisible(is_neumann)
+
+        if not is_neumann:
+            return
+
+        if mode == "neumann_top":
+            self.bc_equation_caption.setText(
+                "Top boundary (specified heat loss q₀, node 0):"
+            )
+            formula = (
+                r"$T_0^{\,n+1} = T_1^{\,n} - \frac{2\,q_0}{k_0+k_1} "
+                r"+ \frac{A_0}{k_0}$"
+            )
+        else:
+            self.bc_equation_caption.setText(
+                "Bottom boundary (specified basal heat gain q, node n-1):"
+            )
+            formula = (
+                r"$T_{n-1}^{\,n+1} = T_{n-2}^{\,n} + \frac{2\,q}{k_{n-2}+k_{n-1}} "
+                r"+ \frac{A_{n-1}}{k_{n-1}}$"
+            )
+
+        self.bc_equation_label.setPixmap(render_mathtext(formula))
 
     # --------------------------------------------------
 
@@ -442,13 +602,36 @@ class HeatEquationGUI(QMainWindow):
         (the same formula shown beneath the table), which relaxes the
         column toward the steady-state solution of the 1-D conduction
         equation :math:`d(k\\, dT/dz)/dz = -A`. Boundary nodes (index 0
-        and ``n_nodes - 1``) are held fixed at their ``f(T)`` values.
+        and ``n_nodes - 1``) are held fixed at their ``f(T)`` values,
+        unless `bc_mode` makes one of them a Neumann (specified-flux)
+        boundary instead, in which case that node is updated each step
+        using the standard geophysics heat-flow convention
+        :math:`q = +k\\, dT/dz` (positive :math:`q` = upward-directed
+        flux, i.e. heat loss reported as positive):
+
+        .. math::
+
+            T_0^{n+1} = T_1^{n} - \\frac{2 q_0}{k_0+k_1} + \\frac{A_0}{k_0}
+
+        at the top (more heat loss cools the surface node), and
+
+        .. math::
+
+            T_{n-1}^{n+1} = T_{n-2}^{n} + \\frac{2 q}{k_{n-2}+k_{n-1}}
+            + \\frac{A_{n-1}}{k_{n-1}}
+
+        at the bottom (more heat gain from below warms the base node) --
+        both derived from a ghost-node approximation of the specified
+        flux at unit node spacing.
         """
         self.timer.stop()
         self.clear_results()
 
         n_nodes = self.node_spin.value()
         n_steps = self.iter_spin.value()
+
+        bc_mode = self.bc_mode
+        flux = self.flux_spin.value() if bc_mode != "dirichlet" else 0.0
 
         A = np.zeros(n_nodes)
         k = np.ones(n_nodes)
@@ -468,6 +651,15 @@ class HeatEquationGUI(QMainWindow):
             for i in range(n_nodes):
                 k[i] = self.value(i, 1, 1)
 
+        # The f(T) cell at a Neumann boundary holds "n/a", not a real
+        # initial temperature; replace it with the same ghost-node
+        # formula used in the update loop so the "Initial" curve stays
+        # physically sensible instead of plotting the raw flux value.
+        if bc_mode == "neumann_top":
+            T0[0] = T0[1] - 2.0 * flux / max(k[0] + k[1], 1e-12) + A[0] / max(k[0], 1e-12)
+        if bc_mode == "neumann_bottom":
+            T0[-1] = T0[-2] + 2.0 * flux / max(k[-2] + k[-1], 1e-12) + A[-1] / max(k[-1], 1e-12)
+
         results = [T0.copy()]
 
         T = T0.copy()
@@ -477,7 +669,8 @@ class HeatEquationGUI(QMainWindow):
             Tnew = T.copy()
 
             # Boundary nodes (0 and n_nodes - 1) are never touched here,
-            # so they stay fixed at their initial f(T) values.
+            # so they stay fixed at their initial f(T) values, unless
+            # overridden by the Neumann updates below.
             for i in range(1, n_nodes - 1):
 
                 left_k = k[i - 1]
@@ -488,6 +681,11 @@ class HeatEquationGUI(QMainWindow):
                     / (left_k + right_k)
                     + A[i] / max(k[i], 1e-12)
                 )
+
+            if bc_mode == "neumann_top":
+                Tnew[0] = T[1] - 2.0 * flux / max(k[0] + k[1], 1e-12) + A[0] / max(k[0], 1e-12)
+            if bc_mode == "neumann_bottom":
+                Tnew[-1] = T[-2] + 2.0 * flux / max(k[-2] + k[-1], 1e-12) + A[-1] / max(k[-1], 1e-12)
 
             T = Tnew
             results.append(T.copy())
