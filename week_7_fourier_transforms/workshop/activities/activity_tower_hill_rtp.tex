@@ -31,15 +31,15 @@ encountered groundwater, generating a series of phreatomagmatic explosions.
 The dominant structure is a broad maar crater roughly 3.5\,km in diameter,
 surrounded by a tuff ring and containing a central scoria cone.
 The subsurface consists of a diatreme --- a funnel-shaped breccia pipe ---
-filled with highly fragmented, magnetised basaltic material.
+filled with highly fragmented, magnetized basaltic material.
 
 \subsection{Why a maar produces a magnetic anomaly}
 
 Mafic magmas are typically rich in magnetite, which becomes permanently
-magnetised below the Curie temperature ($\sim$580\,$^{\circ}$C for magnetite)
+magnetized below the Curie temperature ($\sim$580\,$^{\circ}$C for magnetite)
 as the rock cools.
 The diatreme fill and associated intrusive material therefore carry both
-induced and remanent magnetisation, producing a measurable TMI anomaly
+induced and remanent magnetization, producing a measurable TMI anomaly
 over the crater and its flanks.
 
 In contrast, the surrounding Quaternary sediments and older Palaeozoic basement
@@ -62,13 +62,13 @@ At Tower Hill the IGRF parameters are approximately:
 
 The magnetic anomaly dataset used here is the \emph{IGRF-corrected} total
 magnetic intensity: the long-wavelength core field has been removed, leaving
-only anomalies due to crustal magnetisation contrasts.
+only anomalies due to crustal magnetization contrasts.
 
 \subsection{Why inclination matters for anomaly shape}
 
 At the magnetic pole ($I = -90^\circ$ in the Southern Hemisphere), the inducing
 field is vertical.
-The anomaly of a compact, uniformly magnetised body is then symmetric: a
+The anomaly of a compact, uniformly magnetized body is then symmetric: a
 single positive lobe centred above the body.
 
 Away from the pole, the horizontal component of the inducing field
@@ -86,7 +86,7 @@ Students should verify this displacement in the raw TMI map.
 
 \subsection{Thin-sheet spectral approximation}
 
-The total-field magnetic anomaly of a thin magnetised sheet at depth $z$
+The total-field magnetic anomaly of a thin magnetized sheet at depth $z$
 with thickness distribution $h(x,y)$ is computed in the Fourier domain as
 \begin{equation}
 \hat{T}(\mathbf{k})
@@ -135,7 +135,7 @@ H_\text{RTP}(\mathbf{k})
          {\bigl(|\Upsilon|^2 + \varepsilon\bigr)^2},
 \end{equation}
 where $\bar{\Upsilon}$ denotes the complex conjugate of $\Upsilon$,
-and $\varepsilon$ is a small water-level stabilisation constant
+and $\varepsilon$ is a small water-level stabilization constant
 (typically 0.05 in the notebook) that prevents division by zero.
 
 Applying $H_\text{RTP}$ to $\hat{T}(\mathbf{k})$ is equivalent to replacing
@@ -165,7 +165,7 @@ The demonstration in the notebook makes this explicit:
 
 Near the magnetic equator ($I \approx 0^\circ$), the direction-cosine factor
 $\Upsilon$ approaches zero for wavenumber components in the N--S direction.
-Even with water-level stabilisation, the filter amplifies these components
+Even with water-level stabilization, the filter amplifies these components
 strongly, producing ringing artefacts and unreliable phase corrections.
 
 Students exploring the inclination slider in the notebook should observe that
@@ -188,12 +188,12 @@ anomalies of interest.
 
 \subsection{RTP parameters}
 
-Both the ambient field direction and the assumed magnetisation direction
+Both the ambient field direction and the assumed magnetization direction
 are set to the IGRF values at the site:
 $I = -70^\circ$, $D = +10.5^\circ$.
-This is the standard assumption of purely induced magnetisation, which is
+This is the standard assumption of purely induced magnetization, which is
 a reasonable first approximation for Quaternary basalts.
-Where remanent magnetisation is significant and differs in direction
+Where remanent magnetization is significant and differs in direction
 from the induced component, the standard RTP will over- or under-correct
 individual anomalies; this is discussed further in Section~\ref{sec:limitations}.
 
@@ -221,7 +221,7 @@ The raw anomaly shows:
         geometry, modified by the field inclination.
 \end{itemize}
 The anomaly peak amplitude is of order 600--1000\,nT, consistent with a
-strongly magnetised basaltic body.
+strongly magnetized basaltic body.
 
 \subsection{RTP map}
 
@@ -255,11 +255,11 @@ to one kilometre visible in the maps.
 \section{Limitations and Caveats}
 \label{sec:limitations}
 
-\subsection{Remanent magnetisation}
+\subsection{Remanent magnetization}
 
-The standard RTP assumes induced magnetisation parallel to the present-day
+The standard RTP assumes induced magnetization parallel to the present-day
 field.
-Remanently magnetised rocks carry a frozen-in direction from the time of
+Remanently magnetized rocks carry a frozen-in direction from the time of
 cooling.
 If the remanent direction differs significantly from the current inducing
 field (which is common in Quaternary volcanics that have experienced
@@ -271,12 +271,12 @@ geomagnetic reversals or excursions), the standard RTP will:
         original.
 \end{itemize}
 Where rock-magnetic data exist (e.g.\ from oriented drill-core samples),
-the magnetisation direction can be incorporated explicitly.
+the magnetization direction can be incorporated explicitly.
 The Tower Hill volcanics are young enough that their remanence direction
 is unlikely to differ greatly from the current field, but this cannot be
 assumed in general.
 
-\subsection{Heterogeneous magnetisation}
+\subsection{Heterogeneous magnetization}
 
 The diatreme fill is a breccia: a chaotic mixture of country rock, basalt
 clasts, and matrix.
@@ -339,7 +339,7 @@ the Tower Hill application:
         the filter becomes singular near the equator.
   \item The phase spectrum of the raw TMI encodes the geometric asymmetry;
         the RTP filter phase encodes the correction.
-  \item Remanent magnetisation, heterogeneous susceptibility, and
+  \item Remanent magnetization, heterogeneous susceptibility, and
         irregular geometry all limit the accuracy of RTP in practice.
 \end{itemize}
 

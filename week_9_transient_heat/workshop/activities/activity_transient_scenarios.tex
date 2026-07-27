@@ -1,0 +1,224 @@
+\begin{activity}{Transient Geotherms}
+
+\newcommand{\transient}[2]{%
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+
+  % Upper: heat flow and subsidence vs time
+  \begin{scope}[shift={(0,0)}]
+    \draw[thick,->] (0,-1.5) -- (0,1.7) node[above] {$q$};
+    \draw[thick,->] (-0.2,0) -- (5.6,0) node[right] {$t$};
+    \draw[thick,->] (5.2,1.5) -- (5.2,-1.7) node[below] {$s$};
+    \node at (2.5,1.9) {#1};
+  \end{scope}
+
+  % Lower: T-z panel
+  \begin{scope}[shift={(0,-3)}]
+    \draw[thick,->] (0,0) -- (5.2,0) node[right] {$T$};
+    \draw[thick,->] (0,0) -- (0,-6.2) node[below] {$z$};
+
+    % PLACEHOLDER curve -- replace per scenario
+    \draw[thick, gray!80] plot[domain=0:5,samples=60] ({0.5+1.2*\x-0.07*\x*\x},{-\x});
+
+    #2
+  \end{scope}
+
+\end{tikzpicture}
+\end{center}
+}%
+
+\section*{Purpose}
+A steady-state geotherm is a snapshot at the end of a very long evolution. This activity asks what happens in between: given a geological event that perturbs a crust already at steady state, sketch the geotherm immediately after the event, reason about where it is heading, and sketch how it gets there.
+
+\section*{Learning Outcomes}
+By the end of this activity, you should be able to:
+\begin{itemize}
+  \item Sketch the geotherm immediately after a perturbing event, given the pre-event geotherm and a description of what the event does to the crust.
+  \item Use the curvature of a geotherm to predict where and how fast it will change, and recognize when heat production, latent heat release, or a changing boundary condition breaks that simple rule.
+  \item Reason from a scenario's boundary conditions alone whether its new equilibrium surface heat flow should be higher, lower, or unchanged.
+  \item Connect a scenario's evolving geotherm to its surface heat flow (from the gradient at $z=0$) and subsidence (from the integrated temperature difference), and sketch both through time.
+\end{itemize}
+
+\ntextbox{Theory}{
+\subsection*{Reading Curvature}
+The heat equation is 
+\[
+  \pdv{T}{t} = \kappa\left(\pdv[2]{T}{z} + \frac{A}{k}\right) \, .
+\]
+With no heat production ($A = 0$), this reduces to
+\[
+  \pdv{T}{t} \propto \pdv[2]{T}{z} \, ;
+\]
+temperature changes fastest exactly where the geotherm is most sharply curved, and does not change at all where it is a straight line. A kink, a sudden change in slope, is a point of enormous curvature, so it smooths out very quickly relative to everything else on the curve. With heat production ($A \neq 0$), there is a persistent curvature, exactly $-A/k$, even once equilibrium has been reached.
+
+\subsection*{Derived quantities}
+Once a geotherm is known, the surface heat flow can be determined by Fourier's Law, i.e., differentiation of temperature evaluated at the surface,
+\[
+  q_s(t) = k \eval{\pdv{T(t)}{z}}_{z = 0}\, .
+\]
+Temperature changes have the potential to affect the lithospheric buoyancy.  Isostatic change in elevation is an integrated difference between the geotherm and a reference:
+\[
+  \Delta \varepsilon(t) = \alpha \int_0^{z_{\mathit{min}}} [T(t) - T_{\text{ref}}] \dd{z}\, ,
+\]
+where $z_{\mathit{min}}$ is the depth at which the geotherms converge. We often refer to the subsidence as most thermal processes result in lower elevation as the system cools.  Subsidence has the opposite sign as elevation.
+}{core}
+
+\section*{The Scenarios}
+
+In each of the scenarios below, there are two associated subplots.  The bottom subplot includes the geotherm prior to the perturbing event.  This geotherm is in steady-state and includes a modest amount of heat production.  On this subplot you will draw the perturbed geotherm, the equilibrium geotherm and several steps detailing the temporal evolution of the geotherm.
+
+The top axes are for plotting the change in heat flow $q$ and subsidence, $s$, throughout the evolution of the event.  The horizontal, $t$-axis represents the heat flow and subsidence prior to the initiating event.
+
+In the description of each scenario below includes:
+\begin{itemize}
+  \item the effect of the event on the crust;
+  \item the change in boundary conditions resulting from the event; and
+  \item the equilibrium condition if it cannot be easily reasoned.
+\end{itemize}
+
+To make things easier, we assume the initiating event is instantaneous.  This assumption is common when developing analytic transient solutions.  Next week we'll methods that we can use to incorporate more complex evolution.
+
+\subsection*{A. Sedimentation}
+
+A package of sediments has been deposited on the crust with thickness, $h$.  The surface boundary temperature remains unchanged.  Deep in the crust, the heat flow entering from the mantle is unaffected by what happens above it; take this as fixed at its pre-event value.
+
+\subsection*{B. Erosion}
+
+The upper part of the crust has been eroded by $h$ kilometers.  The temperature at the surface has remained constant at $T_s$ throughout the process. Like sedimentation, the deep crust is unaffected by the heat flow entering from the mantle.
+
+\subsection*{C. Thrust}
+
+During an orogenic event, the upper $h$ kilometers of crust has been duplicated. The mantle heat flow entering the base of the crust is unchanged from its pre-event value. \emph{Note:} neglecting any other processes that occur during the orogeny, consider what affect this has on the equilibrium surface heat flow.
+
+\subsection*{D. Magmatic Intrusion}
+
+A magma body of thickness $h$ and temperature $T_i$ has been intruded into the upper crust. The surface and mantle boundary conditions remain unchanged. \emph{Note:} latent heat releases progressively as the body crystallizes, not all at once.
+
+\subsection*{E. Lower Crustal Delamination}
+
+The lower crust delaminates occurring in response to a large density increase related to melt extraction and subsequent metamorphism. The lower $h$ kilometers of crust has foundered, bringing the mantle temperature $T_m$ into contact with the new base of the crust.  As a result, the mantle heat flow has increased as convecting mantle has moved to fill the gap.
+
+\subsection*{F. Deglaciation}
+
+Following a deglaciation, the temperature at the top of the solid Earth increases from $T_g$ to $T_s$.  No ice is depicted in the pre-event geotherm.
+
+\begin{minipage}{0.48\textwidth}
+\transient{A. Sedimentation}{
+  \draw[dashed,gray!50] (0.5,-5) -- (0.5,0) node[above,black] {$T_s$};
+  \draw[dashed,gray!50] (0,-1.5) -- (5,-1.5);
+  \draw[thin,->] (-0.2,0) -- (-0.2,-1.5) node[midway,left] {$h$};
+}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\transient{B. Erosion}{
+  \draw[dashed,gray!50] (0.5,-5) -- (0.5,0) node[above,black] {$T_s$};
+  \draw[dashed,gray!50] (5,-1.5) -- (0,-1.5);
+  \draw[thin,->] (-0.2,-1.5) -- (-0.2,0) node[midway,left] {$h$};
+}
+\end{minipage}
+
+\begin{questions}
+  \question{Sedimentation vs.\ Erosion}
+  \begin{enumerate}[label=(\alph*)]
+    \item On the Sedimentation panel, sketch the geotherm immediately after deposition.
+    \answerbox[1.5cm]
+
+    \item On the Erosion panel, sketch the geotherm immediately after erosion.
+    \answerbox[1.5cm]
+
+    \item In Sedimentation, is the resulting discontinuity a kink \emph{within} the profile, or a jump \emph{at} the surface? What about Erosion? Mark the point of highest curvature on each sketch.
+    \answerbox[2.5cm]
+
+    \item Using the given basal heat flow condition for both, do you expect the new equilibrium surface heat flow to differ from the pre-event value in either scenario? Explain your reasoning before sketching the equilibrium curves.
+    \answerbox[2.5cm]
+
+    \item Sketch two or three intermediate geotherms for each scenario, showing the path from your initial curve to your equilibrium curve.
+    \answerbox[2cm]
+
+    \item In sedimentation, if the thermal conductivity of the fill is lower than the crust below---often a reasonable assumption, how would that affect the shape of the equilibrium geotherm?
+    \answerbox[2cm]
+ \end{enumerate}
+\end{questions}
+
+\begin{minipage}{0.48\textwidth}
+\transient{C. Thrust}{
+  \draw[dashed,gray!50] (0.5,-5) -- (0.5,0) node[above,black] {$T_s$};
+  \draw[dashed,gray!50] (2.14,-5) -- (2.14,0) node[above,black] {$T_b$};
+  \draw[dashed,gray!50] (0,-1.5) -- (5,-1.5);
+  \draw[thin,<->] (-0.2,0) -- (-0.2,-1.5) node[midway,left] {$h$};
+}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\transient{D. Igneous intrusion}{
+  \draw[dashed,gray!50] (4.0,-5) -- (4.0,0) node[above,black] {$T_i$};
+  \draw[dashed,gray!50] (5,-1.5) -- (0,-1.5);
+  \draw[dashed,gray!50] (5,-2.5) -- (0,-2.5);
+  \draw[thin,<->] (-0.2,-1.5) -- (-0.2,-2.5) node[midway,left] {$h$};
+}
+\end{minipage}
+
+\begin{questions}[resume]
+  \question{Sedimentation vs.\ Erosion}
+  \begin{enumerate}[label=(\alph*)]
+    \item On the Sedimentation panel, sketch the geotherm immediately after deposition.
+    \answerbox[1.5cm]
+
+    \item On the Erosion panel, sketch the geotherm immediately after erosion.
+    \answerbox[1.5cm]
+
+    \item In Sedimentation, is the resulting discontinuity a kink \emph{within} the profile, or a jump \emph{at} the surface? What about Erosion? Mark the point of highest curvature on each sketch.
+    \answerbox[2.5cm]
+
+    \item Using the given basal heat flow condition for both, do you expect the new equilibrium surface heat flow to differ from the pre-event value in either scenario? Explain your reasoning before sketching the equilibrium curves.
+    \answerbox[2.5cm]
+
+    \item Sketch two or three intermediate geotherms for each scenario, showing the path from your initial curve to your equilibrium curve.
+    \answerbox[2cm]
+  \end{enumerate}
+\end{questions}
+
+\begin{minipage}{0.48\textwidth}
+\transient{E. Delamination}{
+  \draw[dashed,gray!50] (4.75,-5) -- (4.75,0) node[above,black] {$T_m$};
+  \draw[dashed,gray!50] (0,-3.5) -- (5,-3.5);
+  \draw[dashed,gray!50] (0,-5) -- (5,-5);
+  \draw[thin,->] (-0.2,-5) -- (-0.2,-3.5) node[midway,left] {$h$};
+}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\transient{F. Deglaciation}{
+  \draw[dashed,gray!50] (0.5,-5) -- (0.5,0) node[above,black] {$T_g$};
+  \draw[dashed,gray!50] (2,-5) -- (2,0) node[above,black] {$T_s$};
+}
+\end{minipage}
+
+
+\begin{questions}[resume]
+  \question{Delamination vs.\ Deglaciation}
+  \begin{enumerate}[label=(\alph*)]
+    \item On the Delamination panel, sketch the geotherm immediately after foundering.
+    \answerbox[1.5cm]
+
+    \item On the Deglaciation panel, sketch the geotherm immediately after the temperature step.
+    \answerbox[1.5cm]
+
+    \item Both of these change a boundary condition rather than inserting a new layer -- but Delamination changes the \emph{deep} boundary and Deglaciation changes the \emph{shallow} one. Which do you expect to change surface heat flow sooner, and why?
+    \answerbox[2.5cm]
+
+    \item Sketch two or three intermediate geotherms for each scenario, and sketch your predicted heat flow and subsidence curves on the upper axes for all six scenarios from this activity.
+    \answerbox[2.5cm]
+  \end{enumerate}
+\end{questions}
+
+\section*{Key Ideas}
+
+\textbf{A kink smooths fast; a uniform insulating layer changes the equilibrium slowly.} These are not the same process happening at different speeds---they are genuinely different things. The sharp curvature at a fresh boundary relaxes quickly; the slower drift of the whole column toward its new equilibrium is a separate, much longer process governed by the whole column's response, not by that one point.
+
+\textbf{Adding or removing material with no heat production of its own changes temperatures without necessarily changing surface heat flow.} Because nothing new is generating heat, the same flux has to get through. 
+
+\textbf{Not every perturbation is conductive-only.} Latent heat release (Intrusion) and a change in the deep boundary condition itself (Delamination) both push the system away from the simple ``curvature predicts rate of change'' rule that holds when $A=0$ and nothing else is adding or removing heat along the way.
+
+\end{activity}

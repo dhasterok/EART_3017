@@ -118,7 +118,7 @@ Define a \emph{per--cell cost} $c=1/k$ so higher $k$ means lower cost. On the 4-
 \paragraph{What it does \emph{not} capture.} Diffusion is a \emph{field} phenomenon: flux spreads through \emph{all} cells. Dijkstra avoids low--$k$ regions entirely and returns a \emph{single} route (a geodesic in a resistance metric), thus providing a lower bound on traversal time and an upper bias on effective $k$.
 
 \section{Directed Random Walk (Mid--Fidelity Stochastic Diffusion)}
-A compromise between Dijkstra and full diffusion is a \emph{biased Markov jump process}:
+A compromize between Dijkstra and full diffusion is a \emph{biased Markov jump process}:
 \begin{itemize}
   \item At cell $(y,x)$, propose a move to a neighbor $j\in\{\uparrow,\downarrow,\leftarrow,\rightarrow\}$ with probability
   \[

@@ -424,7 +424,7 @@ The Nyquist frequency represents a \emph{theoretical} limit, not a guarantee of 
 
 Nyquist therefore defines the maximum frequency that is theoretically representable, not the maximum frequency that can be robustly recovered from data. Near $\nu_{\mathrm{Ny}}$, each cycle is sampled by very few points, such that any pair of samples is nearly equally likely to fall anywhere on the waveform. As a result, small sampling or timing errors can produce large phase errors and a systematic underestimation of amplitude (Figure~\ref{fig:nyquist}b). While amplitude may still be detectable close to the Nyquist frequency, phase information rapidly degrades and becomes effectively meaningless (Figure~\ref{fig:nyquist}c).
 
-In the worst case, sampling occurs exactly at the nodal points of the wave, yielding zero measured amplitude and an apparent phase offset of $180^\circ$ relative to the true signal.  This behaviour is particularly important for traveltime analysis, phase-sensitive inversions, and spectral interpretations in noisy data.
+In the worst case, sampling occurs exactly at the nodal points of the wave, yielding zero measured amplitude and an apparent phase offset of $180^\circ$ relative to the true signal.  This behavior is particularly important for traveltime analysis, phase-sensitive inversions, and spectral interpretations in noisy data.
 
 For practical purposes, a more conservative upper limit on usable frequency is often required.  A common rule of thumb is that reliable phase and amplitude recovery typically require at least four samples per cycle (Figure~\ref{fig:nyquist}b, blue line), corresponding to a frequency of approximately
 \[

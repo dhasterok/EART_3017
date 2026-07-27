@@ -9,13 +9,13 @@ To understand finite difference heat flow equations as direct consequences of en
 By the end of this activity, you should be able to:
 \begin{itemize}
   \item Derive the finite difference heat equation from energy conservation applied to a discrete node.
-  \item Interpret the Laplacian finite difference stencil ($T_{i+1} - 2T_i + T_{i-1}$) as a measure of local curvature or departure from the mean of neighbours.
+  \item Interpret the Laplacian finite difference stencil ($T_{i+1} - 2T_i + T_{i-1}$) as a measure of local curvature or departure from the mean of neighbors.
   \item Explain the role of heat production $A_i$ in modifying the temperature update.
   \item Connect the discrete finite difference equation to the continuous partial differential equation it approximates.
 \end{itemize}
 }
 
-Consider a vertical column of sediment divided into small layers. Heat flows between layers, and each layer can gain or lose energy depending on its neighbours and any internal heat production.
+Consider a vertical column of sediment divided into small layers. Heat flows between layers, and each layer can gain or lose energy depending on its neighbors and any internal heat production.
 
 Rather than solving a continuous equation, we will track how heat moves between
 \emph{discrete points}.
@@ -83,10 +83,10 @@ Explain in words:
 
 Finite difference equations are not numerical tricks—they are simply energy conservation applied locally.
 
-\textbf{Finite differences are discretised energy conservation.} The finite difference heat equation is not an approximation introduced for computational convenience — it is the exact energy balance for a discrete rock volume, with the continuous derivatives replaced by differences between neighbouring nodes. This is the same physics as the heat equation; only the representation changes.
+\textbf{Finite differences are discretized energy conservation.} The finite difference heat equation is not an approximation introduced for computational convenience — it is the exact energy balance for a discrete rock volume, with the continuous derivatives replaced by differences between neighboring nodes. This is the same physics as the heat equation; only the representation changes.
 
 {\color{blue}
-\textbf{The Laplacian stencil measures curvature.} The term $T_{i+1} - 2T_i + T_{i-1}$ is the discrete second derivative of temperature. It is positive when a node is cooler than the average of its neighbours (it receives net heat) and negative when it is warmer (it loses heat). This is exactly how diffusion works: it smooths by removing curvature.
+\textbf{The Laplacian stencil measures curvature.} The term $T_{i+1} - 2T_i + T_{i-1}$ is the discrete second derivative of temperature. It is positive when a node is cooler than the average of its neighbors (it receives net heat) and negative when it is warmer (it loses heat). This is exactly how diffusion works: it smooths by removing curvature.
 
 \begin{figure}[h]
 \centering

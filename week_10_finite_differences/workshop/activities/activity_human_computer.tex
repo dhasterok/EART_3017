@@ -5,7 +5,7 @@ To develop intuition for finite difference methods by acting as the nodes in a
 numerical heat flow model.
 
 In a numerical model, each point (node) updates its temperature using only
-information from its neighbours.
+information from its neighbors.
 
 \emph{In this activity, you will act as the nodes in a finite difference model.}
 
@@ -14,7 +14,7 @@ information from its neighbours.
 
 By the end of this activity, you should be able to:
 \begin{itemize}
-  \item Apply the finite difference update rule by computing temperature from neighbouring values.
+  \item Apply the finite difference update rule by computing temperature from neighboring values.
   \item Predict qualitatively how an initial temperature distribution evolves under the diffusion update rule.
   \item Explain why temperature peaks smooth out and why the system approaches a uniform (or linear) steady state.
   \item Describe why heat transfer is a local process and how information about temperature propagates through a grid one node at a time.
@@ -50,7 +50,7 @@ At each step, interior nodes update their temperature according to:
 
 This means:
 \begin{itemize}
-    \item you look at your two neighbours,
+    \item you look at your two neighbors,
     \item take the average,
     \item and update your value.
 \end{itemize}
@@ -67,14 +67,15 @@ This means:
     \question{Iteration}
     Repeat the following for several steps:
     \begin{enumerate}
-        \item Show your value to your neighbours.
+        \item Show your value to your neighbors.
         \item Compute your new value.
         \item Update simultaneously.
     \end{enumerate}
 
     \textbf{Record the evolution of the system.} (Use the table below to track temperature values at each node across three time steps.)
 
-    \begin{center}
+    \begin{table}[h]
+        \centering
         \begin{tblr}{
             colspec = {c*{9}{X[c]}},
             row{2-Z} = {ht=2.5em},
@@ -94,7 +95,8 @@ This means:
             7 & & & & & & & & & \\
             8 & & & & & & & & & \\
         \end{tblr}
-    \end{center}
+    \end{table}
+    \FloatBarrier
 
     \question{Observations}
     Discuss:
@@ -110,7 +112,7 @@ This means:
     \textbf{Explain in words:}
     \begin{itemize}
         \item Why does the system become smoother over time?
-        \item What role do neighbouring nodes play?
+        \item What role do neighboring nodes play?
         \item How does this relate to diffusion?
     \end{itemize}
     \answerbox[4cm]
@@ -135,7 +137,7 @@ where $S$ is a constant heat input.
 \begin{itemize}
     \item What happens to the system over time?
     \item Does it still become uniform?
-    \item What steady-state behaviour emerges?
+    \item What steady-state behavior emerges?
 \end{itemize}
 
 \bigskip
@@ -149,9 +151,7 @@ Arrange students in a grid.
 \textbf{Update rule:}
 \begin{equation}
     T_{i,j}^{\text{new}} =
-    \frac{
-    T_{i+1,j} + T_{i-1,j} + T_{i,j+1} + T_{i,j-1}
-    }{4}
+    \frac{ T_{i+1,j} + T_{i-1,j} + T_{i,j+1} + T_{i,j-1} }{4}
 \end{equation}
 
 
@@ -186,12 +186,12 @@ using the discrete equation
 
 \section*{Key Ideas}
 
-Heat flow is a local process: each point evolves based on its neighbours.
+Heat flow is a local process: each point evolves based on its neighbors.
 
-\textbf{Numerical models evolve through local interactions.} Each node only communicates with its immediate neighbours. Global behaviour (e.g., a uniform steady state) emerges from many local interactions over many time steps. There is no global solution found in one step.
+\textbf{Numerical models evolve through local interactions.} Each node only communicates with its immediate neighbors. Global behavior (e.g., a uniform steady state) emerges from many local interactions over many time steps. There is no global solution found in one step.
 
-\textbf{Information propagates at a finite rate.} Because each update depends only on nearest neighbours, a temperature change at one end of the chain cannot instantaneously affect the other end. It must propagate node by node, step by step. This is the discrete analogue of finite diffusion speed in the continuum.
+\textbf{Information propagates at a finite rate.} Because each update depends only on nearest neighbors, a temperature change at one end of the chain cannot instantaneously affect the other end. It must propagate node by node, step by step. This is the discrete analogue of finite diffusion speed in the continuum.
 
-\textbf{Steady state is reached when updates become zero.} The system reaches a steady state when every node's temperature equals the average of its neighbours: $T_i = (T_{i-1} + T_{i+1})/2$. This is the discrete form of $\nabla^2 T = 0$ --- the Laplace equation for heat without sources.
+\textbf{Steady state is reached when updates become zero.} The system reaches a steady state when every node's temperature equals the average of its neighbors: $T_i = (T_{i-1} + T_{i+1})/2$. This is the discrete form of $\nabla^2 T = 0$ --- the Laplace equation for heat without sources.
 
 \end{activity}

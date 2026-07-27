@@ -1,76 +1,62 @@
 \begin{activity}{Stability, Time Stepping, and Information Transfer}
 
 \section*{Purpose}
-To develop physical intuition for numerical stability in explicit finite
-difference schemes.
+To develop physical intuition for numerical stability in explicit finite difference schemes.  In a time-stepping model, a field is updated step-by-step. Each step (iteration) uses information from neighboring nodes.  Think of information as spreading gradually through the system.
 
-In a time-stepping model, temperature is updated step-by-step. Each step uses information from neighbouring nodes.
-
-Think of heat as spreading gradually through the system.
-
-{\color{red}
 \section*{Learning Outcomes}
 
 By the end of this activity, you should be able to:
 \begin{itemize}
   \item State the stability condition for the explicit finite difference heat equation and identify the quantities it depends on.
   \item Explain physically why the allowable time step is proportional to $\Delta z^2$ and inversely proportional to $\kappa$.
-  \item Describe what physically happens when the stability limit is exceeded, and why this corresponds to physically impossible behaviour.
+  \item Describe what physically happens when the stability limit is exceeded, and why this corresponds to physically impossible behavior.
   \item Compare stability requirements for materials with different thermal diffusivities.
 \end{itemize}
 }
 
-\section*{Part A: Prediction}
-
-\textbf{Consider two cases:}
+\section*{Part A: Prediction and reasoning}
+Before running anything, discuss:
 \begin{itemize}
-    \item very small time steps
-    \item very large time steps
+    \item What do you expect for a very small time step? A very large one?
+    \item Heat diffuses at a rate set by $\kappa$. Why can't it move arbitrarily far
+    in a single time step?
 \end{itemize}
-
-What do you expect to happen in each case?
 \answerbox[3cm]
+
+\section*{Part A: What breaks, and when}
+Your instructor will run the explicit finite-difference solver for the diffusion
+equation ($\kappa = 1$) at several time steps $\Delta t$, holding $\Delta z$ fixed.
+Record what you observe for each run (smooth decay, mild wobble, or blow-up), then
+compute $\Delta t / \Delta z^2$ for each case.
+\answerbox[3.5cm]
+
+\textbf{Task:} Looking at your table, what value of $\Delta t/\Delta z^2$ seems to
+separate stable runs from unstable ones?
+\answerbox[2cm]
+
+\section*{Part B: Reading the stability condition}
+For a one-dimensional explicit scheme,
+\[
+\Delta t < \frac{\Delta z^2}{2\kappa}.
+\]
+Compare this to the threshold you found in Part A. \textbf{Explain} why the allowable
+time step depends on $\Delta z$ and $\kappa$ the way it does --- what does this mean
+physically, in terms of how far thermal information can travel between nodes in one
+step?
+\answerbox[4cm]
+
+\textit{Optional --- if time permits:} Your instructor also ran the implicit and
+Crank--Nicolson schemes at the same unstable $\Delta t$. Both stayed stable. If implicit
+methods are unconditionally stable, why would anyone still use the explicit scheme?
 
 \section*{Part B: Physical reasoning}
 
-\textbf{Task:}
-Explain why heat cannot move arbitrarily far in a single time step.
-
-What determines how quickly heat diffuses through a material?
-\answerbox[3cm]
-
-\section*{Part C: Stability condition}
-
-For a one-dimensional explicit scheme:
-\begin{equation}
-\Delta t < \frac{\Delta z^2}{2\kappa}
-\end{equation}
-
-\textbf{Tasks:}
-\begin{itemize}
-    \item Why does the allowable time step depend on $\Delta z$?
-    \answerbox[2cm]
-    \item Why does it depend on thermal diffusivity $\kappa$?
-    \answerbox[2cm]
-\end{itemize}
-
-\section*{Part D: Interpretation}
-
-\textbf{Task:}
 Interpret the stability condition as a limit on how fast thermal information can move between nodes.
 
 Why can heat not ``jump'' over nodes in a single time step?
+
+What determines how quickly heat diffuses through a material?
 \answerbox[3cm]
-
-\section*{Part E: Geological interpretation}
-
-\textbf{Explain:}
-\begin{itemize}
-    \item Why are sedimentary basins (low $\kappa$) easier to model?
-    \answerbox[2cm]
-    \item Why do high-diffusivity materials require smaller time steps?
-    \answerbox[2cm]
-\end{itemize}
 
 \bigskip
 
@@ -111,7 +97,7 @@ Numerical instability occurs when the model allows heat to propagate faster than
     node[midway, below, font=\scriptsize] {$\Delta z$};
   \node[font=\scriptsize, red] at (6.5,-1.8) {$\ell_T > \Delta z$ — heat skips nodes x};
 \end{tikzpicture}
-\caption{Stability requires that the thermal length $\ell_T = \sqrt{\kappa\,\Delta t}$ does not exceed the node spacing $\Delta z$. When it does, heat is asked to propagate past neighbouring nodes in one step, which is physically impossible and causes numerical blow-up.}
+\caption{Stability requires that the thermal length $\ell_T = \sqrt{\kappa\,\Delta t}$ does not exceed the node spacing $\Delta z$. When it does, heat is asked to propagate past neighboring nodes in one step, which is physically impossible and causes numerical blow-up.}
 \end{figure}
 }
 

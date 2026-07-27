@@ -28,7 +28,7 @@ a sound geophysical understanding for each question.
 
 \section*{Notebook Structure}
 
-The practical notebook (\texttt{week\_7\_fourier.ipynb}) is organised into six
+The practical notebook (\texttt{week\_7\_fourier.ipynb}) is organized into six
 sections:
 \begin{enumerate}
   \item Load and display gravity, magnetics, and topography/sediment grids
@@ -69,7 +69,7 @@ using an interactive slider from $-20$ to $+100$~km.
 \subsection*{Q1 — Upward continuation as a low-pass filter}
 
 \paragraph{Expected answer.}
-Narrow, localised anomalies disappear first because they correspond to high
+Narrow, localized anomalies disappear first because they correspond to high
 spatial wavenumbers; the exponential decay factor $e^{-2\pi|k|z}$ is smallest
 for large $|k|$.  Broad, regional features persist longest because they are
 associated with small $|k|$.  This implies that short-wavelength anomalies
@@ -85,11 +85,11 @@ more laterally extensive structure.
 \subsection*{Q2 — Residual anomalies}
 
 \paragraph{Expected answer.}
-The residual (observed $-$ regional) emphasises sources not accounted for by the
+The residual (observed $-$ regional) emphasizes sources not accounted for by the
 long-wavelength regional, typically shallower lithological contrasts, intrusive
 bodies, or structural offsets.  Gravity and magnetic residuals are often
 spatially correlated where lithology governs both density and susceptibility
-(e.g.\ mafic intrusions), but may disagree where remanent magnetisation decouples
+(e.g.\ mafic intrusions), but may disagree where remanent magnetization decouples
 the two fields, or where a density contrast exists without a corresponding
 susceptibility contrast.
 
@@ -194,7 +194,7 @@ Key assumptions and their failure modes:
 \section{Section~3 — Reduction to the Pole (Q10--13)}
 % ─────────────────────────────────────────────────────────────────────────────
 
-The stabilised RTP filter
+The stabilized RTP filter
 $H_\mathrm{RTP} = \bar{\Theta}^2 / (|\Theta|^2 + \varepsilon)^2$
 is applied to the total magnetic intensity (TMI) grid.  Physical spacing in km
 is used for the wavenumber axes.  Students explore inclination ($-90°$ to $-10°$)
@@ -222,7 +222,7 @@ be noted.
   \item Near the equator ($I \approx 0$), the direction-cosine factor $\Theta$
         approaches zero for wavenumbers in the north--south direction, making the
         filter singular.  The inversion is numerically unstable even with
-        regularisation, so RTP cannot be reliably applied at low magnetic
+        regularization, so RTP cannot be reliably applied at low magnetic
         latitudes.
 \end{enumerate}
 
@@ -234,14 +234,14 @@ to the north of anomaly centres (where RTP has moved the peak) and negative
 differences to the south.  This dipolar difference pattern encodes the along-field
 asymmetry of the original TMI anomaly.  Larger differences indicate either a
 stronger phase shift (lower inclination, shallower source) or stronger
-magnetisation contrast.
+magnetization contrast.
 
-\subsection*{Q13 — Remanent magnetisation}
+\subsection*{Q13 — Remanent magnetization}
 
 \paragraph{Expected answer.}
 The RTP filter applies a single phase correction based on the ambient-field
-direction.  Where a body carries remanent magnetisation in a significantly
-different direction (e.g.\ a reversely magnetised unit), RTP will
+direction.  Where a body carries remanent magnetization in a significantly
+different direction (e.g.\ a reversely magnetized unit), RTP will
 \emph{over-correct} or \emph{under-correct} the anomaly, potentially distorting
 its shape and position rather than centring it.  Students who have covered
 remanence (e.g.\ in Week 6) may identify candidate anomalies as those that do
