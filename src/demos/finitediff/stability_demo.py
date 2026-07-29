@@ -26,6 +26,8 @@ Reuses ``render_mathtext`` and ``MplCanvas`` from ``finitediff_demo.py``
 rather than redefining them.
 """
 
+import csv
+import io
 import sys
 from pathlib import Path
 
@@ -51,11 +53,13 @@ from PyQt6.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QHeaderView,
+    QFileDialog,
 )
 
 import matplotlib as mpl
 
 from src.demos.finitediff.finitediff_demo import render_mathtext, MplCanvas
+from src.common.gui import gui_io
 
 SCHEMES = ["Explicit (FTCS)", "Implicit (BTCS)", "Crank-Nicolson"]
 STABILITY_LIMIT = 0.5   # explicit FTCS: stable only for r <= 0.5
@@ -373,6 +377,15 @@ class StabilityGUI(QMainWindow):
         button_layout.addWidget(self.reset_button)
         left_layout.addLayout(button_layout)
 
+        export_layout = QHBoxLayout()
+        self.copy_csv_button = QPushButton("Copy table as CSV")
+        self.export_csv_button = QPushButton("Export table (.csv)")
+        self.export_pdf_button = QPushButton("Export figure (.pdf)")
+        export_layout.addWidget(self.copy_csv_button)
+        export_layout.addWidget(self.export_csv_button)
+        export_layout.addWidget(self.export_pdf_button)
+        left_layout.addLayout(export_layout)
+
         # -------------------------------
         # Right: plot
         # -------------------------------
@@ -397,6 +410,10 @@ class StabilityGUI(QMainWindow):
         self.run_button.clicked.connect(self.run_model)
         self.clear_button.clicked.connect(self.clear_results)
         self.reset_button.clicked.connect(self.reset_to_defaults)
+
+        self.copy_csv_button.clicked.connect(self.copy_table_csv)
+        self.export_csv_button.clicked.connect(self.export_table_csv)
+        self.export_pdf_button.clicked.connect(self.export_figure_pdf)
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.animation_step)
@@ -540,6 +557,30 @@ class StabilityGUI(QMainWindow):
 
     # --------------------------------------------------
 
+    def _row_depths(self):
+        """Depth (row index * dz) for every current table row, used as
+        the leading column when copying/exporting the table."""
+        dz = self.dz_spin.value()
+        return [row * dz for row in range(self.table.rowCount())]
+
+    def copy_table_csv(self):
+        gui_io.copy_table_csv(
+            self.table, row_labels=self._row_depths(), row_label_header="Depth (m)"
+        )
+
+    def export_table_csv(self):
+        gui_io.export_table_csv(
+            self.table, parent=self, default_name="stability_table.csv",
+            row_labels=self._row_depths(), row_label_header="Depth (m)",
+        )
+
+    def export_figure_pdf(self):
+        gui_io.export_figure_pdf(
+            self.canvas.fig, parent=self, default_name="stability_figure.pdf"
+        )
+
+    # --------------------------------------------------
+
     def clear_results(self):
         self.timer.stop()
         self.canvas.ax.clear()
@@ -598,16 +639,19 @@ class StabilityGUI(QMainWindow):
         dt = self.dt_spin.value()
         depth = np.arange(len(results[0])) * self.dz_spin.value()
 
-        ax.plot(results[0], depth, "--", linewidth=2, color="black", label="Initial")
+        ax.plot(results[0], depth, "--", linewidth=2, color="black",
+                marker="o", markersize=4, label="Initial")
 
         cmap = mpl.colormaps["viridis"]
         ncurves = len(results) - 1
         for i in range(1, len(results)):
             c = cmap(i / max(ncurves, 1))
-            ax.plot(results[i], depth, color=c, linewidth=1.5, alpha=0.9)
+            ax.plot(results[i], depth, color=c, linewidth=1.5, alpha=0.9,
+                     marker="o", markersize=4)
 
         last_n = step_numbers[-1]
         ax.plot(results[-1], depth, color=cmap(1.0), linewidth=2.5,
+                marker="o", markersize=4,
                 label=f"n={last_n} (t={last_n * dt:.3g}s)")
 
         r = self.current_r()

@@ -1,4 +1,4 @@
-\begin{activity}{Stability, Time Stepping, and Information Transfer}
+\begin{activity}{Stability and Information Transfer}
 
 \section*{Purpose}
 To develop physical intuition for numerical stability in explicit finite difference schemes.  In a time-stepping model, a field is updated step-by-step. Each step (iteration) uses information from neighboring nodes.  Think of information as spreading gradually through the system.
@@ -12,98 +12,224 @@ By the end of this activity, you should be able to:
   \item Describe what physically happens when the stability limit is exceeded, and why this corresponds to physically impossible behavior.
   \item Compare stability requirements for materials with different thermal diffusivities.
 \end{itemize}
-}
 
-\section*{Part A: Prediction and reasoning}
-Before running anything, discuss:
-\begin{itemize}
-    \item What do you expect for a very small time step? A very large one?
-    \item Heat diffuses at a rate set by $\kappa$. Why can't it move arbitrarily far
-    in a single time step?
-\end{itemize}
+\ntextbox{Diffusion as a Finite Difference Problem}{
+  The 1-D diffusion equation for temperature $T(z,t)$ is
+  \[
+    \pdv{T}{t} = \kappa\,\pdv[2]{T}{z},
+  \]
+  with $\kappa$ the thermal diffusivity. Discretize space into nodes $T_i \approx T(i\,\Delta z, t)$ and time into levels $T_i^n \approx T(i\,\Delta z, n\,\Delta t)$. The spatial second derivative is approximated with the usual central difference,
+  \[
+    \left.\pdv[2]{T}{z}\right|_i \approx \frac{T_{i+1} - 2T_i + T_{i-1}}{\Delta z^2},
+  \]
+  and we define the dimensionless stability parameter
+  \[
+    r = \frac{\kappa\,\Delta t}{\Delta z^2}.
+  \]
+  The three schemes differ only in \emph{which time level} the right-hand side is evaluated at.
+
+  \medskip
+  \textbf{Explicit (forward-time, centred-space, FTCS)}
+
+  Evaluate the spatial derivative at the \emph{old} time level $n$:
+  \[
+    \frac{T_i^{n+1} - T_i^n}{\Delta t} = \kappa\,\frac{T_{i+1}^n - 2T_i^n + T_{i-1}^n}{\Delta z^2}.
+  \]
+  Solving directly for $T_i^{n+1}$:
+  \[
+    T_i^{n+1} = T_i^n + r\left(T_{i+1}^n - 2T_i^n + T_{i-1}^n\right).
+  \]
+  Every term on the right is already known, so this is an explicit update --- no system of equations to solve, but (as derived earlier) stable only for $r \leq \tfrac12$.
+
+  \medskip
+  \textbf{Implicit (backward-time, centred-space, BTCS)}
+
+  Evaluate the spatial derivative at the \emph{new} time level $n+1$ instead:
+  \[
+    \frac{T_i^{n+1} - T_i^n}{\Delta t} = \kappa\,\frac{T_{i+1}^{n+1} - 2T_i^{n+1} + T_{i-1}^{n+1}}{\Delta z^2}.
+  \]
+  Rearranging so all unknowns ($n+1$) are on the left and all knowns ($n$) are on the right:
+  \[
+  -r\,T_{i-1}^{n+1} + (1+2r)\,T_i^{n+1} - r\,T_{i+1}^{n+1} = T_i^n.
+  \]
+  This couples every node's new value to its neighbors' new values, so it is a tridiagonal linear system solved simultaneously for the whole row --- the cost of unconditional stability is a linear solve every time step, not just a formula
+  evaluation.
+
+  \medskip
+  \textbf{Crank--Nicolson: averaging the two}
+
+  Crank--Nicolson evaluates the spatial derivative as the \emph{average} of the explicit
+  (old-level) and implicit (new-level) versions:
+  \[
+  \frac{T_i^{n+1} - T_i^n}{\Delta t} = \frac{\kappa}{2}
+  \left[\frac{T_{i+1}^{n} - 2T_i^{n} + T_{i-1}^{n}}{\Delta z^2}
+  + \frac{T_{i+1}^{n+1} - 2T_i^{n+1} + T_{i-1}^{n+1}}{\Delta z^2}\right].
+  \]
+  Rearranged into the same known/unknown form as implicit:
+  \[
+  -\frac{r}{2}\,T_{i-1}^{n+1} + (1+r)\,T_i^{n+1} - \frac{r}{2}\,T_{i+1}^{n+1}
+  = \frac{r}{2}\,T_{i-1}^{n} + (1-r)\,T_i^{n} + \frac{r}{2}\,T_{i+1}^{n}.
+  \]
+  Like implicit, this is a tridiagonal system each step.
+}{core}
+
+
+\section*{Setup}
+
+In this activity, we will will be working with a simple thermal model of a temperature spike in a background thermal gradient. To illustrate some of the important concepts without the complications of a specific unit system, we will use the units summarized in the table below.
+\begin{center}
+\begin{tabular}{@{}cc@{}}
+  \toprule
+  \textbf{Quantity} & \textbf{Label} \\
+  \midrule
+  $\Delta z$ & length units ($\mathrm{L}$) \\ 
+  $\Delta t$ & time units ($\mathrm{T}$) \\ 
+  $\kappa$ & $\mathrm{L}^2/\mathrm{T}$ \\
+  $T$	& degrees $^\circ$ \\
+  $r = \kappa \frac{\Delta t}{\Delta z^2}$ & dimensionless \\
+  \bottomrule
+\end{tabular}
+\end{center}
+We will be using Dirichlet boundary conditions with fixed temperature of \SI{15}{^\circ} at the surface and \SI{55}{^\circ} at the base.  For simplicity, we are assuming a thermal diffusivity $\kappa = 1\,\mathrm{L}^2\,\mathrm{T}^{-1}$. Our grid is discretized with an interval of $\Delta z = 2\,\mathrm{L}$.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/stability_problem}
+    \caption{Initial and equilibrium temperatures for a used to diffusion models for stability.}
+    \label{fig:initial_temp}
+\end{figure}
+\FloatBarrier
+
+
+\section*{Tasks}
+
+Complete the following questions:
+\begin{questions}
+    \question{Prediction and reasoning}
+    Before running anything, discuss:
+    \begin{itemize}
+        \item What do you expect for a very small time step? A very large one?
+        \item Heat diffuses at a rate set by $\kappa$. Why can't it move arbitrarily far in a single time step?
+    \end{itemize}
+    \answerbox[3cm]
+
+    \question{What breaks, and when}
+
+    \input{figures/explicit_table}
+    \FloatBarrier
+
+    In Table~\ref{tab:explicit} (above) are the explicit finite-difference solution to a temperature spike in a uniform thermal gradient (Figure~\ref{fig:initial_temp}). In the table below, record what you observe for each run (smooth decay, mild wobble, or blow-up), then compute $\Delta t / \Delta z^2$ for each case.
+
+    \begin{center}
+        \begin{tblr}{
+            colspec = {ccXX},
+            hline{1,2,6} = {solid},
+            hline{3-5} = {dashed},
+            vline{1-3,5} = {solid},
+            vline{4} = {dashed},
+            row{1} = {font=\bfseries},
+            row{2-5} = {ht=2.5em},
+        }
+        $\Delta t$ & $\Delta z$ & $\Delta t / \Delta z^2$ & Solution behavior \\ 
+        1 & 2 & & \\
+        1.75 & 2 & & \\
+        2.25 & 2 & & \\
+        3 & 2 & & \\
+        \end{tblr}
+    \end{center}
+
+    Looking at your table, what value of $\Delta t/\Delta z^2$ seems to separate stable runs from unstable ones?
+    \answerbox[2cm]
+
+    \question{Reading the stability condition}
+    For a explicit scheme, the stability criteria requires that the grid dimensions and step size satisfy the inequality
+    \[
+        \kappa \frac{\Delta t}{\Delta z^2} \leq \frac{1}{2 d}\, ,
+    \]
+    where $d$ is the dimensionality, 1--3.
+    If we rearrange this equation into the parts we can change and those that can't,
+    \[
+        2 d \kappa \leq \frac{\Delta z^2}{\Delta t}\, .
+    \]
+    Compare this to the threshold you found in Question 2. \textbf{Explain} why the allowable time step depends on $\Delta z$ and $\kappa$ the way it does---what does this mean physically, in terms of how far thermal information can travel between nodes in one step?
+    \answerbox[4cm]
+
+    \input{figures/explicit_table}
+    \FloatBarrier
+
+    In Table~\ref{tab:implicit} (above) the temperature spike experiment has been repeated using the implicit method instead.  Record what you observe for each run (smooth decay, mild wobble, or blow-up), then compute $\Delta t / \Delta z^2$ for each case.
+
+    \begin{center}
+        \begin{tblr}{
+            colspec = {ccXX},
+            hline{1,2,6} = {solid},
+            hline{3-5} = {dashed},
+            vline{1-3,5} = {solid},
+            vline{4} = {dashed},
+            row{1} = {font=\bfseries},
+            row{2-5} = {ht=2.5em},
+        }
+        $\Delta t$ & $\Delta z$ & $\Delta t / \Delta z^2$ & Solution behavior \\ 
+        1 & 2 & & \\
+        1.75 & 2 & & \\
+        2.25 & 2 & & \\
+        3 & 2 & & \\
+        \end{tblr}
+    \end{center}
+
+    You may notice that this time all the runs are stable.  Implicit solutions are unconditionally stable.  There is a third formulation, much like the forward (explicit), and backwards (implicit) there is method similar to the central difference in time called the Crank--Nicholson Method.  It involves taking the average of the explicit and implicit solutions wrapped up into one and is solved with a tridiagonal solver in the same way as the implicit method.  This method is more accurate and also stable. Why is this method more accurate?
+    \answerbox[2cm]
+
+    \question{Physical reasoning}
+    Interpret the stability condition as a limit on how fast thermal information can move between nodes.
+
+    Why can heat not ``jump'' over nodes in a single time step?
+
+    What determines how quickly heat diffuses through a material?
 \answerbox[3cm]
-
-\section*{Part A: What breaks, and when}
-Your instructor will run the explicit finite-difference solver for the diffusion
-equation ($\kappa = 1$) at several time steps $\Delta t$, holding $\Delta z$ fixed.
-Record what you observe for each run (smooth decay, mild wobble, or blow-up), then
-compute $\Delta t / \Delta z^2$ for each case.
-\answerbox[3.5cm]
-
-\textbf{Task:} Looking at your table, what value of $\Delta t/\Delta z^2$ seems to
-separate stable runs from unstable ones?
-\answerbox[2cm]
-
-\section*{Part B: Reading the stability condition}
-For a one-dimensional explicit scheme,
-\[
-\Delta t < \frac{\Delta z^2}{2\kappa}.
-\]
-Compare this to the threshold you found in Part A. \textbf{Explain} why the allowable
-time step depends on $\Delta z$ and $\kappa$ the way it does --- what does this mean
-physically, in terms of how far thermal information can travel between nodes in one
-step?
-\answerbox[4cm]
-
-\textit{Optional --- if time permits:} Your instructor also ran the implicit and
-Crank--Nicolson schemes at the same unstable $\Delta t$. Both stayed stable. If implicit
-methods are unconditionally stable, why would anyone still use the explicit scheme?
-
-\section*{Part B: Physical reasoning}
-
-Interpret the stability condition as a limit on how fast thermal information can move between nodes.
-
-Why can heat not ``jump'' over nodes in a single time step?
-
-What determines how quickly heat diffuses through a material?
-\answerbox[3cm]
+\end{questions}
 
 \bigskip
 
-{\color{red}
 \section*{Key Ideas}
 
-Numerical instability occurs when the model allows heat to propagate faster than physically possible.
-
-{\color{blue}
-\textbf{The stability condition is a physical causality constraint.} Heat diffuses at a rate set by $\kappa$. In a time step $\Delta t$, physical heat can travel at most $\sqrt{\kappa\,\Delta t}$. The stability condition $\Delta t < \Delta z^2/2\kappa$ ensures that this thermal length cannot exceed the node spacing $\Delta z$. Violating the condition means asking the model to move heat further in one step than the physics allows.
+\textbf{Numerical instability occurs when the model allows heat to propagate faster than physically possible.} Heat diffuses at a rate set by $\kappa$. In a time step $\Delta t$, physical heat can travel at most $\sqrt{2 \kappa\,\Delta t}$. The stability condition $\Delta t < \Delta z^2/(2 d \kappa)$ ensures that this thermal length cannot exceed the node spacing $\Delta z$. Violating the condition means asking the model to move heat further in one step than the physics allows.
 
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}[scale=1.05]
   % --- Stable case ---
-  \node[font=\small\bfseries, green!50!black] at (1.5, 2.0) {Stable ($\ell_T < \Delta z$)};
-  \foreach \x in {0, 1.5, 3.0} {
+  \node[font=\small\bfseries, green!50!black] at (1.5, 1.0) {Stable ($\delta_{\text{step}} < \Delta z$)};
+  \foreach \x/\lbl in {0/T_{i-1}, 1.5/T_i, 3.0/T_{i+1}} {
     \draw[fill=gray!20] (\x, 0) circle (0.3);
+    \node[font=\scriptsize] at (\x, 0) {$\lbl$};
   }
   \draw (0.3,0) -- (1.2,0);
   \draw (1.8,0) -- (2.7,0);
   \draw[<->, thick, green!60!black] (0,-0.7) -- (0.9,-0.7)
-    node[midway, below, font=\scriptsize] {$\ell_T$};
+    node[midway, below, font=\scriptsize] {$\delta_{\text{step}}$};
   \draw[<->] (0,-1.2) -- (1.5,-1.2)
     node[midway, below, font=\scriptsize] {$\Delta z$};
-  \node[font=\scriptsize, green!60!black] at (1.5,-1.8) {$\ell_T < \Delta z$ \checkmark};
+  \node[font=\scriptsize, green!60!black] at (1.5,-1.8) {$\delta_{\text{step}} < \Delta z$ \checkmark};
 
   % --- Unstable case ---
-  \node[font=\small\bfseries, red] at (6.5, 2.0) {Unstable ($\ell_T > \Delta z$)};
-  \foreach \x in {5.0, 6.5, 8.0} {
+  \node[font=\small\bfseries, red] at (6.5, 1.0) {Unstable ($\delta_{\text{step}} > \Delta z$)};
+  \foreach \x/\lbl in {5.0/T_{i-1}, 6.5/T_i, 8.0/T_{i+1}} {
     \draw[fill=gray!20] (\x, 0) circle (0.3);
+    \node[font=\scriptsize] at (\x, 0) {$\lbl$};
   }
   \draw[red, thick] (5.3,0) -- (6.2,0);
   \draw[red, thick] (6.8,0) -- (7.7,0);
   \draw[<->, thick, red] (5.0,-0.7) -- (7.1,-0.7)
-    node[midway, below, font=\scriptsize] {$\ell_T$};
+    node[midway, below, font=\scriptsize] {$\delta_{\text{step}}$};
   \draw[<->] (5.0,-1.2) -- (6.5,-1.2)
     node[midway, below, font=\scriptsize] {$\Delta z$};
-  \node[font=\scriptsize, red] at (6.5,-1.8) {$\ell_T > \Delta z$ — heat skips nodes x};
+  \node[font=\scriptsize, red] at (6.5,-1.8) {$\delta_{\text{step}} > \Delta z$ — heat skips nodes x};
 \end{tikzpicture}
-\caption{Stability requires that the thermal length $\ell_T = \sqrt{\kappa\,\Delta t}$ does not exceed the node spacing $\Delta z$. When it does, heat is asked to propagate past neighboring nodes in one step, which is physically impossible and causes numerical blow-up.}
+\caption{Stability requires that the thermal  $\delta_{\text{step}} = \sqrt{2 \kappa\,\Delta t}$ does not exceed the node spacing $\Delta z$. When it does, heat is asked to propagate past neighboring nodes in one step, which is physically impossible and causes numerical blow-up.}
 \end{figure}
-}
 
 \textbf{Finer grids require smaller time steps.} Because stability scales as $\Delta z^2$, halving the grid spacing reduces the maximum allowable time step by a factor of four. Increasing resolution is therefore expensive: the number of spatial nodes doubles \emph{and} the number of time steps quadruples to cover the same total time.
 
 \textbf{High diffusivity is more demanding numerically.} Materials with large $\kappa$ (e.g., peridotite, ice) diffuse heat quickly and require smaller time steps for numerical stability than low-diffusivity materials (e.g., clay-rich sediments). This is the reverse of the geological situation: fast-diffusing materials are easier to model geologically but harder numerically.
-}
 
 \end{activity}

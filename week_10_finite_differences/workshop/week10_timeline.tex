@@ -19,10 +19,10 @@ This workshop builds intuition for finite difference methods through physical re
 \section*{Learning Outcomes}
 Students will:
 \begin{itemize}
-  \item Understand finite difference equations as local statements of energy conservation.
-  \item Develop intuition for how numerical solutions evolve through neighbor interactions.
-  \item Interpret boundary conditions as geological assumptions.
-  \item Understand numerical stability as a limit on physical information transfer.
+    \item Understand finite difference equations as local statements of energy conservation.
+    \item Develop intuition for how numerical solutions evolve through neighbor interactions.
+    \item Interpret boundary conditions as geological assumptions.
+    \item Understand numerical stability as a limit on physical information transfer.
 \end{itemize}
 
 \section*{Session Flow (\timelinelength\ min)}
@@ -34,124 +34,103 @@ Think back over the analytic solutions in Weeks 8 and 9 (steady-state geotherm, 
 \timeline[slot]{Mini-lecture --- From energy conservation to finite differences}{15}
 
 \begin{itemize}
-  \item The heat equation as a statement of local energy balance on a small rock volume.
-  \item Discretization: replacing continuous derivatives with differences between neighboring nodes.
-  \item The finite difference stencil: each node updates based on its neighbors.
-  \item Stability: why the time step cannot be arbitrarily large ($\Delta t < \Delta x^2 / 2\kappa$).
+    \item The heat equation as a statement of local energy balance on a small rock volume.
+    \item Discretization: replacing continuous derivatives with differences between neighboring nodes.
+    \item The finite difference stencil: each node updates based on its neighbors.
+    \item Stability: why the time step cannot be arbitrarily large ($\Delta t < \Delta x^2 / 2\kappa$).
+\end{itemize}
+
+What makes geological systems difficult to solve analytically? Consider:
+\begin{itemize}
+    \item Analytic solutions require simplifications:
+    \begin{itemize}
+        \item constant properties
+        \item simple geometries
+        \item simple boundary conditions
+    \end{itemize}
+    \item Real geology violates these assumptions.
 \end{itemize}
 
 \timeline[item]{From Conservation of Energy to Finite Differences}{30}
 
-\textbf{Concept} \\
 Finite difference equations arise from applying conservation of energy to small
 rock volumes.
 
 \begin{itemize}
-  \item Nodes represent local rock volumes.
-  \item Heat flux enters and leaves each node.
-  \item Heat production adds energy locally.
+    \item Nodes represent local rock volumes.
+    \item Heat flux enters and leaves each node.
+    \item Heat production adds energy locally.
 \end{itemize}
 
 The equation is \emph{not a numerical trick}.  The Laplacian as a measure of curvature (difference from neighbors).  This is just bookkeeping of energy.
 
-\timeline[item]{Finite Differences as a Physical Process: Human Finite Difference Solver}{35}
+\timeline[item]{Human Finite Difference Solver}{30}
 
-\textbf{Concept} \\
-Numerical models evolve through local interactions between neighboring nodes.
+Numerical models evolve through local interactions between neighboring nodes. We'll do an exercise with you as the computer to see how finite difference solutions work.
 
-\textbf{Discuss:}
+We'll explore
 \begin{itemize}
-  \item smoothing of temperature
-  \item spreading of heat
-  \item role of gradients
-\end{itemize}
-\typeout{wshopitem=\arabic{wshopitem}}
-
-
-\timeline[item]{Boundary Conditions as Geological Assumptions}{20}
-
-\textbf{Concept:} Boundary conditions determine what physical system the model represents.
-\begin{itemize}
-  \item Fixed temperature (Dirichlet)
-  \item Fixed heat flux (Neumann)
+    \item smoothing of temperature
+    \item spreading of heat
+    \item role of gradients
 \end{itemize}
 
 \timeline[slot]{Break}{10}
 
-\timeline[slot]{When Analytic Solutions Break Down}{25}
+\timeline[item]{Boundary Conditions as Geological Assumptions}{30}
 
-\textbf{Concept}
+Boundary conditions determine what physical system the model represents. There are two fundamental types:
 \begin{itemize}
-  \item Analytic solutions require simplifications:
-  \begin{itemize}
-      \item constant properties
-      \item simple geometries
-      \item simple boundary conditions
-  \end{itemize}
-  \item Real geology violates these assumptions.
+    \item Fixed value (Dirichlet)
+    \item Fixed flux (Neumann)
 \end{itemize}
+We'll also look at two additional types (Robin and Cauchy) that are combinations or independent applications of these types.
 
-\textbf{Discussion prompts}
-\begin{itemize}
-  \item What makes geological systems difficult to solve analytically?
-  \item Why do irregular boundaries force numerical approaches?
-\end{itemize}
+\timeline[item]{Stability and Information Transfer}{25}
 
-Your Iberia exercise on the problem has several issues that make it impossible to develop an analytic form, including variable sediment thickness, lateral structure, varying boundary condition.
-
-\timeline[item]{Numerical Stability and Information Transfer}{40}
-
-\textbf{Concept} Stability limits impose a ``speed limit'' on thermal information:
+Stability limits impose a ``speed limit'' on thermal information:
 \[
-  \Delta t < \frac{\Delta x^2}{2\kappa}
+    \Delta t < \frac{\Delta x^2}{2\kappa}
 \]
-
+Heat propagates gradually through diffusion---numerical schemes must respect this physical constraint. We'll explore:
 \begin{itemize}
-  \item Heat propagates gradually through diffusion.
-  \item Numerical schemes must respect this.
-  \item small vs large time steps
-  \item what happens when updates are too large
-  \item stability = causality
-  \item information cannot skip nodes
+    \item small vs large time steps
+    \item what happens when updates are too large
+    \item stability = causality
+    \item information cannot skip nodes
 \end{itemize}
 
 Instability is not just numerical---it is physically impossible behavior.
 
-\timeline[slot]{Wrap-up}{20}
+\timeline[slot]{Wrap-up}{10}
 
 \textbf{Key connections}
-
 \begin{itemize}
-  \item Finite differences = local energy balance + neighbor interaction
-  \item Boundary conditions = geological assumptions
-  \item Stability = physical constraint on information transfer
+    \item Finite differences = local energy balance + neighbor interaction
+    \item Boundary conditions = geological assumptions
+    \item Stability = physical constraint on information transfer
 \end{itemize}
 
 \textbf{Discussion}
-
 \begin{itemize}
-  \item How does the numerical method compare to analytic solutions?
-  \item What advantages do numerical models provide?
-  \item Where might these methods be applied beyond heat flow?
+    \item How does the numerical method compare to analytic solutions?
+    \item What advantages do numerical models provide?
+    \item Where might these methods be applied beyond heat flow?
 \end{itemize}
 
-{\color{red}
-\timeline[slot]{Course Conclusion}{15}
+\timeline[slot]{Course Conclusion}{20}
 
 This is the final workshop of the course. Rather than a preview, use this time to connect ideas across all ten weeks.
 
-\begin{itemize}
-  \item \textbf{Fields and gradients} (Week 1): all geophysical observations are measurements of fields; gradients tell us where physical property contrasts occur.
-  \item \textbf{Physical properties} (Week 2): the link between measurement and geology lives in physical properties and their mixing laws.
-  \item \textbf{Inversion} (Week 3): going from data to model requires confronting non-linearity, non-uniqueness, and the role of prior information.
-  \item \textbf{Gravity and isostasy} (Weeks 4--5): density contrasts at depth shape both the gravity field and the long-term mechanical balance of the lithosphere.
-  \item \textbf{Magnetics and Fourier methods} (Weeks 6--7): vector fields, polarity, depth--wavelength relationships, and spectral filtering.
-  \item \textbf{Geothermics} (Weeks 8--9): heat flow connects surface measurements to deep thermal structure via conduction, diffusion, and phase changes.
-  \item \textbf{Finite differences} (Week 10): numerical methods let us move beyond analytic limits to model the real, heterogeneous Earth.
-\end{itemize}
-
-Ask students: \emph{Which concept or technique from this course do you think will be most useful in your future work, and why?}
-}
+\begin{description}
+    \item [Fields and gradients] (Week 1): all geophysical observations are measurements of fields; gradients tell us where physical property contrasts occur.
+    \item [Physical properties] (Week 2): the link between measurement and geology lives in physical properties and their mixing laws.
+    \item [Inversion] (Week 3): going from data to model requires confronting non-linearity, non-uniqueness, and the role of prior information.
+    \item [Gravity and isostasy] (Weeks 4--5): density contrasts at depth shape both the gravity field and the long-term mechanical balance of the lithosphere.
+    \item [Magnetics and Fourier methods] (Weeks 6--7): vector fields, polarity, depth--wavelength relationships, and spectral filtering.
+    \item [Geothermics] (Weeks 8--9): heat flow connects surface measurements to deep thermal structure via conduction, diffusion, and phase changes.
+    \item [Finite differences] (Week 10): numerical methods let us move beyond analytic limits to model the real, heterogeneous Earth.
+\end{description}
 
 \workshopend
 \notepage
@@ -161,5 +140,3 @@ Ask students: \emph{Which concept or technique from this course do you think wil
 \subimport{activities/}{activity_human_computer}
 \subimport{activities/}{activity_geologic_boundaries}
 \subimport{activities/}{activity_stability}
-\subimport{activities/}{activity_validation}
-\subimport{activities/}{activity_geological_modeling}
