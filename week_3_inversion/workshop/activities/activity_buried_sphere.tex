@@ -2,29 +2,21 @@
 
 \section*{Purpose}
 
-The purpose of this activity is to develop an intuitive understanding
-of inversion using the gravity anomaly of a buried sphere.
-By comparing grid-search and gradient-based approaches, you will
-explore how inverse methods search model space, how model
-parameterization influences the solution, and why non-uniqueness and
-noise make geophysical interpretation challenging. 
+The purpose of this activity is to develop an intuitive understanding of inversion using the gravity anomaly of a buried sphere.  By comparing grid-search and gradient-based approaches, you will explore how inverse methods search model space, how model parameterization influences the solution, and why non-uniqueness and noise make geophysical interpretation challenging. 
 
 \section*{Learning Outcomes}
 
 By the end of this activity, you should be able to:
 \begin{itemize}
-    \item Explain the difference between forward modelling, grid search,
-          and gradient-based inversion.
+    \item Explain the difference between forward modelling, grid search, and gradient-based inversion.
     \item Describe the role of the Jacobian matrix in determining model updates.
     \item Identify sources of non-uniqueness in geophysical inverse problems.
-    \item Explain how model parameterization can improve or degrade
-          inversion performance.
-    \item Describe the influence of noise on inversion results and
-          uncertainty.
+    \item Explain how model parameterization can improve or degrade inversion performance.
+    \item Describe the influence of noise on inversion results and uncertainty.
 \end{itemize}
 
 \ntextbox{Theory}{
-    \texbf{Gravity of a Buried Sphere}
+    \textbf{Gravity of a Buried Sphere}
 
     We will return to how we derive the gravity due to a buried sphere later.  For now, we will model the vertical gravity anomaly at the surface produced by a buried sphere of depth $z$ (to center), radius $a$, and density contrast $\Delta\rho$. For a station at horizontal radius $r=\sqrt{x^2+y^2}$,
     \begin{equation}
@@ -40,18 +32,18 @@ By the end of this activity, you should be able to:
 
     We seek $\vb{m} = [z_c, a, \Delta\rho]\T$ that minimizes the objective function,
     \[
-    \Phi(m) = \underbrace{\left\| W_d\,(\vb{g}_{\mathrm{obs}} - g(\vb{m})) \right\|_2^2}_{\text{model misfit}} + \underbrace{\lambda^2\,\left\| (\vb{m} - \vb{m}_{0}) \right\|_2^2}_{\text{regularization term}}\, ,
+        \Phi(m) = \underbrace{\left\| W_d\,(\vb{g}_{\mathrm{obs}} - g(\vb{m})) \right\|_2^2}_{\text{model misfit}} + \underbrace{\lambda^2\,\left\| (\vb{m} - \vb{m}_{0}) \right\|_2^2}_{\text{regularization term}}\, ,
     \]
     where $\vb{g}_{\mathrm{obs}}$ are the observed gravity data, $g(\vb{m})$ is the predicted gravity using Equation~\ref{eq:forward}, $\vb{W}_d$ is a diagonal matrix of inverse variance (data uncertainty), and $\lambda$ is the Levenberg--Marquart regularization parameter.  Our initial guess is given by the column vector $\vb{m}_0$.
 
     To determine $\vb{m}$, we have to solve iteratively, with each model step being
     \[
-    \Delta \vb{m} = (\vb{J}\T \vb{W}_d^2 \vb{J} + \lambda^2 \vb{I})^{-1} 
-    \vb{J}\T \vb{W}_d^2 \, (\vb{g}_{\mathrm{obs}} - g(\vb{m}_0))\, .
+        \Delta \vb{m} = (\vb{J}\T \vb{W}_d^2 \vb{J} + \lambda^2 \vb{I})^{-1} 
+        \vb{J}\T \vb{W}_d^2 \, (\vb{g}_{\mathrm{obs}} - g(\vb{m}_0))\, .
     \]
 
     \paragraph{Role of $\lambda$.} Small $\lambda$ approaches Gauss--Newton (fast, but can be unstable if $J^\top J$ is ill-conditioned). Large $\lambda$ yields smaller, more stable steps (gradient-descent-like), helpful far from the solution or with strong trade-offs.
-}
+}{core}
 
 \begin{questions}
     \question{Jacobian}
@@ -61,7 +53,7 @@ By the end of this activity, you should be able to:
     \[
         \vb{J} =
         \begin{bmatrix} 
-            \displaystyle\pdv{g}{z_c} & \displaystyle\pdv{g}{a} & \displaystyle\pdv{g}{\Delta\rho}
+            \displaystyle{\pdv{g}{z_c}} & \displaystyle{\pdv{g}{a}} & \displaystyle{\pdv{g}{\Delta\rho}}
         \end{bmatrix}\, .
     \]
     Derive the derivatives from Equation~\ref{eq:forward}.
