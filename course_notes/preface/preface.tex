@@ -8,7 +8,7 @@
 
 \section*{Purpose of These Notes}
 
-This text is written for a set of upper-level undergraduate, intermediate to advanced geophysics courses.  It covers a wide range of topics, but is centered around three key equations that are common to many geophysical fields: the potential field, diffusion, and wave equations.  There are several recurring themes drawn from the mathematics of these equations that is returned to over and over again as a device to deepen understanding of the similiarities and differences between geophysical techniques.
+This text is written for a set of upper-level undergraduate, intermediate to advanced geophysics courses.  It covers a wide range of topics, but is centered around three key equations that are common to many geophysical fields: the potential field, diffusion, and wave equations.  There are several recurring themes drawn from the mathematics of these equations that is returned to over and over again as a device to deepen understanding of the similarities and differences between geophysical techniques.
 
 Chapters are written to support multiple passes: a first pass focused on concepts and physical meaning, later passes focused on mathematics and implementation.  Text boxes contain mathematical definitions or technical details that can be skipped on a first reading if the concepts are already familiar.  Worked examples illustrate how apply the techniques.
 
@@ -33,7 +33,7 @@ Why not start with the solution?  Plugging in numbers is something ``so easy eve
 
 These notes are structured to flow logically from topic to topic.  Derivations are also structured in a very logical way in order to ease their readability and to emphasize the important concepts. To simplify the reading for you there are some signposts that are meant to identify how much attention you should pay to a particular section of the text.  There are also a lot of equations in the text, though most are intermediate steps in derivations and not important.  Only a handful are required to memorize and a few more that you should pay careful attention to that help build intuition about a particular field.
 
-To signpost specific text, I use numbered boxes whos color indicates the purpose and examples are provided below.
+To signpost specific text, I use numbered boxes whose color indicates the purpose and examples are provided below.
 \ntextbox{Core Structure}{These text boxes are the most important to read.  They include key concepts at the start of most chapters, important derivations (though do not need to be memorized) that represent core ideas of geophysical theory.}{core}
 \ntextbox{Conventions and Alerts}{These text boxes are meant to make you stop and read.  They are used to designate conventions that may differ from other texts.  They also draw your attention to an important point that may otherwise be overlooked.}{alert}
 \ntextbox{Mathematical Tools}{These text boxes include mathematical concepts that are critical to understanding a method or result used in the main text.  You should make sure you understand these concepts.  If you are already familiar with the topic, you may skip them.}{mathtool}
@@ -103,7 +103,7 @@ Geophysics, however, studies a planet.
 
 As a result, geophysicists routinely use scaled or non-SI units that are more natural for the size, duration, and magnitude of Earth processes. Here is a partial list:
 \begin{itemize}
-    \item distances in kilometres (\si{km}) rather than metres,
+    \item distances in kilometers (\si{km}) rather than metres,
     \item times in millions of years\footnote{There is much debate about what units to use to express millions of years in geology.  Different authors opt for various conventions, m.y., \si{Myr}, etc.  We'll use two: $\si{Ma}$ to denote (past) age and age ranges; and \si{My} for model time, future time, or similar time spans.} (\si{My} or \si{Ma}) rather than seconds,
     \item gravity in \si{mGal}\ rather than \si{m.s^{-2}},
     \item magnetic field in \si{nT}\ rather than tesla,
@@ -130,7 +130,7 @@ Partial ($\pdv{}{z}$) and total derivatives ($\dv{}{z}$) follow standard convent
 
 \section*{Organization of the Book}
 
-The text is divided into three parts: Fundamentals of Geophysics; Geophysical Fields and Methods; and Computational and Inverse Methods.  Part I introduces physical properies and the general physics of fields.  Part II involves an investigation into the specific properties, classic solutions, and some modern approaches to geophysical fields and how they are used to study the solid Earth.  Part III provides a foundation into mathematical techniques that can be employed to process, model, and invert geophysical fields.  The techniques in Part III have broad utility across (geo)science.  
+The text is divided into three parts: Fundamentals of Geophysics; Geophysical Fields and Methods; and Computational and Inverse Methods.  Part I introduces physical properties and the general physics of fields.  Part II involves an investigation into the specific properties, classic solutions, and some modern approaches to geophysical fields and how they are used to study the solid Earth.  Part III provides a foundation into mathematical techniques that can be employed to process, model, and invert geophysical fields.  The techniques in Part III have broad utility across (geo)science.  
 
 The mathematical techniques in Part III are woven into the field chapters in Part II.  Because these techniques are so central to the study of modern geophysical fields, they deserve their own consideration that doesn't feel as if the methods can only be used in the one field where an example is demonstrated.  For that reason, I don't expect you to read straight through---rather I anticipate you will want to flip between parts to fully appreciate the subject.  I try to draw specific attention to these connections so that you know when this non-linear approach to reading will be beneficial.
 

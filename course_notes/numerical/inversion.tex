@@ -365,7 +365,7 @@ A unique model occurs when there is only one solution that fits the data.  Howev
     \centering
     \includegraphics[]{numerical/figures/nonunique.eps}
     \caption{An example of non-uniqueness from the simple inverse of $y = x^2$.
-    Solutions of $x = y^{1/2}$ are multivalued unless contrained.}
+    Solutions of $x = y^{1/2}$ are multivalued unless constrained.}
     \label{fig:nonunique}
 \end{figure}
 
@@ -533,7 +533,7 @@ The misfit functions introduced above provide a quantitative measure of how well
 
 \subsection{Linear Linear Least Squares (LLSQ)}\label{sec:llsq}
 
-Fitting lines and polynomials to data is one of the most common practices for interpreting data in many fields of science.  Most of you may be familiar with the functions that are used within a spreadsheet or other program, but may not know what it is doing behind the scenes.  Fitting a line to data is an inverse problem where we use data $y$, collected at discrete values of $x$ to determine the unknown fitting paramters, slope and $y$-intercept.
+Fitting lines and polynomials to data is one of the most common practices for interpreting data in many fields of science.  Most of you may be familiar with the functions that are used within a spreadsheet or other program, but may not know what it is doing behind the scenes.  Fitting a line to data is an inverse problem where we use data $y$, collected at discrete values of $x$ to determine the unknown fitting parameters, slope and $y$-intercept.
 
 Imagine we have collected number of data (N points in all) at known locations, $x = x_1,x_2,\ldots,x_N$, resulting in observations with values, $y = y_1,y_2,\ldots,y_N$.  Assuming the data appear sufficiently linear we wish to fit a single line to all the data.  We will need to determine a slope, $m_1$, and intercept, $m_0$, which are our model, i.e., $y = m_0 + m_1 x$.  Simply fitting the data by eye is not appropriate, as it does not provide a reliable way to determine the best-fitting model or quantify uncertainty in the parameters.
 
@@ -858,7 +858,7 @@ Previously we have focused on the misfit provided by the data $\phi_d$.  Regular
     \coreeq
     \Phi(\vb{m}) = \phi_d(\vb{m}) + \lambda \phi_m(\vb{m}) , 
 \end{equation}
-where $\lambda$ is the regularization hyperparameterthat controls the trade-off between fitting the data and satisfying the model constraints. The choice of $\phi_m$ depends on the desired characteristics of the model.
+where $\lambda$ is the regularization hyperparameter that controls the trade-off between fitting the data and satisfying the model constraints. The choice of $\phi_m$ depends on the desired characteristics of the model.
 
 
 \subsection{Damping (Tikhonov regularization)}
@@ -1480,7 +1480,7 @@ and the process is repeated until a decrease is achieved. If $\Phi_{\text{trial}
 
 \begin{table}{htbp}
     \centering
-    \caption{Comparision of Levenberg--Marquardt and steepest descent parameters.}
+    \caption{Comparison of Levenberg--Marquardt and steepest descent parameters.}
     \label{tab:inv_hyperparameters}
     \begin{tabular}{@{}lcl@{}}
         \toprule

@@ -40,7 +40,7 @@ Because of these differences, it is important to develop a clear distinction bet
         \midrule
         solves PDEs & transforms operators & approximates Fourier transforms \\
         finite domain (physics constrained) & infinite domain & finite domain (measurement-limited) \\
-        boundary conditions enforced & no boundaries & boundaries implictly periodic \\
+        boundary conditions enforced & no boundaries & boundaries implicitly periodic \\
         discrete eigenvalues & continuous spectrum & discrete, resolvable frequencies \\
         \bottomrule
     \end{tabular}
@@ -145,7 +145,7 @@ In temporal problems, frequency is commonly expressed in hertz (cycles per unit 
 
 The phase parameter determines where peaks, troughs, or zero crossings occur. Two waves may have identical amplitude and frequency but differ entirely in appearance due to differences in phase. In geophysics, phase often carries geometric information, such as the location of a source or the alignment of a signal relative to a reference point.
 
-A key observation is that an individual wave, regardless of how finely it is sampled, can be represented exactly using only these three parameters. A time or spatial series containing thousands of sampled values can therefore be compressed into just three numbers if it consists of a single wave. This idea underlies the utility of Fourier methods. Hence, wave descriptions, and Fourier Tranforms, provide a highly compact representation of information.
+A key observation is that an individual wave, regardless of how finely it is sampled, can be represented exactly using only these three parameters. A time or spatial series containing thousands of sampled values can therefore be compressed into just three numbers if it consists of a single wave. This idea underlies the utility of Fourier methods. Hence, wave descriptions, and Fourier Transforms, provide a highly compact representation of information.
 
 Most geophysical signals are not composed of a single wave, but rather a superposition of many waves with different frequencies or wavenumbers and phases. The Fourier transform determines these parameters for all constituent waves simultaneously, producing spectra that describe how amplitude and phase vary with scale. For signals dominated by a limited range of scales, this representation can dramatically reduce the complexity of the problem while preserving the essential physical information. Fourier transforms aid identifying dominant frequencies or wavelengths, assessing where noise becomes important, and applying scale-dependent operations (filters) in a controlled and physically interpretable way.
 
@@ -424,13 +424,13 @@ The Nyquist frequency represents a \emph{theoretical} limit, not a guarantee of 
 
 Nyquist therefore defines the maximum frequency that is theoretically representable, not the maximum frequency that can be robustly recovered from data. Near $\nu_{\mathrm{Ny}}$, each cycle is sampled by very few points, such that any pair of samples is nearly equally likely to fall anywhere on the waveform. As a result, small sampling or timing errors can produce large phase errors and a systematic underestimation of amplitude (Figure~\ref{fig:nyquist}b). While amplitude may still be detectable close to the Nyquist frequency, phase information rapidly degrades and becomes effectively meaningless (Figure~\ref{fig:nyquist}c).
 
-In the worst case, sampling occurs exactly at the nodal points of the wave, yielding zero measured amplitude and an apparent phase offset of $180^\circ$ relative to the true signal.  This behavior is particularly important for traveltime analysis, phase-sensitive inversions, and spectral interpretations in noisy data.
+In the worst case, sampling occurs exactly at the nodal points of the wave, yielding zero measured amplitude and an apparent phase offset of $180^\circ$ relative to the true signal.  This behavior is particularly important for travel-time analysis, phase-sensitive inversions, and spectral interpretations in noisy data.
 
 For practical purposes, a more conservative upper limit on usable frequency is often required.  A common rule of thumb is that reliable phase and amplitude recovery typically require at least four samples per cycle (Figure~\ref{fig:nyquist}b, blue line), corresponding to a frequency of approximately
 \[
     \nu_{\mathrm{practical}} \approx \frac{1}{4\Delta\xi}.
 \]
-At this sampling density, a waveform is sufficiently over-resolved that phase estimates are stable against noise, timing errors, and unfavourable sample placement relative to nodal points.  Frequencies between $1/(4\Delta\xi)$ and the Nyquist frequency may be representable in principle, but their interpretation should be treated with caution.
+At this sampling density, a waveform is sufficiently over-resolved that phase estimates are stable against noise, timing errors, and unfavorable sample placement relative to nodal points.  Frequencies between $1/(4\Delta\xi)$ and the Nyquist frequency may be representable in principle, but their interpretation should be treated with caution.
 \begin{figure}[htbp]
     \centering
     \includegraphics{numerical/figures/nyquist.eps}

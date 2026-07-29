@@ -1,5 +1,5 @@
 """
-Activity 9.A -- Half-space cooling figure
+Half-space cooling figure
 -------------------------------------------------------------------
 Plots T(z,t) = T_s + (T_b - T_s) * erf( z / (2 sqrt(kappa t)) ) at
 several times, on generic (symbolic, not numeric) axes: T increasing

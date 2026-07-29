@@ -21,10 +21,10 @@ Work backwards.  Start with the last equation you will need to solve the problem
 A couple things to keep in mind:
 \begin{description}
     \item [round quantities] -- we are generally looking for order-of-magnitude estimates---calculations you can do in your head---not precise answers;
-    \item [estimate unknowns] -- few values are truely unknown, bounds even rough can often be set;
-    \item [use geometric means] -- you will find that when using bounds values tend towards the smaller bound, a geometic mean $g = (\text{lower} \times \text{upper})^{1/2}$ of the bounds is often closer to the truth than an arithmetic mean;
+    \item [estimate unknowns] -- few values are truly unknown, bounds even rough can often be set;
+    \item [use geometric means] -- you will find that when using bounds values tend towards the smaller bound, a geometric mean $g = (\text{lower} \times \text{upper})^{1/2}$ of the bounds is often closer to the truth than an arithmetic mean;
     \item [use scientific notation] -- quicker for many unit conversions, multiplication and division;
-    \item [dimensional analyis] -- always check your units, it can reduce the number of mistakes and can be a way to construct equations when you can't remember the exact formula
+    \item [dimensional analysis] -- always check your units, it can reduce the number of mistakes and can be a way to construct equations when you can't remember the exact formula
 \end{description}
 
 \subsection{Rounding}
@@ -33,7 +33,7 @@ We can round numbers to make calculations quicker and easier.  For example, how 
 There are two values I keep in my head, $3\times10^{7}$ and $\pi \times 10^{7}$~\si{s}.  The former is simple and rounded to one digit whereas the latter often useful for canceling $\pi$, which shows up in a lot of equations.
 
 \subsection{Estimating Unknowns}
-Even when we have little information about the value for a property or a quantity, we can develop an estimate or place some rough bounds.  It is rare that we truely have no idea.
+Even when we have little information about the value for a property or a quantity, we can develop an estimate or place some rough bounds.  It is rare that we truly have no idea.
 
 Consider the velocity of a tectonic plate, which you will need for the eventual questions.  We know the velocity of a tectonic plate is between 0 and we can easily outwalk it, so we know it is less than \si{m.s^{-1}}.  We can do better.  Let's look at 3 ways to estimate it:
 \begin{description}
@@ -69,7 +69,7 @@ Division likewise is easier,
 \]
 Because we often only care about order-of-magnitude rather than precise estimates, we can limit our $m_1$ and $m_2$ to one to two digits.
 
-Many unit conversion become a sinch in scientific notation.  Using our seconds in a year above, if we needed the number of seconds in a million years (as geoscientists we often work in deep time) we multiply by $10^6$.  Hence, $(3 \times 10^{7}~\si{s.a^{-1}}) (10^6~\si{a.Ma^{-1}}) = 3 \times 10^{13}~\si{s.Ma^{-1}}$.
+Many unit conversion become a cinch in scientific notation.  Using our seconds in a year above, if we needed the number of seconds in a million years (as geoscientists we often work in deep time) we multiply by $10^6$.  Hence, $(3 \times 10^{7}~\si{s.a^{-1}}) (10^6~\si{a.Ma^{-1}}) = 3 \times 10^{13}~\si{s.Ma^{-1}}$.
 
 \subsection{Dimensional analysis as a test}
 Dimensional analysis is the process of checking units during mathematical operations to ensure that the correct units are determined in the end.  For example, if you calculate the force of gravity from $F = mg$, how do you know that you end up with the appropriate unit of newtons (N)?  We can write this as an equation:

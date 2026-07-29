@@ -161,7 +161,7 @@ At each stage, connect what you see back to the underlying Fourier-domain operat
 
     \question{When RTP Breaks Down: Instability and Limitations}
 
-        The direction-cosine factor $\Upsilon$ approaches zero for wavenumber components aligned with the horizontal field direction as $I\to0^\circ$. Even with water-level stabilization, the filter then amplifies those components strongly, producing ringing artefacts and unreliable phase corrections. The figure below reruns the exact same pipeline as Question 4, at the same declination, but at $I=8^\circ$ -- well below the stability threshold.
+        The direction-cosine factor $\Upsilon$ approaches zero for wavenumber components aligned with the horizontal field direction as $I\to0^\circ$. Even with water-level stabilization, the filter then amplifies those components strongly, producing ringing artifacts and unreliable phase corrections. The figure below reruns the exact same pipeline as Question 4, at the same declination, but at $I=8^\circ$ -- well below the stability threshold.
 
         \begin{figure}[h]
             \centering
@@ -193,7 +193,7 @@ At each stage, connect what you see back to the underlying Fourier-domain operat
 \begin{itemize}
   \item Magnetic anomalies are asymmetric away from the pole because the direction-cosine factor $\Upsilon(\mathbf{k})$ is complex and direction-dependent; at the pole it collapses to a real constant and the asymmetry vanishes.
   \item RTP is a Fourier-domain \emph{phase} correction: amplitude spectra before and after are nearly identical, while the phase correction varies strongly with direction in $\mathbf{k}$-space.
-  \item RTP is stable and reliable at steep inclinations like Tower Hill's ($I\approx-70^\circ$) but becomes singular as $I\to0^\circ$, amplifying noise into ringing artefacts.
+  \item RTP is stable and reliable at steep inclinations like Tower Hill's ($I\approx-70^\circ$) but becomes singular as $I\to0^\circ$, amplifying noise into ringing artifacts.
   \item RTP assumes induced-only magnetization parallel to the present field; remanent magnetization or heterogeneous susceptibility can degrade or invalidate the correction even when inclination itself is not the problem.
 \end{itemize}
 

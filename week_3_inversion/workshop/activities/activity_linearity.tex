@@ -31,7 +31,7 @@ When we are doing a geophysical experiment with the Earth as the medium,
 In most geophysical problems, \(\mathbf{A}\) is
 \begin{itemize}
   \item gravity -- distances from mass elements
-  \item magnetics -- sensor postions and dip angle
+  \item magnetics -- sensor positions and dip angle
   \item heat flow -- layer thicknesses and boundary conditions
   \item electromagnetics -- distances from conductive/resistive bodies
   \item seismology -- ray paths or travel times
@@ -67,7 +67,7 @@ If $y=ae^{\pm bx}$ then
 which is linear.  Examples: radioactive decay, compaction models, and attenuation relations.
 
 \subsection*{Change of variables}
-Sometimes a product of unknowns behaves as a single parameter (i.e., are inseperable).  For example from the gravity of a buried sphere, $g \propto a^3\Delta\rho$.  Define:
+Sometimes a product of unknowns behaves as a single parameter (i.e., are inseparable).  For example from the gravity of a buried sphere, $g \propto a^3\Delta\rho$.  Define:
 \[
   M=a^3\Delta\rho
 \]
@@ -118,7 +118,7 @@ In your groups:
   \answerbox[2cm]
 
   \item \textbf{Thermal conductivity $k(T,X)$:} 
-  We'll use this formulation in the problem set.  This equation is used  to estiamte thermal conductivity model for a solid solution series for a mineral.
+  We'll use this formulation in the problem set.  This equation is used  to estimate thermal conductivity model for a solid solution series for a mineral.
   \[
     k(T,X) = (a + bX + cX^2)\,(298/T)^n
   \]
@@ -146,7 +146,7 @@ In your groups:
   \answerbox[2cm]
 
   \item \textbf{Magnetics (2-D infinite dike):}
-  The ocean floor records chaotic reversals in Earth's magnetic field.  The remnant magnetic field is ``frozen'' in dikes produed at the mid-ocean ridge.
+  The ocean floor records chaotic reversals in Earth's magnetic field.  The remnant magnetic field is ``frozen'' in dikes produced at the mid-ocean ridge.
   \[
     \Delta T(x) = C\Big[\arctan\Big(\frac{x-x_1}{z}\Big) - \arctan\Big(\frac{x-x_2}{z}\Big)\Big]
   \]
@@ -205,7 +205,7 @@ In your groups:
 \textbf{The operator $\mathbf{A}$ encodes the physics and geometry of the experiment.} Changing the Earth (the model $\mathbf{m}$) changes the predictions; changing the experiment (the operator $\mathbf{A}$) also changes the predictions even if the Earth stays the same.
 
 \vspace{0.5em}
-\textbf{Many geophysical relations are non-linear but can be linearized.} Power laws become linear under a log-transform; functions with products of unknowns may become linear under a change of variables. Recognising these opportunities converts a difficult iterative problem into a tractable one.
+\textbf{Many geophysical relations are non-linear but can be linearized.} Power laws become linear under a log-transform; functions with products of unknowns may become linear under a change of variables. Recognizing these opportunities converts a difficult iterative problem into a tractable one.
 
 \vspace{0.5em}
 \textbf{Non-linearity has consequences for inversion}: the Jacobian must be recomputed at each iteration, convergence is not guaranteed, and the solution found may be a local rather than a global minimum. The choice of starting model matters far more for non-linear than for linear problems.

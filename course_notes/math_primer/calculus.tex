@@ -9,7 +9,7 @@ calculus, many of the concepts are really quite simple.
 \section{Derivatives: How fast am I going?} \label{apx:derivatives}
 
 \subsection{Rates of change}
-Something you are undoubtably familiar with is traveling.  Traveling from home
+Something you are undoubtedly familiar with is traveling.  Traveling from home
 to school in a car, on a bus, by foot?  In my case I biked to uni this morning.
 I started at home (let's call it point $H$) at $t_0$ and arrived at the uni
 (point $U$) some time later, $t_1$, for a total travel time $\Delta t = t_1 -
@@ -17,7 +17,7 @@ t_0$.  The distance traveled as the crow flies---there are no crows here... as
 the magpie(?) flies---going from $H$ to $U$ is $\Delta x = x_1 - x_0$.
 
 \vspace{8pt}
-\noindent {\it How fast was I travelling?}
+\noindent {\it How fast was I traveling?}
 
 We can write my speed as
 \begin{align*}
@@ -29,7 +29,7 @@ Graphically this represents the {\it slope} of a line on our graph
 \begin{figure}[hbt]
     \centering
     \includegraphics[]{math_primer/figures/average_velocity.pdf}
-    \caption{Average velocity on the bike ride beween home and work.}
+    \caption{Average velocity on the bike ride between home and work.}
     \label{fig:vavg1}
 \end{figure}
 
@@ -123,7 +123,7 @@ exist), or kinks (radical changes in slope at a point).  So in this case, the
 limit must exist whether we approach our point from one side or the other (e.g.,
 $\lim_{t \to t_P^-} = \lim_{t \to t_P^+}$).
 
-Thus far, we have assumed by trip beween home and work is in 1-dimension.
+Thus far, we have assumed by trip between home and work is in 1-dimension.
 Obviously this assumption over-simplifies the problem since my cycle trip to
 work took numerous turns left and right, and up- and downhill.  For the time
 being we will leave the one-dimensional case and we will return to the
@@ -241,7 +241,7 @@ derivatives,
     3: && \dv{H}{x} &= \dv{}{x} (x^2 + z^2) \\
     && &= 2 x.
 \end{align*}
-Now, we multiply each together and substitude each composite function to obtain
+Now, we multiply each together and substitute each composite function to obtain
 the derivative,
 \begin{align*}
     \dv{F}{x} &= \dv{F}{G} \dv{G}{H} \dv{H}{x} \\
@@ -322,8 +322,8 @@ $n$ steps in $x$, the width of the step is $\delta\! x = (b - a)/n$.  To find
 the area of each element, we multiply the step size, $\delta\! x$ by the value
 of the function within the $i$-th step, $f(\bar{x}_i)$.  It does not matter
 where we choose the value of the function so long as it is between the interval
-bounds, $x_i$ to $x_{i+1}$, because as the interval width appoaches zero the
-value of the fuction on each side of the interval approach the same value.
+bounds, $x_i$ to $x_{i+1}$, because as the interval width approaches zero the
+value of the function on each side of the interval approach the same value.
 Summing each element gives an estimate of the total area, 
 \begin{equation*}
     A \approx \sum_{i = 1}^{n} f(\bar{x}_{i}) \delta x.
@@ -367,7 +367,7 @@ sum becomes
     A \approx \sum_{i = 1}^{n} 2 \bar{x}_i \delta\! x .
 \end{equation*}
 If we choose $\bar{x}_i$ at a convenient location, say at the lower bound to the
-column width.  The $x$ coordintes that the function is evaluated at are $a$, $a
+column width.  The $x$ coordinates that the function is evaluated at are $a$, $a
 + \delta\! x$, $a + 2\delta\! x$ and so on.  This allows us to write the area
 as,
 \begin{align*}
@@ -453,7 +453,7 @@ Simplifying and bringing the constants outside the integral,
     \int x e^{-x^2} \dd{x} = - \frac{1}{2} \int e^{v} \dd{v} \\
 \end{equation*}
 Since this now looks like our elementary form, all we need to do is complete the
-integration and back subsitute the $v(x)$.
+integration and back substitute the $v(x)$.
 \begin{align*}
     \int x e^{-x^2} \dd{x} &= - \frac{1}{2} e^{v} \\
     &= - \frac{1}{2} e^{-x^2} .
@@ -466,11 +466,11 @@ Again there are times where we wish to integrate multiply say for area
 \begin{equation}
     \iint f(x,y) \dd{x} \dd{y} = \int_{A} f(x,y) \cdot \dd{\vb{a}},
 \end{equation}
-where $\dd{\vb{a}}$ implies area infintesimals and for volume,
+where $\dd{\vb{a}}$ implies area infinitesimals and for volume,
 \begin{equation}
     \iiint f(x,y,z) \dd{x} \dd{y} \dd{z} = \int_{V} f(x,y,z) \cdot \dd{\vb{v}},
 \end{equation}
-where $\dd{\vb{v}}$ implies volume infintesimals.  Note that the order in which
+where $\dd{\vb{v}}$ implies volume infinitesimals.  Note that the order in which
 we perform the integrations is irrelevant to the solution (although in reality,
 our choice of order may make it easier to derive).
 

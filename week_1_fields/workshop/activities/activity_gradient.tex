@@ -78,7 +78,7 @@ Elevation is a good place to start to think about gradients because we all intui
 
 \section*{The mathematics of gradients: the slopes of Mt. Shasta}
 
-Consider hiking a profile line over the peak of Mt. Shasta (Figure~\ref{fig:profile}, top panel).  You will start by walking up the slope of Mt.  Shasta.  The slope starts gently going up in elevation (a positive slope in Figure~\ref{fig:profile}, bottom panel), which increases as you climb in elevation.  The slope increases and reaches a maximum near the peak, then the slope starts to decrease as elevation still increases.  Once you reach the snow-capped peak there is no change in slope (i.e., slope = 0).  Then you decide to pull out your sled and quickly decend the other side (negative slope).
+Consider hiking a profile line over the peak of Mt. Shasta (Figure~\ref{fig:profile}, top panel).  You will start by walking up the slope of Mt.  Shasta.  The slope starts gently going up in elevation (a positive slope in Figure~\ref{fig:profile}, bottom panel), which increases as you climb in elevation.  The slope increases and reaches a maximum near the peak, then the slope starts to decrease as elevation still increases.  Once you reach the snow-capped peak there is no change in slope (i.e., slope = 0).  Then you decide to pull out your sled and quickly descend the other side (negative slope).
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.75\textwidth]{figures/mt_shasta_xprofile.pdf}
@@ -99,7 +99,7 @@ But the direction that you take matters.  Since we don't necessarily know the di
 \end{equation}
 At this point the way we solve this mathematically as opposed to a computer are different.  A computer will solve the problem much like above, taking the difference between the heights at $h(x + \Delta x)$ and $h(x)$ and dividing by the distance of each step ($\Delta x$).
 \begin{framed}
-    For our purposes generally during the course, we will take a more mathematical approach, taking the case where we want to know the slope at a continous series of point along the elevation profile.  In this case the distances between our steps approach zero and the slope we approximate the approaches a limit of the true slope at each point.  This is the definition of the derivative, and you can find an extended discussion as a tutorial online and in the math appendicies in the course notes.
+    For our purposes generally during the course, we will take a more mathematical approach, taking the case where we want to know the slope at a continuous series of point along the elevation profile.  In this case the distances between our steps approach zero and the slope we approximate the approaches a limit of the true slope at each point.  This is the definition of the derivative, and you can find an extended discussion as a tutorial online and in the math appendices in the course notes.
 \end{framed}
 
 If instead, you were to hike from south to north (+$y$-direction) we we can write the slope as
@@ -129,11 +129,11 @@ Because the components are in different directions, we cannot simply add them to
 
 From the result above, we learn that the slope is different depending upon the direction you walk (N-S) versus (E-W) which confounds the direction of the maximum slope.  You may also note that if we had walked in the opposite (negative) directions, we would have changed the sign of our slopes.  Do not fear, there is a simple mathematical solution to determine both the maximum slope and its direction.
 
-If we assume that from each point that we walked in either the +x or +y direction we can describe the local surface as a plane, the directions we walked were purposfully perpendicular to each other.  It turns out that these two directions can be used to define that plane and both the angle and magnitude of the maximum slope (magnitude) along it.  To determine the maximum slope along each individual little plane, we use the Pythagorean theorem, which you may remember from high school,
+If we assume that from each point that we walked in either the +x or +y direction we can describe the local surface as a plane, the directions we walked were purposefully perpendicular to each other.  It turns out that these two directions can be used to define that plane and both the angle and magnitude of the maximum slope (magnitude) along it.  To determine the maximum slope along each individual little plane, we use the Pythagorean theorem, which you may remember from high school,
 \begin{equation}
     \norm{s} = (s_x^2 + s_y^2)^{1/2}.
 \end{equation}
-Note that because we square each slope component before adding them, we have ensured that our resultant magniude of the slope is positive.  To determine the direction of the maximum slope, we can use trigonometry to determine the angle with respect to the x-axis as
+Note that because we square each slope component before adding them, we have ensured that our resultant magnitude of the slope is positive.  To determine the direction of the maximum slope, we can use trigonometry to determine the angle with respect to the x-axis as
 \begin{equation}
     \tan \theta = \frac{s_y}{s_x}.
 \end{equation}
@@ -162,9 +162,9 @@ In this exercise, we will take the previous example one step further by determin
     \end{figure}
 
     \begin{parts}
-        \part In Figure~\ref{fig:mc_elev} are two of the same topographic map of Marble Canyon.  On the top map, make a series of arrows parallel to the x-axis with length represpresenting the slope in the x-direction.  Again, arrow should point up slope.  Now on the same topographic map, make a series of arrows parallel to the y-axis with length representing the slope in the y-direction.
+        \part In Figure~\ref{fig:mc_elev} are two of the same topographic map of Marble Canyon.  On the top map, make a series of arrows parallel to the x-axis with length representing the slope in the x-direction.  Again, arrow should point up slope.  Now on the same topographic map, make a series of arrows parallel to the y-axis with length representing the slope in the y-direction.
         
-        Once you have both sets of arrows, create a new set of arrows on the bottom topograpic map that represent a combination of the two.  The resultant vector is simply a graphical application of the Pythagorean equation.  What you will have done is the same thing that the math is doing.  So when we are working with abstract fields that cannot be seen or felt by us, remember, the concept is shown here is the same.
+        Once you have both sets of arrows, create a new set of arrows on the bottom topographic map that represent a combination of the two.  The resultant vector is simply a graphical application of the Pythagorean equation.  What you will have done is the same thing that the math is doing.  So when we are working with abstract fields that cannot be seen or felt by us, remember, the concept is shown here is the same.
 
         \part How do the individual derivative components behave with respect to the ridge running north east of the canyon?
         \answerbox[3cm]
@@ -172,7 +172,7 @@ In this exercise, we will take the previous example one step further by determin
         \part For the northern ridge, why does the y-component have only positive slopes whereas the x-component is positive in some places and negative in others?
         \answerbox[3cm]
 
-        \part Can you find examples of either of the above situations occuring in the canyon itself?
+        \part Can you find examples of either of the above situations occurring in the canyon itself?
         \answerbox[2cm]
     \end{parts}
 \end{questions}

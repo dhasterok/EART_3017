@@ -189,7 +189,7 @@ Using the cross section in Figure~\ref{fig:xsection} as a basis to construct a d
 \begin{figure}
     \centering
     %\includegraphics[]{numerical/figures/.eps}
-    \caption{A discritized geologic cross-section of ???.  Each rock unit is assumed homogenous with a unique set of physical properties that describes it. This model will be used for producing numerical models.}
+    \caption{A discretized geologic cross-section of ???.  Each rock unit is assumed homogenous with a unique set of physical properties that describes it. This model will be used for producing numerical models.}
     \label{ref:xsection2}
 \end{figure}
 
@@ -366,7 +366,7 @@ For this reason, boundary conditions should be viewed not as technical details, 
 
 Many geologic systems contain sharp spatial variations in material properties.  Examples include layered sediments, faults, lithologic contacts, and the transition from crust to mantle. In such cases, thermal conductivity, heat capacity, or diffusivity may change abruptly over distances comparable to or smaller than the grid spacing.
 
-Sharp property gradients present a challenge for finite difference methods because standard central difference operators implicitly assume that coefficients vary smoothly across a stencil. When this assumption is violated, naïve discretizations can produce unphysical temperature profiles or incorrect heat fluxes.
+Sharp property gradients present a challenge for finite difference methods because standard central difference operators implicitly assume that coefficients vary smoothly across a stencil. When this assumption is violated, naïve discretizations can produce nonphysical temperature profiles or incorrect heat fluxes.
 
 For heat conduction, the physically relevant quantity is not temperature itself, but heat flux. At a material interface, temperature may have a kink (change in gradient), but heat flux must remain continuous. In one dimension, this requires
 \[
@@ -394,7 +394,7 @@ Nevertheless, with careful treatment of fluxes, grid design, and averaging, fini
 
 Now that we've covered the spatial differences, we need to develop a formulation for those fields which vary in time as well as space (i.e., transient, not steady-state).  As with space, time is treated as a continuous variable that is replaced by a discrete representation. The solution is evaluated at a sequence of time levels separated by a timestep $\Delta t$, and finite difference approximations are used to estimate time derivatives. The combined discretization of space and time converts time-dependent partial differential equations into iterative rules that advance the solution from one time level to the next.
 
-Mirroring the spatial discritization methods that we developed earlier, there are three primary ways that we can formulate temporal differences:
+Mirroring the spatial discretization methods that we developed earlier, there are three primary ways that we can formulate temporal differences:
 \begin{itemize}
     \item A forward difference, \emph{explicit method}, is the cheapest to compute numerically, but can suffer from stability issues if the discretization is not designed properly.  An explicit formulation is relatively straightforward because it seeks to predict the future based on the present. 
     \item  A backwards difference, \emph{implicit method}, is a bit awkward because you are attempting to determine the past based on the future (although we really are solving for the future).  While more costly to solve, the advantage of an implicit formulation is numerical stability.
@@ -403,7 +403,7 @@ Mirroring the spatial discritization methods that we developed earlier, there ar
 
 \subsection{Discretization in space and time}
 
-To examine discritization in space and time, we'll examine the diffusion equation in one dimensions,
+To examine discretization in space and time, we'll examine the diffusion equation in one dimensions,
 \[
     \pdv{T}{t} = kappa  \pdv[2]{T}{z} .
 \]
@@ -631,7 +631,7 @@ The table below summarizes these distinctions using temperature as a unifying ex
         PDE type & Equation & Information behavior & Numerical consequence \\
         \midrule
         elliptic & $\nabla^2 T = s$ & instantaneous & global solve \\
-        parabolic & $\pdv{T}{t} = \kappa\nabla^2T$ & spreads gradually & timestep tied to diffusioin \\
+        parabolic & $\pdv{T}{t} = \kappa\nabla^2T$ & spreads gradually & timestep tied to diffusion \\
         hyperbolic & $\pdv{T}{t} = c^2\nabla^2T$ & travels at fixed speed & timestep tied to wave speed \\
         \bottomrule
     \end{tabular}

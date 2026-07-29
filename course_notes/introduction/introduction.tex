@@ -29,7 +29,7 @@ What is a field?  Each point in space and time may be defined by a set of functi
 
 Fields can also relate to material properties (e.g., density, magnetization, seismic velocity, resistivity), describe the system states (e.g., temperature, pressure), or force fields that act on each point in space and have the potential to do work (e.g., gravitational attraction, heat flow, strain rate).
 
-Something else that will arise from time to time will be {\it field lines}, which are sometimes refered to as {\it flow lines} depending upon the application. Field lines represent the direction a partical would travel going in the direction of highest magnitude, force, or potential to lowest.  We draw field lines with arrows and they may be open (the ends do not meet) or closed (the ends join).  Although, depending upon the convention, we sometimes draw the arrows in the opposite direction.
+Something else that will arise from time to time will be {\it field lines}, which are sometimes referred to as {\it flow lines} depending upon the application. Field lines represent the direction a particle would travel going in the direction of highest magnitude, force, or potential to lowest.  We draw field lines with arrows and they may be open (the ends do not meet) or closed (the ends join).  Although, depending upon the convention, we sometimes draw the arrows in the opposite direction.
 
 In contrast, {\it isolines} trace out a continuous set of points at constant scalar potential, force, or magnitude and are orthogonal ($\perp$) to the field lines at all times.  A common example is contour lines on a topographic map which trace lines of constant elevation.  A rain drop falling on topography would head in the direction of the flow lines.  We can define also define an isosurface or equipotential surface that defines a surface of constant magnitude and can be open like a sheet or closed like a balloon (enclosing a region of space).
 
@@ -73,7 +73,7 @@ Although the governing equations recur across many subdisciplines, differences i
 
 No time dependence.
 
-Laplace's and Poisson's equations belong to a special class of partial differential equations called elliptical equations (Chapter~\ref{ch:potential}).  Elliptic equations describe fields that respond instantly to sources (steady-state); parabolic equations describe processes that spread with time (diffiusion); hyperbolic equations describe signals that propagate at finite speed (wave propagation).  These elliptical potential fields equations are defined as
+Laplace's and Poisson's equations belong to a special class of partial differential equations called elliptical equations (Chapter~\ref{ch:potential}).  Elliptic equations describe fields that respond instantly to sources (steady-state); parabolic equations describe processes that spread with time (diffusion); hyperbolic equations describe signals that propagate at finite speed (wave propagation).  These elliptical potential fields equations are defined as
 \begin{align}
     \coreeq
     \laplacian u &= 0 & \text{Laplace's equation}, \\
@@ -139,7 +139,7 @@ While not exactly the same, they are remarkably similar in each case.
     \[
         \laplacian f = \pdv[2]{f}{x} + \pdv[2]{f}{y} + \pdv[2]{f}{z} .
     \]
-    The Laplacian is features prominantly in the potential, diffusion, and wave equations.
+    The Laplacian is features prominently in the potential, diffusion, and wave equations.
 }{mathtool}
 
 \subsection{Diffusion Equation}\label{sec:diffusion}
@@ -208,7 +208,7 @@ and electromagnetic waves:
 
 A PDE is often the most compact way to describe a physical process mathematically, but the general forms only get us so far.  It is difficult to see how these equations can help locate a buried ore body from a series of gravity measurements, explore how the composition of an Archean lithospheric root affects heat loss at the Earth's surface, or estimate the quality of water resources using electrical currents and magnetic fields we create at the surface.  If we want to solve these problems, we need an understanding of the source and distribution of physical properties and estimates for the boundary and initial conditions.
 
-The problems we generally solve as geophysicts today have very complex geometries (3-D), physical properties that change with the physical state (pressure, temperature, composition), and spatially or temporally varying complex boundary and/or initial conditions.  As it turns out, the methods we use to solve these problems can be relatively simple to think of in mathematical terms, but may give us very limited insight and intution into the behavior of physical fields and how physical properties distort or create them.  Therefore, we will focus our attention largely on analytic solutions to classical problems that can help us make sense of an infinitely more complex Earth.  Unfortunately, these problems can be more difficult to solve, but understanding the approach to these problems can make us better at setting up and solving the physically more complex problems that requir use of a computer.  Developing intuition in geophysics often means thinking in orders of magnitude, which is much easier when the unit system reflects the scale of the Earth rather than the laboratory.
+The problems we generally solve as geophysicists today have very complex geometries (3-D), physical properties that change with the physical state (pressure, temperature, composition), and spatially or temporally varying complex boundary and/or initial conditions.  As it turns out, the methods we use to solve these problems can be relatively simple to think of in mathematical terms, but may give us very limited insight and intuition into the behavior of physical fields and how physical properties distort or create them.  Therefore, we will focus our attention largely on analytic solutions to classical problems that can help us make sense of an infinitely more complex Earth.  Unfortunately, these problems can be more difficult to solve, but understanding the approach to these problems can make us better at setting up and solving the physically more complex problems that require use of a computer.  Developing intuition in geophysics often means thinking in orders of magnitude, which is much easier when the unit system reflects the scale of the Earth rather than the laboratory.
 
 So before we get to the analytic solutions, I want to give you a feeling for how we solve these problems (a more extended discussion of numerical methods are in Chapters~\ref{ch:finitediff} and \ref{ch:inversion}.
 
@@ -255,7 +255,7 @@ happens when we take the second (Figure~\ref{fig:dtopo}).
     \centering
     \includegraphics[width=\textwidth]{introduction/figures/andes_topo.eps}
     \caption{Elevation and derivatives for the Andes at 9$^\circ$S.  (a)
-    Observed elevtion at 2' resolution.  (b) First-derivative of elevation
+    Observed elevation at 2' resolution.  (b) First-derivative of elevation
     produces the topographic slope.  (c) Second-derivative of elevation results
     in the topographic curvature (the rate in change of slope).}
     \label{fig:dtopo}

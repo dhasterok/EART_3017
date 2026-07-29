@@ -23,32 +23,35 @@ By the end of this activity, you should be able to:
           uncertainty.
 \end{itemize}
 
-\section*{Gravity of a Buried Sphere}
+\ntextbox{Theory}{
+    \texbf{Gravity of a Buried Sphere}
 
-We will return to how we derive the gravity due to a buried sphere later.  For now, we will model the vertical gravity anomaly at the surface produced by a buried sphere of depth $z$ (to center), radius $a$, and density contrast $\Delta\rho$. For a station at horizontal radius $r=\sqrt{x^2+y^2}$,
-\begin{equation}
-  g(r|z_c,a,\Delta\rho) = \underbrace{\frac{4}{3} \pi a^3 \Delta\rho}_{\text{mass}} G \frac{z}{\left( r^2 + z_c^2 \right)^{3/2}}\, ,
-  \label{eq:forward}
-\end{equation}
-with $G$ the gravitational constant. 
+    We will return to how we derive the gravity due to a buried sphere later.  For now, we will model the vertical gravity anomaly at the surface produced by a buried sphere of depth $z$ (to center), radius $a$, and density contrast $\Delta\rho$. For a station at horizontal radius $r=\sqrt{x^2+y^2}$,
+    \begin{equation}
+    g(r|z_c,a,\Delta\rho) = \underbrace{\frac{4}{3} \pi a^3 \Delta\rho}_{\text{mass}} G \frac{z}{\left( r^2 + z_c^2 \right)^{3/2}}\, ,
+    \label{eq:forward}
+    \end{equation}
+    with $G$ the gravitational constant. 
 
-\section*{Inverse Model}
+    \medskip
+    \textbf{Inverse Model}
 
-The gravity equation due to a buried sphere is non-linear, requiring a non-linear iterative solver. The code we will use employs the Gauss--Newton inverse method, which can be enhanced with Levenberg--Marquardt regularization.
+    The gravity equation due to a buried sphere is non-linear, requiring a non-linear iterative solver. The code we will use employs the Gauss--Newton inverse method, which can be enhanced with Levenberg--Marquardt regularization.
 
-We seek $\vb{m} = [z_c, a, \Delta\rho]\T$ that minimizes the objective function,
-\[
-  \Phi(m) = \underbrace{\left\| W_d\,(\vb{g}_{\mathrm{obs}} - g(\vb{m})) \right\|_2^2}_{\text{model misfit}} + \underbrace{\lambda^2\,\left\| (\vb{m} - \vb{m}_{0}) \right\|_2^2}_{\text{regularization term}}\, ,
-\]
-where $\vb{g}_{\mathrm{obs}}$ are the observed gravity data, $g(\vb{m})$ is the predicted gravity using Equation~\ref{eq:forward}, $\vb{W}_d$ is a diagonal matrix of inverse variance (data uncertainty), and $\lambda$ is the Levenberg--Marquart regularization parameter.  Our inital guess is given by the column vector $\vb{m}_0$.
+    We seek $\vb{m} = [z_c, a, \Delta\rho]\T$ that minimizes the objective function,
+    \[
+    \Phi(m) = \underbrace{\left\| W_d\,(\vb{g}_{\mathrm{obs}} - g(\vb{m})) \right\|_2^2}_{\text{model misfit}} + \underbrace{\lambda^2\,\left\| (\vb{m} - \vb{m}_{0}) \right\|_2^2}_{\text{regularization term}}\, ,
+    \]
+    where $\vb{g}_{\mathrm{obs}}$ are the observed gravity data, $g(\vb{m})$ is the predicted gravity using Equation~\ref{eq:forward}, $\vb{W}_d$ is a diagonal matrix of inverse variance (data uncertainty), and $\lambda$ is the Levenberg--Marquart regularization parameter.  Our initial guess is given by the column vector $\vb{m}_0$.
 
-To determine $\vb{m}$, we have to solve iteratively, with each model step being
-\[
-  \Delta \vb{m} = (\vb{J}\T \vb{W}_d^2 \vb{J} + \lambda^2 \vb{I})^{-1} 
-  \vb{J}\T \vb{W}_d^2 \, (\vb{g}_{\mathrm{obs}} - g(\vb{m}_0))\, .
-\]
+    To determine $\vb{m}$, we have to solve iteratively, with each model step being
+    \[
+    \Delta \vb{m} = (\vb{J}\T \vb{W}_d^2 \vb{J} + \lambda^2 \vb{I})^{-1} 
+    \vb{J}\T \vb{W}_d^2 \, (\vb{g}_{\mathrm{obs}} - g(\vb{m}_0))\, .
+    \]
 
-\paragraph{Role of $\lambda$.} Small $\lambda$ approaches Gauss--Newton (fast, but can be unstable if $J^\top J$ is ill-conditioned). Large $\lambda$ yields smaller, more stable steps (gradient-descent-like), helpful far from the solution or with strong trade-offs.
+    \paragraph{Role of $\lambda$.} Small $\lambda$ approaches Gauss--Newton (fast, but can be unstable if $J^\top J$ is ill-conditioned). Large $\lambda$ yields smaller, more stable steps (gradient-descent-like), helpful far from the solution or with strong trade-offs.
+}
 
 \begin{questions}
     \question{Jacobian}
@@ -64,7 +67,6 @@ To determine $\vb{m}$, we have to solve iteratively, with each model step being
     Derive the derivatives from Equation~\ref{eq:forward}.
     \answerbox[460pt]
 \end{questions}
-
 \section*{Exploration}
 
 The questions below relate to the \verb+buried_sphere_gui.py+ program. While the questions are about the demo, the answers are largely independent of both the problem and program.

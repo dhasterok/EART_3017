@@ -479,7 +479,7 @@ Now, this final formula is the most commonly magnitude used and it allows to est
 
 \begin{table}[hbpt]
     \centering
-    \caption{Examples of values for different historical eathquakes. (from Stein
+    \caption{Examples of values for different historical earthquakes. (from Stein
     and Wysession 2003)}
     \label{table_Seismic_Energy}
     \begin{tabular}{ccccc}
@@ -651,7 +651,7 @@ represented as
     \mlbox[]{r(t)}{seismometer/geophone response} ,
 \end{equation}
 where $G$ is a Green's function related to the Earth's structure including the
-velocity and impedence distribution.  Note `$\ast$' here is not a multiplication
+velocity and impedance distribution.  Note `$\ast$' here is not a multiplication
 but a convolution. Obviously, this will be quite challenging to solve since we
 can control $r$ and $s$ for exploration seismic studies but only $r$ for
 earthquake seismology.  The attenuation $Q$ is the decrease in the amplitude of
@@ -710,7 +710,7 @@ Figure~\ref{fig:convw}.
     \includegraphics[]{seismology/figures/convolution_wavelength.pdf}
     \caption{Convolution of a seismic source (top row) with a Earth's structure
     (middle row) to produce a synthetic seismogram.  Note this seismogram
-    ignores the effect of attenuation and reciever response for simplicity.
+    ignores the effect of attenuation and receiver response for simplicity.
     Left column is a high frequency, short period wave; right column is a low
     frequency, long period wave.}
     \label{fig:convw}
@@ -801,7 +801,7 @@ There are a number of other sources types some of which are shown in Figure~\ref
 
 \subsection{Focal Mechanisms construction}
 An earthquake is a quick displacement on the fault plan. The focal mechanism is
-a usefull tool to characterize the fault type (i.e. if the fault movement due to
+a useful tool to characterize the fault type (i.e. if the fault movement due to
 the earthquake is normal, reverse or right/left lateral, or again a combination
 of these movements). Also, the focal mechanism inform us on the direction of the
 fault plan, the fault dip and finally the principal stresses operating on the
@@ -865,7 +865,7 @@ An example of a Hudson diagram for different source types is shown in Figure~\re
 
 
 \section{Seismic Velocity}
-The estimation of seismic velocity for minerals and rocks is discussed in Chapter~\ref{chap:physprop}.  Here we look at the effect of pressure and temperature on the seismic velocity for rocks instead of their consituent minerals.  Because models of seismic velocity estimates of the interior are more reliable than some other geophysical parameters made from surface observations, you will often find seismic velocity being used as a proxy used to estimate other physical properties.  Density is perhaps the most common of these so I include a little about the estimation of density from velocity in this section as well.
+The estimation of seismic velocity for minerals and rocks is discussed in Chapter~\ref{chap:physprop}.  Here we look at the effect of pressure and temperature on the seismic velocity for rocks instead of their constituent minerals.  Because models of seismic velocity estimates of the interior are more reliable than some other geophysical parameters made from surface observations, you will often find seismic velocity being used as a proxy used to estimate other physical properties.  Density is perhaps the most common of these so I include a little about the estimation of density from velocity in this section as well.
 
 % P-T dependence
 \subsection{$V_{P}$~Pressure~and~Temperature~Dependence}
@@ -874,7 +874,7 @@ of changes in temperature and pressure.
 \begin{figure}[bthp]
     \centering
     \includegraphics[width=5.0in]{seismology/figures/gabbro.eps}
-    \caption[Illustration of mathematical models used to predict seismic velocity.]{Mathematical preditions of the seismic velocity of gabbro.  P-wave velocity data of gabbro from \citet{Christensen&Mooney1995} (x's) are approximated using a pressure--temperature dependent model with (solid) and without (dashed) a crack closure term.  Each set of curves corresponds to data collected along at 20\degC\ or along a geothermal gradient of 8.9, 15.2, and 26.9\degC~km$^{-1}$.}
+    \caption[Illustration of mathematical models used to predict seismic velocity.]{Mathematical predictions of the seismic velocity of gabbro.  P-wave velocity data of gabbro from \citet{Christensen&Mooney1995} (x's) are approximated using a pressure--temperature dependent model with (solid) and without (dashed) a crack closure term.  Each set of curves corresponds to data collected along at 20\degC\ or along a geothermal gradient of 8.9, 15.2, and 26.9\degC~km$^{-1}$.}
     \label{fig:vpfit}
 \end{figure}
 Each set of $V_{P}$ data corresponds to a different thermal gradient (curves labeled A (lowest) to D (highest)).  The constant temperature curve (A) shows an increase in velocity with pressure.  The other three (B--D) show a decrease in velocity with pressure because of the strong dependence of $V_{P}$ on temperature.
@@ -886,7 +886,7 @@ The effects of pressure and temperature are well known for a variety of rock typ
     + (P - P_{0})\left(\frac{\partial V_{P}}{\partial P}\right)_{T},
     \label{eq:pt}
 \end{equation}
-where $P_0$ and $T_0$ are the standard temperature and pressure conditions (STP) and $V^{\prime}_0$ is the p-wave velocity potential at STP.  The pressure and temperature deriviatives are measured in the labratory.  The pressure derivative for shallow crustal rocks is typically constant and independent of temperature at pressures up to 3 GPa \citep{Christensen&Mooney1995}.
+where $P_0$ and $T_0$ are the standard temperature and pressure conditions (STP) and $V^{\prime}_0$ is the p-wave velocity potential at STP.  The pressure and temperature derivatives are measured in the laboratory.  The pressure derivative for shallow crustal rocks is typically constant and independent of temperature at pressures up to 3 GPa \citep{Christensen&Mooney1995}.
 
 The red curves in Figure~\ref{fig:vpfit} are computed using this model and generally fit the data well above 0.6~MPa or about 20~km depth.  So either this model is a poor approximation to the pressure affect or there are other influences on seismic velocity.  Since we know the seismic velocity of a rock is affected by several competing physical variables, including pressure, temperature, crack closure and mineral phase changes.  Since the data are most affected near the surface, it seems reasonable to assume fractures/cracks may have something to do with it.
 
@@ -896,7 +896,7 @@ In the upper \SI{600}{MPa}, seismic velocities increase rapidly as a result of c
 \begin{equation}
     V(P,T) = V^{\prime}(P,T) - f(P),
 \end{equation}
-where $V$ is the observed P-wave velocity and $V^{\prime}$ is the potential p-wave velocity absent the effects of cracks.  The function $f(P)$ represents the effect of crack closure on p-wave velocity.  To determine the nature of $f$, the contribution of the linear pressure derivative is removed (analagous to reduced temperature), leaving only the effects due to crack closure.  Three functional forms of $f$ were used to fit the crack effect: an inverse function, $f = a_{c}/P$; an exponential, $f = a_{c} \mbox{exp}(-P/P_{c})$; and an error function, $f = a_{c} \mbox{erfc}(P/P_{c})$.  The constant $a_{c}$ is a scaling factor and $P_{c}$ is the decay length.
+where $V$ is the observed P-wave velocity and $V^{\prime}$ is the potential p-wave velocity absent the effects of cracks.  The function $f(P)$ represents the effect of crack closure on p-wave velocity.  To determine the nature of $f$, the contribution of the linear pressure derivative is removed (analogous to reduced temperature), leaving only the effects due to crack closure.  Three functional forms of $f$ were used to fit the crack effect: an inverse function, $f = a_{c}/P$; an exponential, $f = a_{c} \mbox{exp}(-P/P_{c})$; and an error function, $f = a_{c} \mbox{erfc}(P/P_{c})$.  The constant $a_{c}$ is a scaling factor and $P_{c}$ is the decay length.
 
 An error function with a decay length $\sim$\SI{95}{MPa} best approximates the effect of crack closure on all rock samples.  At \SI{95}{MPa}, 84\% of the velocity increase due to crack closure has occurred.  Figure \ref{fig:crack}$a$ shows the a fit of the error function to a rock sample used in the analysis.  The error function describes the effect of crack closure quite well.  Unlike the decay depth, the scaling factor is much harder to determine.  Correlations between the scale factor (Figure \ref{fig:crack}$b$) and the velocity potential and density (Figure \ref{fig:crack}$c$) are very low ($r^2$ values 0.36 and 0.16).  Therefore, it appears that the scale factor is rock sample dependent and possibly the result of degree of fracturing and fracture orientations within a sample.  Once the scale factor for a particular rock has been determined, the revised function used to estimate seismic velocity becomes
 \begin{equation}
@@ -911,9 +911,9 @@ An error function with a decay length $\sim$\SI{95}{MPa} best approximates the e
     \caption{Crack closure model.  $(a)$ Illustrates the best fitting crack closure model using an error function with $P_c = \SI{95}{MPa}$ (solid line).  Seismic velocity data from \citet{Kern_etal1999} are plotted as x's.  $(b)$ and $(c)$ displays the scaling factor as a function of potential seismic velocity and density.}
     \label{fig:crack}
 \end{figure}
-The velocity potential is determined by extrapolating the high pressure velocites unaffected by cracks to the surface.  A major difference between the data used to determine the $V_{P}$ relationship and model the the crack closure depth is the crack closure depth.
+The velocity potential is determined by extrapolating the high pressure velocities unaffected by cracks to the surface.  A major difference between the data used to determine the $V_{P}$ relationship and model the the crack closure depth is the crack closure depth.
 
-The fit of Equations~\ref{eq:pt} (dashed) and \ref{eq:vp} (solid) to the velocity data in Figure~\ref{fig:vpfit} shows the importance of a crack closure term below 600~MPa.  The fit of modeled crack effect on $V_{P}$ to the labratory data of gabbro shows a significant improvement over the purely $P$--$T$ model.
+The fit of Equations~\ref{eq:pt} (dashed) and \ref{eq:vp} (solid) to the velocity data in Figure~\ref{fig:vpfit} shows the importance of a crack closure term below 600~MPa.  The fit of modeled crack effect on $V_{P}$ to the laboratory data of gabbro shows a significant improvement over the purely $P$--$T$ model.
 
 % Estimating Density
 \subsection{Estimating~Densities}
@@ -928,16 +928,16 @@ An example of the fit to density is shown in Figure~\ref{fig:vprho}
 \begin{figure}[tbhp]
     \centering
     \includegraphics{seismology/figures/velocity_to_density.eps}
-    \caption{Velocity to density models fit to a number of rocks types.  Two models are shown for igneous and metamrophic rocks (red) by {\citet{Christensen&Mooney1995}}. The \citet{Barton1986} model was developed for sedimentary rocks (grey).  The yellow points are monomineralic rocks not included in fit.}
+    \caption{Velocity to density models fit to a number of rocks types.  Two models are shown for igneous and metamorphic rocks (red) by {\citet{Christensen&Mooney1995}}. The \citet{Barton1986} model was developed for sedimentary rocks (grey).  The yellow points are monomineralic rocks not included in fit.}
     \label{fig:vprho}
 \end{figure}
 
-The prefered model used to estimate the density from seismic velocity is given by the linear seismic velocity to density relationship \citep{Christensen&Mooney1995} given by
+The preferred model used to estimate the density from seismic velocity is given by the linear seismic velocity to density relationship \citep{Christensen&Mooney1995} given by
 \begin{equation}
   \label{eq:cmlinear}
   \rho = a + b V_{P},
 \end{equation}
-where $a$ and $b$ are empirically derived coefficients.  \textit{Christensen and Mooney} published coefficients to the linear $V_{P}$--$\rho$ equation for a temperature of \si{309}{\degC}\ and pressures equivalent to 5 to 50~km in increments of 5~km.  Therefore, it is necessary to determine the coefficients to all other crustal $P$--$T$ conditions for this study.  Having developed a method to extend density and seismic velocity to a greater range of $P$--$T$ conditions, the empirical coefficients are determined using a linear least-squares inversion to polymineralic rock types at the range of crustal pressures ranging from 0 to 2.6~GPa and temperatures from 20 to \si{1300}{\degC}.  Monominearlic rock types are excluded from determining the coefficients in the linear relationship as they tend to have high velocities with low density or vice versa. Figure~\ref{fig:empconst}
+where $a$ and $b$ are empirically derived coefficients.  \textit{Christensen and Mooney} published coefficients to the linear $V_{P}$--$\rho$ equation for a temperature of \si{309}{\degC}\ and pressures equivalent to 5 to 50~km in increments of 5~km.  Therefore, it is necessary to determine the coefficients to all other crustal $P$--$T$ conditions for this study.  Having developed a method to extend density and seismic velocity to a greater range of $P$--$T$ conditions, the empirical coefficients are determined using a linear least-squares inversion to polymineralic rock types at the range of crustal pressures ranging from 0 to 2.6~GPa and temperatures from 20 to \si{1300}{\degC}.  Monomineralic rock types are excluded from determining the coefficients in the linear relationship as they tend to have high velocities with low density or vice versa. Figure~\ref{fig:empconst}
 $a$ and $b$ contour the linear coefficients ($a$ and $b$ from Equation~\ref{eq:cmlinear}) for an extended range of pressure and temperature conditions
 for the depth and temperature.
 \begin{figure}[tbhp]

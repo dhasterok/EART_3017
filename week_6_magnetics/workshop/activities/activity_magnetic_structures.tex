@@ -3,8 +3,9 @@
     \begin{tikzpicture}[scale=0.85]
       % horizontal extent ensures left edge at x=-5 aligns with structure below
       \draw[->] (-5,0) -- (5,0) node[above right] {$x$};
-      \draw[->] (-5,-1.1) -- (-5,1.1) node[left] {$B_z$};
-      \draw[dashed,gray] (-5,0) -- (5,0);
+      \draw[->,red] (-5,-1.1) -- (-5,1.1) node[left] {$B_z$};
+      \draw[thin] (-5,0) -- (5,0);
+      \draw[->,blue] (5,-1.1) -- (5,1.1) node[right] {$g_z$};
     \end{tikzpicture}
   \end{center}
 }
@@ -46,9 +47,9 @@ A magnetic field falls off one power of $r$ faster than the equivalent gravity f
 
 For each structure:
 \begin{enumerate}
-  \item Sketch the expected vertical magnetic anomaly
-  \item Indicate sign, symmetry, width, and strongest gradients
-  \item State how it differs from the gravity anomaly
+  \item Draw the gravity anomaly
+  \item Sketch the expected vertical magnetic field associated with a vertical magnetization
+  \item Indicate sign, symmetry, width, and strongest gradient
 \end{enumerate}
 
 \section*{Structures}
@@ -138,12 +139,12 @@ For each structure:
   Repeat one case assuming a horizontal inducing field.
 
   \begin{enumerate}
-    \item How does the anomaly shape change?
+    \item What are the major differences between the magnetic and gravity anomalies?
     \answerbox[2cm]
-    \item Which case appears more gravity-like?
-    \answerbox[2cm]
-    \item Why does gravity not behave this way?
-    \answerbox[2cm]
+    \item How would the anomaly for the sphere and finite horizontal slab change if the magnetization were horizontal rather than vertically oriented?  Remember, we are still looking at $B_z$.
+    \answerbox[3cm]
+    \item How do the differences between gravity and magnetic anomalies reduce the non-uniqueness of geologic interpretations?
+    \answerbox[3cm]
   \end{enumerate}
 
   \question{Reflection}
