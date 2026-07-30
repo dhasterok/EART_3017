@@ -1,4 +1,4 @@
-\documentclass[11pt, a4paper]{article}
+\documentclass[11pt, a4paper, twoside]{article}
 \usepackage[workshop, booklet]{aucourse}
 \usepackage{import}
 \usepackage{multicol}
@@ -10,14 +10,22 @@
 \newcommand\LMS{MyLearning}
 
 \begin{document}
+\pagenumbering{roman}
+
 \input{workshop_titlepage}
 
 \input{workshop_coversheet}
 
 \clearpage
-\tableofcontents
-
+\thispagestyle{empty}
+\hbox{}
 \clearpage
+
+\tableofcontents
+\markboth{}{}
+
+\cleardoublepage
+\pagenumbering{arabic}
 \input{workshop_rubric}
 \subimport{week_1_fields/workshop/}{week1_timeline}
 \subimport{week_2_physical_properties/workshop/}{week2_timeline}

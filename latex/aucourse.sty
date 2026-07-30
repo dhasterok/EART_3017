@@ -56,6 +56,23 @@
 \fi
 
 \RequirePackage{tabularray}
+\UseTblrLibrary{diagbox}
+
+% ---- \cleardoublepage (article class doesn't provide this by default) ------
+% Standard book.cls definition: flush the current page, and if twoside
+% layout leaves us on an even page, insert a blank (unnumbered) one so the
+% next material starts on an odd/right-hand page.
+\providecommand\cleardoublepage{%
+  \clearpage
+  \if@twoside
+    \ifodd\c@page\else
+      \hbox{}%
+      \thispagestyle{empty}%
+      \newpage
+      \if@twocolumn\hbox{}\newpage\fi
+    \fi
+  \fi
+}
 
 % ---- Metadata defaults -----------------------------------------------------
 \def\@coursetitle@long{Geophysics 3A: Potential Fields \& Geothermics}
@@ -180,22 +197,44 @@
 
 % ---- fancyhdr (workshop, assignment, tutorial) -----------------------------
 %
-% Short forms of \coursetitle and \topic appear in the running header.
-% The first page receives plain style automatically (via \maketitle's
-% built-in \thispagestyle{plain}).
+% Standalone documents (workshop/assignment/tutorial, not booklet mode):
+% short forms of \coursetitle and \topic appear in the running header, with
+% the page number centred in the footer. The first page receives plain
+% style automatically (via \maketitle's built-in \thispagestyle{plain}).
+%
+% Booklet mode (workshop + booklet): running headers instead carry
+% navigation aids for a stapled, double-sided, multi-week document --
+% "Week N" on even (left) pages, the current Activity/Demo/Warm-up label on
+% odd (right) pages -- with the page number in the corresponding outer
+% corner. These are driven by \markboth/\markright (set in \workshopstart,
+% \begin{activity}, and \notepage) rather than by writing \rhead directly,
+% so a label set near a page boundary is always attributed to the correct
+% page even when TeX's page breaking doesn't line up with where the source
+% command happens to sit.
 %
 \if@aucourse@fancyhdr
-  \AtBeginDocument{%
-    \pagestyle{fancy}%
-    \fancyhf{}%
-    \lhead{\@coursetitle@short}%
-    \ifx\@weeknum\@empty
-      \rhead{\@topic@short}%
-    \else
-      \rhead{Week \@weeknum\ ---\ \@topic@short}%
-    \fi
-    \cfoot{\thepage}%
-  }
+  \AtBeginDocument{\setlength{\headheight}{14pt}}%
+  \if@aucourse@booklet
+    \AtBeginDocument{%
+      \pagestyle{fancy}%
+      \fancyhf{}%
+      \fancyhead[LE]{\thepage}%
+      \fancyhead[RE]{\leftmark}%
+      \fancyhead[RO]{\rightmark\quad\thepage}%
+    }
+  \else
+    \AtBeginDocument{%
+      \pagestyle{fancy}%
+      \fancyhf{}%
+      \lhead{\@coursetitle@short}%
+      \ifx\@weeknum\@empty
+        \rhead{\@topic@short}%
+      \else
+        \rhead{Week \@weeknum\ ---\ \@topic@short}%
+      \fi
+      \cfoot{\thepage}%
+    }
+  \fi
 \fi
 
 % ---- Test page numbering ---------------------------------------------------
@@ -258,10 +297,11 @@
 % ---- Workshop timeline and activity environments ----------------------------
 %
 % Timeline (in the main overview section):
-%   \timeline[slot]{title}{minutes}  — unlabelled entry (warm-up, break, wrap-up)
-%   \timeline[item]{title}{minutes}  — lettered activity entry (A, B, C, ...)
-%   \timeline[demo]{title}{minutes}  — shared lettered with activity entry (A, B, C, ...)
-%   \setstarttime{N}                 — manually advance the clock to N minutes
+%   \timeline[slot]{title}{minutes}    — unlabelled entry (break, wrap-up, preview); does NOT step the letter counter
+%   \timeline[item]{title}{minutes}    — lettered "Activity" entry (A, B, C, ...)
+%   \timeline[demo]{title}{minutes}    — lettered "Demo" entry, shares the counter with item/warmup
+%   \timeline[warmup]{title}{minutes}  — lettered "Warm-up" entry, shares the counter with item/demo
+%   \setstarttime{N}                   — manually advance the clock to N minutes
 %
 % Activity sheets (each starts on a new page, numbered 1, 2, 3, ...):
 %   \begin{activity}{Title} ... \end{activity}
@@ -276,19 +316,39 @@
   }
 
   % Workshop heading
+  %
+  % Booklet mode: starts on its own page with no running header (a plain
+  % centred page number only, matching the classic "chapter-opening page"
+  % convention), a large title, and a rule to separate it from the session
+  % flow below -- a clear visual break between one week's material and the
+  % next when flipping through a printed copy. \markboth resets the
+  % booklet's running-header marks for the new week (see the fancyhdr note
+  % above); if \weeknum hasn't been set (e.g. the coversheet), the marks are
+  % cleared instead of printing an empty "Week " label.
   \newcommand{\workshopstart}{%
     \if@aucourse@booklet
       \clearpage
+      \thispagestyle{plain}%
       \phantomsection
       \pdfbookmark[1]
         {\workshopentry}
         {week-\@weeknum}
-      \part*{{\LARGE \workshopentry}}
+      \begin{center}
+        {\Huge\bfseries \workshopentry\par}
+      \end{center}
+      \vspace{0.4em}
+      \noindent\rule{\linewidth}{1pt}
+      \vspace{1em}
       \addcontentsline{toc}{part}{\workshopentry}
-      \vspace{0.5em}
+      \ifx\@weeknum\@empty
+        \markboth{}{}%
+      \else
+        \edef\@aucourse@weekmark{Week~\@weeknum}%
+        \markboth{\@aucourse@weekmark}{\@aucourse@weekmark}%
+      \fi
       \setcounter{wshoptime}{0}
       \setcounter{wshopitem}{0}
-      \setcounter{wshopact}{0}	
+      \setcounter{wshopact}{0}
     \else
       \maketitle
     \fi
@@ -320,15 +380,24 @@
   % \timeline[type]{title}{minutes}
   %   type = 'slot' (default) — unlabelled entry (warm-up, break, wrap-up)
   %   type = 'item'           — lettered activity entry (A, B, C, ...)
+  %   type = 'demo' — lettered activity (shared with item)
   \newcommand{\timeline}[3][slot]{%
-    \def\@tl@slot{slot}\def\@tl@demo{demo}\def\@tl@type{#1}%
+    \def\@tl@slot{slot}\def\@tl@demo{demo}\def\@tl@warmup{warmup}\def\@tl@type{#1}%
     \ifx\@tl@type\@tl@slot\else\stepcounter{wshopitem}\fi
     \edef\@wshop@start{\arabic{wshoptime}}%
     \addtocounter{wshoptime}{#3}%
     \subsection*{%
       \@wshop@start--\arabic{wshoptime}\,min:\enspace
       \ifx\@tl@type\@tl@slot\else
-        \ifx\@tl@type\@tl@demo Demo~\@weeknum.\Alph{wshopitem}:~\else Activity~\@weeknum.\Alph{wshopitem}:~\fi
+        \ifx\@tl@type\@tl@demo
+          Demo~\@weeknum.\Alph{wshopitem}:~%
+        \else
+          \ifx\@tl@type\@tl@warmup
+            Warm-up~\@weeknum.\Alph{wshopitem}:~%
+          \else
+            Activity~\@weeknum.\Alph{wshopitem}:~%
+          \fi
+        \fi
       \fi
       #2%
     }%
@@ -338,30 +407,49 @@
   % \notepage - blank page for workshop notes
   \newcommand{\notepage}[1][Workshop Notes]{
     \clearpage
+    \if@aucourse@booklet
+      \ifx\@weeknum\@empty
+        \markright{Notes}%
+      \else
+        \edef\@aucourse@notemark{Week~\@weeknum\ ---\ Notes}%
+        \markright{\@aucourse@notemark}%
+      \fi
+    \fi
     \section*{#1}
     \vspace*{\fill}
     \clearpage
   }
 
   % activity environment — alphabetically labelled activity sheet on a fresh page.
-  % The right header is updated to show the activity name for all pages
-  % within the environment, then restored to the standard workshop header.
+  % Booklet mode updates the running-header mark (\markright) to the
+  % activity's label for the duration of the environment and simply leaves
+  % it there afterwards -- correct for any notes pages that immediately
+  % follow, and safe against the header-bleed issue that direct \rhead
+  % writes had at page boundaries. Standalone mode keeps the original
+  % direct \rhead set/restore behaviour.
   \newenvironment{activity}[2][Activity]{%
     \clearpage
     \stepcounter{wshopact}%
-    \rhead{#1~\@weeknum.\Alph{wshopact}}%
+    \if@aucourse@booklet
+      \edef\@aucourse@actmark{#1~\@weeknum.\Alph{wshopact}:}%
+      \markright{\@aucourse@actmark}%
+    \else
+      \rhead{#1~\@weeknum.\Alph{wshopact}}%
+    \fi
     \begin{center}
       {\LARGE\bfseries #1~\@weeknum.\Alph{wshopact}\\[0.4em]#2}%
     \end{center}%
     \vspace{1.5em}\noindent
   }{%
-    \rhead{%
-      \ifx\@weeknum\@empty
-        \@topic@short
-      \else
-        Week~\@weeknum\ ---\ \@topic@short
-      \fi
-    }%
+    \if@aucourse@booklet\else
+      \rhead{%
+        \ifx\@weeknum\@empty
+          \@topic@short
+        \else
+          Week~\@weeknum\ ---\ \@topic@short
+        \fi
+      }%
+    \fi
   }
 
 \fi
