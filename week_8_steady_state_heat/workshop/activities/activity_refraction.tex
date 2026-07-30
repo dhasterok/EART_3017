@@ -127,9 +127,36 @@ The sediments are dominated by shales and porous clastic rocks with lower therma
 
 \section*{Key Ideas}
 
-\textbf{A conductivity contrast redistributes the gradient, not the flux.} Whenever $q$ must stay constant across a boundary but $k$ changes, $dT/dz=-q/k$ forces the gradient to change instead. This effect is thermal refraction, and it applies at any conductivity contrast, not only a sediment-over-basement boundary -- the same reasoning will reappear for layered media, tilted strata, and mixed lithologies.
+\textbf{A conductivity contrast redistributes the gradient, not the flux.} Whenever $q$ must stay constant across a boundary but $k$ changes, $dT/dz = -q/k$ forces the gradient to change instead. This effect is thermal refraction, and it applies at any conductivity contrast, not only a sediment-over-basement boundary; the same reasoning will reappear for layered media, tilted strata, and mixed lithologies.
 
-\textbf{A conductivity contrast redistributes the gradient, not the flux.} Whenever $q$ must stay constant across a boundary but $k$ changes, $dT/dz=-q/k$ forces the gradient to change instead. This is thermal refraction, and it applies at any conductivity contrast, not only a sediment-over-basement boundary -- the same reasoning will reappear for layered media, tilted strata, and mixed lithologies.
+\begin{center}
+  \begin{tikzpicture}
+    % axes
+    \draw[->] (-0.1,0) -- (-0.1,-5.2) node[midway,left=8pt,rotate=90] {Depth};
+    \draw[->] (-0.1,0) -- (4,0) node[midway,above] {Temperature};
+
+    % layer interfaces
+    \draw[dashed,gray!40] (-0.1,-2.5) -- (4.7,-2.5);
+    \draw[dashed,gray!40] (-0.1,-5) -- (4.7,-5);
+
+    % geotherms
+    % k1 == k2
+    \draw[thin] (0,0) -- (4,-5) node[midway, above, sloped, inner sep=1pt] {$k_1 = k_2$};
+
+    % k1 < k2
+    \draw[thick,blue] (0,0) -- (3,-2.5) -- (4,-5);
+    \node[right,blue] at (1.8,-1.25) {$k_1 < k_2$};
+
+    % k2 > k1
+    \draw[thick,red] (0,0) -- (1,-2.5) -- (4,-5);
+    \node[red,left] at (2.2,-3.75) {$k_1 > k_2$};
+
+    % heat flow arrows
+    \draw[thick,<-] (4.3,-5) -- (4.3,-5.5) node[right] {$q_2$};
+    \draw[thick,<-] (4.3,-2.5) -- (4.3,-3.0) node[right] {$q_1 = q_2$};
+    \draw[thick,<-] (4.3,0) -- (4.3,-0.5) node[right] {$q_0 = q_2$};
+  \end{tikzpicture}
+\end{center}
 
 \textbf{A measured gradient reflects local conductivity, not the deeper structure.} The same heat flow can correspond to very different gradients depending on what you're measuring through, so gradients from different settings are not directly comparable without calculation of heat flow.  A gradient measured near the surface is only converted to a true heat flow once you know the conductivity at the depth it was measured. 
 

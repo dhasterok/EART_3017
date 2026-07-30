@@ -2,7 +2,7 @@
 
 \section*{Purpose}
 
-This activity applies the ideas from your pre-workshop viewing and from the Fold Belt Survey to real, messy, spatial potential-field data. The focus is on understanding how sampling, filtering, and physical assumptions control what geological information can actually be recovered from gravity data -- not in a synthetic model where you know the answer, but in a real dataset where you don't.
+This activity applies ideas about sampling, aliasing, and spectral filtering to real, messy, spatial potential-field data. The focus is on understanding how sampling, filtering, and physical assumptions control what geological information can actually be recovered from gravity data -- not in a synthetic model where you know the answer, but in a real dataset where you don't.
 
 The activity progresses deliberately:
 \begin{itemize}
@@ -23,7 +23,7 @@ By the end of this activity, you should be able to:
 
 \section*{Tasks}
 
-At each stage, ask yourself the same question you asked in the Fold Belt Survey: \emph{does this result actually reflect the geology, or could it be an artefact of how the data were sampled and processed?}
+At each stage, ask yourself the same question: \emph{does this result actually reflect the geology, or could it be an artefact of how the data were sampled and processed?}
 
 \begin{questions}
     \question{Nevada Complete Bouguer Gravity}
@@ -43,7 +43,7 @@ At each stage, ask yourself the same question you asked in the Fold Belt Survey:
             \item Look for the shorter-wavelength ``stripes'' superimposed on that trend. Roughly how would you describe their scale compared to the overall map -- tens of kilometers, or hundreds?
             \answerbox[2cm]
 
-            \item Based on the Fold Belt Survey, what would you need to know about this map's station spacing before trusting any wavelength you read off it by eye?
+            \item Thinking about aliasing, what would you need to know about this map's station spacing before trusting any wavelength you read off it by eye?
             \answerbox[2cm]
         \end{enumerate}
 
@@ -54,7 +54,7 @@ At each stage, ask yourself the same question you asked in the Fold Belt Survey:
             \qquad k_n = \frac{n}{N\,\Delta x}.
         \]
 
-        The amplitude spectrum $|\hat{g}(k)|$ shows how much power exists at each wavelength. For potential fields, spectra typically show a \emph{red-noise} background: power increases systematically toward longer wavelengths, simply because deeper and larger sources dominate the long-wavelength end -- the same wavelength--depth relationship from this morning's warm-up.
+        The amplitude spectrum $|\hat{g}(k)|$ shows how much power exists at each wavelength. For potential fields, spectra typically show a \emph{red-noise} background: power increases systematically toward longer wavelengths, simply because deeper and larger sources dominate the long-wavelength end -- the same wavelength--depth relationship that governs anomaly shape throughout potential-field geophysics.
 
         \begin{figure}[h]
             \centering

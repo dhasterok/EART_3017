@@ -2,7 +2,7 @@
 
 \section*{Purpose}
 
-This case study applies the Fourier-domain magnetic processing ideas from the RTP demo to real aeromagnetic data from the Tower Hill Volcanic Complex in south-western Victoria, Australia. Unlike gravity, magnetic anomalies are inherently asymmetric -- their shape depends not just on source geometry but on the direction of the inducing field. Reduction to the pole (RTP) is a Fourier-domain phase correction that removes this asymmetry, but it is a fragile operation: powerful where it works, and prone to specific, predictable failure modes.
+This case study applies Fourier-domain magnetic processing ideas to real aeromagnetic data from the Tower Hill Volcanic Complex in south-western Victoria, Australia. Unlike gravity, magnetic anomalies are inherently asymmetric -- their shape depends not just on source geometry but on the direction of the inducing field. Reduction to the pole (RTP) is a Fourier-domain phase correction that removes this asymmetry, but it is a fragile operation: powerful where it works, and prone to specific, predictable failure modes.
 
 The activity progresses from a synthetic, idealized maar (where you know the true geometry) to the real Tower Hill data (where you don't), then to the conditions under which RTP itself breaks down.
 
@@ -57,7 +57,7 @@ At each stage, connect what you see back to the underlying Fourier-domain operat
         \begin{equation}
         \Upsilon(\mathbf{k}) = \sin I + i\cos I\,\frac{k_x\cos D + k_y\sin D}{|\mathbf{k}|}
         \end{equation}
-        is the direction-cosine factor encoding the field's inclination $I$ and declination $D$. The exponential $e^{-|\mathbf{k}|z}$ is the familiar upward-continuation kernel: shallow sources produce narrow, high-amplitude anomalies, deep sources produce broad, smooth ones -- the same wavelength--depth link from this morning's warm-up.
+        is the direction-cosine factor encoding the field's inclination $I$ and declination $D$. The exponential $e^{-|\mathbf{k}|z}$ is the familiar upward-continuation kernel: shallow sources produce narrow, high-amplitude anomalies, deep sources produce broad, smooth ones -- the same wavelength--depth link that governs anomaly shape throughout potential-field geophysics.
 
         \begin{figure}[h]
             \centering
