@@ -1,0 +1,59 @@
+% ==============================================
+% Activity: Is it linear or non-linear?
+% ==============================================
+\section*{Activity: Is it linear or non-linear?}
+\textbf{Goal.} For each of the following forward relations drawn from potential fields, geothermics, and physical property relations, decide whether it is (i) linear, (ii) non-linear, or (iii) non-linear but can be linearized. If non-linear, describe how you would linearize or re-parameterize it. Justify your choice with respect to the model parameters that would be inverted.
+
+\subsection*{Instructions (15--20 min)}
+\begin{enumerate}[label=\arabic*.,itemsep=2pt]
+  \item Work in pairs. For each equation, underline the quantity that would be treated as the \emph{model parameter(s)} in an inversion.
+  \item Classify the mapping data $\to$ model as linear or non-linear in those parameters.
+  \item If non-linear, propose a linearization (e.g., log-transform, Taylor expansion/Jacobian around $p_0$, or a change of variables) and note any loss of identifiability.
+\end{enumerate}
+
+\subsection*{Equations}
+\begin{enumerate}[label=Q\arabic*.,itemsep=6pt]
+  \item \textbf{Gravity (Newtonian forward integral, $\Delta g_z$):}
+  $\,\displaystyle \Delta g_z(\mathbf{x}) = G \int_V \Delta\rho(\mathbf{x}')\,\frac{z - z'}{\lVert\mathbf{x}-\mathbf{x}'\rVert^3}\,\mathrm{d}V'$.
+
+  \item \textbf{Gravity (Bouguer slab):}
+  $\,\displaystyle \Delta g = 2\pi G\,\Delta\rho\,H$.
+
+  \item \textbf{Gravity (buried sphere):}
+  $\,\displaystyle g(r) = G\,\Big(\tfrac{4\pi}{3}R^3\Delta\rho\Big)\,\dfrac{z}{(r^2+z^2)^{3/2}}$.
+
+  \item \textbf{Magnetics (induced susceptibility, fixed geometry):}
+  $\,\displaystyle \Delta T(\mathbf{x}) = \sum_i a_i(\mathbf{x})\,k_i$.
+
+  \item \textbf{Seismic (straight-ray travel time):}
+  $\,\displaystyle t = \sum_i l_i\,s_i$.
+
+  \item \textbf{Heat conduction (steady, constant $k$):}
+  $\,\displaystyle \nabla^2 T = -\,Q/k$.
+
+  \item \textbf{Heat conduction (temperature-dependent $k$):}
+  $\,\displaystyle \nabla\!\cdot\!\big(k(T)\,\nabla T\big)+Q=0$.
+
+  \item \textbf{Arrhenius law (electrical conductivity):}
+  $\,\displaystyle \sigma(T) = \sigma_0\,\exp\!\big(-E_a/(R\,T)\big)$.
+
+  \item \textbf{Gardner's relation (density--velocity):}
+  $\,\displaystyle \rho = a\,v^b$.
+
+  \item \textbf{Archie's law (resistivity):}
+  $\,\displaystyle \rho_e = a\,\phi^{-m}\,S_w^{-n}\,\rho_w$.
+\end{enumerate}
+
+\subsection*{Answer key (concise)}
+\begin{enumerate}[label=A\arabic*.,itemsep=6pt]
+  \item Linear in $\Delta\rho$ (geometry fixed). Discretization gives $\mathbf{d}=\mathbf{G}\mathbf{m}$ with $\mathbf{m}=\Delta\rho$.
+  \item Bilinear in $(\Delta\rho,H)$; linear in either if the other is fixed. Re-parameterize by $m=\Delta\rho\,H$ if only their product is sought (non-unique otherwise).
+  \item Non-linear in $(R,z)$; linear in $\Delta\rho$ or $M=\tfrac{4\pi}{3}R^3\Delta\rho$. Linearize via Taylor expansion about $p_0$ and use the Jacobian.
+  \item Linear in $k_i$ when geometry and inducing field/direction are fixed (no remanence). Non-linear if geometry or magnetization direction is part of the model.
+  \item Linear in slowness $s_i$ for straight rays (or fixed paths). Non-linear when ray paths depend on the velocity model.
+  \item Linear PDE in $T$ for constant $k$; inversion for $Q$ is linear if $k$ and BCs are known.
+  \item Non-linear. Kirchhoff transform $u(T)=\int k(T)\,\mathrm{d}T$ gives $\nabla^2 u + Q=0$ (with transformed BCs), which is linear in $u$.
+  \item Non-linear. Take logs: $\ln\sigma = \ln\sigma_0 - (E_a/R)\,T^{-1}$ (linear in $[\ln\sigma_0, E_a]$ with regressor $1/T$).
+  \item Non-linear. Take logs: $\ln\rho = \ln a + b\,\ln v$ (linear in $[\ln a, b]$).
+  \item Non-linear. Take logs (if $\rho_w$ known): $\ln\rho_e = \ln a - m\,\ln\phi - n\,\ln S_w + \ln\rho_w$.
+\end{enumerate}

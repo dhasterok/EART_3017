@@ -16,19 +16,19 @@ By the end of this activity, you should be able to:
 
 \section{Theory}
 
-Inversion problems can be cast as \(\mathbb{A}\mathbf{m} = \mathbf{d}\) for linear problems and \(A(m) = d\) for non-linear problems.  Where \(d\) is the data and \(A\) is the operator or design (more on that below).  The difference may appear subtle, though in reality the difference is that the linear equation can be written as a linear algebra problem as the model parameters are independent and discrete.  In the non-linear formulation, the one or more model parameters are dependent upon another.  As a result they cannot be fully separated unless they can be linearized.
+Inversion problems can be cast as \(\vb{A}\vb{m} = \vb{d}\) for linear problems and \(A(m) = d\) for non-linear problems.  Where \(d\) is the data and \(A\) is the operator or design (more on that below).  The difference may appear subtle, though in reality the difference is that the linear equation can be written as a linear algebra problem as the model parameters are independent and discrete.  In the non-linear formulation, the one or more model parameters are dependent upon another.  As a result they cannot be fully separated unless they can be linearized.
 
 Let's explore what \(A\), \(m\), and \(d\) are a bit more intuitively.
 The data, \(d\), are the results of an experiment.  Identifying the data are generally straightforward.  The operator and model parameters can takes a bit more getting used to.  The model parameters, \(m\), are the physical or virtual properties of the system and initially unknown.  Once you determine these properties, the forward model becomes a prediction.  The operator or design matrix, \(A\), can be thought of \emph{as the experiment itself}, and is dependent upon the geometry, conditions of the experiment, and the physics.  The model tells us what exists, the operator tells us how we observe it.
 
 When we are doing a geophysical experiment with the Earth as the medium,
 \begin{itemize}
-  \item \(\mathbf{m} \to \) the model is Earth, what it is made of and its physical properties. Changing \(\mathbf{m}\) changes the Earth.
-  \item \(\mathbf{A} \to \) how Earth talks to the instrument, how the Earth is sampled by the experiment, i.e., the rules of the experiment. Changing \(\mathbf{A}\) changes the experiment, i.e., same Earth + different experiment \(\to\) different data.
-  \item \(\mathbf{d} \to \) the data is the outcome of the experiment, what we measure
+  \item \(\vb{m} \to \) the model is Earth, what it is made of and its physical properties. Changing \(\vb{m}\) changes the Earth.
+  \item \(\vb{A} \to \) how Earth talks to the instrument, how the Earth is sampled by the experiment, i.e., the rules of the experiment. Changing \(\vb{A}\) changes the experiment, i.e., same Earth + different experiment \(\to\) different data.
+  \item \(\vb{d} \to \) the data is the outcome of the experiment, what we measure
 \end{itemize}
 
-In most geophysical problems, \(\mathbf{A}\) is
+In most geophysical problems, \(\vb{A}\) is
 \begin{itemize}
   \item gravity -- distances from mass elements
   \item magnetics -- sensor positions and dip angle
@@ -36,7 +36,7 @@ In most geophysical problems, \(\mathbf{A}\) is
   \item electromagnetics -- distances from conductive/resistive bodies
   \item seismology -- ray paths or travel times
 \end{itemize}
-So the entries in \(\mathbf{A}\) are determined by:
+So the entries in \(\vb{A}\) are determined by:
 \begin{itemize}
   \item positions
   \item distances
@@ -45,7 +45,7 @@ So the entries in \(\mathbf{A}\) are determined by:
   \item boundary conditions
 \end{itemize}
 
-Put simply, the matrix \(\mathbb{A}\) encodes the physics and geometry of how the experiment samples the model, \(\mathbf{m}\), resulting in the observations, \(\mathbf{d}\).
+Put simply, the matrix \(\vb{A}\) encodes the physics and geometry of how the experiment samples the model, \(\vb{m}\), resulting in the observations, \(\vb{d}\).
 
 \section*{Linearizing}
 
@@ -202,7 +202,10 @@ In your groups:
 \section*{Key Ideas}
 
 \begin{minipage}[t]{0.58\textwidth}
-\textbf{The operator $\mathbf{A}$ encodes the physics and geometry of the experiment.} Changing the Earth (the model $\mathbf{m}$) changes the predictions; changing the experiment (the operator $\mathbf{A}$) also changes the predictions even if the Earth stays the same.
+\textbf{The operator $\vb{A}$ encodes the physics and geometry of the experiment.} Changing the Earth (the model $\vb{m}$) changes the predictions; changing the experiment (the operator $\vb{A}$) also changes the predictions even if the Earth stays the same.
+
+\vspace{0.5em}
+\textbf{Linear equations are easier to invert.} Linear equations can be solved in a single step using a linear least-squares inversion (LLSQ) inversion.  Non-linear equations require iterative solutions.
 
 \vspace{0.5em}
 \textbf{Many geophysical relations are non-linear but can be linearized.} Power laws become linear under a log-transform; functions with products of unknowns may become linear under a change of variables. Recognizing these opportunities converts a difficult iterative problem into a tractable one.

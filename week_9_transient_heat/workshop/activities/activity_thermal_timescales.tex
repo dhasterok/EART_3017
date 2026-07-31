@@ -18,15 +18,54 @@ By the end of this activity, you should be able to:
   \item Compare thermal diffusion timescales for different materials and connect these to real geological processes, including how long a thermal event at a given crustal or lithospheric depth takes to be felt elsewhere.
 \end{itemize}
 
-\section*{Background}
+\ntextbox{Thermal Diffusion: Solution and Scaling}{
+\textbf{Half-Space Solution}
+
+For instantaneous heating or cooling at a boundary, the temperature evolution is given by the error function solution:
+\[
+T(z,t) = T_s + (T_b - T_s)\,\erf \left(\frac{z}{2\sqrt{\kappa t}}\right).
+\]
+
+\emph{Important:} the argument of the error function,
+\[
+\eta = \frac{z}{2\sqrt{\kappa t}},
+\]
+controls the \emph{shape and timing} of the thermal signal: the temperature change is largest where $\eta$ is small and becomes negligible once $\eta$ is of order 1. That crossover, $\eta\sim1$, is what defines the characteristic depth below.
+
+\begin{center}
+    \includegraphics[width=0.6\textwidth]{figures/halfspace_cooling.pdf}
+    \captionof{figure}{Half-space cooling at several time intervals. Each curve reaches $T_s+0.84\,\Delta T$ (dashed line) at its own thermal length $\ell_T=2\sqrt{\kappa t}$ -- the same fractional temperature change, at a depth that grows with time.}
+    \label{fig:halfspace}
+\end{center}
+
+\medskip
+\textbf{Thermal Length and Characteristic Time}
+
+For diffusion-dominated heat transfer, the characteristic depth over which temperature changes propagate scales as
+\[
+z \sim 2 \sqrt{\kappa t}.
+\]
+
+This thermal length sets both:
+\begin{itemize}
+  \item the depth to which temperature changes have propagated after time $t$,
+  \item the timescale required for a thermal perturbation at depth to influence shallower levels.
+\end{itemize}
+
+\medskip
+\textbf{Thermal Diffusivity}
+
 Thermal diffusivity is defined as
 \[
-\kappa = \frac{k}{\rho c_p},
+\kappa = \frac{k}{\rho C_p},
 \]
-where $k$ is thermal conductivity, $\rho$ is density, and $c_p$ is specific heat.
+where $k$ is thermal conductivity, $\rho$ is density, and $C_p$ is specific heat.
 
-\begin{table}[h]
-    \centering
+Thermal conductivity and diffusivity vary with temperature, porosity, mineralogy, fluid content, and fabric. While not simple, there are some typical ranges that one can expect depending on the geologic material (Table~\ref{tab:diffusivity}).
+
+\begin{center}
+    \captionof{table}{Representative ranges for thermal conductivity and diffusivity of geologic materials.  Values are rounded for scaling arguments rather than precise modeling.}
+    \label{tab:diffusivity}
     \begin{tabular}{lccc}
         \toprule
         \textbf{Material} &
@@ -45,45 +84,8 @@ where $k$ is thermal conductivity, $\rho$ is density, and $c_p$ is specific heat
         Peridotite (upper mantle)         & 3.3--4.5 & $(1.0$--$1.5)\times10^{-6}$ & 32--47 \\
         \bottomrule
     \end{tabular}
-\end{table}
-
-\smallskip
-\noindent
-\textit{Values are representative ranges. Thermal conductivity and diffusivity
-vary with temperature, porosity, mineralogy, fluid content, and fabric.
-Diffusivities are calculated using $\kappa = k/(\rho c_p)$ and rounded for
-scaling arguments rather than precise modeling.}
-
-For diffusion-dominated heat transfer, the characteristic depth over which temperature changes propagate scales as
-\[
-z \sim 2 \sqrt{\kappa t}.
-\]
-
-This thermal length sets both:
-\begin{itemize}
-  \item the depth to which temperature changes have propagated after time $t$,
-  \item the timescale required for a thermal perturbation at depth to influence shallower levels.
-\end{itemize}
-
-\section*{Error Function Solution}
-
-For instantaneous heating or cooling at a boundary, the temperature evolution is given by the error function solution:
-\[
-T(z,t) = T_s + (T_b - T_s)\,\erf \left(\frac{z}{2\sqrt{\kappa t}}\right).
-\]
-
-\textbf{Important:} the argument of the error function,
-\[
-\eta = \frac{z}{2\sqrt{\kappa t}},
-\]
-controls the \emph{shape and timing} of the thermal signal.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/halfspace_cooling.pdf}
-    \caption{Half-space cooling at three times, $t_1<t_2<t_3$. Each curve reaches $T_s+0.84\,\Delta T$ (dashed line) at its own thermal length $\ell_T=2\sqrt{\kappa t}$ -- the same fractional temperature change, at a depth that grows with time.}
-    \label{fig:halfspace}
-\end{figure}
+\end{center}
+}{core}
 
 \section*{Tasks}
 \begin{questions}
@@ -176,8 +178,32 @@ LAB             & 100 & \\
   \item The thermal length scale controls which geological processes can be observed at the surface, and on what timescales.
 \end{itemize}
 
-\section*{Key Idea}
+\section*{Key Ideas}
 
-In diffusion problems, time and distance are interchangeable through the thermal length $\ell_T = 2\sqrt{\kappa t}$. Heat does not ``arrive'' at a depth at a single moment; instead, the error function describes a gradual, scale-dependent thermal response controlled by diffusivity, distance, and boundary conditions. A thermal perturbation at the Moho takes millions of years to be felt at the surface; one at the base of the lithosphere takes tens of millions -- diffusion is slow enough that most crustal thermal events are, for practical purposes, invisible at the surface on human timescales.
+\textbf{Diffusion has a characteristic relationship between time and space.} In diffusion problems, time and distance are interchangeable through the thermal length $\ell_T = 2\sqrt{\kappa t}$. A thermal perturbation at the Moho takes millions of years to be felt at the surface; one at the base of the lithosphere takes tens of millions -- diffusion is slow enough that most crustal thermal events are, for practical purposes, invisible at the surface on human timescales.
+
+\begin{center}
+\begin{tikzpicture}
+  
+\end{tikzpicture}
+\end{center}
+
+\textbf{Depth and time trade off along straight lines, not a single front.} Each value of $\eta = z/(2\sqrt{\kappa t})$ traces a straight line through the origin in a plot of $z$ against $\sqrt{\kappa t}$, since $z = 2\eta\sqrt{\kappa t}$. A small $\eta$ (strongly affected) and a large $\eta$ (essentially unaffected) bound a widening wedge rather than a sharp edge, so ``has heat arrived here yet?'' only has an answer once you specify how much temperature change counts as arrival.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[xscale=2,yscale=0.5]
+    \draw[->,thick] (0,0) -- (3.6,0) node[right] {$\sqrt{\kappa t}$};
+    \draw[->,thick] (0,0) -- (0,13) node[above] {$z$};
+
+    \fill[gray!15] (0,0) -- (3,3) -- (3,12) -- cycle;
+
+    \draw[thick,blue!70!black] (0,0) -- (3,3) node[right] {$\eta=0.5$};
+    \draw[thick,black]         (0,0) -- (3,6) node[right] {$\eta=1$};
+    \draw[thick,red!70!black]  (0,0) -- (3,12) node[right] {$\eta=2$};
+\end{tikzpicture}
+\caption{Depth $z$ versus $\sqrt{\kappa t}$ at fixed $\eta = z/(2\sqrt{\kappa t})$. Each $\eta$ traces a straight line of slope $2\eta$; the shaded wedge between $\eta=0.5$ and $\eta=2$ spans the range over which the thermal response fades from strong to negligible, rather than switching off at a single depth.}
+\label{fig:eta_lines}
+\end{figure}
 
 \end{activity}

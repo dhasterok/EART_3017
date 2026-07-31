@@ -1,4 +1,4 @@
-\begin{activity}{Thermal Refraction}
+\begin{activity}[Warm-up]{Thermal Refraction}
 
 \section*{Purpose}
 To build intuition for how low-conductivity surface layers redistribute temperature gradients without changing the total heat flow.
@@ -128,8 +128,8 @@ The sediments are dominated by shales and porous clastic rocks with lower therma
 \section*{Key Ideas}
 
 \textbf{A conductivity contrast redistributes the gradient, not the flux.} Whenever $q$ must stay constant across a boundary but $k$ changes, $dT/dz = -q/k$ forces the gradient to change instead. This effect is thermal refraction, and it applies at any conductivity contrast, not only a sediment-over-basement boundary; the same reasoning will reappear for layered media, tilted strata, and mixed lithologies.
-
-\begin{center}
+\begin{figure}[h]
+  \centering
   \begin{tikzpicture}
     % axes
     \draw[->] (-0.1,0) -- (-0.1,-5.2) node[midway,left=8pt,rotate=90] {Depth};
@@ -156,7 +156,9 @@ The sediments are dominated by shales and porous clastic rocks with lower therma
     \draw[thick,<-] (4.3,-2.5) -- (4.3,-3.0) node[right] {$q_1 = q_2$};
     \draw[thick,<-] (4.3,0) -- (4.3,-0.5) node[right] {$q_0 = q_2$};
   \end{tikzpicture}
-\end{center}
+  \caption{One-dimensional geotherms demonstrating thermal refraction between two layers. This model does not include heat production so heat flow is constant across layer interfaces.  Refraction in a 1-D environment doesn't bend so much as it causes geotherms to stretch or compress based on the relative conductivities of various layers.}
+  \label{fig:refraction}
+\end{figure}
 
 \textbf{A measured gradient reflects local conductivity, not the deeper structure.} The same heat flow can correspond to very different gradients depending on what you're measuring through, so gradients from different settings are not directly comparable without calculation of heat flow.  A gradient measured near the surface is only converted to a true heat flow once you know the conductivity at the depth it was measured. 
 

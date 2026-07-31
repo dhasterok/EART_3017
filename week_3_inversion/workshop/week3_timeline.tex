@@ -71,7 +71,7 @@ Using the equation handout:
 
 \timeline[slot]{Break}{10}
 
-\timeline[item]{Buried Sphere --- Background}{10}
+\timeline[slot]{Buried Sphere --- Background}{10}
 
 We're going to look at the gravity anomaly from a buried sphere.  The forward problem is non-linear with respect to the model parameters, requiring a non-linear inverse solution.  This activity is broken into two parts: a look at the formulation, and an investigation using a simple program.
 \begin{itemize}
@@ -94,7 +94,7 @@ With the use of \verb+buried_sphere_gui.py+, we will examine a number of aspects
   \item [Grid search:] Explore pairwise misfit slices and 3-D misfit surface. Identify local vs global minima.
   \item [Inversion path:] Run Gauss--Newton with different $\lambda$; examine step length and stability.
   \item [Effect of noise:] Increase $\sigma$; observe widening misfit basins and parameter uncertainty.
-  \item [Non-uniqueness:] Demonstrate parameter trade-offs (e.g.\ $a^3\, \Delta\rho$) and resolution ellipses.
+  \item [Non-uniqueness:] Demonstrate parameter trade-offs and resolution ellipses.
   \item [Role of Noise:] Look at how noise affects results.
 \end{description}
 
@@ -128,6 +128,6 @@ By the end of next week, you will be able to predict how changes in density, geo
 \notepage
 \notepage
 
-\subimport{activities/}{activity_linear_test}
+\subimport{activities/}{activity_testing_linearity}
 \subimport{activities/}{activity_linearity}
 \subimport{activities/}{activity_buried_sphere}

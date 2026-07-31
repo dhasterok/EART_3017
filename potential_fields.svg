@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 595.3 841.9">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        isolation: isolate;
+      }
+
+      .st2 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st3 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st4 {
+        fill: url(#linear-gradient);
+        mix-blend-mode: darken;
+        stroke: #231f20;
+        stroke-miterlimit: 10;
+      }
+
+      .st5 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st0" x="-76.6" y="-8.8" width="768" height="737.8"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st0" x="-76.6" y="-8.8" width="768" height="1152"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st0" x="-76.6" y="-8.8" width="768" height="1152"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="307.4" y1="-8.8" x2="307.4" y2="729" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset=".7" stop-color="#fff"/>
+      <stop offset=".7" stop-color="#fff"/>
+      <stop offset=".7" stop-color="#fbfbfb"/>
+      <stop offset=".8" stop-color="#b4b4b4"/>
+      <stop offset=".8" stop-color="#787878"/>
+      <stop offset=".9" stop-color="#4a4a4a"/>
+      <stop offset=".9" stop-color="#282828"/>
+      <stop offset="1" stop-color="#141414"/>
+      <stop offset="1" stop-color="#0d0d0d"/>
+    </linearGradient>
+  </defs>
+  <g class="st1">
+    <g id="Layer_1">
+      <g class="st5">
+        <g class="st2">
+          <g class="st3">
+            <image width="1024" height="1536" transform="translate(-76.6 -8.8) scale(.8)" xlink:href="potential_fields-1.png"/>
+          </g>
+        </g>
+      </g>
+      <rect class="st4" x="-76.6" y="-8.8" width="768" height="737.8"/>
+    </g>
+  </g>
+</svg>

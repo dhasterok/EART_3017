@@ -34,7 +34,7 @@ By the end of this workshop, students should be able to:
 
 \section*{Session Flow (\timelinelength\ min)}
 
-\timeline[item]{Warm-up --- Two Bumps, One Line}{10}
+\timeline[warmup]{Two Bumps, One Line}{10}
 
 Explore what happens when you have a more complex gravity anomaly.
 
@@ -46,31 +46,28 @@ Explore what happens when you have a more complex gravity anomaly.
 
 \timeline[item]{Fold Belt Survey}{35}
 
-Sampling decisions set a hard limit on geological resolution.  In this example, we'll explore the impact of aliasing.
+Sampling decisions set a hard limit on geological resolution.  In this example, you will explore the impact of aliasing.
 
 \timeline[item]{Nevada Gravity: Filtering for Sediments}{50}
+
+In this activity, you will explore the application of Fourier transforms to real world data, including
 \begin{itemize}
   \item Complete Bouguer gravity of Nevada
-  \item E--W and N--S power spectra
-  \item Identification of Basin-and-Range wavelengths
-  \item High-pass filtering and wavelength selection
+  \item Spectral analysis: E--W/N--S power spectra and separating a real basin-scale signal from the red-noise background
+  \item High-pass filtering and the geological assumption behind the pass/block wavelengths
   \item Parker--Oldenburg sediment thickness inversion
-  \item Interpretation and limitations
-  \item Effect of aliasing on inversion results
+  \item Sanity-checking the result against known Nevada geology
 \end{itemize}
 
 \timeline[slot]{Break}{5}
 
-\noindent\textbf{Key emphasis:} Filtering encodes geological assumptions.
-
 \timeline[item]{Tower Hill Magnetics: Righting the Anomaly}{40}
+Most filters are designed to restrict amplitudes by frequency.  In this activity, you will see how a filter can be designed to adjust phase.
 \begin{itemize}
   \item Magnetic anomalies as vector fields
   \item Cone/maar geometry and asymmetric anomalies
-  \item Reduction to the pole as a phase operation
 \end{itemize}
 
-\noindent\textbf{Key emphasis:} RTP rotates phase; it does not filter noise.
 
 \timeline[slot]{Wrap-up}{15}
 \begin{itemize}

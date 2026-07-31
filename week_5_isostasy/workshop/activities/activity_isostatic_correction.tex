@@ -144,7 +144,36 @@ Let:
 
 \section*{Key Ideas}
 
-\textbf{Under perfect compensation, topography and its root cancel exactly.} The gravity signal from a mountain ($+2\pi G\rho_c h$) is exactly cancelled by its deeper crustal root ($-2\pi G\rho_c h$). A perfectly compensated terrain therefore has no isostatic gravity anomaly --- any residual signal indicates incomplete compensation or lateral density variations.
+\textbf{Under perfect compensation, topography and its root cancel exactly.} The gravity signal from a mountain ($+2\pi G \Delta \rho_h h$) is exactly cancelled by its deeper crustal root ($-2\pi G \Delta \rho_r r$). A perfectly compensated terrain therefore has no isostatic gravity anomaly --- any residual signal indicates incomplete compensation or lateral density variations.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+
+    % Parameters
+    \def\A{0.75}      % topography amplitude
+    \def\Tzero{1.0}  % reference crustal thickness
+    \def\k{0.5}      % Gaussian width
+
+    % Topography (Gaussian)
+    \draw[thick, domain=-4:4, samples=100]
+        plot (\x, {\A*exp(-\k*\x*\x)});
+
+    % Reference surface (sea level)
+    \draw[dashed] (-4,0) -- (4,0) node[midway,above] {$+2\pi G \Delta\rho_h h$};
+
+    % Moho (reference crustal thickness)
+    \draw[dashed] (-4,-\Tzero) -- (4,-\Tzero) node[midway,below] {$-2\pi G \Delta\rho_r r$};
+
+    % Root (3x amplitude below Moho)
+    \draw[thick, domain=-4:4, samples=100]
+        plot (\x, {-\Tzero - 3*\A*exp(-\k*\x*\x)});
+
+    % Label T0 with bracket
+    \draw[<->,gray] (0,0) -- (0,-\Tzero) node[midway,left] {cancels};
+
+\end{tikzpicture}
+\end{center}
+
 
 \textbf{This crustal-thickness-only pattern is an end-member.} Constant crustal density with a compensating root is exactly the pattern you classified in Part 1 --- the same general balance would look different for a case with different fundamental assumptions.
 

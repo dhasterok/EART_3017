@@ -32,9 +32,15 @@ Just as electrical current refracts at a resistivity contrast, and magnetic fiel
 
 \section*{Tasks}
 \begin{questions}
+\question{Temperature vs. Heat Flux}
+What is the mathematical relationship between heat flow and temperature?
+\answerbox[2cm]
+
+What is the geometrical relationship between isotherms (lines of constant temperature) and heat flow lines?
+\answerbox[2cm]
 
 \question{A Pluton}
-A circular pluton of lower conductivity than its host sits in otherwise uniform crust, far from any other structure. Regional heat flow $q$ points toward the surface, undisturbed far from the pluton (dashed lines).
+A circular pluton of higher conductivity, $k_p$, than its host sits in otherwise uniform crust, $k_c$, far from any other structure. Regional heat flow $q$ points toward the surface, undisturbed far from the pluton (dashed lines).
 
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm]
@@ -42,7 +48,7 @@ A circular pluton of lower conductivity than its host sits in otherwise uniform 
 
     \draw[thick] (0,0) -- (10,0) node[right] {$T_s$};
     \draw[thick] (5,-2) circle (1);
-    \node at (5,-2) {$k_p < k_c$};
+    \node at (5,-2) {$k_p > k_c$};
 
     \base{-5}
 \end{tikzpicture}
@@ -60,7 +66,7 @@ A circular pluton of lower conductivity than its host sits in otherwise uniform 
 \end{enumerate}
 
 \question{A Dike}
-A near-vertical dike of higher conductivity than its host cuts across the same regional field.
+A near-vertical dike of lower conductivity, $k_d$ than its host cuts across the same regional field, $k_c$.
 
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm]
@@ -75,8 +81,8 @@ A near-vertical dike of higher conductivity than its host cuts across the same r
 \end{center}
 
 \begin{enumerate}[label=(\alph*)]
-    \item Sketch flux lines through the panel. Does flux concentrate into the dike or avoid it -- and is that the same answer as Question 1, or the opposite?
-    \answerbox[2cm]
+    \item Sketch flux lines through the panel. Does flux concentrate into the dike or avoid it?  How does this compare to the sphere above?
+    \answerbox[3cm]
 
     \item Sketch isotherms consistent with your flux lines. Would a borehole drilled straight down just outside the dike measure a different near-surface gradient than one drilled far away?
     \answerbox[2.5cm]
@@ -97,7 +103,7 @@ Uniform crust, uniform conductivity throughout, but Earth's surface itself is no
     \item Do the isotherms stay flat all the way to the surface, or bend to follow the topographic profile?
     \answerbox[2.5cm]
 
-    \item This distortion has nothing to do with a conductivity contrast -- conductivity is uniform everywhere in this panel. What, physically, is causing the isotherms to bend?
+    \item This distortion has nothing to do with a conductivity contrast since conductivity is uniform everywhere in this panel. What, physically, is causing the isotherms to bend?
     \answerbox[2cm]
 
     \item At what distance from the peak (roughly, in mountain-heights) would you expect this distortion to have mostly died away? Compare your reasoning to how gravity and magnetic anomalies decay with distance from a source.
@@ -108,10 +114,10 @@ Uniform crust, uniform conductivity throughout, but Earth's surface itself is no
 
 \section*{Key Ideas}
 
-\textbf{Flux lines refract at a conductivity contrast, always bending toward the path that carries more flux for less resistance.} This is the same principle as electrical current refraction and magnetic field refraction -- a conductivity contrast, a resistivity contrast, and a susceptibility contrast all distort their respective fields the same way, for the same underlying reason.
+\textbf{Heat-flux lines refract at a thermal conductivity contrast because the temperature and heat flux must satisfy continuity conditions across the interface.} Temperature is continuous across the boundary, and the normal component of heat flux is conserved in the absence of internal heat sources or sinks. Since Fourier's law, \(\vb{q} = -k \grad{T}\), relates heat flux to the temperature gradient, a change in thermal conductivity requires the temperature gradient to change direction at the interface. As a result, heat-flux lines bend, or refract, across the boundary.
 
-\textbf{Whether flux concentrates into or avoids a structure depends on whether that structure is higher or lower conductivity than its host} -- a dike (high $k$) draws flux in; a pluton (low $k$, as drawn here) pushes flux around it. Reversing the contrast reverses the pattern.
+\textbf{Flux lines refract at a conductivity contrast, always bending toward the path of least resistance.} Whether flux concentrates into or avoids a structure depends on whether that structure is higher or lower conductivity than its host. A pluton (high $k$) draws flux in; a dike (low $k$, as drawn here) pushes flux around it. Reversing the conductivity contrast reverses the pattern.
 
-\textbf{Not every field distortion comes from a material contrast.} The mountain's isotherms bend because the boundary condition itself (the surface, where $T=T_0$) is not flat -- the same kind of geometric effect that produces terrain corrections in gravity and magnetics, distinct from (and addable to) any density, susceptibility, or conductivity contrast in the subsurface.
+\textbf{Not every field distortion comes from a material contrast.} The mountain's isotherms bend because the boundary condition itself (the surface, where $T=T_0$) is not flat.  This phenomena is the same kind of geometric effect that produces terrain corrections in gravity and magnetics, distinct from (and addable to) any density, susceptibility, or conductivity contrast in the subsurface.
 
 \end{activity}

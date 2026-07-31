@@ -1,7 +1,7 @@
 \begin{activity}{Heat Production from Seismic Velocity?}
 
 \section*{Purpose}
-Thermal conductivity can be measured directly on a hand sample, and gravity, magnetics, and seismic velocity can all be estimated remotely at depth. Heat production cannot -- there is no field survey that tells you $A(z)$ directly. This activity asks whether seismic velocity, which \emph{can} be estimated at depth almost everywhere, can stand in as a proxy for heat production, which can't. It can, to a real and useful degree -- but pushing that proxy all the way to a testable prediction exposes a genuine, unresolved tension between two entirely reasonable ways of estimating the same quantity.
+Unlike many problem we have investigated thus far, heat production cannot be remotely sense $A(z)$ directly. This activity asks whether seismic velocity, which \emph{can} be estimated at depth almost everywhere, can stand in as a proxy for heat production. 
 
 \section*{Learning Outcomes}
 
@@ -10,7 +10,7 @@ By the end of this activity, you should be able to:
   \item Explain why heat production is harder to estimate at depth than density, susceptibility, or resistivity.
   \item Evaluate a real scientific critique of a proposed geophysical proxy relationship, and identify when a change of variable (not new data) resolves it.
   \item Use real velocity-depth data and an empirical velocity-heat production relationship to estimate a terrane's radiogenic crustal heat flow.
-  \item Test that estimate against an independent constraint -- conservation of energy -- and reason about which of two disagreeing methods deserves more trust, and why.
+  \item Test that estimate against an independent constraint---conservation of energy---and reason about which of two disagreeing methods deserves more trust, and why.
 \end{itemize}
 
 \section*{Geological Context}
@@ -59,8 +59,11 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
   \]
 
   \begin{enumerate}[label=(\alph*)]
-    \item Which terrane's heat production is more sensitive to velocity -- that is, which has the steeper slope?
-    \answerbox[1.5cm]
+    \item What does it mean that the slopes are negative for heat production with composition?
+    \answerbox[2cm]
+
+    \item Which terrane's heat production is more sensitive to velocity, i.e., has the steeper slope?
+    \answerbox[2cm]
 
     \item The global fit across all measured terranes gives a slope of $-0.888$, between these two. Is "one global relationship" a good description of what's actually going on, or is it closer to an average of many genuinely different local relationships?
     \answerbox[2cm]
@@ -97,7 +100,7 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
   \[
     A=10^{\log_{10}A}\, ,
   \]
-  then multiply by the bin's thickness $\Delta z$ (in \si{km}) to get that bin's contribution to heat flow, in mW/m$^2$ --- the units work out directly, with no conversion factor needed, because $\SI{1}{\mu W.m^{-3}} \times \SI{1}{km} = \SI{1}{mW.m^{-2}}$.
+  then multiply by the bin's thickness $\Delta z$ (in \si{km}) to get that bin's contribution to heat flow, in \si{mW.m^{-2}} --- the units work out directly, with no conversion factor needed, because $\SI{1}{\mu W.m^{-3}} \times \SI{1}{km} = \SI{1}{mW.m^{-2}}$.
 
   \textbf{Worked example (first row, Macquarie Arc):} at $V_p=6.02$,
   \[
@@ -107,7 +110,7 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
   \[ 
     A=10^{0.537}= \SI{3.44}{\mu W.m^{-3}}\, .
   \]
-  Over the \SI{5}{km} bin, this contributes $3.44\times5=17.2$~\si{mW.m^2}. The Yilgarn Craton row is done the same way, using its own $m_0$ and $m_1$.
+  Over the \SI{5}{km} bin, this contributes $3.44\times5=17.2$~\si{mW.m^{-2}}. The Yilgarn Craton row is done the same way, using its own $m_0$ and $m_1$.
   \input{figures/velocity_depth_stats}
 
   \begin{enumerate}[label=(\alph*)]
@@ -123,12 +126,12 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
 
   The fitted relationship predicts the \emph{median} $A$ at a given $V_p$ -- but \emph{heat production} is an additive, volumetric quantity, so the physically relevant value for the integral you just computed is the \emph{mean}, not the median. Because $A$ is log-normally distributed, the mean is always larger than the median, by a factor
   \[
-    K \approx 10^{1.151 \sigma_{10}^2},
+    f \approx 10^{1.151 \sigma_{10}^2},
   \]
-  where $\sigma_{10}$ is the scatter of $\log_{10}A$ about the fitted line. Measured directly from each terrane's own data: $\sigma_{10}=0.247$ ($K=1.175$) for Macquarie Arc, and $\sigma_{10}=0.342$ ($K=1.364$) for Yilgarn Craton.
+  where $\sigma_{10}$ is the scatter of $\log_{10}A$ about the fitted line. Measured directly from each terrane's own data: $\sigma_{10}=0.247$ ($f=1.175$) for Macquarie Arc, and $\sigma_{10}=0.342$ ($f=1.364$) for Yilgarn Craton.
 
   \begin{enumerate}[label=(\alph*)]
-    \item Multiply your two sums from Question 4 by the appropriate $K$ to get the corrected, mean-based radiogenic heat flow estimate for each terrane.
+    \item Multiply your two sums from Question 4 by the appropriate $f$ to get the corrected, mean-based radiogenic heat flow estimate for each terrane.
 
     \vspace{0.5em}
     Yilgarn Craton: \numberbox[1.5cm]\ \si{mW.m^{-2}}
@@ -136,7 +139,7 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
     Macquarie Arc: \numberbox[1.5cm]\ \si{mW.m^{-2}} \\
     \vspace{0.5em}
 
-    \item Which terrane's estimate changed more in absolute terms? Why, given the two $K$ values?
+    \item Which terrane's estimate changed more in absolute terms? Why, given the two $f$ values?
     \answerbox[2cm]
   \end{enumerate}
 
@@ -147,7 +150,7 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
   \begin{center}
   \begin{tabular}{lccc}
     \toprule
-    & Sites & Mean observed $q$ (\si{mW.m^2}) & Median observed $q$ (\si{mW.m^2}) \\
+    & Sites & Mean observed $q$ (\si{mW.m^{-2}}) & Median observed $q$ (\si{mW.m^{-2}}) \\
     \midrule
     Macquarie Arc   & 48 & 71.2 & 70.3 \\
     Yilgarn Craton  & 66 & 37.8 & 37.1 \\
@@ -164,10 +167,10 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
     \item Is either result physically possible? What would a negative $q_\text{mantle}$ actually mean?
     \answerbox[2cm]
 
-    \item Two independent, individually reasonable methods -- a velocity-based proxy calibrated against real rock samples, and a direct energy-conservation argument -- disagree here, sometimes severely. Which do you trust more, and why? What does each method actually depend on that the other doesn't?
+    \item Two independent, individually reasonable methods, a velocity-based proxy calibrated against real rock samples and a direct energy-conservation argument, disagree here, sometimes severely. Which do you trust more, and why? What does each method actually depend on that the other doesn't?
     \answerbox[3cm]
 
-    \item This activity opened by asking whether heat production could be estimated the way density, susceptibility, or resistivity can be. Having worked through this, what's your answer now -- and what, specifically, makes heat production harder?
+    \item This activity opened by asking whether heat production could be estimated the way density, susceptibility, or resistivity can be. Having worked through this, what's your answer now\ldots and what, specifically, makes heat production harder?
     \answerbox[2.5cm]
   \end{enumerate}
 
@@ -177,8 +180,8 @@ Fountain (1986) pushed back hard: plotted directly, $A$ against $V_p$ is extreme
 
 \textbf{A relationship can be real and still look like noise, if you're looking in the wrong space.} Fountain's critique wasn't wrong about what he saw -- linear-space $A$-$V_p$ data genuinely is scattered. It was wrong about what that scatter meant, because it didn't account for heat production's log-normal distribution.
 
-\textbf{An empirical proxy relationship is only as trustworthy as the data used to build it -- and it can be genuinely strong without being universal.} Different terranes show different, real, well-constrained slopes; treating any single fit (even the well-supported global one) as a universal law discards information the data itself is offering.
+\textbf{An empirical proxy relationship is only as trustworthy as the data used to build it though the relation can be effective without being universal.} Different terranes show different, real, well-constrained slopes; treating any single fit (even the well-supported global one) as a universal law discards information the data itself is offering.
 
-\textbf{When two independently-motivated methods disagree, ask what each one is actually constrained by.} A velocity-based proxy is constrained only by the rock samples used to calibrate it -- nothing stops it from predicting an impossible total. An energy-conservation argument is constrained by the whole system having to balance, and cannot produce a physically impossible answer without signalling that fact directly, as a negative flux. That asymmetry, not just "geophysics being more careful," is why the energy-balance constraint deserves more trust when the two disagree.
+\textbf{When two independently-motivated methods disagree, ask what each one is actually constrained by.} A velocity-based proxy is constrained only by the rock samples used to calibrate it; nothing stops it from predicting an impossible total. An energy-conservation argument is constrained by the whole system having to balance, and cannot produce a physically impossible answer without signalling that fact directly, as a negative flux. That asymmetry, not just "geophysics being more careful," is why the energy-balance constraint deserves more trust when the two disagree.
 
 \end{activity}
